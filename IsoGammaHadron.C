@@ -848,7 +848,7 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
   }
 }
 
-void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSig = "DataSh100_AssocPt500", Bool_t bMirror = true, TString shshBkg = "0.40-1.00", TString dirFiles = "checkCodeTrackEff", double systPur = 1, bool bZYAM = false, bool bPlot = true, double phiMin = TMath::Pi() * 3 / 5, double phiMax = TMath::Pi(), bool systShSh = false, bool systTrackIneff = true)
+void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSig = "DataSh100_AssocPt500", Bool_t bMirror = true, TString shshBkg = "0.40-1.00", TString dirFiles = "../FromScratch/checkCode", double systPur = 1, bool bZYAM = false, bool bPlot = true, double phiMin = TMath::Pi() * 3 / 5, double phiMax = TMath::Pi(), bool systShSh = false, bool systTrackIneff = false)
 {
   ///////////////////////////////////////////////////////////////////
   /////// Define MC root files: one file for all centralities //////
