@@ -79,14 +79,14 @@ EOF
 ##
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/IsoGammaHadron.C
-IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-1.50", "~/work/histogram/FromScratch/checkCode/checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false)
+IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-1.50", "~/work/histogram/FromScratch/checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false)
 .q
 EOF
 ##
 ##
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/IsoGammaHadron.C
-IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-2.00", "~/work/histogram/FromScratch/checkCode/checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false)
+IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-2.00", "~/work/histogram/FromScratch/checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false)
 .q
 EOF
 
@@ -98,7 +98,7 @@ EOF
 
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/IsoGammaHadron.C
-IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-1.00", "~/work/histogram/FromScratch/checkCode/checkCodeTrackEff", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, true)
+IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeTrackEff", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, true)
 .q
 EOF
 
