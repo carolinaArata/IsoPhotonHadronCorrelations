@@ -848,7 +848,7 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
   }
 }
 
-void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSig = "DataSh100_AssocPt500", Bool_t bMirror = true, TString shshBkg = "0.40-1.00", TString dirFiles = "../FromScratch/checkCode", double systPur = 1, bool bZYAM = false, bool bPlot = true, double phiMin = TMath::Pi() * 3 / 5, double phiMax = TMath::Pi(), bool systShSh = false, bool systTrackIneff = false)
+void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSig = "~/work/histogram/DataSh100_AssocPt500", Bool_t bMirror = true, TString shshBkg = "0.40-1.00", TString dirFiles = "~/work/histogram/FromScratch/checkCode", double systPur = 1, bool bZYAM = false, bool bPlot = true, double phiMin = TMath::Pi() * 3 / 5, double phiMax = TMath::Pi(), bool systShSh = false, bool systTrackIneff = false)
 {
   ///////////////////////////////////////////////////////////////////
   /////// Define MC root files: one file for all centralities //////
@@ -873,7 +873,7 @@ void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSi
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     tagFile[iCen] = Form("EMCAL_MB_%d_%d", cenBins[iCen], cenBins[iCen + 1]);
-    fileDataShStd = TFile::Open(Form("~/work/histogram/%s/%s.root", sFileDirShSig.Data(), tagFile[iCen].Data()));
+    fileDataShStd = TFile::Open(Form("%s/%s.root", sFileDirShSig.Data(), tagFile[iCen].Data()));
     if (!fileDataShStd)
       cout << "Data File doesn't exist" << endl;
     // fileDataMix = TFile::Open(Form("~/work/histogram/NCentBinMix45PtAssoc500/%s.root", tagFile[iCen].Data()));

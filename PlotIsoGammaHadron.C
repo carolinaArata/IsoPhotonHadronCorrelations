@@ -53,7 +53,7 @@ Int_t kColorShSh[] = {kAzure + 2, kViolet};
 // TLatex *LatexDPhi(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax);
 // TLegend *LegStd(TLegend *leg, double xpos1, double ypos1, double xpos2, double ypos2);
 
-void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "FigcheckCode", TString shshBkg = "0.40-1.00", TString dirFiles = "checkCode")
+void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~/work/histogram/FromScratch/FigcheckCode", TString shshBkg = "0.40-1.00", TString dirFiles = "~/work/histogram/FromScratch/checkCode")
 {
 
   TString shshString[2] = {"0.10-0.30", shshBkg};
@@ -112,7 +112,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "F
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
-    fPlot[iCen] = new TFile("~/work/histogram/FromScratch/" + dirFiles + "/fPlot" + shshBkg + sCent + sPtAll + ".root");
+    fPlot[iCen] = new TFile(dirFiles + "/fPlot" + shshBkg + sCent + sPtAll + ".root");
     // DataPlot
     cout << "Cen: " << cenBins[iCen] << "-" << cenBins[iCen + 1] << ": Get Data plots + Set plots style" << endl;
     for (Int_t iptTr = 0; iptTr < nPtTrig; iptTr++)
