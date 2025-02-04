@@ -103,7 +103,7 @@ void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror 
 
   // Purity
   TFile *fileData[nCen];
-  TFile *fPurity = new TFile("~/work/histogram/FromScratch/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root");
+  TFile *fPurity = new TFile("~/work/histogram/IsoPhotonHadronCorrelations/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root");
   TFile *fOutPut = new TFile(Form("%s/fPlot%s_Cen0_30%s.root", dirFiles.Data(), shshBkg.Data(), sPtAll.Data()), "RECREATE");
   cout << fOutPut->GetName() << endl;
   // Data Results
@@ -122,7 +122,6 @@ void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror 
     TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
 
     fileData[iCen] = new TFile(Form("%s/fPlot%s%s%s.root", dirFiles.Data(), shshBkg.Data(), sCent.Data(), sPtAll.Data()));
-    // fileMix[iCen] = new TFile(Form("~/work/histogram/DataSh100_AssocPt500/EMCAL_MB_%d_%d.root", cenBins[iCen], cenBins[iCen + 1]));
 
     cout << "Getter Pt Trig distrib centrality: " << iCen << endl;
     for (int iSh = 0; iSh < nShSh; iSh++)
