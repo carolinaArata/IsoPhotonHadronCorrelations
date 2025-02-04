@@ -54,7 +54,7 @@ EOF
 #
 #
 #####################################################
-######### Number of centr bin systematics ###########
+######### ZYAM comparison systematics ###############
 #####################################################
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/systematics_sw/SystematicsZYAM.c
