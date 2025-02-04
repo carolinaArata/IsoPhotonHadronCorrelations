@@ -103,7 +103,7 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
   TH1F *hZtPi0[nIso];                  // Zt distribution iso/not iso Pi0 full range (only purity correction)
 
   // Purity root file definition
-  TFile *fPurity = new TFile("~/work/histogram/FromScratch/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root");
+  TFile *fPurity = new TFile("~/work/histogram/IsoPhotonHadronCorrelations/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root");
   histPur[iCen] = (TH1F *)fPurity->Get(Form("Purity_Cen%d_R0.2_Sys", iCen));
   histPurStat[iCen] = (TH1F *)fPurity->Get(Form("Purity_Cen%d_R0.2", iCen));
   funcPur[iCen] = histPur[iCen]->GetFunction("purityFitCombinedSigmoid");
@@ -921,7 +921,7 @@ void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSi
 
     if (systNMix)
     {
-      //fileDataMix = TFile::Open(Form("~/work/histogram/NCentBinMix45PtAssoc500/%s.root", tagFile[iCen].Data()));
+      // fileDataMix = TFile::Open(Form("~/work/histogram/NCentBinMix45PtAssoc500/%s.root", tagFile[iCen].Data()));
       fileDataMix = TFile::Open(Form("~/work/histogram/SystematicsNCentrBin/%s.root", tagFile[iCen].Data()));
     }
 
