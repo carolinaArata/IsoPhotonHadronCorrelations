@@ -84,11 +84,11 @@ EOF
 ############################## Run the analysis for ZYAM #######################################
 ################################################################################################
 #----------------------------------------------------------------------------------------------
-#root -b -l <<EOF
-#.L ~/work/histogram/FromScratch/IsoGammaHadron.C
-#IsoGammaHadron(18, 40, "DataSh100_AssocPt500", true, "0.40-1.00", "../FromScratch/checkCodeZYAM", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, false)
-#.q
-#EOF
+root -b -l <<EOF
+.L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
+Combine0_30(18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeZYAM", 1, true, true, "~/work/histogram/FromScratch/FigcheckCodeZYAM")
+.q
+EOF
 
 ##-------------------------------
 #
