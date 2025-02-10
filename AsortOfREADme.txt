@@ -15,13 +15,27 @@ General macro: IsoGammaHadron.C; PlotIsoGammaHadron.C
 
    This script contains the analysis and it also produces all the root files for the systematic studies 
     * Purity systematic is obtained from data, setting systPur = 0.9 or 1.1
+
     * ShSh Background systematic is obtained using different files for the ShSh background: 
       ShShSystMultBkg contains only Iso1 with multi Background: 0.40-2.00, 0.50-2.00, 0.60-2.00, 0.40-1.50 
       ShShSyst03510 contains Iso 1 and background 0.35-1.00
       REMEMBER TO SET nIso = 1, these trains were runned for Isolated ONLY.
       Change the shshBkg to the corresponding range and set systShSh = true
+
     * Tracking Efficiency, set systTrackIneff = true and this change the MC file to MC_GJShSh150/MC_GJTrackInEff.root;
+
     * number of centrality bins used, set systNMix = true
+      NOTE: define two different bool for selecting number of centrality bins used
+      Analysis run with old files NCentrBinMix18 and NCentrBinMix45: sigle root file containing all centralities: EMCAL_MB0_90.root; ShShBkg = 0.40-2.00; pThadr > 200 GeV;
+      Update the code in the way that when it is reading fileMix the ShShBkg is 0.40-2.00; this can be set where the root files are declared before calling the Exec(...) : sShShNCentMix = "_ShSh0.40-2.00" for old files, sShShNCentMix = "_ShSh0.40-1.00" for new file.
+      The shshbkg need to be defined by hand in the code
+
+      The last train with N Cent Mix generate strange value in the systematics, not expected 
+
+      The pT trig distribution for the old files were saved with ShShBkg: "_ShSh0.40-2.00" for mixed only, the name is updated in line 173-174 with 
+      if (systNMix)
+        hTriggerMix[iso][iSh]->SetName(sHistName + sIso + sShSh + sCent + "_hPtTriggerMixed");
+
     * ZYAM, set bZYAM = true
 
 2) Combine 0-10% and 10-30% centrality bins
@@ -45,8 +59,6 @@ General macro: IsoGammaHadron.C; PlotIsoGammaHadron.C
 
      - N Cent Mix: SystematicsNCentrBin (with NCent45)
        The systematic is calculated with a macro in systematic_sw. The files are defined before the macro in TString CentMixUsed[] = {"~/work/histogram/FromScratch/checkCode" /*Reference*/, "~/work/histogram/FromScratch/checkCodeSystNCentrMix" /*DiffNCentrMix*/};
-
-       N Cent Mix to be checked: new file extreme systematics
   
 
      - Tracking Efficiency: 
