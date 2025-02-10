@@ -34,7 +34,12 @@ EOF
 #----------------------------------------------------------------------------------------------
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
-Combine0_30( 18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystNCentrMix", 1, false, true, "~/work/histogram/FromScratch/FigcheckCodeSystNCentrMix")
+Combine0_30( 18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystNMix18", 1, false, true, "~/work/histogram/FromScratch/FigcheckCodeSystNCentrMix18")
+.q
+EOF
+root -b -l <<EOF
+.L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
+Combine0_30( 18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystNMix45", 1, false, true, "~/work/histogram/FromScratch/FigcheckCodeSystNCentrMix45")
 .q
 EOF
 #-----------------------------------------------------------------------------------------------

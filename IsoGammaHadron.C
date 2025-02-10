@@ -170,6 +170,9 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
       }
       fOutPut->cd();
       hTriggerSam[iso][iSh]->Write();
+      if (systNMix)
+        hTriggerMix[iso][iSh]->SetName(sHistName + sIso + sShSh + sCent + "_hPtTriggerMixed");
+      
       hTriggerMix[iso][iSh]->Write();
 
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -267,12 +270,12 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
           TString sPtTrig = Form("PtTr%2.0f_%2.0f", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]);
           h3Sam->SetAxisRange(ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1] - 0.0001, "X");
           h3Mix->SetAxisRange(ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1] - 0.0001, "X");
-cout<<"pippo"<<endl;
+
           h2DdPhidEtaSam[iso][iSh][izt][iptTr] = (TH2F *)h3Sam->Project3D("zy"); // 2D correlation distributions deltaPhi and deltaEta same
           h2DdPhidEtaSam[iso][iSh][izt][iptTr]->SetName("h2DdPhidEtaSam" + sIso + sShSh + sZtBin + sPtTrig);
           h2DdPhidEtaMix[iso][iSh][izt][iptTr] = (TH2F *)h3Mix->Project3D("zy"); // 2D correlation distributions deltaPhi and deltaEta mix
           h2DdPhidEtaMix[iso][iSh][izt][iptTr]->SetName("h2DdPhidEtaMix" + sIso + sShSh + sZtBin + sPtTrig);
-cout<<"pippo"<<endl;
+
           hdPhiSam[iso][iSh][izt][iptTr] = (TH1F *)h2DdPhidEtaSam[iso][iSh][izt][iptTr]->ProjectionX("hdPhiSame" + sIso + sShSh + sZtBin + sPtTrig); // 1D correlation distributions deltaPhi and deltaEta same
           hdPhiMix[iso][iSh][izt][iptTr] = (TH1F *)h2DdPhidEtaMix[iso][iSh][izt][iptTr]->ProjectionX("hdPhiMix" + sIso + sShSh + sZtBin + sPtTrig);  // 1D correlation distributions deltaPhi and deltaEta mix
 
