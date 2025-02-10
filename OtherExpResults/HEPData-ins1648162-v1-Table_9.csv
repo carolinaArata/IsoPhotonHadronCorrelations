@@ -1,0 +1,47 @@
+#: table_doi: 10.17182/hepdata.80817.v1/t9
+#: name: Table 9
+#: description: $\xi^\gamma_{\mathrm{T}}$ distributions for jets associated with an isolated photon in pp and 50-100% centrality PbPb collisions. The resolutions of the measured jet energy and azimuthal angle in pp are smeared to match those in the PbPb sample.
+#: data_file: data9.yaml
+#: data_license:   
+#: keyword reactions: P P --> GAMMA JET | PB PB --> GAMMA JET
+#: keyword observables: 1/N(JET) * DN(TRK))/DXI_T_(GAMMA)
+#: keyword cmenergies: 5020.0
+#: keyword phrases: 
+#: RE,,,P P --> GAMMA JET PB PB --> GAMMA JET
+#: CENTRALITY,,,50 - 100%
+#: PT(GAMMA) [GEV/C],,,> 60
+#: |ETA(GAMMA)|,,,< 1.44
+#: DELTA(PHI_JGAMMA),,,> 7 * PI / 8
+#: JET ALGO,,,ANTI-K_T JET R = 0.3
+#: PT(JET) [GEV/C],,,> 30
+#: |ETA(JET)|,,,< 1.6
+#: PT(TRK) [GEV/C],,,> 1
+XI_T_(GAMMA),XI_T_(GAMMA) LOW,XI_T_(GAMMA) HIGH,1/N(JET) * DN(TRK))/XI_T_(GAMMA) PP smeared,stat +,stat -,sys +,sys -
+0.75,0.5,1.0,0.217,0.008,-0.008,0.009,-0.009
+1.25,1.0,1.5,0.603,0.013,-0.013,0.026,-0.026
+1.75,1.5,2.0,1.14,0.017,-0.017,0.048,-0.048
+2.25,2.0,2.5,1.67,0.02,-0.02,0.069,-0.069
+2.75,2.5,3.0,2.09,0.023,-0.023,0.089,-0.089
+3.25,3.0,3.5,2.18,0.023,-0.023,0.103,-0.103
+3.75,3.5,4.0,1.87,0.022,-0.022,0.099,-0.099
+4.25,4.0,4.5,1.11,0.017,-0.017,0.067,-0.067
+
+#: RE,,,P P --> GAMMA JET PB PB --> GAMMA JET
+#: CENTRALITY,,,50 - 100%
+#: PT(GAMMA) [GEV/C],,,> 60
+#: |ETA(GAMMA)|,,,< 1.44
+#: DELTA(PHI_JGAMMA),,,> 7 * PI / 8
+#: JET ALGO,,,ANTI-K_T JET R = 0.3
+#: PT(JET) [GEV/C],,,> 30
+#: |ETA(JET)|,,,< 1.6
+#: PT(TRK) [GEV/C],,,> 1
+XI_T_(GAMMA),XI_T_(GAMMA) LOW,XI_T_(GAMMA) HIGH,1/N(JET) * DN(TRK))/XI_T_(GAMMA) PBPB,stat +,stat -,sys +,sys -
+0.75,0.5,1.0,0.203,0.052,-0.052,0.014,-0.014
+1.25,1.0,1.5,0.672,0.09,-0.09,0.042,-0.042
+1.75,1.5,2.0,1.2,0.126,-0.126,0.072,-0.072
+2.25,2.0,2.5,1.82,0.157,-0.157,0.116,-0.116
+2.75,2.5,3.0,1.76,0.172,-0.172,0.13,-0.13
+3.25,3.0,3.5,2.05,0.187,-0.187,0.182,-0.182
+3.75,3.5,4.0,2.04,0.201,-0.201,0.243,-0.243
+4.25,4.0,4.5,1.02,0.17,-0.17,0.189,-0.189
+

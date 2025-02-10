@@ -1,0 +1,25 @@
+#: table_doi: 10.17182/hepdata.95230.v1/t18
+#: name: Table 18
+#: description: PbPb / pp ratio of $\xi^{\mathrm{trk,Z}}_{\mathrm{T}}$ distributions for 0-30% centrality PbPb collisions at 5.02 TeV.
+#: data_file: data18.yaml
+#: keyword reactions: P P --> Z JET | PB PB --> Z JET
+#: keyword observables: PBPB / PP
+#: keyword cmenergies: 5020.0
+#: keyword phrases: 
+#: RE,,,P P --> Z JET PB PB --> Z JET
+#: SQRT(s)/NUCLEON [GEV],,,5020
+#: CENTRALITY,,,0 - 30%
+#: PT(Z) [GEV/C],,,> 30
+#: PT(TRK) [GEV/C],,,> 1
+XI_T_(TRKZ),XI_T_(TRKZ) LOW,XI_T_(TRKZ) HIGH,PBPB / PP,stat +,stat -,sys +,sys -
+0.25,0.0,0.5,0.612,0.139,-0.139,0.054,-0.054
+0.75,0.5,1.0,0.397,0.056,-0.056,0.026,-0.026
+1.25,1.0,1.5,0.399,0.04,-0.04,0.024,-0.024
+1.75,1.5,2.0,0.507,0.037,-0.037,0.029,-0.029
+2.25,2.0,2.5,0.682,0.063,-0.063,0.04,-0.04
+2.75,2.5,3.0,0.864,0.125,-0.125,0.05,-0.05
+3.25,3.0,3.5,1.441,0.179,-0.179,0.082,-0.082
+3.75,3.5,4.0,1.419,0.214,-0.214,0.088,-0.088
+4.25,4.0,4.5,1.519,0.347,-0.347,0.099,-0.099
+4.75,4.5,5.0,2.32,0.66,-0.66,0.2,-0.2
+

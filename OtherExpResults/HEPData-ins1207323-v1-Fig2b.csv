@@ -1,0 +1,15 @@
+#: table_doi: 10.17182/hepdata.95877.v1/t3
+#: name: Fig2b
+#: description: Integrated per-trigger yields and I_AA vs xi
+#: data_file: Fig2b_binned.yaml
+#: keyword reactions: AU AU --> CHARGED X | DEUT AU --> CHARGED X | CU CU --> CHARGED X
+#: keyword cmenergies: 62.4-200.0
+#: $\xi$,,,0-40% $\frac{Au+Au}{p+p}$
+$\xi$,$\xi$ LOW,$\xi$ HIGH,$I_{AA}$,stat +,stat -,sys +,sys -
+0.2,0.0,0.4,0.173,0.253,-0.253,0.267,-0.267
+0.6000000000000001,0.4,0.8,0.336,0.135,-0.135,0.141,-0.141
+1.0,0.8,1.2,1.04,0.185,-0.185,0.215,-0.215
+1.4,1.2,1.6,1.61,0.236,-0.236,0.381,-0.381
+1.8,1.6,2.0,1.79,0.209,-0.209,0.167,-0.167
+2.2,2.0,2.4,1.17,0.288,-0.288,0.275,-0.275
+
