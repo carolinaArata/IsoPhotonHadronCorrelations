@@ -28,6 +28,9 @@ double assocZt[] = {0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 1.00};
 int npt = 12; // pT trigger intervals
 float ptTrig[] = {10, 12, 14, 16, 18, 20, 25, 30, 35, 40, 50, 60, 80};
 
+TString sShShNCentMix;
+bool systNMix = false;
+
 TFile *fileData = 0;
 TFile *fileDataShStd = 0;
 TFile *fileDataShBkg = 0;
@@ -148,8 +151,13 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
       cout << hTriggerSam[iso][iSh] << endl;
       if (!systNMix)
         hTriggerMix[iso][iSh] = (TH1F *)fileData->Get(sHistName + sIso + sShSh + sCent + "_hPtTriggerMixed"); // pT trig distribution X mixed
-      else if (systNMix)
+      else if (iSh==0 && systNMix)
         hTriggerMix[iso][iSh] = (TH1F *)fileDataMix->Get(sHistName + sIso + sShSh + sCent + "_hPtTriggerMixed"); // pT trig distribution X mixed
+      else if (iSh==1 && systNMix)
+      {
+        hTriggerMix[iso][iSh] = (TH1F *)fileDataMix->Get(sHistName + sIso + sShShNCentMix + sCent + "_hPtTriggerMixed"); // pT trig distribution X mixed
+        cout<<"hellooooo"<<sShShNCentMix<<endl;
+      }
       if (bPlot)
       {
         cout << "Plot pT trig distributions" << endl;
@@ -184,8 +192,10 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
           h3Sam = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
           if (!systNMix)
             h3Mix = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
-          else if (systNMix)
+          else if (iSh==0 && systNMix)
             h3Mix = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
+          else if (iSh==1 && systNMix)
+            h3Mix = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShShNCentMix + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
         }
         else if (izt == 4)
         {
@@ -197,10 +207,15 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
             h3Mix = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
             h3MixNext = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 1], assocZtThinner[izt + 2]));
           }
-          else if (systNMix)
+          else if (iSh==0 && systNMix)
           {
             h3Mix = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
             h3MixNext = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 1], assocZtThinner[izt + 2]));
+          }
+          else if (iSh==1 && systNMix)
+          {
+            h3Mix = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShShNCentMix + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
+            h3MixNext = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShShNCentMix + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 1], assocZtThinner[izt + 2]));
           }
           h3Mix->Add(h3MixNext);
         }
@@ -223,7 +238,7 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
             h3MixNext2 = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 4], assocZtThinner[izt + 5]));
             h3Mix->Add(h3MixNext2);
           }
-          else if (systNMix)
+          else if (iSh==0 && systNMix)
           {
             h3Mix = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 1], assocZtThinner[izt + 2]));
             h3MixNext = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 2], assocZtThinner[izt + 3]));
@@ -233,17 +248,18 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
             h3MixNext2 = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 4], assocZtThinner[izt + 5]));
             h3Mix->Add(h3MixNext2);
           }
+          else if (iSh==1 && systNMix)
+          {
+            h3Mix = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShShNCentMix + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 1], assocZtThinner[izt + 2]));
+            h3MixNext = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShShNCentMix + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 2], assocZtThinner[izt + 3]));
+            h3Mix->Add(h3MixNext);
+            h3MixNext1 = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShShNCentMix + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 3], assocZtThinner[izt + 4]));
+            h3Mix->Add(h3MixNext1);
+            h3MixNext2 = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShShNCentMix + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 4], assocZtThinner[izt + 5]));
+            h3Mix->Add(h3MixNext2);
+          }
         }
-        /*else if (izt == 6)
-        {
-          h3Sam = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 2], assocZtThinner[izt + 3]));
-          h3SamNext = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 3], assocZtThinner[izt + 4]));
-          h3Sam->Add(h3SamNext);
 
-          h3Mix = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 2], assocZtThinner[izt + 3]));
-          h3MixNext = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 3], assocZtThinner[izt + 4]));
-          h3Mix->Add(h3MixNext);
-        }*/
         cout << "Define the pT trig range on the 3D distributions, projecting and getting 2D and 1D distributions" << endl;
         TString sZtBin = Form("ZTBin%1.2f_%1.2f", assocZt[izt], assocZt[izt + 1]);
         for (Int_t iptTr = 0; iptTr < nPtTrig; iptTr++)
@@ -251,12 +267,12 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
           TString sPtTrig = Form("PtTr%2.0f_%2.0f", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]);
           h3Sam->SetAxisRange(ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1] - 0.0001, "X");
           h3Mix->SetAxisRange(ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1] - 0.0001, "X");
-
+cout<<"pippo"<<endl;
           h2DdPhidEtaSam[iso][iSh][izt][iptTr] = (TH2F *)h3Sam->Project3D("zy"); // 2D correlation distributions deltaPhi and deltaEta same
           h2DdPhidEtaSam[iso][iSh][izt][iptTr]->SetName("h2DdPhidEtaSam" + sIso + sShSh + sZtBin + sPtTrig);
           h2DdPhidEtaMix[iso][iSh][izt][iptTr] = (TH2F *)h3Mix->Project3D("zy"); // 2D correlation distributions deltaPhi and deltaEta mix
           h2DdPhidEtaMix[iso][iSh][izt][iptTr]->SetName("h2DdPhidEtaMix" + sIso + sShSh + sZtBin + sPtTrig);
-
+cout<<"pippo"<<endl;
           hdPhiSam[iso][iSh][izt][iptTr] = (TH1F *)h2DdPhidEtaSam[iso][iSh][izt][iptTr]->ProjectionX("hdPhiSame" + sIso + sShSh + sZtBin + sPtTrig); // 1D correlation distributions deltaPhi and deltaEta same
           hdPhiMix[iso][iSh][izt][iptTr] = (TH1F *)h2DdPhidEtaMix[iso][iSh][izt][iptTr]->ProjectionX("hdPhiMix" + sIso + sShSh + sZtBin + sPtTrig);  // 1D correlation distributions deltaPhi and deltaEta mix
 
@@ -869,7 +885,7 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
   }
 }
 
-void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSig = "~/work/histogram/DataSh100_AssocPt500", Bool_t bMirror = true, TString shshBkg = "0.40-1.00", TString dirFiles = "~/work/histogram/FromScratch/checkCode", double systPur = 1, bool bZYAM = false, bool bPlot = true, double phiMin = TMath::Pi() * 3 / 5, double phiMax = TMath::Pi(), bool systShSh = false, bool systTrackIneff = false, bool systNMix = false)
+void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSig = "~/work/histogram/DataSh100_AssocPt500", Bool_t bMirror = true, TString shshBkg = "0.40-1.00", TString dirFiles = "~/work/histogram/FromScratch/checkCode", double systPur = 1, bool bZYAM = false, bool bPlot = true, double phiMin = TMath::Pi() * 3 / 5, double phiMax = TMath::Pi(), bool systShSh = false, bool systTrackIneff = false, bool systNMix18 = false, bool systNMix45 = false)
 {
   ///////////////////////////////////////////////////////////////////
   /////// Define MC root files: one file for all centralities //////
@@ -919,10 +935,20 @@ void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSi
     if (systPur != 1)
       cout << "Purity Systematics: ON, purity value" << systPur << endl;
 
-    if (systNMix)
+    if (systNMix18)
     {
-      // fileDataMix = TFile::Open(Form("~/work/histogram/NCentBinMix45PtAssoc500/%s.root", tagFile[iCen].Data()));
-      fileDataMix = TFile::Open(Form("~/work/histogram/SystematicsNCentrBin/%s.root", tagFile[iCen].Data()));
+      //fileDataMix = TFile::Open(Form("~/work/histogram/RootFiles/SystematicsNCentrBin/%s.root", tagFile[iCen].Data())); // estimated with shsh = 0.40-1.00
+      // sShShNCentMix = "_ShSh0.40-1.00"
+      fileDataMix = TFile::Open(Form("~/work/histogram/IsoPhotonHadronCorrelations/RootFiles/NCentBinMix18/EMCAL_MB_0_90.root")); // Old Files with shsh = 0.40-2.00
+      sShShNCentMix = "_ShSh0.40-2.00";
+      systNMix = true;
+    }
+    else if(systNMix45)
+    {
+      //fileDataMix = TFile::Open(Form("~/work/histogram/RootFiles/SystematicsNCentrBin/%s.root", tagFile[iCen].Data())); // estimated with shsh = 0.40-1.00
+      fileDataMix = TFile::Open(Form("~/work/histogram/IsoPhotonHadronCorrelations/RootFiles/NCentBinMix45/EMCAL_MB_0_90.root")); // Old Files with shsh = 0.40-2.00
+      sShShNCentMix = "_ShSh0.40-2.00";
+      systNMix = true;
     }
 
     cout << iCen << endl;
