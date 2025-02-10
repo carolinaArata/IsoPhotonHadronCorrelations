@@ -45,6 +45,8 @@ General macro: IsoGammaHadron.C; PlotIsoGammaHadron.C
 
      - N Cent Mix: SystematicsNCentrBin (with NCent45)
        The systematic is calculated with a macro in systematic_sw. The files are defined before the macro in TString CentMixUsed[] = {"~/work/histogram/FromScratch/checkCode" /*Reference*/, "~/work/histogram/FromScratch/checkCodeSystNCentrMix" /*DiffNCentrMix*/};
+
+       N Cent Mix to be checked: new file extreme systematics
   
 
      - Tracking Efficiency: 
@@ -57,4 +59,10 @@ General macro: IsoGammaHadron.C; PlotIsoGammaHadron.C
 
      - UE Residual: 
        It has to be run always after ZYAM.
+       It saves all the results in Systematic_checkCode. It does not distinguish between 0-30 and 0-10, 10-30.
+       Already set the good directory in the macro use to combine all together all the systematics.
 
+      
+
+  PlotAllSystem.C
+  It takes all the results from all the systFiles.root and combine all systematics together
