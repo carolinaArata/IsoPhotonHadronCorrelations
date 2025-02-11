@@ -151,12 +151,12 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
       cout << hTriggerSam[iso][iSh] << endl;
       if (!systNMix)
         hTriggerMix[iso][iSh] = (TH1F *)fileData->Get(sHistName + sIso + sShSh + sCent + "_hPtTriggerMixed"); // pT trig distribution X mixed
-      else if (iSh==0 && systNMix)
+      else if (iSh == 0 && systNMix)
         hTriggerMix[iso][iSh] = (TH1F *)fileDataMix->Get(sHistName + sIso + sShSh + sCent + "_hPtTriggerMixed"); // pT trig distribution X mixed
-      else if (iSh==1 && systNMix)
+      else if (iSh == 1 && systNMix)
       {
         hTriggerMix[iso][iSh] = (TH1F *)fileDataMix->Get(sHistName + sIso + sShShNCentMix + sCent + "_hPtTriggerMixed"); // pT trig distribution X mixed
-        cout<<"hellooooo"<<sShShNCentMix<<endl;
+        cout << "hellooooo" << sShShNCentMix << endl;
       }
       if (bPlot)
       {
@@ -172,7 +172,7 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
       hTriggerSam[iso][iSh]->Write();
       if (systNMix)
         hTriggerMix[iso][iSh]->SetName(sHistName + sIso + sShSh + sCent + "_hPtTriggerMixed");
-      
+
       hTriggerMix[iso][iSh]->Write();
 
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,9 +195,9 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
           h3Sam = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
           if (!systNMix)
             h3Mix = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
-          else if (iSh==0 && systNMix)
+          else if (iSh == 0 && systNMix)
             h3Mix = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
-          else if (iSh==1 && systNMix)
+          else if (iSh == 1 && systNMix)
             h3Mix = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShShNCentMix + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
         }
         else if (izt == 4)
@@ -210,12 +210,12 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
             h3Mix = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
             h3MixNext = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 1], assocZtThinner[izt + 2]));
           }
-          else if (iSh==0 && systNMix)
+          else if (iSh == 0 && systNMix)
           {
             h3Mix = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
             h3MixNext = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 1], assocZtThinner[izt + 2]));
           }
-          else if (iSh==1 && systNMix)
+          else if (iSh == 1 && systNMix)
           {
             h3Mix = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShShNCentMix + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt], assocZtThinner[izt + 1]));
             h3MixNext = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShShNCentMix + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 1], assocZtThinner[izt + 2]));
@@ -241,7 +241,7 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
             h3MixNext2 = (TH3F *)fileData->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 4], assocZtThinner[izt + 5]));
             h3Mix->Add(h3MixNext2);
           }
-          else if (iSh==0 && systNMix)
+          else if (iSh == 0 && systNMix)
           {
             h3Mix = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 1], assocZtThinner[izt + 2]));
             h3MixNext = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 2], assocZtThinner[izt + 3]));
@@ -251,7 +251,7 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
             h3MixNext2 = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShSh + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 4], assocZtThinner[izt + 5]));
             h3Mix->Add(h3MixNext2);
           }
-          else if (iSh==1 && systNMix)
+          else if (iSh == 1 && systNMix)
           {
             h3Mix = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShShNCentMix + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 1], assocZtThinner[izt + 2]));
             h3MixNext = (TH3F *)fileDataMix->Get(Form(sHistName + sIso + sShShNCentMix + sCent + "_hMixDeltaPhiDeltaEtaChargedZTBin%1.2f_%1.2f", assocZtThinner[izt + 2], assocZtThinner[izt + 3]));
@@ -353,7 +353,7 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
     }
   }
   ////////////////////////////////////////////////////////////////
-  /////////////////// Purity correction///////////////////////////
+  /////////////////// Purity correction //////////////////////////
   ////////////////////////////////////////////////////////////////
   cout << "Purity correction for photons" << endl;
   for (int iso = 0; iso < nIso; iso++)
@@ -368,6 +368,7 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
       for (Int_t izt = 0; izt < nZtBin; izt++)
       {
         double systValPur = histPur[iCen]->GetBinError(histPur[iCen]->FindBin(ptTrig[index1 + iptTr + 1] - 0.0001)) / (histPur[iCen]->GetBinContent(histPur[iCen]->FindBin(ptTrig[index1 + iptTr + 1] - 0.0001)));
+        //double systValPur = histPur[iCen]->GetBinError(histPur[iCen]->FindBin(ptTrig[index1 + iptTr + 1] - 0.0001));
         cout << "Pt: " << histPur[iCen]->GetBinCenter(histPur[iCen]->FindBin(ptTrig[index1 + iptTr + 1] - 0.0001)) << endl;
         double valPur = funcPur[iCen]->Eval(histPur[iCen]->GetBinCenter(histPur[iCen]->FindBin(ptTrig[index1 + iptTr + 1] - 0.0001)));
         double statValPur = histPurStat[iCen]->GetBinError(histPur[iCen]->FindBin(ptTrig[index1 + iptTr + 1] - 0.0001));
@@ -378,11 +379,13 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
         {
           cout << "Upper Limit Systematic Purity " << endl;
           valPur = valPur * (1 + systValPur);
+          //valPur = valPur + systValPur;
         }
         if (systPur == 0.9)
         {
           cout << "Lower Limit Systematic Purity " << endl;
           valPur = valPur * (1 - systValPur);
+          //valPur = valPur - systValPur;
         }
 
         cout << "Purity: " << valPur << endl;
@@ -815,7 +818,14 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
           new TCanvas();
           hZtPtBinMCGen[iso][iSh][iptTr]->Draw("same");
           hZtPtBinMCRec[iso][iSh][iptTr]->Draw("same");
+          
+          //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+          //////////////////////// The MC is used to estimate the efficiency correction factor     ////////////////////////
+          /////////////////////// It is obtained from the ratio GEN divided by REC                 ///////////////////////
+          ////////////////////// This factor will multiply the zT distribution previously obtained //////////////////////
+          //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+          cout << "Estimate Tracking Efficiency correction factor " << endl;
           hRatioEffCorrPtBin[iso][iSh][iptTr] = (TH1F *)hZtPtBinMCGen[iso][iSh][iptTr]->Clone("hRatioEffCorrPtBin" + sIso + sPtTrig + sNamePtTrigGen[iSh]);
           hRatioEffCorrPtBin[iso][iSh][iptTr]->Sumw2();
           hRatioEffCorrPtBin[iso][iSh][iptTr]->Divide(hZtPtBinMCRec[iso][iSh][iptTr]);
@@ -940,16 +950,17 @@ void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSi
 
     if (systNMix18)
     {
-      //fileDataMix = TFile::Open(Form("~/work/histogram/RootFiles/SystematicsNCentrBin/%s.root", tagFile[iCen].Data())); // estimated with shsh = 0.40-1.00
-      // sShShNCentMix = "_ShSh0.40-1.00"
-      fileDataMix = TFile::Open(Form("~/work/histogram/IsoPhotonHadronCorrelations/RootFiles/NCentBinMix18/EMCAL_MB_0_90.root")); // Old Files with shsh = 0.40-2.00
+      // fileDataMix = TFile::Open(Form("~/work/histogram/RootFiles/SystematicsNCentrBin/%s.root", tagFile[iCen].Data())); // estimated with shsh = 0.40-1.00
+      //  sShShNCentMix = "_ShSh0.40-1.00"
+      cout << "N Centrality bin used for Mix Systematics: ON"<< endl;
+      fileDataMix = TFile::Open(Form("~/work/histogram/IsoPhotonHadronCorrelations/RootFiles/NCentBinMix18/EMCAL_MB_0_90.root")); // Old Files with shshBkg = 0.40-2.00
       sShShNCentMix = "_ShSh0.40-2.00";
       systNMix = true;
     }
-    else if(systNMix45)
+    else if (systNMix45)
     {
-      //fileDataMix = TFile::Open(Form("~/work/histogram/RootFiles/SystematicsNCentrBin/%s.root", tagFile[iCen].Data())); // estimated with shsh = 0.40-1.00
-      fileDataMix = TFile::Open(Form("~/work/histogram/IsoPhotonHadronCorrelations/RootFiles/NCentBinMix45/EMCAL_MB_0_90.root")); // Old Files with shsh = 0.40-2.00
+      cout << "N Centrality bin used for Mix Systematics: ON"<< endl;
+      fileDataMix = TFile::Open(Form("~/work/histogram/IsoPhotonHadronCorrelations/RootFiles/NCentBinMix45/EMCAL_MB_0_90.root")); // Old Files with shshBkg = 0.40-2.00
       sShShNCentMix = "_ShSh0.40-2.00";
       systNMix = true;
     }
