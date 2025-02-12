@@ -41,7 +41,7 @@ General macro: IsoGammaHadron.C; PlotIsoGammaHadron.C
       
       The analysis run with old files NCentrBinMix18 and NCentrBinMix45; there is single file.rot containing all centralities: EMCAL_MB0_90.root; the ShShBkg = 0.40-2.00 and the pThadr > 200 GeV;
       The code contains conditions in the way that when it is reading fileMix and the ishsh=1 (iSh == 1 && systNMix), the ShShBkg is 0.40-2.00. (line 156 and following) 
-      
+
       The shshbkg need to be defined by hand in the code this can be set where the root files are declared before calling the Exec(...) : sShShNCentMix = "_ShSh0.40-2.00" for old files, sShShNCentMix = "_ShSh0.40-1.00" for new file.
 
       The last train with N Cent Mix generate strange value in the systematics, not expected 
@@ -56,6 +56,10 @@ General macro: IsoGammaHadron.C; PlotIsoGammaHadron.C
 2) Combine 0-10% and 10-30% centrality bins
    
    Combine0_30.sh, this script combines all the previous root files
+   The Same and Mixed event pT trigger distributions of 0-10% and 10-30% centralities are used to determine the number of triggers in 0-30%
+
+
+   iso = 1, since a few files used for the systematics are only for Isolation, the for(iso=1; iso<nIso; iso++) 
 
 3) Systematics
 
