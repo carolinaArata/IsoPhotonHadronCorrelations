@@ -2,7 +2,7 @@
 ############ Script for combining 0-10% and 10-30% centralities for analysis ##############
 ############ This procedure is repeated for systematics    ################################
 ###########################################################################################
-#void Combine0_30(float ptMin, float ptMax, int iCen = 0, bool bMirror = Mirror ON/OFF, TString shshBkg = "0.40-1.00", TString dirFiles = "Directory/wih/the/files/from aanalysis", double systPur = 1, 0.9, 1.1, bool bZYAM = ZYAM ON/OFF, bool bPlot = true, TString dirPlot = "where/to/save/the/plot")
+#void Combine0_30(float ptMin, float ptMax, int iCen = 0, bool bMirror = Mirror ON/OFF, TString shshBkg = "0.40-1.00", TString dirFiles = "Directory/wih/the/files/from aanalysis", double systPur = 1, bool bZYAM = ZYAM ON/OFF, bool bPlot = true, TString dirPlot = "where/to/save/the/plot")
 
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
@@ -17,13 +17,13 @@ EOF
 #----------------------------------------------------------------------------------------------
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
-Combine0_30(18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystPur09", 0.9, false, true, "~/work/histogram/FromScratch/FigcheckCodeSystPur09")
+Combine0_30(18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystPur09", 1, false, true, "~/work/histogram/FromScratch/FigcheckCodeSystPur09")
 .q
 EOF
 ###
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
-Combine0_30(18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystPur11", 1.1, false, true, "~/work/histogram/FromScratch/FigcheckCodeSystPur11")
+Combine0_30(18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystPur11", 1, false, true, "~/work/histogram/FromScratch/FigcheckCodeSystPur11")
 .q
 EOF
 #
