@@ -44,14 +44,14 @@ TLatex *LatexDPhi(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax)
 TLegend *LegStd(TLegend *leg, double xpos1, double ypos1, double xpos2, double ypos2);
 void ZtFunction(TH1F *hDeltaPhi, TH1F *hZT, int bin);
 static void ScaleBinBySize(TH1F *h);
-TH1F *SumPtBinXzt(Double_t nTrig0_30[npt], Float_t PtTrigger[npt], int index1, int index2, TH1F *hzTbin[npt], TH1F *hzTbinAll, TH1F *hPur010, TF1 *fPur010, TH1F *hPur1030, TF1 *fPur1030, Double_t nTrig0_10[npt], Double_t nTrig10_30[npt], double systPur, Bool_t bData);
+TH1F *SumPtBinXzt(Double_t nTrig0_30[npt], Float_t PtTrigger[npt], int index1, int index2, TH1F *hzTbin[npt], TH1F *hzTbinAll, TH1F *hPur010, TF1 *fPur010, TH1F *hPur1030, TF1 *fPur1030, Double_t nTrig0_10[npt], Double_t nTrig10_30[npt], Bool_t bData);
 void fZYAM(TH1F *hSame, double rangeMin = 3 * (TMath::Pi()) / 10, double rangeMax = TMath::Pi() / 2);
 double fZYAM_Mix(TH1F *hSame, TH1F *hMix);
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /////// This macro compute the combination between 0-10% and 10-30% centrality intervals ///////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror = true, TString shshBkg = "0.40-1.00", TString dirFiles = "~/work/histogram/FromScratch/checkCode", double systPur = 1, bool bZYAM = false, bool bPlot = true, TString dirPlot = "~/work/histogram/FromScratch/FigcheckCode")
+void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror = true, TString shshBkg = "0.40-1.00", TString dirFiles = "~/work/histogram/FromScratch/checkCode", bool bPlot = true, TString dirPlot = "~/work/histogram/FromScratch/FigcheckCode")
 {
   TString sHistName = "AnaPhotonHadronCorr_";
   TString shshString[2] = {"0.10-0.30", shshBkg};
@@ -76,9 +76,9 @@ void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror 
 
   // Defining number of triggers i various centralities for same and mixed
   double numbTrig[nCen][nIso][nShSh][nPtTrig];
-  double numbTrig0_30[nShSh][nIso][nPtTrig];
+  double numbTrig0_30[nIso][nShSh][nPtTrig];
   double numbTrigMix[nCen][nIso][nShSh][nPtTrig];
-  double numbTrigMix0_30[nShSh][nIso][nPtTrig];
+  double numbTrigMix0_30[nIso][nShSh][nPtTrig];
 
   // SameEvent and MixedEvent Mirror for various centralities and 0-30%
   TH1F *hdPhiSamMirror[nCen][nIso][nShSh][nZtBin][nPtTrig];
@@ -153,8 +153,8 @@ void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror 
     {
       for (Int_t iptTr = 0; iptTr < nPtTrig; iptTr++)
       {
-        numbTrig0_30[iSh][iso][iptTr] = numbTrig[0][iso][iSh][iptTr] + numbTrig[1][iso][iSh][iptTr];
-        numbTrigMix0_30[iSh][iso][iptTr] = numbTrigMix[0][iso][iSh][iptTr] + numbTrigMix[1][iso][iSh][iptTr];
+        numbTrig0_30[iso][iSh][iptTr] = numbTrig[0][iso][iSh][iptTr] + numbTrig[1][iso][iSh][iptTr];
+        numbTrigMix0_30[iso][iSh][iptTr] = numbTrigMix[0][iso][iSh][iptTr] + numbTrigMix[1][iso][iSh][iptTr];
 
         cout << "Pt: " << ptTrig[index1 + iptTr] << "Same 0-10\%: " << numbTrig[0][iso][iSh][iptTr] << endl;
         cout << "Pt: " << ptTrig[index1 + iptTr] << "Same 10-30\%: " << numbTrig[1][iso][iSh][iptTr] << endl;
@@ -290,23 +290,23 @@ void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror 
       {
         TString sZtBin = Form("ZTBin%1.2f_%1.2f", assocZt[izt], assocZt[izt + 1]);
         cout << "pippo" << endl;
-        hdPhiSamPi0Pur0_30[iso][izt][iptTr] = (TH1F *)hdPhiSamPi0Pur[0][iso][izt][iptTr]->Clone("hdPhiSamePi0Pur" + sZtBin + sPtTrig);
-        hdPhiSamPi0Pur0_30[iso][izt][iptTr]->Scale(numbTrig[0][iso][1][iptTr]);// multiply by # trig in 0-10%
-        hdPhiSamPi0Pur[1][iso][izt][iptTr]->Scale(numbTrig[1][iso][1][iptTr]); // multiply by # trig in 10-30% 
-        hdPhiSamPi0Pur0_30[iso][izt][iptTr]->Add(hdPhiSamPi0Pur[1][iso][izt][iptTr]); // 0-10% and 10-30%
+        hdPhiSamPi0Pur0_30[iso][izt][iptTr] = (TH1F *)hdPhiSamPi0Pur[0][iso][izt][iptTr]->Clone("hdPhiSamePi0Pur1" + sZtBin + sPtTrig);
+        hdPhiSamPi0Pur0_30[iso][izt][iptTr]->Scale(numbTrig[0][iso][1][iptTr]);// multiply 0-10% by # trig in 0-10%
+        hdPhiSamPi0Pur[1][iso][izt][iptTr]->Scale(numbTrig[1][iso][1][iptTr]); // multiply 10-30% by # trig in 10-30% 
+        hdPhiSamPi0Pur0_30[iso][izt][iptTr]->Add(hdPhiSamPi0Pur[1][iso][izt][iptTr]); // Sum of 0-10% and 10-30%
         hdPhiSamPi0Pur0_30[iso][izt][iptTr]->Scale(1 / numbTrig0_30[iso][1][iptTr]); // scale for the total number of triggers in 0-30%
         cout << "pippo" << endl;
         cout << hdPhiIsoGamma[0][iso][izt][iptTr] << endl;
-        hdPhiIsoGamma0_30[iso][izt][iptTr] = (TH1F *)hdPhiIsoGamma[0][iso][izt][iptTr]->Clone("hdPhi" + sIso + "Photon" + sZtBin + sPtTrig);
+        hdPhiIsoGamma0_30[iso][izt][iptTr] = (TH1F *)hdPhiIsoGamma[0][iso][izt][iptTr]->Clone("hdPhi1" + sIso + "Photon" + sZtBin + sPtTrig);
         cout << "pippo" << endl;
-        hdPhiIsoGamma0_30[iso][izt][iptTr]->Scale(numbTrig[0][iso][0][iptTr]); // multiply by # trig in 0-10%
-        hdPhiIsoGamma[1][iso][izt][iptTr]->Scale(numbTrig[1][iso][0][iptTr]); // multiply by # trig in 10-30%
-        hdPhiIsoGamma0_30[iso][izt][iptTr]->Add(hdPhiIsoGamma[1][iso][izt][iptTr]); // 0-10% and 10-30%
+        hdPhiIsoGamma0_30[iso][izt][iptTr]->Scale(numbTrig[0][iso][0][iptTr]); // multiply 0-10% by # trig in 0-10%
+        hdPhiIsoGamma[1][iso][izt][iptTr]->Scale(numbTrig[1][iso][0][iptTr]); // multiply 10-30% by # trig in 10-30%
+        hdPhiIsoGamma0_30[iso][izt][iptTr]->Add(hdPhiIsoGamma[1][iso][izt][iptTr]); // Sum of 0-10% and 10-30%
         hdPhiIsoGamma0_30[iso][izt][iptTr]->Scale(1 / numbTrig0_30[iso][0][iptTr]); // scale for the total number of triggers in 0-30%
 
         ZtFunction(hdPhiIsoGamma0_30[iso][izt][iptTr], hZtIsoGammaPtBin[iso][iptTr], izt);
         // new TCanvas();
-        // hdPhiIsoGamma0_30[izt][iptTr]->Draw();
+        // hdPhiIsoGamma0_30[iso][izt][iptTr]->Draw();
         fOutPut->cd();
         hdPhiIsoGamma0_30[iso][izt][iptTr]->Write();
         hdPhiSamPi0Pur0_30[iso][izt][iptTr]->Write();
@@ -314,15 +314,17 @@ void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror 
       ScaleBinBySize(hZtIsoGammaPtBin[iso][iptTr]);
       fOutPut->cd();
       hZtIsoGammaPtBin[iso][iptTr]->Write();
+      //new TCanvas();
+      //hZtIsoGammaPtBin[iso][iptTr]->Draw("hist");
     }
-    cout << "pippo" << endl;
+    
     hZtIsoGamma[iso] = new TH1F(Form("hZt%sPhoton_Cen0_30%s", sIso.Data(), sPtAll.Data()), Form("hZt%sPhoton_Cen0_30%s", sIso.Data(), sPtAll.Data()), nZtBin, assocZt);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////// The IsoGamma zT distirbution for pT bin are combined using SumPtBinXzt ///////////////////////////////////////////////////////
     /////////// The purity used in this function is obtained combined the purity of 0-10% and 10-30%, weighted for the # of trig  ////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    
-    hZtIsoGamma[iso] = SumPtBinXzt(numbTrig0_30[0][iso], ptTrig, index1, index2, hZtIsoGammaPtBin[iso], hZtIsoGamma[iso], histPur[0], funcPur[0], histPur[1], funcPur[1], numbTrig[0][iso][0], numbTrig[1][iso][0], systPur, true);
+    hZtIsoGamma[iso] = SumPtBinXzt(numbTrig0_30[iso][0], ptTrig, index1, index2, hZtIsoGammaPtBin[iso], hZtIsoGamma[iso], histPur[0], funcPur[0], histPur[1], funcPur[1], numbTrig[0][iso][0], numbTrig[1][iso][0], true);
     new TCanvas();
     gPad->SetLogy();
     hZtIsoGamma[iso]->Draw();
@@ -425,17 +427,17 @@ void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror 
 
       cout << hdPhiSamMCRec0_30[izt][iptTr] << endl;
       hdPhiSamMCRec0_30[izt][iptTr] = (TH1F *)hdPhiSamMCRec[0][izt][iptTr]->Clone("hdPhiSameMCRecMirrorIso1_ShSh0.10-0.30" + sZtBin + sPtTrig + "Photon");
-      hdPhiSamMCRec0_30[izt][iptTr]->Scale(numbTrigMCRec[0][iptTr]);
-      hdPhiSamMCRec[1][izt][iptTr]->Scale(numbTrigMCRec[1][iptTr]);
-      hdPhiSamMCRec0_30[izt][iptTr]->Add(hdPhiSamMCRec[1][izt][iptTr]);
-      hdPhiSamMCRec0_30[izt][iptTr]->Scale(1 / numbTrigMCRec0_30[iptTr]);
+      hdPhiSamMCRec0_30[izt][iptTr]->Scale(numbTrigMCRec[0][iptTr]); // multiply 0-10% by # trig in 0-10%
+      hdPhiSamMCRec[1][izt][iptTr]->Scale(numbTrigMCRec[1][iptTr]);  // multiply 10-30% by # trig in 10-30%
+      hdPhiSamMCRec0_30[izt][iptTr]->Add(hdPhiSamMCRec[1][izt][iptTr]); // Sum of 0-10% and 10-30%
+      hdPhiSamMCRec0_30[izt][iptTr]->Scale(1 / numbTrigMCRec0_30[iptTr]); // scale for the total number of triggers in 0-30%
 
       cout << hdPhiMixMCRec0_30[izt][iptTr] << endl;
       hdPhiMixMCRec0_30[izt][iptTr] = (TH1F *)hdPhiMixMCRec[0][izt][iptTr]->Clone("hdPhiMixMCRecMirrorIso1_ShSh0.10-0.30" + sZtBin + sPtTrig + "Photon");
-      hdPhiMixMCRec0_30[izt][iptTr]->Scale(numbTrigMixMCRec[0][iptTr]);
-      hdPhiMixMCRec[1][izt][iptTr]->Scale(numbTrigMixMCRec[1][iptTr]);
-      hdPhiMixMCRec0_30[izt][iptTr]->Add(hdPhiMixMCRec[1][izt][iptTr]);
-      hdPhiMixMCRec0_30[izt][iptTr]->Scale(1 / numbTrigMixMCRec0_30[iptTr]);
+      hdPhiMixMCRec0_30[izt][iptTr]->Scale(numbTrigMixMCRec[0][iptTr]); // multiply 0-10% by # trig in 0-10%
+      hdPhiMixMCRec[1][izt][iptTr]->Scale(numbTrigMixMCRec[1][iptTr]); // multiply 10-30% by # trig in 10-30%
+      hdPhiMixMCRec0_30[izt][iptTr]->Add(hdPhiMixMCRec[1][izt][iptTr]); // Sum of 0-10% and 10-30%
+      hdPhiMixMCRec0_30[izt][iptTr]->Scale(1 / numbTrigMixMCRec0_30[iptTr]); // scale for the total number of triggers in 0-30%
 
       // new TCanvas();
       // hdPhiIsoGamma0_30[izt][iptTr]->Draw();
@@ -490,13 +492,13 @@ void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror 
   }
 
   hZtIsoGammaMCGen = new TH1F(Form("hZtMCGenIso1Photon_Cen0_30%s", sPtAll.Data()), Form("hZtMCGenIso1Photon_Cen0_30%s", sPtAll.Data()), nZtBin, assocZt);
-  hZtIsoGammaMCGen = SumPtBinXzt(numbTrigMCGen0_30, ptTrig, index1, index2, hZtIsoGammaPtBinMCGen, hZtIsoGammaMCGen, histPur[0], funcPur[0], histPur[1], funcPur[1], numbTrigMCGen[0], numbTrigMCGen[1], systPur, false);
+  hZtIsoGammaMCGen = SumPtBinXzt(numbTrigMCGen0_30, ptTrig, index1, index2, hZtIsoGammaPtBinMCGen, hZtIsoGammaMCGen, histPur[0], funcPur[0], histPur[1], funcPur[1], numbTrigMCGen[0], numbTrigMCGen[1], false);
 
   fOutPut->cd();
   hZtIsoGammaMCGen->Write();
 
   hZtIsoGammaMCRec = new TH1F(Form("hZtMCRecIso1Photon_Cen0_30%s", sPtAll.Data()), Form("hZtMCRecIso1Photon_Cen0_30%s", sPtAll.Data()), nZtBin, assocZt);
-  hZtIsoGammaMCRec = SumPtBinXzt(numbTrigMCRec0_30, ptTrig, index1, index2, hZtIsoGammaPtBinMCRec, hZtIsoGammaMCRec, histPur[0], funcPur[0], histPur[1], funcPur[1], numbTrigMCRec[0], numbTrigMCRec[1], systPur, false);
+  hZtIsoGammaMCRec = SumPtBinXzt(numbTrigMCRec0_30, ptTrig, index1, index2, hZtIsoGammaPtBinMCRec, hZtIsoGammaMCRec, histPur[0], funcPur[0], histPur[1], funcPur[1], numbTrigMCRec[0], numbTrigMCRec[1], false);
   new TCanvas();
   gPad->SetLogy();
   hZtIsoGammaMCGen->Draw("same");
@@ -571,7 +573,7 @@ void ZtFunction(TH1F *hDeltaPhi, TH1F *hZT, int bin)
     cout << "_____Bin: " << assocZt[bin] << "-" << assocZt[bin + 1] << "Integral: " << intPhi << endl;
 }
 
-TH1F *SumPtBinXzt(Double_t nTrig0_30[npt], Float_t PtTrigger[npt], int index1, int index2, TH1F *hzTbin[npt], TH1F *hzTbinAll, TH1F *hPur010, TF1 *fPur010, TH1F *hPur1030, TF1 *fPur1030, Double_t nTrig0_10[npt], Double_t nTrig10_30[npt], double systPur, Bool_t bData)
+TH1F *SumPtBinXzt(Double_t nTrig0_30[npt], Float_t PtTrigger[npt], int index1, int index2, TH1F *hzTbin[npt], TH1F *hzTbinAll, TH1F *hPur010, TF1 *fPur010, TH1F *hPur1030, TF1 *fPur1030, Double_t nTrig0_10[npt], Double_t nTrig10_30[npt], Bool_t bData)
 {
   Float_t intPtAll = 0;
   cout << "(1/NintPur_tot) * Sum(pur * NInt * f(Zt))" << endl;
@@ -583,6 +585,7 @@ TH1F *SumPtBinXzt(Double_t nTrig0_30[npt], Float_t PtTrigger[npt], int index1, i
     Float_t pur = 1;
     Float_t pur010 = 1;
     Float_t pur1030 = 1;
+    // The bool with bData is necessary because if we combine data we use a weighted purity, if we combine MC the purity is 1 and we have trigger weights
     if (bData)
     {
       pur010 = fPur010->Eval(hPur010->GetBinCenter(hPur010->FindBin(PtTrigger[iptTrig + index1 + 1] - 0.0001)));
