@@ -24,10 +24,10 @@ int nZtBins = 6;
 double assocZt[] = {0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 1.00};
 Double_t range_UE[2] = {3 * (TMath::Pi()) / 10, TMath::Pi() / 2};
 
-const int nCentMixUsed = 2;
-// TString CentMixUsed[] = {"", "NMix18", "NMix45"};
+const int nCentMixUsed = 3;
+TString CentMixUsed[] = {"~/work/histogram/FromScratch/checkCode", "~/work/histogram/FromScratch/checkCodeSystNMix18", "~/work/histogram/FromScratch/checkCodeSystNMix45"};
 // TString CentMixUsed[] = {"NMix9_ZtMergedMore", "NMix45_ZtMergedMore"}; files with ShSh Bkg 0.40-2.00
-TString CentMixUsed[] = {"~/work/histogram/FromScratch/checkCode", "~/work/histogram/FromScratch/checkCodeSystNCentrMix"};
+// TString CentMixUsed[] = {"~/work/histogram/FromScratch/checkCode", "~/work/histogram/FromScratch/checkCodeSystNCentrMix"};
 TString shshLeg[] = {"0.10-0.30", "0.40-1.00"};
 TFile *fPlot[nCentMixUsed];
 
@@ -72,11 +72,8 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 	TH1F *hDPhiSameNoUE[nCentMixUsed][nCen][nPtTrig][nZtBins];
 	TH1F *hDPhiSame[nCentMixUsed][nCen][nPtTrig][nZtBins];
 	TH1F *hZt[nCentMixUsed][nCen];
-	TH1F *hDPhiMixedPreZYAMRATIO[nCentMixUsed][nCen][nPtTrig][nZtBins];
-	TH1F *hDPhiMixedRATIO[nCentMixUsed][nCen][nPtTrig][nZtBins];
-	TH1F *hCorrFact_ZT[nCentMixUsed][nCen][nPtTrig];
 	TH1F *hNMixCentUncer[nCen];
-	TH1F *hDiv[nCen];
+	TH1F *hDiv[nCentMixUsed][nCen];
 
 	gSystem->Exec(Form("mkdir %s", dirPlot.Data()));
 	TFile *fNMixCentSyst = new TFile(Form("%s/fNMixCentSyst%s.root", dirPlot.Data(), sPtAll.Data()), "RECREATE");
@@ -90,12 +87,6 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 	TString direct = "Mixed";
 
 	TLegend *legZTData[nCen];
-
-	TCanvas *cDeltaPhiMixPreZYAM[nCen];
-	TCanvas *cDeltaPhiMixPreZYAMRATIO[nCen];
-	TCanvas *cDeltaPhiMix[nCen];
-	TCanvas *cDeltaPhiMixRATIO[nCen];
-	TCanvas *cDeltaPhiSame[nCen];
 
 	TF1 *fa0[nCen];
 	TF1 *fConst;
@@ -126,7 +117,7 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 	TCanvas *cNMixUncert = new TCanvas("cNMixUncert", "cNMixUncert", 3 * 800, 1 * 600);
 	cNMixUncert->Divide(3, 1);
 	TH1F *hFitUncert[nCen];
-	TF1 *hfitRatio[nCen];
+	TF1 *hfitRatio[nCentMixUsed][nCen];
 	for (int iCen = 0; iCen < nCen; iCen++)
 	{
 		TString sCent = Form("Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
@@ -149,36 +140,38 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 		legZTData[iCen]->SetFillColor(kWhite);
 		legZTData[iCen]->SetLineWidth(0);
 		legZTData[iCen]->AddEntry(hZt[0][iCen], "Nominal");
-		// legZTData[iCen]->AddEntry(hZt[1][iCen], "N Mix = 18");
-		legZTData[iCen]->AddEntry(hZt[1][iCen], "N Mix = 45");
+		legZTData[iCen]->AddEntry(hZt[1][iCen], "N Mix = 18");
+		legZTData[iCen]->AddEntry(hZt[2][iCen], "N Mix = 45");
 		legZTData[iCen]->Draw("same");
-		hfitRatio[iCen] = new TF1(Form("hfitRatio%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.15, 1.0);
-		hDiv[iCen] = (TH1F *)hZt[0][iCen]->Clone(Form("Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
-		hDiv[iCen]->SetDirectory(0);
-		for (int ibin = 0; ibin < nZtBins; ibin++)
+		for (int iMix = 1; iMix < nCentMixUsed; iMix++)
 		{
-			hDiv[iCen]->SetBinError(ibin + 1, 0);
+			hfitRatio[iMix][iCen] = new TF1(Form("hfitRatio%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.15, 1.0);
+			hDiv[iMix][iCen] = (TH1F *)hZt[0][iCen]->Clone(Form("Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
+			hDiv[iMix][iCen]->SetDirectory(0);
+			for (int ibin = 0; ibin < nZtBins; ibin++)
+			{
+				hDiv[iMix][iCen]->SetBinError(ibin + 1, 0);
+			}
+			PlotStyle(hDiv[iMix][iCen], 20, 1, kBlack, "#it{z}_{T}", "Nom/NBin18");
+			// gStyle->SetOptFit(1111);
+			hDiv[iMix][iCen]->Divide(hZt[0][iCen]);
+			cZtRatio->cd(iCen + 1);
+			gStyle->SetPadRightMargin(0.02);
+			gStyle->SetPadLeftMargin(0.35);
+			gStyle->SetPadBottomMargin(0.15);
+			hDiv[iMix][iCen]->GetXaxis()->SetTitleSize(0.042);
+			hDiv[iMix][iCen]->GetYaxis()->SetTitleSize(0.042);
+			hDiv[iMix][iCen]->GetXaxis()->SetLabelSize(0.04);
+			hDiv[iMix][iCen]->GetYaxis()->SetLabelSize(0.04);
+			hDiv[iMix][iCen]->Draw("plhist");
+			hDiv[iMix][iCen]->GetYaxis()->SetRangeUser(-0.5, 3);
+			hDiv[iMix][iCen]->Fit(Form("hfitRatio%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R0Q");
+			ALICEtex[iCen] = LatexStd(ALICEtex[iCen], 0.160, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax);
 		}
-		PlotStyle(hDiv[iCen], 20, 1, kBlack, "#it{z}_{T}", "Nom/NBin45");
-		// gStyle->SetOptFit(1111);
-		hDiv[iCen]->Divide(hZt[1][iCen]);
-		cZtRatio->cd(iCen + 1);
-		gStyle->SetPadRightMargin(0.02);
-		gStyle->SetPadLeftMargin(0.35);
-		gStyle->SetPadBottomMargin(0.15);
-		hDiv[iCen]->GetXaxis()->SetTitleSize(0.042);
-		hDiv[iCen]->GetYaxis()->SetTitleSize(0.042);
-		hDiv[iCen]->GetXaxis()->SetLabelSize(0.04);
-		hDiv[iCen]->GetYaxis()->SetLabelSize(0.04);
-		hDiv[iCen]->Draw("plhist");
-		hDiv[iCen]->GetYaxis()->SetRangeUser(-0.5, 3);
-		hDiv[iCen]->Fit(Form("hfitRatio%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R0Q");
-		ALICEtex[iCen] = LatexStd(ALICEtex[iCen], 0.160, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax);
-
 		for (int ibin = 0; ibin < nZtBins; ibin++)
 		{
 			double diff = 0;
-			diff = abs(hZt[0][iCen]->GetBinContent(ibin + 1) - hZt[1][iCen]->GetBinContent(ibin + 1)) / abs(hZt[0][iCen]->GetBinContent(ibin + 1));
+			diff = abs(hZt[2][iCen]->GetBinContent(ibin + 1) - hZt[1][iCen]->GetBinContent(ibin + 1)) / abs(hZt[0][iCen]->GetBinContent(ibin + 1));
 			hNMixCentUncer[iCen]->SetBinContent(ibin + 1, diff);
 			hNMixCentUncer[iCen]->SetBinError(ibin + 1, hZt[0][iCen]->GetBinError(ibin + 1) / abs((hZt[0][iCen]->GetBinContent(ibin + 1))));
 		}
@@ -280,8 +273,8 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 		legZTDataIcp[iCen]->SetFillColor(kWhite);
 		legZTDataIcp[iCen]->SetLineWidth(0);
 		legZTDataIcp[iCen]->AddEntry(hZt[0][iCen], "N Mix = 9");
-		// legZTDataIcp[iCen]->AddEntry(hZt[1][iCen], "N Mix = 18");
-		legZTDataIcp[iCen]->AddEntry(hZt[1][iCen], "N Mix = 45");
+		legZTDataIcp[iCen]->AddEntry(hZt[1][iCen], "N Mix = 18");
+		legZTDataIcp[iCen]->AddEntry(hZt[2][iCen], "N Mix = 45");
 		legZTDataIcp[iCen]->Draw("same");
 	}
 	cIcpSyst->Print(Form("%s/IcpDistrib%s.pdf", dirPlot.Data(), sPtAll.Data()));
