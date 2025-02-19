@@ -1,5 +1,5 @@
 
-Before running analysis and plot, ctrl+f and check the directories of these files in IsoGammaHadron.C:
+Before running analysis and plot, *cmd+f* and check the directories of these files in IsoGammaHadron.C:
   - TFile *fPurity
   - TFile *fileData 
   - TFile *fileDataShStd 
@@ -7,7 +7,7 @@ Before running analysis and plot, ctrl+f and check the directories of these file
   - TFile *fileDataMix 
   - TFile *fileMC[nShSh]
 
-  In the scripts and in the codes CTRL+F for ~/work/histogram/ or ~/wor/histogram/FromScratch/, set yours correct folders.
+  In the scripts and in the codes *cmd+f* for ~/work/histogram/ or ~/wor/histogram/FromScratch/, set yours correct folders.
 
   The analysis is structured in three main blocks:
     - analysis: RunAnalysis.sh
@@ -90,10 +90,11 @@ General macro: IsoGammaHadron.C; PlotIsoGammaHadron.C
 
      - UE Residual: 
        It has to be run always after ZYAM.
-       It saves all the results in Systematic_checkCode. It does not distinguish between 0-30 and 0-10, 10-30.
+       All the results are saved in Systematic_checkCode. It does not distinguish between 0-30 and 0-10, 10-30. The 0-30 centrality bin is estimated in the macro , if the bool is true. 
        Already set the good directory in the macro use to combine all together all the systematics.
 
       
 
   PlotAllSystem.C
   It takes all the results from all the systFiles.root and combine all systematics together
+  The final results are saved in a directory: SystSh0.40-1.00 in Systematic_checkCode or Systematic_checkCode0_30
