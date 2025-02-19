@@ -71,3 +71,12 @@ root -b -l <<EOF
 UEforClusterCheck(18, 40, "0.40-1.00",  "~/work/histogram/FromScratch/checkCode", true)
 .q
 EOF
+
+#############################################
+######### Compute total systematics #########
+#############################################
+root -b -l <<EOF
+.L ~/work/histogram/IsoPhotonHadronCorrelations/systematics_sw/PlotAllSystem.C
+PlotAllSystem(18, 40, true, "Mixed", "0.40-1.00", "~/work/histogram/FromScratch/checkCode", true)
+.q
+EOF
