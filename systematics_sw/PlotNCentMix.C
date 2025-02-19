@@ -239,29 +239,33 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 	cNMixUncert->Print(Form("%s/NmixCentrMatch%s.pdf", dirPlot.Data(), sPtAll.Data()));
 
 	// Systematics Icp
-	TH1F *Icp[nCen];
-	TH1F *IcpNcenMix[nCen];
+	TH1F *Icp[nCentMixUsed][nCen];
 	for (int iCen = 0; iCen < nCen; iCen++)
 	{
-		Icp[iCen] = (TH1F *)hZt[0][iCen]->Clone(Form("IcpIso1Photon_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
-		Icp[iCen]->Divide(hZt[0][nCen - 1]);
-		PlotStyle(Icp[iCen], kStyleSame[0], 2, kColor[0], "#it{z}_{T}", "#it{I}_{CP}");
-
-		IcpNcenMix[iCen] = (TH1F *)hZt[1][iCen]->Clone(Form("IcpIso1PhotonNcenMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
-		IcpNcenMix[iCen]->Divide(hZt[1][nCen - 1]);
-		PlotStyle(IcpNcenMix[iCen], kStyleSame[1], 2, kColor[1], "#font[12]{z}_{T}", "I_{CP}");
+		Icp[0][iCen] = (TH1F *)hZt[0][iCen]->Clone(Form("IcpIso1Photon_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
+		Icp[0][iCen]->Divide(hZt[0][nCen - 1]);
+		PlotStyle(Icp[0][iCen], kStyleSame[0], 2, kColor[0], "#it{z}_{T}", "#it{I}_{CP}");
+		Icp[1][iCen] = (TH1F *)hZt[1][iCen]->Clone(Form("IcpIso1PhotonNcenMix18_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
+		Icp[1][iCen]->Divide(hZt[1][nCen - 1]);
+		PlotStyle(Icp[1][iCen], kStyleSame[1], 2, kColor[1], "#it{z}_{T}", "#it{I}_{CP}");
+		Icp[2][iCen] = (TH1F *)hZt[2][iCen]->Clone(Form("IcpIso1PhotonNcenMix45_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
+		Icp[2][iCen]->Divide(hZt[2][nCen - 1]);
+		PlotStyle(Icp[2][iCen], kStyleSame[2], 2, kColor[2], "#it{z}_{T}", "#it{I}_{CP}");
 	}
 
 	TCanvas *cIcpSyst = new TCanvas("cIcpSyst", "cIcpSyst", (nCen - 1) * 800, 1 * 600);
 	cIcpSyst->Divide((nCen - 1), 1);
 	TLegend *legZTDataIcp[(nCen - 1)];
 	TLatex *lat1[(nCen - 1)];
+
 	for (int iCen = 0; iCen < (nCen - 1); iCen++)
 	{
-		cIcpSyst->cd(iCen + 1);
-		Icp[iCen]->GetYaxis()->SetRangeUser(-0.5, 3);
-		Icp[iCen]->Draw("same");
-		IcpNcenMix[iCen]->Draw("same");
+		for (int iMix = 0; iMix < nCentMixUsed; iMix++)
+		{
+			cIcpSyst->cd(iCen + 1);
+			Icp[iMix][iCen]->GetYaxis()->SetRangeUser(-0.5, 3);
+			Icp[iMix][iCen]->Draw("same");
+		}
 		lat1[iCen] = new TLatex();
 		lat1[iCen]->SetTextFont(42);
 		lat1[iCen]->SetTextSize(0.04);
@@ -286,7 +290,7 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 		hUncertIcpNcentMix[iCen] = new TH1F(Form("hUncertIcpNcentMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hUncertIcpNcentMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBins, assocZt);
 		for (int ibin = 0; ibin < nZtBins; ibin++)
 		{
-			double binCont = 100 * (abs(Icp[iCen]->GetBinContent(ibin + 1) - IcpNcenMix[iCen]->GetBinContent(ibin + 1)) / abs(Icp[iCen]->GetBinContent(ibin + 1)));
+			double binCont = 100 * (abs(Icp[2][iCen]->GetBinContent(ibin + 1) - Icp[1][iCen]->GetBinContent(ibin + 1)) / abs(Icp[0][iCen]->GetBinContent(ibin + 1)));
 			hUncertIcpNcentMix[iCen]->SetBinContent(ibin + 1, binCont);
 		}
 		hfitIcpUncert[iCen] = new TF1(Form("hfitIcpUncert_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.15, 1.0);
