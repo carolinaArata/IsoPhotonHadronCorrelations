@@ -23,18 +23,14 @@
 
 using std::cout;
 using std::endl;
-// Int_t nCen = 4;
-// Int_t cenBins[] = {0, 10, 30, 50, 90};
-//  Int_t cenBins[] = { 50, 90};
+
 Int_t kMarkCen[] = {21, 20, 71, 25};
-// Int_t kColorMark[] = {kCyan + 2, kAzure - 3, kViolet + 6, kCyan - 2};
 Int_t kColorMark[] = {kAzure + 2, kOrange + 8, kViolet + 7, kCyan - 2};
 Int_t kColorMarkFill[] = {kAzure + 5, kOrange + 7, kViolet + 6, kCyan - 2};
 Int_t nAssoc = 7;
 
 int nZtBinThin = 9;
 double assocZtThinner[] = {0, 0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 0.80, 1.00, 1.05};
-
 
 void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, TString sMixed = "Mixed", TString shshBkg = "0.40-1.00", TString dirPlot = "~/work/histogram/zTfunct_PbPb_ppZtCheckCode", bool b0_30 = true)
 {
@@ -48,14 +44,13 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
   {
     sMirror = "NoMirror";
   }
-
+  // Define centrality bins and systematics directory
   Int_t nCen;
   std::vector<Int_t> cenBins;
   TString dirSyst;
   if (b0_30)
   {
     nCen = 3;
-    // Int_t cenBins[] = {0, 10, 30, 50, 90};
     cenBins.push_back(0);
     cenBins.push_back(30);
     cenBins.push_back(50);
@@ -76,37 +71,57 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
   TString shshString[2] = {"0.10-0.30", shshBkg};
   TString sPtAll = Form("_Pt%2.0f_%2.0f", ptMin, ptMax);
 
-  // Getter zt distributions
-  TFile *fPlot[nCen];
-  TH1F *hZtCent[nCen];    // zt data
+  // Define where to save the results
+  gSystem->Exec(Form("mkdir %s", dirPlot.Data()));
+
+  // Getter zT distributions
+  TFile *fPlot[nCen]; // root file with data and MC
+
+  TH1F *hZtCent[nCen];    // zT data
   TH1F *hZt_MC_Gen[nCen]; // MC Gen pp
   TH1F *hZt_MC_Rec[nCen]; // MC Rec pp
   TH1F *h3[nCen];
-  // pQCD NLO
+
+  TFile *fileNLO = new TFile(" ~/work/histogram/IsoPhotonHadronCorrelations/fileNLO.root ");
+  // Getter pQCD NLO calculations
   TGraphAsymmErrors *grIaaNLOmedian[nCen];
   TH1F *grDztNLOmedianpp;
   TGraphAsymmErrors *grDztNLOmedian[nCen];
   TGraphAsymmErrors *grIcpNLOmedian[nCen];
-  // COLBT
+  // Getter COLBT calculations
   TH1F *histIaaCOLBTmedian[nCen];
   TH1F *histDztPbPbCOLBTmedian[nCen];
   TH1F *histIaaCOLBTmedianSyst[2];
   TH1F *histDztPbPbCOLBTmedianSyst[2];
+  // Test PYTHIA COLBT ratio
   TH1F *histRatioPYTHIACoLBt[2];
   TCanvas *cRatioPYTHIACoLBt[2];
   TCanvas *cPYTHIA_CoLBT[2];
 
-  TFile *fileNLO = new TFile(" ~/work/histogram/IsoPhotonHadronCorrelations/fileNLO.root ");
-
+  cout << "Getter zt distributions: data and models" << endl;
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
-    cout << "Getter zt distributions: " << sCent << endl;
+    ///////////////////////////
+    /////////// data /////////
+    /////////////////////////
+    cout << "Get Data and MC and set Plot style" << sCent << endl;
     fPlot[iCen] = new TFile(Form("~/work/histogram/FromScratch/checkCode/fPlot%s%s%s.root", shshString[1].Data(), sCent.Data(), sPtAll.Data()));
-
     hZt_MC_Gen[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtMCGenIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
     hZt_MC_Rec[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtMCRecIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
     hZtCent[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtEffCorrIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
+
+    PlotStyle(hZt_MC_Gen[iCen], 72, 1, kBlack, kBlack, "#it{z}_{T}", "1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
+    PlotStyle(hZt_MC_Rec[iCen], 21, 1, kOrange + 7, kOrange + 7, "#it{z}_{T}", "1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
+    PlotStyle(hZtCent[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
+    h3[iCen] = (TH1F *)hZtCent[iCen]->Clone(Form("h3%d_%d", cenBins[iCen], cenBins[iCen + 1]));
+    h3[iCen]->Divide(hZt_MC_Gen[iCen]);
+
+    /////////////////////////////////////////////////
+    /////////// theory: NLO + qhat (eLoss) /////////
+    ///////////////////////////////////////////////
+
+    cout << "Get NLO calclulations and set Plot style: " << sCent << endl;
     grIaaNLOmedian[iCen] = (TGraphAsymmErrors *)fileNLO->Get(Form("grIaaNLOmedian%s", sCent.Data()));
     grIaaNLOmedian[iCen]->SetLineWidth(8);
     grIaaNLOmedian[iCen]->SetLineColor(kPink + 4);
@@ -122,16 +137,11 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
     grIcpNLOmedian[iCen] = (TGraphAsymmErrors *)fileNLO->Get(Form("grDztNLOmedian%s", sCent.Data()));
     grIcpNLOmedian[iCen]->SetLineWidth(8);
     grIcpNLOmedian[iCen]->SetFillStyle(3008);
-
-    PlotStyle(hZt_MC_Gen[iCen], 72, 1, kBlack, kBlack, "#it{z}_{T}", "1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
-    PlotStyle(hZt_MC_Rec[iCen], 21, 1, kOrange + 7, kOrange + 7, "#it{z}_{T}", "1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
-    PlotStyle(hZtCent[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
-    h3[iCen] = (TH1F *)hZtCent[iCen]->Clone(Form("h3%d_%d", cenBins[iCen], cenBins[iCen + 1]));
-    h3[iCen]->Divide(hZt_MC_Gen[iCen]);
   }
-  gSystem->Exec(Form("mkdir %s", dirPlot.Data()));
-  cout << "Getter zt systematics : " << endl;
 
+  ////////////////////////////////////
+  /////////// theory: COLBt /////////
+  //////////////////////////////////
   for (int iCen = 0; iCen < 2; iCen++)
   {
     histIaaCOLBTmedian[iCen] = (TH1F *)fileNLO->Get(Form("histIaaCOLBTmedian_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
@@ -147,6 +157,9 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
     histDztPbPbCOLBTmedian[iCen]->SetFillColorAlpha(kGreen + 1, 0.40);
 
     histDztPbPbCOLBTmedianSyst[iCen] = (TH1F *)histDztPbPbCOLBTmedian[iCen]->Clone(Form("histDztPbPbCOLBTmedianSyst_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
+    //////////////////////////////////////////
+    //////// Test ratio PYTHIA/COLBT ////////
+    ////////////////////////////////////////
     histRatioPYTHIACoLBt[iCen] = (TH1F *)hZt_MC_Rec[iCen]->Clone(Form("histRatioPYTHIACoLBt_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     histRatioPYTHIACoLBt[iCen]->Divide(histDztPbPbCOLBTmedian[iCen]);
     cRatioPYTHIACoLBt[iCen] = new TCanvas(Form("cRatioPYTHIACoLBtCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("cRatioPYTHIACoLBtCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), 800, 600);
@@ -159,12 +172,27 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
     hZt_MC_Rec[iCen]->Draw("hist same ");
     cPYTHIA_CoLBT[iCen]->Print(dirPlot + Form("/cPYTHIA_CoLBTCen%d_%d.pdf", cenBins[iCen], cenBins[iCen + 1]));
   }
+
+  /////////////////////////////////////
+  /////////// theory: NLO pp /////////
+  ///////////////////////////////////
+
   grDztNLOmedianpp = (TH1F *)fileNLO->Get(Form("grDztNLOmedian_pp"));
   grDztNLOmedianpp->SetLineWidth(8);
   grDztNLOmedianpp->SetLineColor(kRed - 4);
   grDztNLOmedianpp->SetLineStyle(10);
-  // grDztNLOmedianpp->SetFillColorAlpha(kGray + 1, 0.40);
 
+  TCanvas *cPP_NLO = new TCanvas("cPP_NLO", "cPP_NLO", 800, 600);
+  gPad->SetLogy();
+  grDztNLOmedianpp->Draw("hist same c ");
+  hZt_MC_Gen[0]->Draw("hist same c");
+  cPP_NLO->Print(dirPlot + Form("/Checkpp_NLO.pdf"));
+
+  //////////////////////////////////////////
+  //////// Get total systematics //////////
+  ////////////////////////////////////////
+
+  cout << "Getter zt distribution systematics" << endl;
   TFile *fSystFile = new TFile(Form("%s/fAllSystFile%s%s%s%s.root", dirSyst.Data(), sMixed.Data(), shshBkg.Data(), sMirror.Data(), sPtAll.Data()));
   cout << dirSyst << endl;
   TH1F *hSystZt[nCen];
@@ -182,11 +210,11 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
     }
   }
 
-  TCanvas *cPP_NLO = new TCanvas("cPP_NLO", "cPP_NLO", 800, 600);
-  gPad->SetLogy();
-  grDztNLOmedianpp->Draw("hist same c ");
-  hZt_MC_Gen[0]->Draw("hist same c");
-  cPP_NLO->Print(dirPlot + Form("/Checkpp_NLO.pdf"));
+  //////////////////////////////////////////////////////////
+  //////// Compute Iaa with pp from theory ////////////////
+  /////// Different binning between data and theory //////
+  ///////////////////////////////////////////////////////
+
   Int_t nAssocNLO = 5;
   double assocZtNLO[] = {0.15, 0.2, 0.3, 0.4, 0.6, 1.0};
   TH1F *hPbPb_NLO[nCen];
@@ -199,7 +227,7 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
     hPbPb_NLOSyst[iCen] = new TH1F(Form("hPbPb%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), Form("hPbPb%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), nAssocNLO, assocZtNLO);
 
     hPbPbPYTHIA_NLO[iCen] = new TH1F(Form("hPbPbPYTHIA%d_%d_NLO", cenBins[iCen], cenBins[iCen + 1]), Form("hPbPbPYTHIA%d_%d_NLO", cenBins[iCen], cenBins[iCen + 1]), nAssocNLO, assocZtNLO);
-    //hPbPbPYTHIA_NLOSyst[iCen] = new TH1F(Form("hPbPbPYTHIA%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), Form("hPbPb%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), nAssocNLO, assocZtNLO);
+    // hPbPbPYTHIA_NLOSyst[iCen] = new TH1F(Form("hPbPbPYTHIA%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), Form("hPbPb%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), nAssocNLO, assocZtNLO);
     for (int ibin = 0; ibin < nAssocNLO; ibin++)
     {
       cout << hPbPb_NLO[iCen]->GetBinCenter(ibin + 1) << "____" << hZtCent[iCen]->GetBinCenter(ibin + 2) << endl;
@@ -235,6 +263,10 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
   hPbPbPYTHIA_NLO[1]->GetXaxis()->SetRangeUser(0.15, 0.6);
   hPbPbPYTHIA_NLO[2]->GetXaxis()->SetRangeUser(0.15, 0.6);
 
+  ////////////////////////////////////////////////////////
+  //////// Plotting final results and theory /////////////
+  ///////////////////////////////////////////////////////
+  
   TCanvas *cPbPbPYTHIA_NLORatio[nCen];
   TCanvas *cPbPb_NLORatio[nCen];
   TLatex *latPbPb_NLO[nCen];
@@ -928,8 +960,12 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
   legdiffcenRatio->Draw("SAME");
   TLatex *latdiffCentRatio = LatexStdISORatio(latdiffCentRatio, 0.50, 0.94, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
   cRatioSuppres->Print(dirPlot + Form("/RatioAllCent030%s.pdf", sPtAll.Data()));
+  
+  //////////////////////////////////////////////////////////
+  //////// Comparison with other experiments //////////////
+  ///////////// CMS, STAR and PHENIX /////////////////////
+  ///////////////////////////////////////////////////////
 
-  // Zt STAR and PHENIX
   TFile *fSTAR = new TFile("OtherExpResults/HEPData-ins1442357-v1-Table_3,_au.root");
   TDirectory *dir = (TDirectory *)fSTAR->Get("Table 3, au");
   TGraphErrors *grpp = (TGraphErrors *)dir->Get("Graph1D_y1");
@@ -1216,83 +1252,6 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
   PlotStyle(hIaaCMS, 20, 1.2, kBlue + 1, kBlue + 1, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", false);
   PlotStyle(hIaaCMSSys, 20, 1.2, kBlue + 1, kBlue + 1, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", true);
 
-  /*TCanvas *cCMS = new TCanvas("cCMS", "cCMS", 2 * 800, 1 * 600);
-  cCMS->Divide(2, 1);
-  cCMS->cd(1);
-  gPad->SetLogy();
-  hzTCMSSys->SetTitle(" ");
-  hzTCMSSys->GetYaxis()->SetTitle("1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}");
-  hzTCMSSys->GetXaxis()->SetTitle("#it{z}_{T}");
-  hzTCMSSys->SetFillStyle(0);
-  hGeneral->GetXaxis()->SetRangeUser(0, 1.05);
-  hGeneral->GetYaxis()->SetRangeUser(5e-4, 100);
-  hGeneral->Draw("hist");
-  hSystZt[0]->Draw("samee2");
-  hZtCent[0]->Draw("EP X0 same");
-  hzTCMSSys->Draw("samee2");
-  hzTCMS->Draw("EP X0 same");
-  TLatex *latALICEcms = LatexStdISO(latALICEcms, 0.340, 0.840, 0.04, cenBins[0], cenBins[1], ptMin, ptMax, true);
-  TLegend *legALICE2 = LegStd(legALICE2, 0.55, 0.60, 0.80, 0.750);
-  legALICE2->AddEntry(hZtCent[0], " stat. unc.", "ep");
-  legALICE2->AddEntry(hSystZt[0], " syst. unc.", "f");
-  legALICE2->Draw("same");
-  cCMS->cd(2);
-  TLegend *legCMS = LegStd(legCMS, 0.05, 0.50, 0.60, 0.88);
-  legCMS->SetHeader("CMS, Phys.Rev.Lett. 121 (2018) 712301, 2018");
-  legCMS->AddEntry((TObject *)0, " 0#font[122]{-}10% Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV ", "");
-  legCMS->AddEntry((TObject *)0, " anti-k_{T} jet R = 0.3, #it{p}_{T}^{ jet} > 30 GeV/#it{c}, |#it{#eta}^{jet}| < 1.6 ", "");
-  legCMS->AddEntry((TObject *)0, " |#it{#eta}^{ #it{#gamma}}| < 1.44 #it{p}_{T}^{ #it{#gamma}} > 60 GeV/#it{c} #otimes #it{p}_{T}^{ h} > 1 GeV/#it{c} ", "");
-  legCMS->AddEntry(hzTCMS, " stat. unc. ", "ep");
-  legCMS->AddEntry(hzTCMSSys, " syst. unc. ", "f");
-  legCMS->Draw("same");
-
-  cCMS->Print(dirPlot + Form("/ALICECMS%s.pdf", sPtAll.Data()));
-*/
-  // Iaa CMS
-
-  /* TCanvas *cIaaCMS = new TCanvas("cIaaCMS", "cIaaCMS", 2 * 800, 1 * 600);
-   cIaaCMS->Divide(2, 1);
-   cIaaCMS->cd(1);
-   hIaaCMSSys->SetFillStyle(0);
-   hGeneralIaa->SetTitle(" ");
-   hGeneralIaa->GetYaxis()->SetRangeUser(0, 3);
-   hGeneralIaa->GetXaxis()->SetRangeUser(-0.1, 1.1);
-   hGeneralIaa->GetYaxis()->SetTitleSize(0.045);
-   hGeneralIaa->GetXaxis()->SetTitleSize(0.045);
-   hGeneralIaa->GetYaxis()->SetLabelSize(0.04);
-   hGeneralIaa->GetXaxis()->SetLabelSize(0.04);
-   hGeneralIaa->SetLineWidth(0);
-   hGeneralIaa->Draw("hist");
-
-   hIaaCMSSys->Draw("samee2");
-   hIaaCMS->Draw("EP X0 same");
-   hsyst[0]->Draw("samee2");
-   h3[0]->Draw("EP X0 same");
-   // grSTAR->Draw("p same");
-   // grSTARSys->Draw(" p2 same");
-   TLatex *latALICEcms1 = LatexStdISO(latALICEcms1, 0.360, 0.84, 0.04, cenBins[0], cenBins[1], ptMin, ptMax, true);
-   TLegend *legALICEIaa = LegStd(legALICEIaa, 0.50, 0.50, 0.70, 0.65);
-   legALICEIaa->AddEntry(h3[0], " stat. unc.", "ep");
-   legALICEIaa->AddEntry(hsyst[0], " syst. unc.", "f");
-   legALICEIaa->Draw("same");
-   cIaaCMS->cd(2);
-   TLegend *legCMS1 = LegStd(legCMS1, 0.05, 0.50, 0.58, 0.88);
-   legCMS1->SetHeader("CMS, Phys.Rev.Lett. 121 (2018) 712301, 2018");
-   legCMS1->AddEntry((TObject *)0, " 0#font[122]{-}10% Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV ", "");
-   legCMS1->AddEntry((TObject *)0, " anti-k_{T} jet R = 0.3, #it{p}_{T}^{ jet} > 30 GeV/#it{c}, |#it{#eta}^{jet}| < 1.6 ", "");
-   legCMS1->AddEntry((TObject *)0, " |#it{#eta}^{#gamma}| < 1.44 #it{p}_{T}^{ #it{#gamma}} > 60 GeV/#it{c} #otimes #it{p}_{T}^{ h} > 1 GeV/#it{c} ", "");
-   legCMS1->AddEntry(hIaaCMS, " stat. unc. ", "ep");
-   legCMS1->AddEntry(hIaaCMSSys, " syst. unc. ", "f");
-   legCMS1->Draw("same");
-
-   cIaaCMS->Print(dirPlot + Form("/IaaALICECMS%s.pdf", sPtAll.Data()));
- */
-  // Z-hadron correlations
-
-  // ATLAS
-
-  // CMS
-
   double xiTCMS_Zhad[11] = {0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0};
   double zTCMS_Zhad[11] = {0};
 
@@ -1476,55 +1435,3 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
   legCMS1_Zhad->Draw("same");
   cIaaCMS_Zhad->Print(dirPlot + Form("/ppNLOpQCDIaa_ZhadALICECMS%s.pdf", sPtAll.Data()));
 }
-
-/*void PlotStyle(TH1F *hPlot, int kMarker, double kMarkerSize, int kColor, TString titleX, TString titleY)
-{
-  gStyle->SetOptTitle(1);
-  gStyle->SetOptStat(0);
-  gStyle->SetLineScalePS(1);
-  gStyle->SetOptFit(1111111);
-  gStyle->SetTitleX(0.5);
-  gStyle->SetTitleAlign(23);
-  gStyle->SetPadRightMargin(0.03);
-  gStyle->SetPadLeftMargin(0.15);
-  // gStyle->SetTickX();
-  gStyle->SetPadTickY(1);
-  gStyle->SetPadTickX(1);
-  hPlot->SetMarkerStyle(kMarker);
-  hPlot->SetMarkerSize(kMarkerSize);
-  hPlot->SetMarkerColor(kColor);
-  hPlot->SetLineColor(kColor);
-  hPlot->SetFillColorAlpha(kColor, 0.250);
-  hPlot->GetYaxis()->SetTitle(Form("%s", titleY.Data()));
-  hPlot->GetXaxis()->SetTitle(Form("%s", titleX.Data()));
-  hPlot->GetXaxis()->SetTickLength(0.015);
-  hPlot->GetYaxis()->SetTickLength(0.02);
-
-  // leg->SetFillColor(kWhite);
-  // leg->SetLineColor(0);
-}
-
-TLatex *LatexStdISO(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax, float ptMin, float ptMax, bool bCen)
-{
-  lat = new TLatex();
-  lat->SetTextFont(42);
-  lat->SetTextSize(0.04);
-  lat->SetNDC();
-  lat->DrawLatex(xpos, ypos, Form("#bf{ALICE preliminary}"));
-  if (bCen)
-    lat->DrawLatex(xpos, ypos - 0.06, Form("#bf{%d#font[122]{-}%d %%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ #it{#gamma}}| < 0.67", cenMin, cenMax));
-  else if (!bCen)
-    lat->DrawLatex(xpos, ypos - 0.06, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ #it{#gamma}}| < 0.67"));
-  lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("%2.0f < #it{p}_{T}^{ #it{#gamma}} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{ h} > 0.5 GeV/#it{c}", ptMin, ptMax));
-  return lat;
-}
-
-TLegend *LegStd(TLegend *leg, double xpos1, double ypos1, double xpos2, double ypos2)
-{
-  leg = new TLegend(xpos1, ypos1, xpos2, ypos2);
-  leg->SetFillColor(kWhite);
-  leg->SetLineWidth(0);
-  leg->SetTextSize(0.04);
-  return leg;
-}
-*/
