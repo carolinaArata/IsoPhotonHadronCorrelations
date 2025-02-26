@@ -215,8 +215,8 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
   /////// Different binning between data and theory //////
   ///////////////////////////////////////////////////////
 
-  Int_t nAssocNLO = 5;
-  double assocZtNLO[] = {0.15, 0.2, 0.3, 0.4, 0.6, 1.0};
+  Int_t nAssocNLO = 6;
+  double assocZtNLO[] = {0.1, 0.15, 0.2, 0.3, 0.4, 0.6, 1.0};
   TH1F *hPbPb_NLO[nCen];
   TH1F *hPbPbPYTHIA_NLO[nCen];
   TH1F *hPbPb_NLOSyst[nCen];
@@ -230,20 +230,25 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
     // hPbPbPYTHIA_NLOSyst[iCen] = new TH1F(Form("hPbPbPYTHIA%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), Form("hPbPb%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), nAssocNLO, assocZtNLO);
     for (int ibin = 0; ibin < nAssocNLO; ibin++)
     {
-      cout << hPbPb_NLO[iCen]->GetBinCenter(ibin + 1) << "____" << hZtCent[iCen]->GetBinCenter(ibin + 2) << endl;
+      cout << hPbPb_NLO[iCen]->GetBinCenter(ibin + 1) << "____" << hZtCent[iCen]->GetBinCenter(ibin + 1) << endl;
       cout << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) << "____" << grDztNLOmedianpp->GetBinContent(ibin + 1) << " Ratio: " << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) / grDztNLOmedianpp->GetBinContent(ibin + 1) << endl;
 
-      hPbPb_NLO[iCen]->SetBinContent(ibin + 1, hZtCent[iCen]->GetBinContent(ibin + 2));
-      hPbPb_NLO[iCen]->SetBinError(ibin + 1, hZtCent[iCen]->GetBinError(ibin + 2));
-      hPbPbPYTHIA_NLO[iCen]->SetBinContent(ibin + 1, hZt_MC_Rec[iCen]->GetBinContent(ibin + 2));
-      hPbPbPYTHIA_NLO[iCen]->SetBinError(ibin + 1, hZt_MC_Rec[iCen]->GetBinError(ibin + 2));
-      hPbPb_NLOSyst[iCen]->SetBinContent(ibin + 1, hSystZt[iCen]->GetBinContent(ibin + 2));
-      hPbPb_NLOSyst[iCen]->SetBinError(ibin + 1, hSystZt[iCen]->GetBinError(ibin + 2));
+      hPbPb_NLO[iCen]->SetBinContent(ibin + 1, hZtCent[iCen]->GetBinContent(ibin + 1));
+      hPbPb_NLO[iCen]->SetBinError(ibin + 1, hZtCent[iCen]->GetBinError(ibin + 1));
+
+      cout << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) << "____" << grDztNLOmedianpp->GetBinContent(ibin + 1) << " Ratio: " << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) / grDztNLOmedianpp->GetBinContent(ibin + 1) << endl;
+      hPbPbPYTHIA_NLO[iCen]->SetBinContent(ibin + 1, hZt_MC_Rec[iCen]->GetBinContent(ibin + 1));
+      hPbPbPYTHIA_NLO[iCen]->SetBinError(ibin + 1, hZt_MC_Rec[iCen]->GetBinError(ibin + 1));
+      hPbPb_NLOSyst[iCen]->SetBinContent(ibin + 1, hSystZt[iCen]->GetBinContent(ibin + 1));
+      hPbPb_NLOSyst[iCen]->SetBinError(ibin + 1, hSystZt[iCen]->GetBinError(ibin + 1));
       cout << hPbPb_NLOSyst[iCen]->GetBinError(ibin + 1) << endl;
       cout << grDztNLOmedianpp->GetBinError(ibin + 1) << endl;
     }
+    cout<<"pippo2"<<endl;
     hPbPb_NLO[iCen]->Divide(grDztNLOmedianpp);
+    cout<<"pippo1"<<endl;
     hPbPbPYTHIA_NLO[0]->Divide(histDztPbPbCOLBTmedian[0]);
+    cout<<"pippo"<<endl;
     hPbPb_NLOSyst[iCen]->Divide(grDztNLOmedianpp);
 
     PlotStyle(hPbPb_NLO[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "Ratio", false);
@@ -252,21 +257,21 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
     // PlotStyle(hPbPb_NLOSyst[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "#it{I}_{NLO} = Pb#font[122]{-}Pb/pQCD NLO", true);
   }
 
-  hPbPb_NLO[0]->GetXaxis()->SetRangeUser(0.15, 1.0);
-  hPbPb_NLO[1]->GetXaxis()->SetRangeUser(0.15, 0.6);
-  hPbPb_NLO[2]->GetXaxis()->SetRangeUser(0.15, 0.6);
-  hPbPb_NLOSyst[0]->GetXaxis()->SetRangeUser(0.15, 1.0);
-  hPbPb_NLOSyst[1]->GetXaxis()->SetRangeUser(0.15, 0.6);
-  hPbPb_NLOSyst[2]->GetXaxis()->SetRangeUser(0.15, 0.6);
+  hPbPb_NLO[0]->GetXaxis()->SetRangeUser(0, 1.0);
+  hPbPb_NLO[1]->GetXaxis()->SetRangeUser(0, 0.6);
+  hPbPb_NLO[2]->GetXaxis()->SetRangeUser(0, 0.6);
+  hPbPb_NLOSyst[0]->GetXaxis()->SetRangeUser(0, 1.0);
+  hPbPb_NLOSyst[1]->GetXaxis()->SetRangeUser(0, 0.6);
+  hPbPb_NLOSyst[2]->GetXaxis()->SetRangeUser(0, 0.6);
 
-  hPbPbPYTHIA_NLO[0]->GetXaxis()->SetRangeUser(0.15, 1.0);
-  hPbPbPYTHIA_NLO[1]->GetXaxis()->SetRangeUser(0.15, 0.6);
-  hPbPbPYTHIA_NLO[2]->GetXaxis()->SetRangeUser(0.15, 0.6);
+  hPbPbPYTHIA_NLO[0]->GetXaxis()->SetRangeUser(0, 1.0);
+  hPbPbPYTHIA_NLO[1]->GetXaxis()->SetRangeUser(0, 0.6);
+  hPbPbPYTHIA_NLO[2]->GetXaxis()->SetRangeUser(0, 0.6);
 
   ////////////////////////////////////////////////////////
   //////// Plotting final results and theory /////////////
   ///////////////////////////////////////////////////////
-  
+
   TCanvas *cPbPbPYTHIA_NLORatio[nCen];
   TCanvas *cPbPb_NLORatio[nCen];
   TLatex *latPbPb_NLO[nCen];
@@ -960,7 +965,7 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
   legdiffcenRatio->Draw("SAME");
   TLatex *latdiffCentRatio = LatexStdISORatio(latdiffCentRatio, 0.50, 0.94, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
   cRatioSuppres->Print(dirPlot + Form("/RatioAllCent030%s.pdf", sPtAll.Data()));
-  
+
   //////////////////////////////////////////////////////////
   //////// Comparison with other experiments //////////////
   ///////////// CMS, STAR and PHENIX /////////////////////

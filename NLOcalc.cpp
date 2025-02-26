@@ -29,13 +29,13 @@ Int_t cenBins[] = {0, 30, 50, 90};
 Int_t kMarkCen[] = {21, 47, 33, 25};
 // Int_t kColorMark[] = {kCyan + 2, kAzure - 3, kViolet + 6, kCyan - 2};
 Int_t kColorMark[] = {kCyan + 2, kOrange + 7, kViolet + 6, kCyan - 2};
-Int_t nAssoc = 7;
-double assocZt[] = { 0.1 ,0.15, 0.2, 0.3, 0.4, 0.6, 0.8, 1.0};
+Int_t nAssoc = 6;
+double assocZt[] = {0.1 ,0.15, 0.2, 0.3, 0.4, 0.6, 1.0};
 Int_t nAssocCLBT = 6;
 double assocZtCLBT[] = {0.15, 0.2, 0.3, 0.4, 0.6, 0.8, 1.0};
 
-int nZtBin = 7;
-double assocZtThinner[] = {0.125, 0.175, 0.25, 0.35, 0.5, 0.7, 0.9};
+int nZtBin = 6;
+double assocZtThinner[] = {0.125, 0.175, 0.25, 0.35, 0.5, 0.8, 0.9};
 static void ScaleBinBySize(TH1F *h);
 void NLOcalc()
 {
@@ -43,9 +43,13 @@ void NLOcalc()
   TGraphAsymmErrors *grIaaNLOmedian[nCen];
   TGraphAsymmErrors *grDztNLOmedian[nCen];
 
-  double Iaa_median0_30[] = {0.5791, 0.4788, 0.4524, 0.3924, 0.3742, 0.3707, 0.3554};
-  double Iaa_min0_30[] = {0.5318, 0.4431, 0.4136, 0.3406, 0.3401, 0.3281, 0.3001,};
-  double Iaa_max0_30[] = {0.6414, 0.5339, 0.5105, 0.4487, 0.4177, 0.4138, 0.4127};
+  //double Iaa_median0_30[] = {0.5791, 0.4788, 0.4524, 0.3924, 0.3742, 0.3707, 0.3554};
+  //double Iaa_min0_30[] = {0.5318, 0.4431, 0.4136, 0.3406, 0.3401, 0.3281, 0.3001,};
+  //double Iaa_max0_30[] = {0.6414, 0.5339, 0.5105, 0.4487, 0.4177, 0.4138, 0.4127};
+
+  double Iaa_median0_30[] = {0.5791, 0.4788, 0.4524, 0.3924, 0.3742, 0.3631};
+  double Iaa_min0_30[] = {0.5318, 0.4431, 0.4136, 0.3406, 0.3401, 0.3141};
+  double Iaa_max0_30[] = {0.6414, 0.5339, 0.5105, 0.4487, 0.4177, 0.4133};
 
   double Iaa_min30_50[] = {0.7602, 0.6587, 0.6483, 0.5633, 0.5754, 0.5354, 0.4619};
   double Iaa_median30_50[] = {0.8047, 0.7329, 0.6973, 0.6628, 0.6284, 0.6213, 0.5460};
@@ -73,9 +77,13 @@ void NLOcalc()
     erryMax50_90[ibin] = (Iaa_max50_90[ibin] - Iaa_median50_90[ibin]);
   }
 
-  double Dzt_min0_30[] = {2.885E+00, 1.257E+00, 5.372E-01, 2.040E-01, 6.534E-02, 1.694E-02, 5.357E-03};
-  double Dzt_median0_30[] = {3.142E+00, 1.358E+00, 5.876E-01, 2.350E-01, 7.190E-02, 1.913E-02, 6.343E-03};
-  double Dzt_max0_30[] = {3.479E+00, 1.515E+00, 6.631E-01, 2.687E-01, 8.025E-02, 2.136E-02, 7.366E-03};
+  //double Dzt_min0_30[] = {2.885E+00, 1.257E+00, 5.372E-01, 2.040E-01, 6.534E-02, 1.694E-02, 5.357E-03};
+  //double Dzt_median0_30[] = {3.142E+00, 1.358E+00, 5.876E-01, 2.350E-01, 7.190E-02, 1.913E-02, 6.343E-03};
+  //double Dzt_max0_30[] = {3.479E+00, 1.515E+00, 6.631E-01, 2.687E-01, 8.025E-02, 2.136E-02, 7.366E-03};
+
+  double Dzt_min0_30[] = {2.885E+00, 1.257E+00, 5.372E-01, 2.040E-01, 6.534E-02, 1.115E-02};
+  double Dzt_median0_30[] = {3.142E+00, 1.358E+00, 5.876E-01, 2.350E-01, 7.190E-02, 1.273E-02};
+  double Dzt_max0_30[] = {3.479E+00, 1.515E+00, 6.631E-01, 2.687E-01, 8.025E-02, 1.436E-02};
 
   double Dzt_min30_50[] = {4.124E+00, 1.869E+00, 8.422E-01, 3.374E-01, 1.105E-01, 2.763E-02, 8.244E-03};
   double Dzt_median30_50[] = {4.366E+00, 2.079E+00, 9.057E-01, 3.970E-01, 1.207E-01, 3.207E-02, 9.745E-03};
@@ -117,7 +125,8 @@ void NLOcalc()
   grDztNLOmedian[2] = new TGraphAsymmErrors(nZtBin, assocZtThinner, Dzt_median50_90, 0, 0, Dzt_erryMin50_90, Dzt_erryMax50_90);
 
   TH1F *grDztNLOmedianpp = new TH1F("hppNLO", "hppNLO", nAssoc, assocZt);
-  double Dzt_medianpp[] = {5.425E+00, 2.837E+00, 1.299E+00, 5.989E-01, 1.921E-01, 5.161E-02, 1.785E-02};
+  //double Dzt_medianpp[] = {5.425E+00, 2.837E+00, 1.299E+00, 5.989E-01, 1.921E-01, 5.161E-02, 1.785E-02};
+  double Dzt_medianpp[] = {5.425E+00, 2.837E+00, 1.299E+00, 5.989E-01, 1.921E-01, 3.473E-02};
 
   for (int ibin = 0; ibin < nAssoc; ibin++)
   {
