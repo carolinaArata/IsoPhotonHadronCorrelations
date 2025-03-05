@@ -8,15 +8,15 @@
 #PlotIsoGammaHadron(float ptMin , float ptMax , TString dirPlot = "Where to save output plot", TString shshBkg = "0.40-1.00", TString dirFiles = "Analysis root files obtained from IsoGammaHadron.C")
 
 root -b -l <<EOF
-.L ~/work/histogram/IsoPhotonHadronCorrelations/IsoGammaHadron.C
-IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-1.00", "~/work/histogram/FromScratch/checkCode", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, false, false, false)
+.L IsoGammaHadron.C
+IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-1.00", "Output_checkCode", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, false, false, false)
 .q
 EOF
 #
 
 root -b -l <<EOF
-.L ~/work/histogram/IsoPhotonHadronCorrelations/PlotIsoGammaHadron.C
-PlotIsoGammaHadron(18, 40,  "~/work/histogram/FromScratch/FigcheckCode", "0.40-1.00", "~/work/histogram/FromScratch/checkCode")
+.L PlotIsoGammaHadron.C
+PlotIsoGammaHadron(18, 40,  "Output_FigcheckCode", "0.40-1.00", "Output_checkCode")
 .q
 EOF
 
@@ -27,15 +27,15 @@ EOF
 #----------------------------------------------------------------------------------------------
 
 root -b -l <<EOF
-.L ~/work/histogram/IsoPhotonHadronCorrelations/IsoGammaHadron.C
-IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystPur09", 0.9, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false ,false, false, false)
+.L IsoGammaHadron.C
+IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-1.00", "Output_checkCodeSystPur09", 0.9, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false ,false, false, false)
 .q
 EOF
 #
 
 root -b -l <<EOF
-.L ~/work/histogram/IsoPhotonHadronCorrelations/IsoGammaHadron.C
-IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystPur11", 1.1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false ,false, false, false)
+.L IsoGammaHadron.C
+IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-1.00", "Output_checkCodeSystPur11", 1.1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false ,false, false, false)
 .q
 EOF
 
@@ -45,14 +45,14 @@ EOF
 ################################################################################################
 #----------------------------------------------------------------------------------------------
 root -b -l <<EOF
-.L ~/work/histogram/IsoPhotonHadronCorrelations/IsoGammaHadron.C
-IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystNMix18", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, false, true, false)
+.L IsoGammaHadron.C
+IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-1.00", "Output_checkCodeSystNMix18", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, false, true, false)
 .q
 EOF
 
 root -b -l <<EOF
-.L ~/work/histogram/IsoPhotonHadronCorrelations/IsoGammaHadron.C
-IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystNMix45", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, false, false, true)
+.L IsoGammaHadron.C
+IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-1.00", "Output_checkCodeSystNMix45", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, false, false, true)
 .q
 EOF
 
@@ -63,22 +63,22 @@ EOF
 #-----------------------------------------------------------------------------------------------
 
 root -b -l <<EOF
-.L ~/work/histogram/IsoPhotonHadronCorrelations/IsoGammaHadron.C
-IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.35-1.00", "~/work/histogram/FromScratch/checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false, false, false)
+.L IsoGammaHadron.C
+IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.35-1.00", "Output_checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false, false, false)
 .q
 EOF
 ##
 ##
 root -b -l <<EOF
-.L ~/work/histogram/IsoPhotonHadronCorrelations/IsoGammaHadron.C
-IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-1.50", "~/work/histogram/FromScratch/checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false, false, false)
+.L IsoGammaHadron.C
+IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-1.50", "Output_checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false, false, false)
 .q
 EOF
 ##
 ##
 root -b -l <<EOF
-.L ~/work/histogram/IsoPhotonHadronCorrelations/IsoGammaHadron.C
-IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-2.00", "~/work/histogram/FromScratch/checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false, false, false)
+.L IsoGammaHadron.C
+IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-2.00", "Output_checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false, false, false)
 .q
 EOF
 
@@ -89,8 +89,8 @@ EOF
 #-----------------------------------------------------------------------------------------------
 
 root -b -l <<EOF
-.L ~/work/histogram/IsoPhotonHadronCorrelations/IsoGammaHadron.C
-IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeTrackEff", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, true, false, false)
+.L IsoGammaHadron.C
+IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-1.00", "Output_checkCodeTrackEff", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, true, false, false)
 .q
 EOF
 
@@ -101,8 +101,8 @@ EOF
 #----------------------------------------------------------------------------------------------
 
 root -b -l <<EOF
-.L ~/work/histogram/IsoPhotonHadronCorrelations/IsoGammaHadron.C
-IsoGammaHadron(18, 40, "~/work/histogram/DataSh100_AssocPt500", true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeZYAM", 1, true, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, false, false, false)
+.L IsoGammaHadron.C
+IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-1.00", "Output_checkCodeZYAM", 1, true, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, false, false, false)
 .q
 EOF
 

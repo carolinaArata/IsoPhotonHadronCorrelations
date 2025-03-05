@@ -53,7 +53,7 @@ Int_t kColorShSh[] = {kAzure + 2, kViolet};
 // TLatex *LatexDPhi(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax);
 // TLegend *LegStd(TLegend *leg, double xpos1, double ypos1, double xpos2, double ypos2);
 
-void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~/work/histogram/FromScratch/FigcheckCode", TString shshBkg = "0.40-1.00", TString dirFiles = "~/work/histogram/FromScratch/checkCode")
+void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot = "Output_FigcheckCode", TString shshBkg = "0.40-1.00", TString dirFiles = "Output_checkCode")
 {
 
   TString shshString[2] = {"0.10-0.30", shshBkg};
@@ -157,7 +157,6 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
 
         hZtPi0PtBin[iCen][iso][iptTr] = (TH1F *)fPlot[iCen]->Get(Form("hZt%sPi0PtBin_%s", sIso.Data(), sPtTrig.Data()));
         PlotStyle(hZtPi0PtBin[iCen][iso][iptTr], kMarkStyle[1], 1, kAzure + 7, kBlue + 2, "#it{z}_{T}", "1/N^{trig}dN^{charg}/d#it{z}_{T}", false);
-
       }
     }
 
@@ -233,8 +232,12 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
   }
 
   cout << "Azimuthal distributions Data" << endl;
-  gSystem->Exec(Form("mkdir %s", dirPlot.Data()));
-  cout << "Directory: " << dirPlot.Data() << endl;
+  gSystem->Exec(Form("mkdir %s", outDirPlot.Data()));
+
+  TString processline = Form(".! mkdir -pv %s", outDirPlot.Data());
+  gROOT->ProcessLine(processline.Data());
+
+  cout << "Directory: " << outDirPlot.Data() << endl;
 
   TCanvas *cSame_MixIsoClust[nCen][nPtTrig];
   TLegend *legSame_MixIsoClust[nCen][nPtTrig];
@@ -259,8 +262,8 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
-    TString sdirPlotXCent = Form("%s/Cen%d_%d", dirPlot.Data(), cenBins[iCen], cenBins[iCen + 1]);
-    gSystem->Exec(Form("mkdir %s", sdirPlotXCent.Data()));
+    TString soutDirPlotXCent = Form("%s/Cen%d_%d", outDirPlot.Data(), cenBins[iCen], cenBins[iCen + 1]);
+    gSystem->Exec(Form("mkdir %s", soutDirPlotXCent.Data()));
     if (iCen == 0 || iCen == 1)
     {
       nZtBin = 6;
@@ -381,7 +384,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       legSame_MixIsoClust[iCen][iptTr]->AddEntry(hdPhiMix[iCen][1][0][0][0], " ", "lep");
       latDphi[iCen]->DrawLatex(0.15, 0.205, "Mixed Event");
       legSame_MixIsoClust[iCen][iptTr]->Draw("same");
-      cSame_MixIsoClust[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/Same_MixIsoClustGamma" + sCent + sPtTrig + ".pdf");
+      cSame_MixIsoClust[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/Same_MixIsoClustGamma" + sCent + sPtTrig + ".pdf");
 
       cSame_MixIsoPi0[iCen][iptTr]->cd(legPad);
       latDphi[iCen] = LatexDPhi(latDphi[iCen], 0.08, 0.84, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
@@ -393,7 +396,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       legSame_MixIsoPi0[iCen][iptTr]->AddEntry(hdPhiSamNoUE[iCen][1][1][0][0], " ", "lep");
       latDphi[iCen]->DrawLatex(0.15, 0.147, "Same Event #font[122]{-} Mixed Event");
       legSame_MixIsoPi0[iCen][iptTr]->Draw("same");
-      cSame_MixIsoPi0[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/Same_MixIsoClustPi0" + sCent + sPtTrig + ".pdf");
+      cSame_MixIsoPi0[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/Same_MixIsoClustPi0" + sCent + sPtTrig + ".pdf");
 
       cMixIsoGamma_Clust[iCen][iptTr]->cd(legPad);
       legMixIsoGamma_Clust[iCen][iptTr]->AddEntry(hdPhiMix[iCen][1][0][0][0], " ", "lep");
@@ -401,7 +404,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       legMixIsoGamma_Clust[iCen][iptTr]->AddEntry(hdPhiMix[iCen][1][1][0][0], " ", "lep");
       latDphi[iCen]->DrawLatex(0.35, 0.34, "Mixed Event cluster^{iso}_{wide}");
       legMixIsoGamma_Clust[iCen][iptTr]->Draw("same");
-      cMixIsoGamma_Clust[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MixIsoGamma_Pi0" + sCent + sPtTrig + ".pdf");
+      cMixIsoGamma_Clust[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MixIsoGamma_Pi0" + sCent + sPtTrig + ".pdf");
 
       cSame_Mix_NoUEIsoClust[iCen][iptTr]->cd(legPad);
       latDphi[iCen] = LatexDPhi(latDphi[iCen], 0.08, 0.84, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
@@ -413,7 +416,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       legSame_Mix_NoUEIsoClust[iCen][iptTr]->AddEntry(hdPhiSamNoUE[iCen][1][0][0][0], " ", "lep");
       latDphi[iCen]->DrawLatex(0.15, 0.147, "Same Event - Mixed Event");
       legSame_Mix_NoUEIsoClust[iCen][iptTr]->Draw("same");
-      cSame_Mix_NoUEIsoClust[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/Same_MixIsoClustGamma_NoUE" + sCent + sPtTrig + ".pdf");
+      cSame_Mix_NoUEIsoClust[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/Same_MixIsoClustGamma_NoUE" + sCent + sPtTrig + ".pdf");
 
       cIsoClust_Pi0NoUE[iCen][iptTr]->cd(legPad);
       latDphi[iCen] = LatexDPhi(latDphi[iCen], 0.08, 0.87, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
@@ -424,7 +427,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       legIsoClust_Pi0NoUE[iCen][iptTr]->AddEntry(hdPhiSamNoUE[iCen][1][1][0][0], " ", "lep");
       latDphi[iCen]->DrawLatex(0.15, 0.205, "cluster^{iso}_{wide}");
       legIsoClust_Pi0NoUE[iCen][iptTr]->Draw("same");
-      cIsoClust_Pi0NoUE[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/IsoClust_Pi0NoUE" + sCent + sPtTrig + ".pdf");
+      cIsoClust_Pi0NoUE[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/IsoClust_Pi0NoUE" + sCent + sPtTrig + ".pdf");
 
       cIsoClust_Pi0NoUERatio[iCen][iptTr]->cd(legPad);
       latDphi[iCen] = LatexDPhi(latDphi[iCen], 0.08, 0.87, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
@@ -433,7 +436,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       legIsoClust_Pi0NoUERatio[iCen][iptTr]->AddEntry(hdPhiSamNoUERatio[iCen][1][0][0], " ", "lep");
       latDphi[iCen]->DrawLatex(0.15, 0.305, "cluster^{iso}_{narrow}/cluster^{iso}_{wide}");
       legIsoClust_Pi0NoUERatio[iCen][iptTr]->Draw("same");
-      cIsoClust_Pi0NoUERatio[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/IsoClust_Pi0NoUERatio" + sCent + sPtTrig + ".pdf");
+      cIsoClust_Pi0NoUERatio[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/IsoClust_Pi0NoUERatio" + sCent + sPtTrig + ".pdf");
 
       cIsoClust_Pi0Pur[iCen][iptTr]->cd(legPad);
       latDphi[iCen] = LatexDPhi(latDphi[iCen], 0.08, 0.87, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
@@ -447,7 +450,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       legIsoClust_Pi0Pur[iCen][iptTr]->AddEntry(hdPhiPhoton[iCen][1][0][0], " ", "lep");
       latDphi[iCen]->DrawLatex(0.15, 0.12, "#it{#gamma}^{iso}");
       legIsoClust_Pi0Pur[iCen][iptTr]->Draw("same");
-      cIsoClust_Pi0Pur[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/IsoGamma_SameNoUE_Pi0pur" + sCent + sPtTrig + ".pdf");
+      cIsoClust_Pi0Pur[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/IsoGamma_SameNoUE_Pi0pur" + sCent + sPtTrig + ".pdf");
     }
 
     cSameNoUE_pTBin_pTAllIsoClust[iCen] = new TCanvas("cSameNoUE_pTBin_pTAllIsoClust" + sCent, "cSameNoUE_pTBin_pTAllIsoClust" + sCent, xNumPad * 800, 2 * 600);
@@ -470,7 +473,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
     legSameNoUE_pTBin_pTAllIsoClust[iCen]->AddEntry(hdPhiSamNoUE[iCen][1][0][0][0], Form("%2.0f < p_{T}^{trig} < %2.0f", ptTrig[index1 + 0], ptTrig[index1 + 1]), "lep");
     legSameNoUE_pTBin_pTAllIsoClust[iCen]->AddEntry(hdPhiSamNoUEPtAll[iCen][1][0][0], Form("%2.0f < p_{T}^{trig} < %2.0f", ptMin, ptMax), "lep");
     legSameNoUE_pTBin_pTAllIsoClust[iCen]->Draw("same");
-    cSameNoUE_pTBin_pTAllIsoClust[iCen]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + Form("/SameNoUE_pTBin%2.0f_%2.0f_pTAllIsoClust", ptTrig[index1 + 0], ptTrig[index1 + 1]) + sCent + ".pdf");
+    cSameNoUE_pTBin_pTAllIsoClust[iCen]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + Form("/SameNoUE_pTBin%2.0f_%2.0f_pTAllIsoClust", ptTrig[index1 + 0], ptTrig[index1 + 1]) + sCent + ".pdf");
   }
 
   cout << "Zt distributions Data" << endl;
@@ -497,7 +500,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       hZtPhoton[iCen][iso]->Draw();
       // hZtPi0[iCen][iso]->Draw("same");
       LatexStd(latexGamma_Pi0[iCen][iso], 0.50, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, false);
-      cZtGamma_Pi0[iCen][iso]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/ZtDistribution_Gamma_Pi0" + sIso + sCent + ".pdf");
+      cZtGamma_Pi0[iCen][iso]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/ZtDistribution_Gamma_Pi0" + sIso + sCent + ".pdf");
       // hZtPhoton[iCen][1]->Draw();
       // hZtPi0[iCen][1]->Draw("same");
       cout << "pippo" << endl;
@@ -514,7 +517,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
         hZtPhotonPtBin[iCen][iso][iptTr]->GetYaxis()->SetLabelSize(0.030);
         hZtPhotonPtBin[iCen][iso][iptTr]->Draw();
         LatexStd(latexZtPtBin[iCen][iso][iptTr], 0.40, 0.8, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
-        cZtPtBin[iCen][iso][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/ZtDistribution_DataPurOnly" + sIso + sCent + sPtTrig + ".pdf");
+        cZtPtBin[iCen][iso][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/ZtDistribution_DataPurOnly" + sIso + sCent + sPtTrig + ".pdf");
 
         cZtGamma_Pi0PtBin[iCen][iso][iptTr] = new TCanvas("cZtGamma_Pi0" + sIso + sCent + sPtTrig, "cZtGamma_Pi0" + sIso + sCent + sPtTrig, 800, 600);
         cZtGamma_Pi0PtBin[iCen][iso][iptTr]->cd();
@@ -528,7 +531,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
         // hZtPi0PtBin[iCen][iso][iptTr]->Draw("same");
 
         LatexStd(latexZtPtBin[iCen][iso][iptTr], 0.40, 0.8, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
-        cZtGamma_Pi0PtBin[iCen][iso][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/ZtDistribution_Gamma_Pi0" + sIso + sCent + sPtTrig + ".pdf");
+        cZtGamma_Pi0PtBin[iCen][iso][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/ZtDistribution_Gamma_Pi0" + sIso + sCent + sPtTrig + ".pdf");
       }
     }
   }
@@ -609,7 +612,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       legSame_IsoGen[iCen][iptTr]->Draw("same");
       latDphiMC[iCen]->DrawLatex(0.15, 0.425, "Same Event Gen");
       latDphiMC[iCen]->DrawLatex(0.15, 0.315, "Same Event Gen w/ UE");
-      cSame_IsoGen[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MC_SameIsoClustGamma_GEN" + sCent + sPtTrig + ".pdf");
+      cSame_IsoGen[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MC_SameIsoClustGamma_GEN" + sCent + sPtTrig + ".pdf");
 
       cSame_MixIsoRec[iCen][iptTr]->cd(legPad);
       latDphiMC[iCen] = LatexDPhi(latDphiMC[iCen], 0.08, 0.87, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
@@ -620,7 +623,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       legSame_MixIsoRec[iCen][iptTr]->AddEntry(hdPhiMixMCRec[iCen][1][0][0][0], " ", "lep");
       latDphiMC[iCen]->DrawLatex(0.15, 0.315, "Mixed Event Rec");
       legSame_MixIsoRec[iCen][iptTr]->Draw("same");
-      cSame_MixIsoRec[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MC_SameMixIsoClustGamma_REC" + sCent + sPtTrig + ".pdf");
+      cSame_MixIsoRec[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MC_SameMixIsoClustGamma_REC" + sCent + sPtTrig + ".pdf");
 
       cMixIso_NotIsoRec[iCen][iptTr]->cd(legPad);
       latDphiMC[iCen] = LatexDPhi(latDphiMC[iCen], 0.08, 0.87, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
@@ -630,7 +633,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       legMixIso_NotIsoRec[iCen][iptTr]->AddEntry(hdPhiMixMCRec[iCen][0][0][0][0], " ", "lep");
       latDphiMC[iCen]->DrawLatex(0.15, 0.315, "Not Iso Mixed Event Rec");
       legMixIso_NotIsoRec[iCen][iptTr]->Draw("same");
-      cMixIso_NotIsoRec[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MC_MixIso_NotIsoClustGamma_REC" + sCent + sPtTrig + ".pdf");
+      cMixIso_NotIsoRec[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MC_MixIso_NotIsoClustGamma_REC" + sCent + sPtTrig + ".pdf");
 
       cSame_Mix_NoUEIsoRec[iCen][iptTr]->cd(legPad);
       latDphiMC[iCen] = LatexDPhi(latDphiMC[iCen], 0.08, 0.87, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
@@ -642,7 +645,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       legSame_Mix_NoUEIsoRec[iCen][iptTr]->AddEntry(hdPhiSamMCRecNoUE[iCen][1][0][0][0], " ", "lep");
       latDphiMC[iCen]->DrawLatex(0.15, 0.147, "Same Event - Mixed Event Rec");
       legSame_Mix_NoUEIsoRec[iCen][iptTr]->Draw("same");
-      cSame_Mix_NoUEIsoRec[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MC_Same_SameNoUE_Mix_REC" + sCent + sPtTrig + ".pdf");
+      cSame_Mix_NoUEIsoRec[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MC_Same_SameNoUE_Mix_REC" + sCent + sPtTrig + ".pdf");
     }
   }
 
@@ -673,7 +676,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
         }
 
         latexMC[iCen][iso][iptTr] = LatexStd(latexMC[iCen][iso][iptTr], 0.50, 0.84, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
-        cZtMC_GenRec[iCen][iso][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MC_ZtGen_Rec" + sIso + sCent + sPtTrig + ".pdf");
+        cZtMC_GenRec[iCen][iso][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MC_ZtGen_Rec" + sIso + sCent + sPtTrig + ".pdf");
       }
 
       cZtMCRec[iCen][iso] = new TCanvas("cZtMCRec" + sIso + sCent, "cZtMCRec" + sIso + sCent, 800, 600);
@@ -746,7 +749,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
           hRatioEffCorrPtBin[iCen][iso][iSh][iptTr]->GetYaxis()->SetTitleOffset(0.4);
         }
 
-        cZtMC_GenRec_alphaCorr[iCen][iso][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MC_ZtGen_Rec_alphaCorr" + sIso + sCent + sPtTrig + ".pdf");
+        cZtMC_GenRec_alphaCorr[iCen][iso][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/MC_ZtGen_Rec_alphaCorr" + sIso + sCent + sPtTrig + ".pdf");
       }
     }
   }
@@ -776,7 +779,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       }
 
       latexGlob[iCen][iso] = LatexStd(latexGlob[iCen][iso], 0.50, 0.84, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1], ptTrig[index2], true);
-      cZtIsoGammaEffCorrGlob_MC[iCen][iso]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/ZtDistribution_Data_MC" + sIso + sCent + sPtAll + ".pdf");
+      cZtIsoGammaEffCorrGlob_MC[iCen][iso]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/ZtDistribution_Data_MC" + sIso + sCent + sPtAll + ".pdf");
 
       cZtIsoGammaEffCorrGlob[iCen][iso] = new TCanvas("cZtIsoGammaEffCorrGlob" + sIso + sCent, "cZtIsoGammaEffCorrGlob" + sIso + sCent, 800, 600);
       cZtIsoGammaEffCorrGlob[iCen][iso]->cd();
@@ -794,7 +797,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString dirPlot = "~
       }
 
       latexGlob[iCen][iso] = LatexStd(latexGlob[iCen][iso], 0.50, 0.84, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1], ptTrig[index2], true);
-      cZtIsoGammaEffCorrGlob[iCen][iso]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/ZtDistribution_Data" + sIso + sCent + sPtAll + ".pdf");
+      cZtIsoGammaEffCorrGlob[iCen][iso]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/ZtDistribution_Data" + sIso + sCent + sPtAll + ".pdf");
     }
   }
 }

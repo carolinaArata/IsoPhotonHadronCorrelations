@@ -106,7 +106,7 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
   TH1F *hZtPi0[nIso];                  // Zt distribution iso/not iso Pi0 full range (only purity correction)
 
   // Purity root file definition
-  TFile *fPurity = new TFile("~/work/histogram/IsoPhotonHadronCorrelations/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root");
+  TFile *fPurity = new TFile("RootFiles/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root");
   histPur[iCen] = (TH1F *)fPurity->Get(Form("Purity_Cen%d_R0.2_Sys", iCen));
   histPurStat[iCen] = (TH1F *)fPurity->Get(Form("Purity_Cen%d_R0.2", iCen));
   funcPur[iCen] = histPur[iCen]->GetFunction("purityFitCombinedSigmoid");
@@ -115,7 +115,10 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
   TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
   TString sPtAll = Form("_Pt%2.0f_%2.0f", ptMin, ptMax);
 
-  gSystem->Exec(Form("mkdir %s", dirFiles.Data()));
+  //gSystem->Exec(Form("mkdir %s", dirFiles.Data()));
+  TString processline = Form(".! mkdir -pv %s", dirFiles.Data()) ;
+  gROOT->ProcessLine(processline.Data());
+  
   TFile *fOutPut = new TFile(Form("%s/fPlot%s%s%s.root", dirFiles.Data(), shshBkg.Data(), sCent.Data(), sPtAll.Data()), "RECREATE");
   cout << fOutPut->GetName() << endl;
 
@@ -898,28 +901,32 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
   }
 }
 
-void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSig = "~/work/histogram/DataSh100_AssocPt500", Bool_t bMirror = true, TString shshBkg = "0.40-1.00", TString dirFiles = "~/work/histogram/FromScratch/checkCode", double systPur = 1, bool bZYAM = false, bool bPlot = true, double phiMin = TMath::Pi() * 3 / 5, double phiMax = TMath::Pi(), bool systShSh = false, bool systTrackIneff = false, bool systNMix18 = false, bool systNMix45 = false)
+void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSig = "RootFiles/DataSh100_AssocPt500", Bool_t bMirror = true, TString shshBkg = "0.40-1.00", TString dirFiles = "Output_checkCode", double systPur = 1, bool bZYAM = false, bool bPlot = true, double phiMin = TMath::Pi() * 3 / 5, double phiMax = TMath::Pi(), bool systShSh = false, bool systTrackIneff = false, bool systNMix18 = false, bool systNMix45 = false)
 {
   ///////////////////////////////////////////////////////////////////
   /////// Define MC root files: one file for all centralities //////
   /////////////////////////////////////////////////////////////////
   if (!systTrackIneff)
-    fileMC[0] = TFile::Open(Form("~/work/histogram/MC_GJShSh150/MC_GJSh150.root"));
+    fileMC[0] = TFile::Open(Form("RootFiles/MC_GJShSh150/MC_GJSh150.root"));
   else if (systTrackIneff)
-    fileMC[0] = TFile::Open(Form("~/work/histogram/MC_GJShSh150/MC_GJTrackInEff.root")); // MC root file for systematic on tracking efficiency
+    fileMC[0] = TFile::Open(Form("RootFiles/MC_GJShSh150/MC_GJTrackInEff.root")); // MC root file for systematic on tracking efficiency
 
-  fileMC[1] = TFile::Open(Form("~/work/histogram/MC_JJlow_Pi0/MC_JJlow_0_90.root"));
+  fileMC[1] = TFile::Open(Form("RootFiles/Pi0Hadron/MCJJ_Pi0.root"));
 
-  // fileMC = TFile::Open(Form("~/work/histogram/MC_GJShSh150/MC_GJSh150.root")); //Systematic TrackEfficiency
+  // fileMC = TFile::Open(Form("/RootFiles/MC_GJShSh150/MC_GJSh150.root")); //Systematic TrackEfficiency
 
   if (!fileMC[0] || !fileMC[1])
+  {
     cout << "MC File doesn't exist" << endl;
+    cout << "You DID NOT DOWNLOADED MC FILES FROM CERNBOX!" << endl;
+    return ;
+  }
   ///////////////////////////////////////////////////////////////////
   ///////// Define data root files: one file per centrality ////////
   /////////////////////////////////////////////////////////////////
   TString tagFile[nCen];
   // comments for shshSyst and NCentBinMixSyst
-  //  fileDataMix = TFile::Open(Form("~/work/histogram/NCentBinMix45/%s.root", tagFile.Data()));
+  //  fileDataMix = TFile::Open(Form("/RootFiles/NCentBinMix45/%s.root", tagFile.Data()));
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     tagFile[iCen] = Form("EMCAL_MB_%d_%d", cenBins[iCen], cenBins[iCen + 1]);
@@ -932,15 +939,15 @@ void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSi
       cout << "ShSh Bkg Systematics: ON" << endl;
       if (shshBkg == "0.35-1.00")
       {
-        fileDataShBkg = TFile::Open(Form("~/work/histogram/ShShSyst03510/%s.root", tagFile[iCen].Data())); // ShSh 0.35-1.00
+        fileDataShBkg = TFile::Open(Form("RootFiles/ShShSyst03510/%s.root", tagFile[iCen].Data())); // ShSh 0.35-1.00
       }
       else if (shshBkg == "0.40-2.00")
       {
-        fileDataShBkg = TFile::Open(Form("~/work/histogram/ShShSystMultBkg/%s.root", tagFile[iCen].Data())); // ShSh 0.40-2.00
+        fileDataShBkg = TFile::Open(Form("RootFiles/ShShSystMultBkg/%s.root", tagFile[iCen].Data())); // ShSh 0.40-2.00
       }
       else if (shshBkg == "0.40-1.50")
       {
-        fileDataShBkg = TFile::Open(Form("~/work/histogram/ShShSystMultBkg/%s.root", tagFile[iCen].Data())); // ShSh 0.40-1.50
+        fileDataShBkg = TFile::Open(Form("RootFiles/ShShSystMultBkg/%s.root", tagFile[iCen].Data())); // ShSh 0.40-1.50
       }
       cout << "ShSh bkg: " << shshBkg << endl;
     }
@@ -950,17 +957,17 @@ void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSi
 
     if (systNMix18)
     {
-      // fileDataMix = TFile::Open(Form("~/work/histogram/RootFiles/SystematicsNCentrBin/%s.root", tagFile[iCen].Data())); // estimated with shsh = 0.40-1.00
+      // fileDataMix = TFile::Open(Form("/RootFiles/RootFiles/SystematicsNCentrBin/%s.root", tagFile[iCen].Data())); // estimated with shsh = 0.40-1.00
       //  sShShNCentMix = "_ShSh0.40-1.00"
       cout << "N Centrality bin used for Mix Systematics: ON"<< endl;
-      fileDataMix = TFile::Open(Form("~/work/histogram/IsoPhotonHadronCorrelations/RootFiles/NCentBinMix18/EMCAL_MB_0_90.root")); // Old Files with shshBkg = 0.40-2.00
+      fileDataMix = TFile::Open(Form("RootFiles/NCentBinMix18/EMCAL_MB_0_90.root")); // Old Files with shshBkg = 0.40-2.00
       sShShNCentMix = "_ShSh0.40-2.00";
       systNMix = true;
     }
     else if (systNMix45)
     {
       cout << "N Centrality bin used for Mix Systematics: ON"<< endl;
-      fileDataMix = TFile::Open(Form("~/work/histogram/IsoPhotonHadronCorrelations/RootFiles/NCentBinMix45/EMCAL_MB_0_90.root")); // Old Files with shshBkg = 0.40-2.00
+      fileDataMix = TFile::Open(Form("RootFiles/NCentBinMix45/EMCAL_MB_0_90.root")); // Old Files with shshBkg = 0.40-2.00
       sShShNCentMix = "_ShSh0.40-2.00";
       systNMix = true;
     }
