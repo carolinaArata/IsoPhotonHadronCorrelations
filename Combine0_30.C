@@ -51,7 +51,7 @@ double fZYAM_Mix(TH1F *hSame, TH1F *hMix);
 /////// This macro compute the combination between 0-10% and 10-30% centrality intervals ///////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror = true, TString shshBkg = "0.40-1.00", TString dirFiles = "~/work/histogram/FromScratch/checkCode", bool bPlot = true, TString dirPlot = "~/work/histogram/FromScratch/FigcheckCode")
+void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror = true, TString shshBkg = "0.40-1.00", TString dirOutFiles = "Output_checkCode", bool bPlot = true, TString dirPlot = "Output_FigcheckCode")
 {
   TString sHistName = "AnaPhotonHadronCorr_";
   TString shshString[2] = {"0.10-0.30", shshBkg};
@@ -109,7 +109,7 @@ void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror 
 
   TFile *fileData[nCen];                                                                                                                                             // input file containing results in 0-10% and 10-30%
   TFile *fPurity = new TFile("~/work/histogram/IsoPhotonHadronCorrelations/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root"); // input file containing purity
-  TFile *fOutPut = new TFile(Form("%s/fPlot%s_Cen0_30%s.root", dirFiles.Data(), shshBkg.Data(), sPtAll.Data()), "RECREATE");                                         // Output file containing purity
+  TFile *fOutPut = new TFile(Form("%s/fPlot%s_Cen0_30%s.root", dirOutFiles.Data(), shshBkg.Data(), sPtAll.Data()), "RECREATE");                                         // Output file containing purity
   // cout << fOutPut->GetName() << endl;
   cout << "Get input files in 0-10% and 10-30% centrality bins" << endl;
   for (int iCen = 0; iCen < nCen; iCen++)
@@ -122,9 +122,10 @@ void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror 
     histPurStat[iCen] = (TH1F *)fPurity->Get(Form("Purity_Cen%d_R0.2", iCen));
     funcPur[iCen] = histPur[iCen]->GetFunction("purityFitCombinedSigmoid");
 
-    fileData[iCen] = new TFile(Form("%s/fPlot%s%s%s.root", dirFiles.Data(), shshBkg.Data(), sCent.Data(), sPtAll.Data()));
+    fileData[iCen] = new TFile(Form("%s/fPlot%s%s%s.root", dirOutFiles.Data(), shshBkg.Data(), sCent.Data(), sPtAll.Data()));
 
-    gSystem->Exec(Form("mkdir %s", dirFiles.Data()));
+    TString processline = Form(".! mkdir -pv %s",dirOutFiles.Data()) ;
+    gROOT->ProcessLine(processline.Data());
 
     cout << "Getter Pt Trig distrib centrality bins: " << iCen << endl;
     for (int iso = 1; iso < nIso; iso++)

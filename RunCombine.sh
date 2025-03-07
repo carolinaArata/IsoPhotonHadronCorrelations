@@ -6,7 +6,7 @@
 
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
-Combine0_30( 18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCode", true, "~/work/histogram/FromScratch/FigcheckCode")
+Combine0_30( 18, 40, 0, true, "0.40-1.00", "Output_checkCode", true, "Output_FigcheckCode")
 .q
 EOF
 
@@ -18,7 +18,7 @@ EOF
 
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
-Combine0_30(18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystPur09", true, "~/work/histogram/FromScratch/FigcheckCodeSystPur09")
+Combine0_30(18, 40, 0, true, "0.40-1.00", "Output_checkCodeSystPur09", true, "Output_FigcheckCodeSystPur09")
 .q
 EOF
 
@@ -27,7 +27,7 @@ EOF
 
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
-Combine0_30(18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystPur11", true, "~/work/histogram/FromScratch/FigcheckCodeSystPur11")
+Combine0_30(18, 40, 0, true, "0.40-1.00", "Output_checkCodeSystPur11", true, "Output_FigcheckCodeSystPur11")
 .q
 EOF
 
@@ -40,7 +40,7 @@ EOF
 
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
-Combine0_30( 18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystNMix18", true, "~/work/histogram/FromScratch/FigcheckCodeSystNCentrMix18")
+Combine0_30( 18, 40, 0, true, "0.40-1.00", "Output_checkCodeSystNMix18", true, "Output_FigcheckCodeSystNCentrMix18")
 .q
 EOF
 
@@ -49,7 +49,7 @@ EOF
 
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
-Combine0_30( 18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeSystNMix45", true, "~/work/histogram/FromScratch/FigcheckCodeSystNCentrMix45")
+Combine0_30( 18, 40, 0, true, "0.40-1.00", "Output_checkCodeSystNMix45", true, "Output_FigcheckCodeSystNCentrMix45")
 .q
 EOF
 
@@ -61,7 +61,7 @@ EOF
 
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
-Combine0_30(18, 40, 0, true, "0.35-1.00", "~/work/histogram/FromScratch/checkCodeSystShSh", true, "~/work/histogram/FromScratch/FigcheckCodeSystShSh")
+Combine0_30(18, 40, 0, true, "0.35-1.00", "Output_checkCodeSystShSh", true, "Output_FigcheckCodeSystShSh")
 .q
 EOF
 
@@ -70,7 +70,7 @@ EOF
 
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
-Combine0_30(18, 40, 0, true, "0.40-1.50", "~/work/histogram/FromScratch/checkCodeSystShSh", true, "~/work/histogram/FromScratch/FigcheckCodeSystShSh")
+Combine0_30(18, 40, 0, true, "0.40-1.50", "Output_checkCodeSystShSh", true, "Output_FigcheckCodeSystShSh")
 .q
 EOF
 
@@ -79,7 +79,7 @@ EOF
 
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
-Combine0_30(18, 40, 0, true, "0.40-2.00", "~/work/histogram/FromScratch/checkCodeSystShSh", true, "~/work/histogram/FromScratch/FigcheckCodeSystShSh")
+Combine0_30(18, 40, 0, true, "0.40-2.00", "Output_checkCodeSystShSh", true, "Output_FigcheckCodeSystShSh")
 .q
 EOF
 
@@ -90,7 +90,7 @@ EOF
 #-----------------------------------------------------------------------------------------------
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
-Combine0_30(18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeTrackEff", true, "~/work/histogram/FromScratch/FigcheckCodeTrackEff")
+Combine0_30(18, 40, 0, true, "0.40-1.00", "Output_checkCodeTrackEff", true, "Output_FigcheckCodeTrackEff")
 .q
 EOF
 
@@ -101,7 +101,7 @@ EOF
 #----------------------------------------------------------------------------------------------
 root -b -l <<EOF
 .L ~/work/histogram/IsoPhotonHadronCorrelations/Combine0_30.C
-Combine0_30(18, 40, 0, true, "0.40-1.00", "~/work/histogram/FromScratch/checkCodeZYAM", true, "~/work/histogram/FromScratch/FigcheckCodeZYAM")
+Combine0_30(18, 40, 0, true, "0.40-1.00", "Output_checkCodeZYAM", true, "Output_FigcheckCodeZYAM")
 .q
 EOF
 
