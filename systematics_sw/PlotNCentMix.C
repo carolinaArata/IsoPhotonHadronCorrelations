@@ -25,7 +25,7 @@ double assocZt[] = {0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 1.00};
 Double_t range_UE[2] = {3 * (TMath::Pi()) / 10, TMath::Pi() / 2};
 
 const int nCentMixUsed = 3;
-TString CentMixUsed[] = {"~/work/histogram/FromScratch/checkCode", "~/work/histogram/FromScratch/checkCodeSystNMix18", "~/work/histogram/FromScratch/checkCodeSystNMix45"};
+TString CentMixUsed[] = {"Output_checkCode", "Output_checkCodeSystNMix18", "Output_checkCodeSystNMix45"};
 // TString CentMixUsed[] = {"NMix9_ZtMergedMore", "NMix45_ZtMergedMore"}; files with ShSh Bkg 0.40-2.00
 // TString CentMixUsed[] = {"~/work/histogram/FromScratch/checkCode", "~/work/histogram/FromScratch/checkCodeSystNCentrMix"};
 TString shshLeg[] = {"0.10-0.30", "0.40-1.00"};
@@ -52,7 +52,7 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 		cenBins.push_back(30);
 		cenBins.push_back(50);
 		cenBins.push_back(90);
-		dirPlot = "~/work/histogram/Systematics_checkCode0_30/SystNCentXMix";
+		dirPlot = "Systematics_checkCode0_30/SystNCentXMix";
 	}
 	else if (!b0_30)
 	{
@@ -62,11 +62,15 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 		cenBins.push_back(30);
 		cenBins.push_back(50);
 		cenBins.push_back(90);
-		dirPlot = "~/work/histogram/Systematics_checkCode/SystNCentXMix";
+		dirPlot = "Systematics_checkCode/SystNCentXMix";
 	}
 
-	TString sPtAll = Form("_Pt%2.0f_%2.0f", ptMin, ptMax);
+	TString processline = Form(".! mkdir -pv %s",dirPlot.Data()) ;
+  gROOT->ProcessLine(processline.Data());
 
+	TString sPtAll = Form("_Pt%2.0f_%2.0f", ptMin, ptMax);
+	TFile *fNMixCentSyst = new TFile(Form("%s/fNMixCentSyst%s.root", dirPlot.Data(), sPtAll.Data()), "RECREATE");
+	
 	TH1F *hDPhiMixedPreZYAM[nCentMixUsed][nCen][nPtTrig][nZtBins];
 	TH1F *hDPhiMixed[nCentMixUsed][nCen][nPtTrig][nZtBins];
 	TH1F *hDPhiSameNoUE[nCentMixUsed][nCen][nPtTrig][nZtBins];
@@ -75,8 +79,6 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 	TH1F *hNMixCentUncer[nCen];
 	TH1F *hDiv[nCentMixUsed][nCen];
 
-	gSystem->Exec(Form("mkdir %s", dirPlot.Data()));
-	TFile *fNMixCentSyst = new TFile(Form("%s/fNMixCentSyst%s.root", dirPlot.Data(), sPtAll.Data()), "RECREATE");
 
 	TString mirror;
 	if (Mirror)

@@ -40,7 +40,7 @@ void PlotStyle(TH1F *hPlot, int kMarker, double kMarkerSize, int kColor, TString
 
 TLatex *LatexStd(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax, float ptMin, float ptMax);
 TLegend *LegStd(TLegend *leg, double xpos1, double ypos1, double xpos2, double ypos2);
-void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", bool Mirror = true, TString dirFiles = "~/work/histogram/FromScratch/checkCodeSystShSh", TString shshBkg = "0.40-1.00", TString dirRef = "~/work/histogram/FromScratch/checkCode", bool b0_30 = false)
+void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", bool Mirror = true, TString dirInputFilesSyst = "Output_checkCodeSystShSh", TString shshBkg = "0.40-1.00", TString dirInputFileRef = "Output_checkCode", bool b0_30 = true)
 {
 
 	Int_t nCen;
@@ -73,95 +73,15 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 	TString dirPlot;
 	if (b0_30)
 	{
-		dirPlot = Form("~/work/histogram/Systematics_checkCode0_30/ShShSyst");
-		gSystem->Exec(Form("mkdir %s", dirPlot.Data()));
+		dirPlot = Form("Systematics_checkCode0_30/ShShSyst");
 	}
 	else if (!b0_30)
 	{
-		dirPlot = Form("~/work/histogram/Systematics_checkCode/ShShSyst");
-		gSystem->Exec(Form("mkdir %s", dirPlot.Data()));
-	}
-	/*TFile *fIn_Pi0PtDep = new TFile("~/work/histogram/DataShShMax150/EMCAL_MB_0_90.root");
-	TFile *fIn_Pi0MultiShBkg = new TFile("~/work/histogram/ShShBkgPtDep/EMCAL_MB_0_90.root");
-
-	TH1F *hPtTrigPi0[nShSh][nCen];
-	TH1F *hPtTrigPi0Ratio[nShSh][nCen];
-
-	TH1F *h1AnalyzNEvents[2];
-
-	h1AnalyzNEvents[0] = (TH1F *)fIn_Pi0PtDep->Get("hNEvents");
-	h1AnalyzNEvents[1] = (TH1F *)fIn_Pi0MultiShBkg->Get("hNEvents");
-
-	double NumbAnalyzEv = h1AnalyzNEvents[1]->GetBinContent(1);
-		h1AnalyzNEvents[0] = (TH1F *)fIn_Pi0PtDep->Get("hNEvents");
-	h1AnalyzNEvents[1] = (TH1F *)fIn_Pi0MultiShBkg->Get("hNEvents");
-
-	double NumbAnalyzEv[2];
-	NumbAnalyzEv[0] = h1AnalyzNEvents[0]->GetBinContent(1);
-	NumbAnalyzEv[1] = h1AnalyzNEvents[1]->GetBinContent(1);
-
-	// Getter Plots
-	for (int iCen = 0; iCen < nCen; iCen++)
-	{
-		hPtTrigPi0[0][iCen] = (TH1F *)fIn_Pi0PtDep->Get(Form("AnaPhotonHadronCorr_Iso1_ShSh%s_Cen%d_%d_hPtTrigger", shshLeg[0].Data(), cenBins[iCen], cenBins[iCen + 1]));
-		hPtTrigPi0[1][iCen] = (TH1F *)fIn_Pi0MultiShBkg->Get(Form("AnaPhotonHadronCorr_Iso1_ShSh%s_Cen%d_%d_hPtTrigger", shshLeg[1].Data(), cenBins[iCen], cenBins[iCen + 1]));
-		hPtTrigPi0[2][iCen] = (TH1F *)fIn_Pi0MultiShBkg->Get(Form("AnaPhotonHadronCorr_Iso1_ShSh%s_Cen%d_%d_hPtTrigger", shshLeg[2].Data(), cenBins[iCen], cenBins[iCen + 1]));
-		hPtTrigPi0[3][iCen] = (TH1F *)fIn_Pi0MultiShBkg->Get(Form("AnaPhotonHadronCorr_Iso1_ShSh%s_Cen%d_%d_hPtTrigger", shshLeg[3].Data(), cenBins[iCen], cenBins[iCen + 1]));
-		hPtTrigPi0[4][iCen] = (TH1F *)fIn_Pi0MultiShBkg->Get(Form("AnaPhotonHadronCorr_Iso1_ShSh%s_Cen%d_%d_hPtTrigger", shshLeg[4].Data(), cenBins[iCen], cenBins[iCen + 1]));
-
-		hPtTrigPi0[0][iCen]->Scale(1 / NumbAnalyzEv[0]);
-		hPtTrigPi0[1][iCen]->Scale(1 / NumbAnalyzEv[1]);
-		hPtTrigPi0[2][iCen]->Scale(1 / NumbAnalyzEv[1]);
-		hPtTrigPi0[3][iCen]->Scale(1 / NumbAnalyzEv[1]);
-		hPtTrigPi0[4][iCen]->Scale(1 / NumbAnalyzEv[1]);
-
-		for (int iSh = 0; iSh < nShSh; iSh++)
-		{
-			hPtTrigPi0[iSh][iCen]->SetDirectory(0);
-			PlotStyle(hPtTrigPi0[iSh][iCen], kStyle[iSh], 2, kColor[iSh], "p_{#it{T}}^{trig} (GeV/#it{c})", "Entries");
-			hPtTrigPi0Ratio[iSh][iCen] = (TH1F *)hPtTrigPi0[iSh][iCen]->Clone(Form("hPtTrig%s_Cent%d_%d", shshLeg[iSh].Data(), cenBins[iCen], cenBins[iCen + 1]));
-		}
-
-		h3PtM02SumPtCone_Cent[iCen] = (TH3F *)fIn_Pi0MultiShBkg->Get(Form("AnaIsolPhoton_hPtM02SumPtCone_Cent%d", iCen));
-		// h3PtM02SumPtCone_Cent[iCen]->GetZaxis()->SetRange(h3PtM02SumPtCone_Cent[iCen]->GetZaxis()->FindBin(2.0001), h3PtM02SumPtCone_Cent[iCen]->GetZaxis()->GetNbins());
-		h2PtM02Sum[iCen] = (TH2F *)h3PtM02SumPtCone_Cent[iCen]->Project3D("xy");
-		h2PtM02Sum[iCen]->SetDirectory(0);
+		dirPlot = Form("Systematics_checkCode/ShShSyst");
 	}
 
-	// Plots
-
-	TLegend *legPtTrigPi0Ratio[nCen];
-	for (int iCen = 0; iCen < nCen; iCen++)
-	{
-
-		TCanvas *cPtTrigPi0 = new TCanvas(Form("cPtTrigPi0"), Form("cPtTrigPi0"), 800, 600);
-		TCanvas *cPtTrigPi0Ratio = new TCanvas(Form("cPtTrigPi0Ratio"), Form("cPtTrigPi0Ratio"), 800, 600);
-		for (int iSh = 0; iSh < nShSh; iSh++)
-		{
-			cPtTrigPi0->cd();
-			hPtTrigPi0[iSh][iCen]->Draw("same");
-
-			hPtTrigPi0Ratio[iSh][iCen]->Divide(hPtTrigPi0[0][iCen]);
-			cPtTrigPi0Ratio->cd();
-
-			hPtTrigPi0Ratio[iSh][iCen]->SetLineWidth(3);
-			hPtTrigPi0Ratio[iSh][iCen]->SetMaximum(4);
-			hPtTrigPi0Ratio[iSh][iCen]->SetMinimum(-3);
-			hPtTrigPi0Ratio[iSh][iCen]->Draw("same");
-		}
-		legPtTrigPi0Ratio[iCen] = new TLegend(0.65, 0.60, 0.85, 0.80);
-		legPtTrigPi0Ratio[iCen]->SetFillColor(kWhite);
-		legPtTrigPi0Ratio[iCen]->SetLineWidth(0);
-		legPtTrigPi0Ratio[iCen]->AddEntry(hPtTrigPi0Ratio[0][iCen], "Nominal ShShBkg 0.40-2.00", "lp");
-		for (int iSh = 1; iSh < nShSh; iSh++)
-		{
-			legPtTrigPi0Ratio[iCen]->AddEntry(hPtTrigPi0Ratio[iSh][iCen], Form("ShShBkg %s", shshLeg[iSh].Data()), "lp");
-		}
-		legPtTrigPi0Ratio[iCen]->Draw("same");
-	}
-
-
-	*/
+	TString processline = Form(".! mkdir -pv %s",dirPlot.Data()) ;
+  gROOT->ProcessLine(processline.Data());
 
 	int nShShSyst = 4;
 	TH1F *hZt[nShShSyst][nCen];
@@ -175,13 +95,13 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 	for (int iCen = 0; iCen < nCen; iCen++)
 	{
 		TString sCent = Form("Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
-		fPlot[0][iCen] = new TFile(Form("%s/fPlot%s_%s%s.root", dirRef.Data(), shshLeg[0].Data(), sCent.Data(), sPtAll.Data()));
+		fPlot[0][iCen] = new TFile(Form("%s/fPlot%s_%s%s.root", dirInputFileRef.Data(), shshLeg[0].Data(), sCent.Data(), sPtAll.Data()));
 		hZt[0][iCen] = (TH1F *)fPlot[0][iCen]->Get(Form("hZtEffCorrIso1Photon_%s%s", sCent.Data(), sPtAll.Data()));
 		cout << hZt[0][iCen] << endl;
 
 		for (int iSh = 1; iSh < nShShSyst; iSh++)
 		{
-			fPlot[iSh][iCen] = new TFile(Form("%s/fPlot%s_%s%s.root", dirFiles.Data(), shshLeg[iSh].Data(), sCent.Data(), sPtAll.Data()));
+			fPlot[iSh][iCen] = new TFile(Form("%s/fPlot%s_%s%s.root", dirInputFilesSyst.Data(), shshLeg[iSh].Data(), sCent.Data(), sPtAll.Data()));
 			hZt[iSh][iCen] = (TH1F *)fPlot[iSh][iCen]->Get(Form("hZtEffCorrIso1Photon_%s%s", sCent.Data(), sPtAll.Data()));
 			cout << hZt[iSh][iCen] << endl;
 		}

@@ -42,7 +42,7 @@ TLatex *LatexStd(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax, 
 TLegend *LegStd(TLegend *leg, double xpos1, double ypos1, double xpos2, double ypos2);
 TLatex *LatexStdISORatio(TLatex *lat, double xpos, double ypos, double texSize, int cenMin, int cenMax, float ptMin, float ptMax, bool bCen);
 
-void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mixed", TString sDirRefFiles = "~/work/histogram/FromScratch/checkCode", bool Mirror = true,TString shshBkg = "0.40-1.00", bool b0_30 = true)
+void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mixed", TString dirInputFiles = "Output_checkCode", bool Mirror = true,TString shshBkg = "0.40-1.00", bool b0_30 = true)
 {
 
   Int_t nCen;
@@ -84,15 +84,16 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
 
   if (b0_30)
   {
-    dirPlot = Form("~/work/histogram/Systematics_checkCode0_30/Purity");
-    gSystem->Exec(Form("mkdir %s", dirPlot.Data()));
+    dirPlot = Form("Systematics_checkCode0_30/Purity");
   }
   if (!b0_30)
   {
-    dirPlot = Form("~/work/histogram/Systematics_checkCode/Purity");
-    gSystem->Exec(Form("mkdir %s", dirPlot.Data()));
+    dirPlot = Form("Systematics_checkCode/Purity");
   }
 
+	TString processline = Form(".! mkdir -pv %s",dirPlot.Data()) ;
+  gROOT->ProcessLine(processline.Data());
+  
   TFile *fPurSyst = new TFile(Form("%s/fPurSyst%s%s%s.root", dirPlot.Data(), sMixed.Data(), shshBkg.Data(), sPtAll.Data()), "RECREATE");
 
   TLegend *legPurData[nCen];
@@ -105,7 +106,7 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     TString sCent = Form("Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
     for (int iPur = 0; iPur < nPurUsed; iPur++)
     {
-      fPlot[iPur] = new TFile(Form("%s%s/fPlot%s_%s%s.root", sDirRefFiles.Data(), PurUsed[iPur].Data(), shshBkg.Data(), sCent.Data(), sPtAll.Data()));
+      fPlot[iPur] = new TFile(Form("%s%s/fPlot%s_%s%s.root", dirInputFiles.Data(), PurUsed[iPur].Data(), shshBkg.Data(), sCent.Data(), sPtAll.Data()));
       hZt[iPur][iCen] = (TH1F *)fPlot[iPur]->Get(Form("hZtEffCorrIso1Photon_%s%s", sCent.Data(), sPtAll.Data()));
       cout << hZt[iPur][iCen] << endl;
     }

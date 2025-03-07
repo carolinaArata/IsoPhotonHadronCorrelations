@@ -49,7 +49,7 @@ void PlotStyle(TH1F *hPlot, int kMarker, double kMarkerSize, int kColor, TString
 TLatex *LatexDPhi(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax);
 TLegend *LegStd(TLegend *leg, double xpos1, double ypos1, double xpos2, double ypos2);
 TH1F *SumPtBinXzt(TH1F *hTrigSame, Float_t PtTrigger[npt], int index1, int index2, TH1F *hzTbin[npt], TH1F *hzTbinAll, TH1F *hPur, TF1 *fPur, double systPur, Bool_t bData);
-void SystematicsZYAM(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TString sMixed = "Mixed", TString shshBkg = "0.40-1.00", TString dirFileResults = "~/work/histogram/FromScratch/checkCode", bool b0_30 = true)
+void SystematicsZYAM(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TString sMixed = "Mixed", TString shshBkg = "0.40-1.00", TString dirInputFileResults = "Output_checkCode", bool b0_30 = false)
 {
 
   Int_t nCen;
@@ -63,7 +63,7 @@ void SystematicsZYAM(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true,
     cenBins.push_back(30);
     cenBins.push_back(50);
     cenBins.push_back(90);
-    dirPlot = "~/work/histogram/Systematics_checkCode0_30/crossZYAM";
+    dirPlot = "Systematics_checkCode0_30/crossZYAM";
   }
   else if (!b0_30)
   {
@@ -73,7 +73,7 @@ void SystematicsZYAM(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true,
     cenBins.push_back(30);
     cenBins.push_back(50);
     cenBins.push_back(90);
-    dirPlot = "~/work/histogram/Systematics_checkCode/crossZYAM";
+    dirPlot = "Systematics_checkCode/crossZYAM";
   }
 
   TString mirror;
@@ -85,7 +85,8 @@ void SystematicsZYAM(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true,
   TString shshString[2] = {"0.10-0.30", shshBkg};
   TString sPtAll = Form("_Pt%2.0f_%2.0f", ptMin, ptMax);
 
-  gSystem->Exec(Form("mkdir %s", dirPlot.Data()));
+  TString processline = Form(".! mkdir -pv %s",dirPlot.Data()) ;
+  gROOT->ProcessLine(processline.Data());
 
   // index pt start and stop
   int nsize = sizeof(ptTrig) / sizeof(ptTrig[0]);
@@ -134,8 +135,8 @@ void SystematicsZYAM(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true,
     funcPur[iCen] = histPur[iCen]->GetFunction("purityFitCombinedSigmoid");
     // Results
     cout << "Open files with results from Mixed and from ZYAM Monte Carlo" << endl;
-    fPlotMix[iCen] = new TFile(Form("%s/fPlot%s%s%s.root", dirFileResults.Data(), shshBkg.Data(), sCent.Data(), sPtAll.Data()));
-    fPlotZYAM[iCen] = new TFile(Form("%sZYAM/fPlot%s%s%s.root", dirFileResults.Data(), shshBkg.Data(), sCent.Data(), sPtAll.Data()));
+    fPlotMix[iCen] = new TFile(Form("%s/fPlot%s%s%s.root", dirInputFileResults.Data(), shshBkg.Data(), sCent.Data(), sPtAll.Data()));
+    fPlotZYAM[iCen] = new TFile(Form("%sZYAM/fPlot%s%s%s.root", dirInputFileResults.Data(), shshBkg.Data(), sCent.Data(), sPtAll.Data()));
     hTriggerSamMCRec[iCen] = (TH1F *)fPlotMix[iCen]->Get("AnaPhotonHadronCorr_Iso1_ShSh0.10-0.30" + sCent + "_hPtTrigger_MCPhoton");
     cout << hTriggerSamMCRec[iCen] << endl;
 

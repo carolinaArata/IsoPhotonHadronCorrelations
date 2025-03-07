@@ -20,7 +20,6 @@
 using std::cout;
 using std::endl;
 
-
 int nZtBin = 6;
 double assocZt[] = {0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 1.00};
 
@@ -37,7 +36,7 @@ void ZtFunction(TH1F *hDeltaPhi, TH1F *hZT, int bin);
 void PlotStyle(TH1F *hPlot, int kMarker, double kMarkerSize, int kColor, TString titleX, TString titleY);
 TLatex *LatexStd(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax, float ptMin, float ptMax);
 
-void TrackIneffSyst(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TString fName = "fPlot", TString shshBkg = "0.40-1.00", TString dirRefData = "~/work/histogram/FromScratch/checkCode", TString dirFiles = "~/work/histogram/FromScratch/checkCodeTrackEff", bool b0_30 = true)
+void TrackIneffSyst(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TString fName = "fPlot", TString shshBkg = "0.40-1.00", TString dirRefData = "Output_checkCode", TString dirFiles = "Output_checkCodeTrackEff", bool b0_30 = true)
 {
 
   TString sPtAll = Form("_Pt%2.0f_%2.0f", ptMin, ptMax); // define pT all range
@@ -45,6 +44,7 @@ void TrackIneffSyst(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, 
   // define centrality bins
   Int_t nCen;
   std::vector<Int_t> cenBins;
+  TString dirPlot;
   if (b0_30)
   {
     nCen = 3;
@@ -52,6 +52,7 @@ void TrackIneffSyst(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, 
     cenBins.push_back(30);
     cenBins.push_back(50);
     cenBins.push_back(90);
+    dirPlot = "Systematics_checkCode0_30/TrackIneff";
   }
   else if (!b0_30)
   {
@@ -61,23 +62,13 @@ void TrackIneffSyst(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, 
     cenBins.push_back(30);
     cenBins.push_back(50);
     cenBins.push_back(90);
+    dirPlot = "Systematics_checkCode/TrackIneff";
   }
 
   // define directory for the plots and the root file where I save the systematics
-  TString dirPlot;
-  TFile *fSystTrackIneff;
-  if (b0_30)
-  {
-    dirPlot = "~/work/histogram/Systematics_checkCode0_30/TrackIneff";
-    gSystem->Exec(Form("mkdir %s", dirPlot.Data()));
-    fSystTrackIneff = new TFile(Form("%s/fSystTrackIneff%s.root", dirPlot.Data(), sPtAll.Data()), "RECREATE");
-  }
-  else if (!b0_30)
-  {
-    dirPlot = "~/work/histogram/Systematics_checkCode/TrackIneff";
-    gSystem->Exec(Form("mkdir %s", dirPlot.Data()));
-    fSystTrackIneff = new TFile(Form("%s/fSystTrackIneff%s.root", dirPlot.Data(), sPtAll.Data()), "RECREATE");
-  }
+  TString processline = Form(".! mkdir -pv %s", dirPlot.Data());
+  gROOT->ProcessLine(processline.Data());
+  TFile *fSystTrackIneff = new TFile(Form("%s/fSystTrackIneff%s.root", dirPlot.Data(), sPtAll.Data()), "RECREATE");
 
   // ZT Distribution plots
   TH1F *hZtPlot[nCen];

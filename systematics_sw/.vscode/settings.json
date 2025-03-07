@@ -1,0 +1,26 @@
+{
+  "files.associations": {
+    "TrackIneffSyst.C": "cpp",
+    "ShShSyst.C": "cpp",
+    "PlotNCentMix.C": "cpp",
+    "PlotPuritySyst.C": "cpp",
+    "PlotUESyst.C": "cpp",
+    "PlotAllSystem.C": "cpp",
+    "Gamma_HCorrelations.C": "cpp",
+    "IsoGammaHadron.C": "cpp",
+    "PlotZtCent.C": "cpp",
+    "PlotIsoGammaHadron.C": "cpp",
+    "iostream": "cpp",
+    "ostream": "cpp",
+    "UEforClusters.C": "cpp",
+    "new": "cpp",
+    "RatioToPYTHIA.C": "cpp",
+    "CompareNewResults.C": "cpp",
+    "PlotZtCentCopy.C": "cpp",
+    "Combine0_30.C": "cpp",
+    "UESystem.C": "cpp",
+    "PlotZtCentCopyNew.C": "cpp",
+    "vector": "cpp",
+    "UEforClusterCheck.C": "cpp"
+  }
+}

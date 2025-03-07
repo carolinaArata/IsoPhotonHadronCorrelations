@@ -34,7 +34,7 @@ const Int_t markers[] = {kFullCircle, kFullSquare, kFullCross, 23, kFullStar, 22
 
 TFile *fNMixSyst;
 void PrintSyst(TH1F *hSyst);
-void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, TString Mixed = "Mixed", TString shshBkg = "0.40-1.00", TString dirRef = "~/work/histogram/FromScratch/checkCode", bool b0_30 = true)
+void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, TString Mixed = "Mixed", TString shshBkg = "0.40-1.00", TString dirRef = "Output_checkCode", bool b0_30 = true)
 {
 
   Int_t nCen;
@@ -48,7 +48,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     cenBins.push_back(30);
     cenBins.push_back(50);
     cenBins.push_back(90);
-    dirPlot = "~/work/histogram/Systematics_checkCode0_30";
+    dirPlot = "Systematics_checkCode0_30";
   }
   else if (!b0_30)
   {
@@ -58,9 +58,12 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     cenBins.push_back(30);
     cenBins.push_back(50);
     cenBins.push_back(90);
-    dirPlot = "~/work/histogram/Systematics_checkCode";
+    dirPlot = "Systematics_checkCode";
   }
 
+	TString processline = Form(".! mkdir -pv %s",dirPlot.Data()) ;
+  gROOT->ProcessLine(processline.Data());
+  
   TString sMirror = " ";
   if (bMirror)
     sMirror = "Mirror";
@@ -73,7 +76,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   // Get zT distributions
   cout << "Get zT distributions" << endl;
   TFile *fResultsZt[nCen];
-  TFile *fileNLO = new TFile(" ~/work/histogram/IsoPhotonHadronCorrelations/fileNLO.root "); // directory for theory
+  TFile *fileNLO = new TFile("RootFiles/fileNLO.root"); // directory for theory
 
   // Get all the systematics from the other files
   cout << "Define all the directories to get the systematic uncertainties" << endl;
@@ -90,7 +93,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   // N centrality bins used for mixing
   TFile *fNMixSyst = new TFile(Form("%s/SystNCentXMix/fNMixCentSyst%s.root", dirPlot.Data(), sPtAll.Data()));
   // Residual UE
-  TFile *fUEResidSyst = new TFile(Form("~/work/histogram/Systematics_checkCode/SystResidualUE/fUEResidSyst%s%s.root", shshBkg.Data(), sPtAll.Data()));
+  TFile *fUEResidSyst = new TFile(Form("Systematics_checkCode/SystResidualUE/fUEResidSyst%s%s.root", shshBkg.Data(), sPtAll.Data()));
   cout << "Residual UE syst: " << fUEResidSyst << endl;
 
   // Define histograms

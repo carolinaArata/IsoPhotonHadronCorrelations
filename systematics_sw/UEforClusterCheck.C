@@ -53,11 +53,11 @@ TLatex *LatexStdIcp(TLatex *lat, double xpos, double ypos, int cenMin, int cenMa
 TH1F *SumPtBinXzt(TH1F *hTrigSame, Float_t PtTrigger[npt], int index1, int index2, TH1F *hzTbin[npt], TH1F *hzTbinAll, TH1F *hPur, TF1 *fPur, double systPur, Bool_t bData);
 TH1F *SumPtBinXzt0_30(Double_t nTrig0_30[npt], Float_t PtTrigger[npt], int index1, int index2, TH1F *hzTbin[npt], TH1F *hzTbinAll, TH1F *hPur010, TF1 *fPur010, TH1F *hPur1030, TF1 *fPur1030, Double_t nTrig0_10[npt], Double_t nTrig10_30[npt], double systPur, Bool_t bData);
 
-void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.40-1.00", TString dirRefFiles = "~/work/histogram/FromScratch/checkCode", bool b0_30 = true)
+void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.40-1.00", TString dirInputFilesRef = "Output_checkCode", bool b0_30 = true)
 {
   Int_t nCen;
   std::vector<Int_t> cenBins;
-  TString dirPlot;
+  
 
   nCen = 4;
   cenBins.push_back(0);
@@ -65,7 +65,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
   cenBins.push_back(30);
   cenBins.push_back(50);
   cenBins.push_back(90);
-  dirPlot = "~/work/histogram/Systematics_checkCode";
+  TString dirPlot = "Systematics_checkCode/SystResidualUE";
 
   // Define strings
 
@@ -81,10 +81,11 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
   int index2 = distance(ptTrig, itr2);
   int nPtTrig = index2 - index1;
   cout << index1 << "___" << index2 << ", " << nPtTrig << endl;
-  gSystem->Exec(Form("mkdir %s/SystResidualUE", dirPlot.Data()));
+	TString processline = Form(".! mkdir -pv %s",dirPlot.Data()) ;
+  gROOT->ProcessLine(processline.Data());
 
   // Output file
-  TFile *fUEResidSyst = new TFile(Form(dirPlot + "/SystResidualUE/fUEResidSyst%s%s.root", shshBkg.Data(), sPtAll.Data()), "RECREATE");
+  TFile *fUEResidSyst = new TFile(Form(dirPlot + "/fUEResidSyst%s%s.root", shshBkg.Data(), sPtAll.Data()), "RECREATE");
 
   TH1F *histPur[nCen];
   TH1F *histPurStat[nCen];
@@ -124,7 +125,14 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
   double errFitSystErrIsoPhoton[nCen][nZtBin][nPtTrig];
   double fitSystErrFitValueMediaNoUE[nCen][nZtBin][nPtTrig];
 
-  TFile *fZYAMSyst = new TFile(Form("%s/crossZYAM/fZYAMSystMixed%s%s.root", dirPlot.Data(), shshBkg.Data(), sPtAll.Data()));
+  TFile *fZYAMSyst = TFile::Open(Form("Systematics_checkCode/crossZYAM/fZYAMSystMixed%s%s.root", shshBkg.Data(), sPtAll.Data()));
+  if (!fZYAMSyst)
+  {
+    cout << "ZYAM systematics has not be studied and the file doesn't exist" << endl;
+    cout << "Run ZYAM analysis and systematics" << endl;
+    return ;
+  }
+  
   TH1F *histSystMC[nCen][nPtTrig];
   TH1F *histSystMCXPtAll[nCen];
 
@@ -136,9 +144,9 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
-    fPlot[iCen] = new TFile(dirRefFiles + "/fPlot" + shshBkg + sCent + sPtAll + ".root");
+    fPlot[iCen] = new TFile(dirInputFilesRef + "/fPlot" + shshBkg + sCent + sPtAll + ".root");
     cout << "Get purity for centrality: " << sCent << endl;
-    TFile *fPurity = new TFile("~/work/histogram/IsoPhotonHadronCorrelations/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root");
+    TFile *fPurity = new TFile("RootFiles/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root");
     histPur[iCen] = (TH1F *)fPurity->Get(Form("Purity_Cen%d_R0.2_Sys", iCen));
     histPurStat[iCen] = (TH1F *)fPurity->Get(Form("Purity_Cen%d_R0.2", iCen));
     funcPur[iCen] = histPur[iCen]->GetFunction("purityFitCombinedSigmoid");
@@ -298,7 +306,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
-    TString sdirPlotXCent = Form("%s/SystResidualUE/Cen%d_%d", dirPlot.Data(), cenBins[iCen], cenBins[iCen + 1]);
+    TString sdirPlotXCent = Form("%s/Cen%d_%d", dirPlot.Data(), cenBins[iCen], cenBins[iCen + 1]);
     gSystem->Exec(Form("mkdir %s", sdirPlotXCent.Data()));
 
     cout << "Azimuthal plots and corresponding fits" << endl;
@@ -358,9 +366,9 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
         legfitIsoPhoton[iCen][izt][iptTr]->AddEntry(fitIsoPhoton[iCen][izt][iptTr], Form("clust^{iso}_{narr} p0 = %f#pm%f", fitIsoPhoton[iCen][izt][iptTr]->GetParameter(0), fitIsoPhoton[iCen][izt][iptTr]->GetParError(0)), "lp");
         legfitIsoPhoton[iCen][izt][iptTr]->Draw("same");
       }
-      cIsoClustNoUE[iCen][iptTr]->Print(dirPlot + Form("/SystResidualUE/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/cIsoClustNoUE" + sCent + sPtTrig + ".pdf");
-      cNoUEDiff[iCen][iptTr]->Print(dirPlot + Form("/SystResidualUE/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/cNoUEDiff" + sCent + sPtTrig + ".pdf");
-      cIsoPhoton[iCen][iptTr]->Print(dirPlot + Form("/SystResidualUE/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/cIsoPhoton" + sCent + sPtTrig + ".pdf");
+      cIsoClustNoUE[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/cIsoClustNoUE" + sCent + sPtTrig + ".pdf");
+      cNoUEDiff[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/cNoUEDiff" + sCent + sPtTrig + ".pdf");
+      cIsoPhoton[iCen][iptTr]->Print(dirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/cIsoPhoton" + sCent + sPtTrig + ".pdf");
     }
 
     cout << "Plots fit values" << endl;
@@ -403,12 +411,12 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
       histSystErrFitIsoPhoton[iCen][iptTr]->SetTitle(Form("%2.0f < #it{p}_{T}^{tr} < %2.0f GeV/#it{c} ", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]));
       histSystErrFitIsoPhoton[iCen][iptTr]->Draw();
     }
-    cOnlyFitIsoClustNoUE[iCen]->Print(dirPlot + Form("/SystResidualUE/IsoClustNoUEFitCen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
-    cSystErrIsoClustNoUE[iCen]->Print(dirPlot + Form("/SystResidualUE/IsoClustNoUESystErrCen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
-    cOnlyFitIsoClustMediaNoUE[iCen]->Print(dirPlot + Form("/SystResidualUE/IsoClustNoUEFitMediaCen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
-    cSystErrIsoClustMediaNoUE[iCen]->Print(dirPlot + Form("/SystResidualUE/IsoClustNoUESystErrMediaCen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
-    cOnlyFitIsoPhoton[iCen]->Print(dirPlot + Form("/SystResidualUE/IsoPhotonFitCen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
-    cSystErrIsoPhoton[iCen]->Print(dirPlot + Form("/SystResidualUE/IsoPhotonSystErrCen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
+    cOnlyFitIsoClustNoUE[iCen]->Print(dirPlot + Form("/IsoClustNoUEFitCen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
+    cSystErrIsoClustNoUE[iCen]->Print(dirPlot + Form("/IsoClustNoUESystErrCen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
+    cOnlyFitIsoClustMediaNoUE[iCen]->Print(dirPlot + Form("/IsoClustNoUEFitMediaCen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
+    cSystErrIsoClustMediaNoUE[iCen]->Print(dirPlot + Form("/IsoClustNoUESystErrMediaCen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
+    cOnlyFitIsoPhoton[iCen]->Print(dirPlot + Form("/IsoPhotonFitCen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
+    cSystErrIsoPhoton[iCen]->Print(dirPlot + Form("/IsoPhotonSystErrCen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
   }
 
   TCanvas *cSystErrAllPt_NarrWideMC = canvasStd("cSystErrAllPt_NarrWideMC", 2, 2);
@@ -434,7 +442,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
   }
   cSystErrAllPt_NarrWideMC->cd(2);
   legSystNarrWideMC[0]->Draw("same");
-  cSystErrAllPt_NarrWideMC->Print(dirPlot + Form("/SystResidualUE/cSystErrPtAll%s_NarrWide.pdf", sPtAll.Data()));
+  cSystErrAllPt_NarrWideMC->Print(dirPlot + Form("/cSystErrPtAll%s_NarrWide.pdf", sPtAll.Data()));
 
   TCanvas *cSystErrAllPt_NarrAllCen = canvasStd("cSystErrAllPt_NarrAllCen", 2, 2);
   TLatex *latSystErrAllCen_Narr[nCen];
@@ -450,7 +458,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
     //   hErrSystIsoPhoton[iCen]->Draw("same");
     //  hErrSystMediaNoUE[iCen]->Draw("same");
   }
-  cSystErrAllPt_NarrAllCen->Print(dirPlot + Form("/SystResidualUE/cSystErrPtAll%s_Narr.pdf", sPtAll.Data()));
+  cSystErrAllPt_NarrAllCen->Print(dirPlot + Form("/cSystErrPtAll%s_Narr.pdf", sPtAll.Data()));
 
   TCanvas *cSystErrAllPt_Narr[nCen];
   TLatex *latSystErrAllPt_Narr[nCen];
@@ -461,7 +469,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
     hErrSystNarrNoUE[iCen]->GetYaxis()->SetRangeUser(-0.10, 60);
     hErrSystNarrNoUE[iCen]->Draw("pl");
     latSystErrAllPt_Narr[iCen] = LatexStdSyst(latSystErrAllPt_Narr[iCen - 1], 0.450, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true, " ");
-    cSystErrAllPt_Narr[iCen]->Print(dirPlot + Form("/SystResidualUE/SystErrNarrCen%d_%d.pdf", cenBins[iCen], cenBins[iCen + 1]));
+    cSystErrAllPt_Narr[iCen]->Print(dirPlot + Form("/SystErrNarrCen%d_%d.pdf", cenBins[iCen], cenBins[iCen + 1]));
   }
 
   TF1 *fitNoUENarrCl[nCen][nZtBin][nPtTrig];
@@ -563,7 +571,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
   legUncert->AddEntry(fitExpo, "expo", "lp");
   legUncert->AddEntry(fitConst, "const", "lp");
   legUncert->Draw("same");
-  cSystNarr0_30->Print(dirPlot + Form("/SystResidualUE/SystErrNarrCen0_30.pdf"));
+  cSystNarr0_30->Print(dirPlot + Form("/SystErrNarrCen0_30.pdf"));
   histSystErrFitNoUENarr0_30PtRangeFitTrend = new TH1F(Form("histSystErrFitNoUENarr0_30PtRangeFitTrend%s", sPtAll.Data()), Form("histSystErrFitNoUENarr0_30PtRangeFitTrend%s", sPtAll.Data()), nZtBin, assocZt);
   for (int ibin = 0; ibin < nZtBin; ibin++)
   {
@@ -584,7 +592,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
 
   // fitExpo->Draw("same");
   // fitConst->Draw("same");
-  cSystNarr0_30FitTrend->Print(dirPlot + Form("/SystResidualUE/SystErrNarrCen0_30FitTrend.pdf"));
+  cSystNarr0_30FitTrend->Print(dirPlot + Form("/SystErrNarrCen0_30FitTrend.pdf"));
   fUEResidSyst->cd();
   histSystErrFitNoUENarr0_30PtRange->Write();
   histSystErrFitNoUENarr0_30PtRangeFitTrend->Write();
