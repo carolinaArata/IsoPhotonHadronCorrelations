@@ -108,7 +108,7 @@ void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror 
   /////////////////////////////////////////////////////////////////////////////
 
   TFile *fileData[nCen];                                                                                                                                             // input file containing results in 0-10% and 10-30%
-  TFile *fPurity = new TFile("~/work/histogram/IsoPhotonHadronCorrelations/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root"); // input file containing purity
+  TFile *fPurity = new TFile("RootFiles/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root"); // input file containing purity
   TFile *fOutPut = new TFile(Form("%s/fPlot%s_Cen0_30%s.root", dirOutFiles.Data(), shshBkg.Data(), sPtAll.Data()), "RECREATE");                                         // Output file containing purity
   // cout << fOutPut->GetName() << endl;
   cout << "Get input files in 0-10% and 10-30% centrality bins" << endl;
@@ -363,7 +363,7 @@ void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror 
   TH1F *hZtIsoGammaMCGen;
   TH1F *hZtIsoGammaMCRec;
 
-  TFile *fileMC = TFile::Open(Form("~/work/histogram/MCPtAssoc500/MC_GJ_0_90.root"));
+  TFile *fileMC = TFile::Open(Form("RootFiles/MC_GJShSh150/MC_GJSh150.root"));
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     cout << " MC Getter Pt Trig distrib centrality: " << iCen << endl;

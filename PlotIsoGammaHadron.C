@@ -16,7 +16,7 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
-#include "../Plotting.h"
+#include "Plotting.h"
 
 using std::cout;
 using std::endl;
