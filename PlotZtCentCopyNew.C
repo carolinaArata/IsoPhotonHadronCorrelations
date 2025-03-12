@@ -32,7 +32,7 @@ Int_t nAssoc = 7;
 int nZtBinThin = 9;
 double assocZtThinner[] = {0, 0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 0.80, 1.00, 1.05};
 
-void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, TString sMixed = "Mixed", TString shshBkg = "0.40-1.00", TString dirPlot = "~/work/histogram/zTfunct_PbPb_ppZtCheckCode", bool b0_30 = true)
+void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, TString sMixed = "Mixed", TString shshBkg = "0.40-1.00", TString dirPlot = "zTresults_PbPb_TheorycheckCode", TString dirInputRef = "Output_checkCode", bool b0_30 = true)
 {
 
   TString sMirror;
@@ -55,7 +55,7 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
     cenBins.push_back(30);
     cenBins.push_back(50);
     cenBins.push_back(90);
-    dirSyst = "~/work/histogram/Systematics_checkCode0_30";
+    dirSyst = "Systematics_checkCode0_30";
   }
   else if (!b0_30)
   {
@@ -65,14 +65,15 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
     cenBins.push_back(30);
     cenBins.push_back(50);
     cenBins.push_back(90);
-    dirSyst = "~/work/histogram/Systematics_checkCode";
+    dirSyst = "Systematics_checkCode";
   }
 
   TString shshString[2] = {"0.10-0.30", shshBkg};
   TString sPtAll = Form("_Pt%2.0f_%2.0f", ptMin, ptMax);
 
   // Define where to save the results
-  gSystem->Exec(Form("mkdir %s", dirPlot.Data()));
+  TString processline = Form(".! mkdir -pv %s",dirPlot.Data()) ;
+  gROOT->ProcessLine(processline.Data());
 
   // Getter zT distributions
   TFile *fPlot[nCen]; // root file with data and MC
@@ -82,7 +83,7 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
   TH1F *hZt_MC_Rec[nCen]; // MC Rec pp
   TH1F *h3[nCen];
 
-  TFile *fileNLO = new TFile(" ~/work/histogram/IsoPhotonHadronCorrelations/fileNLO.root ");
+  TFile *fileNLO = new TFile("RootFiles/fileNLO.root ");
   // Getter pQCD NLO calculations
   TGraphAsymmErrors *grIaaNLOmedian[nCen];
   TH1F *grDztNLOmedianpp;
@@ -106,7 +107,7 @@ void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, T
     /////////// data /////////
     /////////////////////////
     cout << "Get Data and MC and set Plot style" << sCent << endl;
-    fPlot[iCen] = new TFile(Form("~/work/histogram/FromScratch/checkCode/fPlot%s%s%s.root", shshString[1].Data(), sCent.Data(), sPtAll.Data()));
+    fPlot[iCen] = new TFile(Form("%s/fPlot%s%s%s.root", dirInputRef.Data(),shshString[1].Data(), sCent.Data(), sPtAll.Data()));
     hZt_MC_Gen[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtMCGenIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
     hZt_MC_Rec[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtMCRecIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
     hZtCent[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtEffCorrIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
