@@ -77,20 +77,16 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
   cout << iCen << " " << cenBins[iCen] << "-" << cenBins[iCen + 1] << endl;
   // Purity
 
-  TFile *fPurity = new TFile("~/work/histogram/FromScratch/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root");
+  TFile *fPurity = new TFile("RootFiles/Purity.root");
   histPur[iCen] = (TH1F *)fPurity->Get(Form("Purity_Cen%d_R0.2_Sys", iCen));
   histPurStat[iCen] = (TH1F *)fPurity->Get(Form("Purity_Cen%d_R0.2", iCen));
 
-  // TFile *fPurity = new TFile(Form("~/work/histogram/FromScratch/M02_xTalkLess_S0.10-0.30_IsoBkg_4.0_25.0/GJx1.0_WeightRaa/figures/Purity_R0.2_M02Bkg%s.root", shshBkg.Data()));
-  // histPur[iCen] = (TH1F *)fPurity->Get(Form("Cen%d", iCen));
-  // histPurStat[iCen] = (TH1F *)fPurity->Get(Form("Cen%d", iCen));
-
   funcPur[iCen] = histPur[iCen]->GetFunction("purityFitCombinedSigmoid");
 
-  bool bPlot = true;
-
-  gSystem->Exec(Form("mkdir %s", dirFiles.Data()));
-
+  bool bPlot = true;  
+  TString processline = Form(".! mkdir -pv %s", dirFiles.Data()) ;
+  gROOT->ProcessLine(processline.Data());
+  
   cout << iCen << " " << cenBins[iCen] << "-" << cenBins[iCen + 1] << endl;
   TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
   TString sPtAll = Form("_Pt%2.0f_%2.0f", ptMin, ptMax);
@@ -98,7 +94,6 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
   TFile *fOutPut = new TFile(Form("%s/fPlot%s%s%s.root", dirFiles.Data(), shshBkg.Data(), sCent.Data(), sPtAll.Data()), "RECREATE");
   cout << fOutPut->GetName() << endl;
 
-  gSystem->Exec(Form("mkdir %s", dirFiles.Data()));
   if (bZYAM)
     cout << "ZYAM UE subtraction has been chosen" << endl;
 
@@ -150,7 +145,6 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
       TString sShSh = Form("_ShSh%s", shshString[iSh].Data());
       for (int iGenType = 0; iGenType < nGenType; iGenType++)
       {
-        cout << "why" << endl;
         hTriggerMCGen[iso][iSh][iGenType] = (TH1F *)fileMC->Get(sHistName + sIso + sShSh + sCent + Form("_hMCPtTrigger_%s", sTypeMCGenType[iGenType].Data()));
         cout << hTriggerMCGen[iso][iSh][iGenType] << endl;
         hTriggerSamMCRec[iso][iSh][iGenType] = (TH1F *)fileMC->Get(sHistName + sIso + sShSh + sCent + Form("_hPtTrigger_MC%s", sTypeMCGenType[iGenType].Data()));
@@ -241,35 +235,44 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
           TString sPtTrig = Form("PtTr%2.0f_%2.0f", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]);
           for (int iGenType = 0; iGenType < nGenType; iGenType++)
           {
-            h3MCGen[iSh][iGenType]->SetAxisRange(ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1] - 0.0001, "X");
-            // h3MCGenPi0Decay->SetAxisRange(ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1] - 0.0001, "X");
+            // Generated
+            // 3D Gen
+            h3MCGen[iSh][iGenType]->SetAxisRange(ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1] - 0.0001, "X"); 
+            // 2D Gen
             h2DdPhidEtaMCGen[iso][iSh][iGenType][izt][iptTr] = (TH2F *)h3MCGen[iSh][iGenType]->Project3D("zy");
             h2DdPhidEtaMCGen[iso][iSh][iGenType][izt][iptTr]->SetName(Form("h2DdPhidEtaMCGen%s", sTypeMCGenType[iGenType].Data()) + sIso + sShSh + sZtBin + sPtTrig);
-
+            // 1D Gen
             hdPhiMCGen[iso][iSh][iGenType][izt][iptTr] = (TH1F *)h2DdPhidEtaMCGen[iso][iSh][iGenType][izt][iptTr]->ProjectionX(Form("hdPhiMCGen%s", sTypeMCGenType[iGenType].Data()) + sIso + sShSh + sZtBin + sPtTrig);
+            // Normalisation Gen
             hdPhiMCGen[iso][iSh][iGenType][izt][iptTr]->Scale(1. / hTriggerMCGen[iso][iSh][iGenType]->Integral(hTriggerMCGen[iso][iSh][iGenType]->FindBin(ptTrig[index1 + iptTr]), hTriggerMCGen[iso][iSh][iGenType]->FindBin(ptTrig[index1 + iptTr + 1] - 0.0001)));
-
-            cout << "pippo" << endl;
+            // Reconstructed
+            // 3D Rec
             h3SamMCRec[iSh][iGenType]->SetAxisRange(ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1] - 0.0001, "X");
+            // 2D Rec
             h2DdPhidEtaSamMCRec[iso][iSh][iGenType][izt][iptTr] = (TH2F *)h3SamMCRec[iSh][iGenType]->Project3D("zy");
             h2DdPhidEtaSamMCRec[iso][iSh][iGenType][izt][iptTr]->SetName(Form("h2DdPhidEtaSamMCRec%s", sTypeMCGenType[iGenType].Data()) + sIso + sShSh + sZtBin + sPtTrig);
+            // 1D Rec
             hdPhiSamMCRec[iso][iSh][iGenType][izt][iptTr] = (TH1F *)h2DdPhidEtaSamMCRec[iso][iSh][iGenType][izt][iptTr]->ProjectionX(Form("hdPhiSameMCRec%s", sTypeMCGenType[iGenType].Data()) + sIso + sShSh + sZtBin + sPtTrig);
-
+            // Normalisation Normalisation
             hdPhiSamMCRec[iso][iSh][iGenType][izt][iptTr]->Scale(1. / hTriggerSamMCRec[iso][iSh][iGenType]->Integral(hTriggerSamMCRec[iso][iSh][iGenType]->FindBin(ptTrig[index1 + iptTr]), hTriggerSamMCRec[iso][iSh][iGenType]->FindBin(ptTrig[index1 + iptTr + 1] - 0.0001)));
-
+            // Mirroring
             nbinsX = hdPhiSamMCRec[iso][iSh][iGenType][izt][iptTr]->GetNbinsX() / 2;
-
             hdPhiMCGenMirror[iso][iSh][iGenType][izt][iptTr] = new TH1F(Form("hdPhiMCGenMirror%s", sTypeMCGenType[iGenType].Data()) + sIso + sShSh + sZtBin + sPtTrig, Form("hdPhiMCGenMirror%s", sTypeMCGenType[iGenType].Data()) + sIso + sShSh + sZtBin + sPtTrig, nbinsX, 0, TMath::Pi());
             hdPhiSamMCRecMirror[iso][iSh][iGenType][izt][iptTr] = new TH1F(Form("hdPhiSameMCRecMirror%s", sTypeMCGenType[iGenType].Data()) + sIso + sShSh + sZtBin + sPtTrig, Form("hdPhiSameMCRecMirror%s", sTypeMCGenType[iGenType].Data()) + sIso + sShSh + sZtBin + sPtTrig, nbinsX, 0, TMath::Pi());
+          cout<<"nbinsX: "<<nbinsX<<endl;
           }
+          h3MixMCRec[iSh]->SetAxisRange(ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1] - 0.0001, "X");
           h2DdPhidEtaMixMCRec[iso][iSh][izt][iptTr] = (TH2F *)h3MixMCRec[iSh]->Project3D("zy");
           h2DdPhidEtaMixMCRec[iso][iSh][izt][iptTr]->SetName("h2DdPhidEtaMixMCRec" + sIso + sShSh + sZtBin + sPtTrig);
           hdPhiMixMCRec[iso][iSh][izt][iptTr] = (TH1F *)h2DdPhidEtaMixMCRec[iso][iSh][izt][iptTr]->ProjectionX("hdPhiMixMCRec" + sIso + sShSh + sZtBin + sPtTrig);
-
+          hdPhiMixMCRec[iso][iSh][izt][iptTr]->Scale(1. / hTriggerMixMCRec[iso][iSh]->Integral(hTriggerMixMCRec[iso][iSh]->FindBin(ptTrig[index1 + iptTr]), hTriggerMixMCRec[iso][iSh]->FindBin(ptTrig[index1 + iptTr + 1] - 0.0001)));
+          nbinsX = hdPhiMixMCRec[iso][iSh][izt][iptTr]->GetNbinsX() / 2;
+          hdPhiMixMCRecMirror[iso][iSh][izt][iptTr] = new TH1F("hdPhiMixMCRecMirror" + sIso + sShSh + sZtBin + sPtTrig, "hdPhiMixMCRecMirror" + sIso + sShSh + sZtBin + sPtTrig, nbinsX, 0, TMath::Pi());
+cout<<"nbinsXMix: "<<nbinsX<<endl;
           if (bMirror)
           {
-            hdPhiMixMCRecMirror[iso][iSh][izt][iptTr] = new TH1F("hdPhiMixMCRecMirror" + sIso + sShSh + sZtBin + sPtTrig, "hdPhiMixMCRecMirror" + sIso + sShSh + sZtBin + sPtTrig, nbinsX, 0, TMath::Pi());
             Mirroring(hdPhiMixMCRec[iso][iSh][izt][iptTr], hdPhiMixMCRecMirror[iso][iSh][izt][iptTr]);
+            hdPhiMixMCRecMirror[iso][iSh][izt][iptTr]->Rebin(5);
             for (int iGenType = 0; iGenType < nGenType; iGenType++)
             {
               Mirroring(hdPhiMCGen[iso][iSh][iGenType][izt][iptTr], hdPhiMCGenMirror[iso][iSh][iGenType][izt][iptTr]);
@@ -311,13 +314,13 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
               // double scaleFactMC = fZYAM_Mix(hdPhiSamMCRecMirror[iso][iSh][izt][iptTr], hdPhiMixMCRecMirror[iso][iSh][izt][iptTr]);
               if (bZYAM)
               {
-                cout << "Mirror - ZYAM" << endl;
+                cout << "NO Mirroring - ZYAM" << endl;
                 cout << "ZYAM" << endl;
                 fZYAM(hdPhiSamMCRecNoUE[iso][iSh][iGenType][izt][iptTr]);
               }
               else
               {
-                cout << "Mirror - MIXED EVENT" << endl;
+                cout << "NO Mirroring - MIXED EVENT" << endl;
                 cout << hdPhiSamMCRecNoUE[iso][iSh][iGenType][izt][iptTr] << endl;
                 hdPhiSamMCRecNoUE[iso][iSh][iGenType][izt][iptTr]->Add(hdPhiMixMCRec[iso][iSh][izt][iptTr], -1);
               }
@@ -334,6 +337,8 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
             hdPhiSamMCRecMirror[iso][iSh][iGenType][izt][iptTr]->Write();
             hdPhiSamMCRecNoUE[iso][iSh][iGenType][izt][iptTr]->Write();
           }
+          hdPhiMixMCRec[iso][iSh][izt][iptTr]->Write();
+          hdPhiMixMCRecMirror[iso][iSh][izt][iptTr]->Write();
           cout << "CiaoCiao1" << endl;
         }
         cout << "CiaoCiao2" << endl;
@@ -391,8 +396,6 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
 
         hZtIsoGammaMCRec[iso][iSh][iGenType] = new TH1F(Form("hZtIso%dGammaMCRec%s%s", iso, sTypeMCGenType[iGenType].Data(), sPtAll.Data()) + sShSh, Form("hZtIso%dGammaMCRec%s%s", iso, sTypeMCGenType[iGenType].Data(), sPtAll.Data()) + sShSh, nZtBin, assocZt);
         hZtIsoGammaMCRec[iso][iSh][iGenType] = SumPtBinXzt(hTriggerSamMCRec[iso][iSh][iGenType], ptTrig, index1, index2, hZtIsoGammaPtBinMCRec[iso][iSh][iGenType], hZtIsoGammaMCRec[iso][iSh][iGenType], histPur[iCen], funcPur[iCen], systPur, false);
-        // hRatioEffCorr->SetBinContent(1, hRatioEffCorr->GetBinContent(3));
-        // hRatioEffCorr->SetBinContent(2, hRatioEffCorr->GetBinContent(3));
 
         fOutPut->cd();
 
@@ -472,56 +475,31 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
   {
     for (int iGenType = 0; iGenType < nGenType; iGenType++)
     {
-      PlotStyle(hZtIsoGammaMCGen[iso][iGenType], kMarkStyleIso_NotIso[iso], 1, kColorMC[iso][iGenType], 0, "#it{z}_{#rm T}", "1/N^{trig}dN/d#it{z}_{T}", true);
-      hZtIsoGammaMCGen[iso][iGenType]->Draw("same");
-      zTleg->AddEntry(hZtIsoGammaMCGen[iso][iGenType], Form("Iso%d %s", iso, sTypeMCGenType[iGenType].Data()), "lep");
+      PlotStyle(hZtIsoGammaMCGen[iso][iSh][iGenType], kMarkStyleIso_NotIso[iso], 1, kColorMC[iso][iGenType], 0, "#it{z}_{#rm T}", "1/N^{trig}dN/d#it{z}_{T}", true);
+      hZtIsoGammaMCGen[iso][iSh][iGenType]->Draw("same");
+      zTleg->AddEntry(hZtIsoGammaMCGen[iso][iSh][iGenType], Form("Gen Iso%d ShSh %s , %s", iso, shshString[iSh].Data(), sTypeMCGenType[iGenType].Data()), "lep");
+    PlotStyle(hZtIsoGammaMCRec[iso][iSh][iGenType], 20, 1, kColorMC[iso][iGenType], 0, "#it{z}_{#rm T}", "1/N^{trig}dN/d#it{z}_{T}", true);
+    hZtIsoGammaMCRec[iso][iSh][iGenType]->Draw("same");
+    zTleg->AddEntry(hZtIsoGammaMCRec[iso][iSh][iGenType], Form("Rec Iso%d ShSh %s, %s ", iso, shshString[iSh].Data(), sTypeMCGenType[iGenType].Data()), "lep");
     }
-    PlotStyle(hZtIsoGammaMCRec[iso], 20, 1, kColorMCRec[iso], 0, "#it{z}_{#rm T}", "1/N^{trig}dN/d#it{z}_{T}", true);
-    hZtIsoGammaMCRec[iso]->Draw("same");
-    zTleg->AddEntry(hZtIsoGammaMCRec[iso], Form("Iso%d All Rec", iso), "lep");
   }
-  // hZtIsoGammaMCRecZYAM->Draw("same");
-  zTleg->Draw("same");
-  TLatex *zTlat = LatexStd(zTlat, 0.45, 0.86, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, false, "#it{This thesis}");
-  cZtIsoGamma->Print(Form("%s/cZtIsoGamma%s.pdf", dirFiles.Data(), sPtAll.Data()));
 */
-  // hZtMixvsZYAM = (TH1F *)hZtIsoGammaMCRec->Clone("hZtMixvsZYAM");
-  // hZtMixvsZYAM->Divide(hZtIsoGammaMCRecZYAM);
-  // TCanvas *cZtMixvsZYAM = new TCanvas(Form("cZtMixvsZYAM"), Form("cZtMixvsZYAM"), 800, 600);
-  // hZtMixvsZYAM->Draw("same");
-  // cZtMixvsZYAM->Print(Form("%s/Cen%d_%d/ZtMixDividedZYAM%s.pdf", dirFiles.Data(), cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
+
 }
 
-void IsoGammaHadronMCJJlow(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSig = "DataSh100_AssocPt500", Bool_t bMirror = true, TString shshBkg = "0.40-2.00", TString dirFiles = "ResultsStudyMCJJpi0test", double systPur = 1, bool bZYAM = true, double phiMin = TMath::Pi() * 3 / 5, double phiMax = TMath::Pi(), bool GJppOn = true)
+void IsoGammaHadronMCJJlow(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSig = "RootFiles/DataSh100_AssocPt500", Bool_t bMirror = true, TString shshBkg = "0.40-2.00", TString dirFiles = "ResultsStudyMCJJpi0test", double systPur = 1, bool bZYAM = true, double phiMin = TMath::Pi() * 3 / 5, double phiMax = TMath::Pi(), bool GJppOn = true)
 {
   TString tagFile[nCen];
-  // fileMC[0] = TFile::Open(Form("~/work/histogram/MCPtAssoc500/MC_GJ_0_90.root"));
-  //  fileMC[0] = TFile::Open(Form("~/work/histogram/MCPtAssoc500/LHC15o/MC_GJ_0_90_LHC15o.root"));
-  // fileMC[0] = TFile::Open(Form("~/work/histogram/MCPtAssoc500/LHC18qr/MC_GJ_0_90_LHC18qr.root"));
-  // fileMC[0] = TFile::Open(Form("~/work/histogram/FromScratch/MC_JJlow_ppAnch/MC_JJlowAnchpp.root"));
-  fileMC = TFile::Open(Form("~/work/histogram/Pi0Hadron/MCJJ_Pi0.root"));
-  //  fileMC[0] = TFile::Open(Form("~/work/histogram/MC_JJlow_Pi0/4/AnalysisResults_EMC.root"));
-  //   fileMC = TFile::Open(Form("~/work/histogram/MC_GJShSh150/MC_GJSh150.root")); //Systematic TrackEfficiency
-  //    fileMC = TFile::Open(Form("~/work/histogram/MC_GJShSh150/MC_GJTrackInEff.root")); //Systematic TrackEfficiency
-
-  // tagFile = Form("EMCAL_MB_0_90");
-  //  fileDataShStd = TFile::Open(Form("~/work/histogram/%s/%s.root", sFileDirShSig.Data(), tagFile.Data()));
-  // fileDataMix = TFile::Open(Form("~/work/histogram/NCentBinMix45/%s.root", tagFile.Data()));
+  fileMC = TFile::Open(Form("RootFiles/Pi0Hadron/MCJJ_Pi0.root"));
   if (!fileMC)
     cout << "MC File doesn't exist" << endl;
 
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     tagFile[iCen] = Form("EMCAL_MB_%d_%d", cenBins[iCen], cenBins[iCen + 1]);
-    fileDataShStd = TFile::Open(Form("~/work/histogram/%s/%s.root", sFileDirShSig.Data(), tagFile[iCen].Data()));
+    fileDataShStd = TFile::Open(Form("%s/%s.root", sFileDirShSig.Data(), tagFile[iCen].Data()));
     if (!fileDataShStd)
       cout << "Data File doesn't exist" << endl;
-    // fileDataMix = TFile::Open(Form("~/work/histogram/NCentBinMix45PtAssoc500/%s.root", tagFile[iCen].Data()));
-    //  if(iCen==3)
-    //  fileDataShStd = TFile::Open(Form("~/work/histogram/Data50_90_8CenBin/EMCAL_MB_50_90.root"));
-
-    // fileDataShBkg = TFile::Open(Form("~/work/histogram/ShShSystMultBkg/%s.root", tagFile[iCen].Data()));
-    // fileDataShBkg = TFile::Open(Form("~/work/histogram/ShShSyst03510/%s.root", tagFile[iCen].Data()));
 
     cout << iCen << endl;
     Exec(ptTrMin, ptTrMax, iCen, bMirror, shshBkg, dirFiles, systPur, bZYAM, phiMin, phiMax, GJppOn);
