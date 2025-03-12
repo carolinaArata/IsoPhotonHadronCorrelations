@@ -146,7 +146,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
     TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
     fPlot[iCen] = new TFile(dirInputFilesRef + "/fPlot" + shshBkg + sCent + sPtAll + ".root");
     cout << "Get purity for centrality: " << sCent << endl;
-    TFile *fPurity = new TFile("RootFiles/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root");
+    TFile *fPurity = new TFile("RootFiles/Purity.root");
     histPur[iCen] = (TH1F *)fPurity->Get(Form("Purity_Cen%d_R0.2_Sys", iCen));
     histPurStat[iCen] = (TH1F *)fPurity->Get(Form("Purity_Cen%d_R0.2", iCen));
     funcPur[iCen] = histPur[iCen]->GetFunction("purityFitCombinedSigmoid");
