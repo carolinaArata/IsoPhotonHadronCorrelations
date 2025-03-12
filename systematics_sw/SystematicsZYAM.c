@@ -128,7 +128,7 @@ void SystematicsZYAM(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true,
   {
     TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
     // Purity
-    TFile *fPurity = new TFile("~/work/histogram/IsoPhotonHadronCorrelations/Purity_IsoSig1.5_M02Sig0.10-0.30_IsoBkg_4.0_25.0_M02Bkg0.40_2.00_LHC15o_18qr_L1MB.root");
+    TFile *fPurity = new TFile("RootFiles/Purity.root");
     cout << iCen << " " << cenBins[iCen] << "-" << cenBins[iCen + 1] << endl;
     histPur[iCen] = (TH1F *)fPurity->Get(Form("Purity_Cen%d_R0.2_Sys", iCen));
     histPurStat[iCen] = (TH1F *)fPurity->Get(Form("Purity_Cen%d_R0.2", iCen));
