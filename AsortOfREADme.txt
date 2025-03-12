@@ -12,7 +12,7 @@ Before running analysis and plot, *cmd+f* and check the directories of these fil
   The analysis is structured in three main blocks:
     - analysis: RunAnalysis.sh
     - combine the 0-10% and the 10-30% centralities: RunCombine.sh
-    - computation of all the systematics: systematic_sw/RunSystematics.sh
+    - computation of all the systematics: RunSystematics.sh
 
 General macro: IsoGammaHadron.C; PlotIsoGammaHadron.C
 
@@ -63,30 +63,28 @@ General macro: IsoGammaHadron.C; PlotIsoGammaHadron.C
 
 3) Systematics
 
-   For running systematics, use the script:
-  
-   RunSystematics.sh
+   For running systematics, use the script: RunSystematics.sh
 
    Systematics:
      - Purity:
        The code for estimating the systematic on the purity is in systematic_sw. 
        The reference files are saved in checkCode, while the systematics on purity are saved in checkCodeSystPur09, checkCodeSystPur11
-       The directory of the files used for estimating the purity is passed to the function as  TString sDirRefFiles = "~/work/histogram/FromScratch/checkCode" and the last part of the name of the directory is defined inside the macro with: TString PurUsed[] = {"", "SystPur11", "SystPur09"};
+       The directory of the files used for estimating the purity is passed to the function as  TString sDirRefFiles = "checkCode" and the last part of the name of the directory is defined inside the macro with: TString PurUsed[] = {"", "SystPur11", "SystPur09"};
 
      - ShSh Background: 
        The code for estimating the systematic on the ShSh background is in systematic_sw.
 
      - N Cent Mix: SystematicsNCentrBin (with NCent45)
-       The systematic is calculated with a macro in systematic_sw. The files are defined before the macro in TString CentMixUsed[] = {"~/work/histogram/FromScratch/checkCode" /*Reference*/, "~/work/histogram/FromScratch/checkCodeSystNCentrMix" /*DiffNCentrMix*/};
+       The systematic is calculated with a macro in systematic_sw. The files are defined before the macro in TString CentMixUsed[] = {"checkCode" /*Reference*/, "checkCodeSystNCentrMix" /*DiffNCentrMix*/};
   
 
      - Tracking Efficiency: 
        The macro is in systematic_sw. The files root used are:
-       dirRefData = "~/work/histogram/FromScratch/checkCode" for the reference,   dirFiles = "~/work/histogram/FromScratch/checkCodeTrackEff" for Tracking Efficiency variation
+       dirRefData = "checkCode" for the reference,   dirFiles = "checkCodeTrackEff" for Tracking Efficiency variation
 
       - ZYAM systematics:
         ZYAM is used for a comparison with UE residual so it has to be run BEFORE UEresidual
-        The ZYAM systematic is estimated with systematic_sw. The reference files are contained in dirFileResults = "~/work/histogram/FromScratch/checkCode" passed to the function. The ZYAM results are in dirFileResults = "~/work/histogram/FromScratch/checkCodeZYAM; only the string ZYAM is added to access ZYAM zT functions.
+        The ZYAM systematic is estimated with systematic_sw. The reference files are contained in dirFileResults = "checkCode" passed to the function. The ZYAM results are in dirFileResults = "checkCodeZYAM; only the string ZYAM is added to access ZYAM zT functions.
         Check it has to be run only for total range right?
 
      - UE Residual: 
