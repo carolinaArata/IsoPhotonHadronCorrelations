@@ -87,6 +87,7 @@ General macro: IsoGammaHadron.C; PlotIsoGammaHadron.C
       - ZYAM systematics:
         ZYAM is used for a comparison with UE residual so it has to be run BEFORE UEresidual
         The ZYAM systematic is estimated with systematic_sw. The reference files are contained in dirFileResults = "~/work/histogram/FromScratch/checkCode" passed to the function. The ZYAM results are in dirFileResults = "~/work/histogram/FromScratch/checkCodeZYAM; only the string ZYAM is added to access ZYAM zT functions.
+        Check it has to be run only for total range right?
 
      - UE Residual: 
        It has to be run always after ZYAM.
