@@ -32,7 +32,7 @@ Int_t nAssoc = 7;
 int nZtBinThin = 9;
 double assocZtThinner[] = {0, 0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 0.80, 1.00, 1.05};
 
-void PlotZtCentCopyNew(float ptMin = 18, float ptMax = 40, bool Mirror = true, TString sMixed = "Mixed", TString shshBkg = "0.40-1.00", TString dirPlot = "zTresults_PbPb_TheorycheckCode", TString dirInputRef = "Output_checkCode", bool b0_30 = true)
+void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror = true, TString sMixed = "Mixed", TString shshBkg = "0.40-1.00", TString dirPlot = "zTresults_PbPb_TheorycheckCode", TString dirInputRef = "Output_checkCode", bool b0_30 = true)
 {
 
   TString sMirror;
