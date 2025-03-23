@@ -1,3 +1,18 @@
+Before running analysis, check that all these files/directory are in RootFiles directory, otherwise download from CERNBOX :
+- RootFiles/Purity.root 
+- RootFiles/DataSh100_AssocPt500 : Data
+- RootFiles/MC_GJShSh150 : MC for gamma GJ
+- RootFiles/Pi0Hadron : MC for PI0 JJlow
+Systematics:
+- RootFiles/NCentBinMix45 
+- RootFiles/NCentBinMix18 
+- RootFiles/ShShSyst03510 
+- RootFiles/ShShSystMultBkg 
+- RootFiles/SystematicsNCentrBin
+Theory calculations:
+- RootFiles/fileNLO.root (After Q23: change in pQCDNLO, COLbT still the same)
+- RootFiles/fileNLOOldpcqNLO.root (QM23)
+
 
 Before running analysis and plot, *cmd+f* and check the directories of these files in IsoGammaHadron.C:
   - TFile *fPurity
@@ -7,12 +22,12 @@ Before running analysis and plot, *cmd+f* and check the directories of these fil
   - TFile *fileDataMix 
   - TFile *fileMC[nShSh]
 
-  In the scripts and in the codes *cmd+f* for ~/work/histogram/ or ~/wor/histogram/FromScratch/, set yours correct folders.
 
   The analysis is structured in three main blocks:
     - analysis: RunAnalysis.sh
     - combine the 0-10% and the 10-30% centralities: RunCombine.sh
     - computation of all the systematics: RunSystematics.sh
+    - run PlotZtGlobalStatSyst_Theory.C for global results with statistics and systematics combination and for comparison with theory
 
 General macro: IsoGammaHadron.C; PlotIsoGammaHadron.C
 
