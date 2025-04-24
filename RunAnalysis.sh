@@ -71,14 +71,14 @@ EOF
 ##
 root -b -l <<EOF
 .L IsoGammaHadron.C
-IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-1.50", "Output_checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false, false, false)
+IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-0.80", "Output_checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false, false, false)
 .q
 EOF
 ##
 ##
 root -b -l <<EOF
 .L IsoGammaHadron.C
-IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-2.00", "Output_checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false, false, false)
+IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.50-1.00", "Output_checkCodeSystShSh", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), true, false, false, false)
 .q
 EOF
 

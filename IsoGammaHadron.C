@@ -941,13 +941,13 @@ void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSi
       {
         fileDataShBkg = TFile::Open(Form("RootFiles/ShShSyst03510/%s.root", tagFile[iCen].Data())); // ShSh 0.35-1.00
       }
-      else if (shshBkg == "0.40-2.00")
+      else if (shshBkg == "0.40-0.80")
       {
-        fileDataShBkg = TFile::Open(Form("RootFiles/ShShSystMultBkg/%s.root", tagFile[iCen].Data())); // ShSh 0.40-2.00
+        fileDataShBkg = TFile::Open(Form("RootFiles/ShShSystMultBkgUpd/%s.root", tagFile[iCen].Data())); // ShSh 0.40-0.80
       }
-      else if (shshBkg == "0.40-1.50")
+      else if (shshBkg == "0.50-1.00")
       {
-        fileDataShBkg = TFile::Open(Form("RootFiles/ShShSystMultBkg/%s.root", tagFile[iCen].Data())); // ShSh 0.40-1.50
+        fileDataShBkg = TFile::Open(Form("RootFiles/ShShSystMultBkgUpd/%s.root", tagFile[iCen].Data())); // ShSh 0.50-1.00
       }
       cout << "ShSh bkg: " << shshBkg << endl;
     }
