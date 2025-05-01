@@ -70,7 +70,7 @@ EOF
 
 root -b -l <<EOF
 .L Combine0_30.C
-Combine0_30(18, 40, 0, true, "0.40-1.50", "Output_checkCodeSystShSh", true, "Output_FigcheckCodeSystShSh")
+Combine0_30(18, 40, 0, true, "0.40-0.80", "Output_checkCodeSystShSh", true, "Output_FigcheckCodeSystShSh")
 .q
 EOF
 
@@ -79,7 +79,7 @@ EOF
 
 root -b -l <<EOF
 .L Combine0_30.C
-Combine0_30(18, 40, 0, true, "0.40-2.00", "Output_checkCodeSystShSh", true, "Output_FigcheckCodeSystShSh")
+Combine0_30(18, 40, 0, true, "0.50-1.00", "Output_checkCodeSystShSh", true, "Output_FigcheckCodeSystShSh")
 .q
 EOF
 

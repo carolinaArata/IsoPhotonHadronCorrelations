@@ -26,10 +26,10 @@ double assocZt[] = {0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 1.00};
 
 // Definition of various shsh ranges
 int const nShSh = 5;
-TString shshString[] = {"", "04_10PtDep", "04_15PtDep", "05_20PtDep", "06_20PtDep"};
-TString shshLeg[] = {"0.40-1.00", "0.40-1.50", "0.40-2.00", "0.35-1.00", "0.50-2.00", "0.60-2.00"};
-Double_t shMin[] = {0.40, 0.40, 0.40, 0.50, 0.6};
-Double_t shMax[] = {2.00, 1.00, 1.50, 2.00, 2.00};
+//TString shshString[] = {"", "04_10PtDep", "04_15PtDep", "05_20PtDep", "06_20PtDep"};
+TString shshLeg[] = {"0.40-1.00", "0.40-0.80", "0.50-1.00", "0.35-1.00", "0.50-2.00", "0.60-2.00"};
+//Double_t shMin[] = {0.40, 0.40, 0.40, 0.50, 0.6};
+//Double_t shMax[] = {2.00, 1.00, 1.50, 2.00, 2.00};
 
 TFile *fPlot[6][4];
 
@@ -48,7 +48,6 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 	if (b0_30)
 	{
 		nCen = 3;
-		// Int_t cenBins[] = {0, 10, 30, 50, 90};
 		cenBins.push_back(0);
 		cenBins.push_back(30);
 		cenBins.push_back(50);
@@ -149,12 +148,6 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 		{
 			hZt[iSyst][iCen]->SetTitle("");
 			hZt[iSyst][iCen]->Draw("Same");
-			// hZt[1][iCen]->SetTitle("");
-			// hZt[1][iCen]->Draw("Same");
-			// hZt[2][iCen]->SetTitle("");
-			// hZt[2][iCen]->Draw("Same");
-			// hZt[3][iCen]->SetTitle("");
-			// hZt[3][iCen]->Draw("Same");
 		}
 		legZTData[iCen]->AddEntry(hZt[0][iCen], "Nom. Bkg. #sigma^{2}_{long, 5#times5}: 0.40-1.00");
 		legZTData[iCen]->AddEntry(hZt[1][iCen], Form("Bkg. #sigma^{2}_{long, 5#times5}: %s", shshLeg[1].Data()));
@@ -180,12 +173,12 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 		legZtSyst[iCen]->SetLineWidth(0);
 		legZtSyst[iCen]->SetTextSize(0.04);
 		hZtSystem[2][iCen] = new TH1F(Form("hZtSystwrt035_15Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "hZtSystwrt035_15", nZtBin, assocZt);
-		hZtSystem[1][iCen] = new TH1F(Form("hZtSystwrt040_20Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "hZtSystwrt040_20", nZtBin, assocZt);
-		hZtSystem[0][iCen] = new TH1F(Form("hZtSystwrt040_15Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "hZtSystwrt040_15", nZtBin, assocZt);
+		hZtSystem[1][iCen] = new TH1F(Form("hZtSystwrt050_10Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "hZtSystwrt050_10", nZtBin, assocZt);
+		hZtSystem[0][iCen] = new TH1F(Form("hZtSystwrt040_08Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "hZtSystwrt040_08", nZtBin, assocZt);
 		hZtSystFinal[iCen] = new TH1F("hZtSystFinal", "hZtSystFinal", nZtBin, assocZt);
 		for (int ibin = 0; ibin < nBins; ibin++)
 		{
-			shSyst[0][iCen][ibin] = abs(hZt[0][iCen]->GetBinContent(ibin + 1) - hZt[2][iCen]->GetBinContent(ibin + 1));
+			shSyst[0][iCen][ibin] = abs(hZt[0][iCen]->GetBinContent(ibin + 1) - hZt[2][iCen]->GetBinContent(ibin + 1)); // std - 0.50-1.00
 			shSyst[0][iCen][ibin] = abs(shSyst[0][iCen][ibin] / hZt[0][iCen]->GetBinContent(ibin + 1));
 			hZtSystem[0][iCen]->SetBinContent(ibin + 1, shSyst[0][iCen][ibin]);
 			// hZtSystem[iCen][0]->SetBinError(ibin + 1, hZt[2][iCen]->GetBinError(ibin + 1) / hZt[2][iCen]->GetBinContent(ibin + 1));
@@ -193,17 +186,17 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 			cout << "Zt bin [" << assocZt[ibin] << "-" << assocZt[ibin + 1] << "] : ";
 			cout << "Pur 1: " << hZt[0][iCen]->GetBinContent(ibin + 1) << ", Error: " << hZt[0][iCen]->GetBinError(ibin + 1) / hZt[0][iCen]->GetBinContent(ibin + 1) << endl;
 			cout << "Zt bin: " << assocZt[ibin] << "-" << assocZt[ibin + 1] << ":\t";
-			cout << "Sh0.4-2.00: " << shSyst[0][iCen][ibin] << ";\t";
+			cout << "syst wrt to Sh 0.5-1.00: " << shSyst[0][iCen][ibin] << ";\t";
 
-			shSyst[1][iCen][ibin] = abs(hZt[0][iCen]->GetBinContent(ibin + 1) - hZt[1][iCen]->GetBinContent(ibin + 1));
+			shSyst[1][iCen][ibin] = abs(hZt[0][iCen]->GetBinContent(ibin + 1) - hZt[1][iCen]->GetBinContent(ibin + 1)); // std - 0.40-0.80
 			shSyst[1][iCen][ibin] = abs(shSyst[1][iCen][ibin] / hZt[0][iCen]->GetBinContent(ibin + 1));
 			hZtSystem[1][iCen]->SetBinContent(ibin + 1, shSyst[1][iCen][ibin]);
+			cout << "syst wrt to Sh 0.4-0.80: " << shSyst[1][iCen][ibin] << ";\t";
 
-			shSyst[2][iCen][ibin] = abs(hZt[0][iCen]->GetBinContent(ibin + 1) - hZt[3][iCen]->GetBinContent(ibin + 1));
+			shSyst[2][iCen][ibin] = abs(hZt[0][iCen]->GetBinContent(ibin + 1) - hZt[3][iCen]->GetBinContent(ibin + 1)); //std - 0.35-1.00
 			shSyst[2][iCen][ibin] = abs(shSyst[2][iCen][ibin] / hZt[0][iCen]->GetBinContent(ibin + 1));
 			hZtSystem[2][iCen]->SetBinContent(ibin + 1, shSyst[2][iCen][ibin]);
-
-			cout << "Sh 0.4-1.00: " << shSyst[1][iCen][ibin] << ";\t";
+			cout << "syst wrt to Sh 0.35-0.80: " << shSyst[2][iCen][ibin] << ";\t";
 
 			cout << "Systematics: " << TMath::Sqrt((shSyst[0][iCen][ibin] * shSyst[0][iCen][ibin] + shSyst[1][iCen][ibin] * shSyst[1][iCen][ibin]) / 2) << "_____" << ((shSyst[0][iCen][ibin] + shSyst[1][iCen][ibin]) / 2) << endl;
 			hZtSystFinal[iCen]->SetBinContent(ibin + 1, (shSyst[0][iCen][ibin] + shSyst[1][iCen][ibin] + shSyst[3][iCen][ibin]) / 3);
@@ -239,8 +232,8 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 		hZtSystFinal[iCen]->SetDirectory(0);
 		PlotStyle(hZtSystFinal[iCen], 20, 2, kPink + 5, "z_{T}", "Uncertainty %");
 		hZtSystFinal[iCen]->Draw("hist same p ");
-		legZtSyst[iCen]->AddEntry(hZtSystem[0][iCen], "Bkg. #sigma^{2}_{long, 5#times5}: 0.40-1.50", "lp");
-		legZtSyst[iCen]->AddEntry(hZtSystem[1][iCen], "Bkg. #sigma^{2}_{long, 5#times5}: 0.40-2.00", "lp");
+		legZtSyst[iCen]->AddEntry(hZtSystem[0][iCen], "Bkg. #sigma^{2}_{long, 5#times5}: 0.50-1.00", "lp");
+		legZtSyst[iCen]->AddEntry(hZtSystem[1][iCen], "Bkg. #sigma^{2}_{long, 5#times5}: 0.40-0.80", "lp");
 		legZtSyst[iCen]->AddEntry(hZtSystem[2][iCen], "Bkg. #sigma^{2}_{long, 5#times5}: 0.35-1.00", "lp");
 		legZtSyst[iCen]->AddEntry(hZtSystFinal[iCen], "Mean", "lp");
 
@@ -253,11 +246,11 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 
 		if (iCen == 0 && !b0_30)
 		{
-			fa1[iCen] = new TF1(Form("fit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.15, 0.60);
+			fa1[iCen] = new TF1(Form("fit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.10, 0.60);
 		}
 		else
 		{
-			fa1[iCen] = new TF1(Form("fit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.15, 0.60);
+			fa1[iCen] = new TF1(Form("fit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.10, 0.60);
 		}
 		gStyle->SetOptStat(0);
 		gStyle->SetOptFit(111);
@@ -322,7 +315,7 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 		ALICEtexIcp[iCen]->SetTextFont(42);
 		ALICEtexIcp[iCen]->SetTextSize(0.04);
 		ALICEtexIcp[iCen]->SetNDC();
-		ALICEtexIcp[iCen]->DrawLatex(0.15, 0.85, Form("#it{This Thesis}"));
+		ALICEtexIcp[iCen]->DrawLatex(0.15, 0.85, Form("ALICE #it{Work in progress}"));
 		ALICEtexIcp[iCen]->DrawLatex(0.15, 0.85 - 0.06, Form("#bf{%d-%d %% / 50-90 %%} Pb-Pb, #sqrt{s_{NN}} = 5.02 TeV", cenBins[iCen], cenBins[iCen + 1]));
 		ALICEtexIcp[iCen]->DrawLatex(0.15, 0.85 - 2 * 0.06, Form("|#it{#eta}^{ #it{#gamma}}| < 0.67, %2.0f < #it{p}_{#it{T}}^{#gamma} < %2.0f GeV/#it{c}", ptMin, ptMax));
 		legIcp[iCen]->AddEntry(hZtIcp[0][iCen], "Nom. Bkg. #sigma^{2}_{long, 5#times5}: 0.40-1.00");
@@ -368,7 +361,7 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 			double binContMean2 = hSystIcp[2][iCen]->GetBinContent(ibin + 1);
 			hSystMeanIcp[iCen]->SetBinContent(ibin + 1, (binContMean0 + binContMean1 + binContMean2) / 3);
 		}
-		fa0Icp[iCen] = new TF1(Form("fa0Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.15, 0.60);
+		fa0Icp[iCen] = new TF1(Form("fa0Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.10, 0.60);
 		hSystMeanIcp[iCen]->Fit(Form("fa0Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
 
 		hSystUncertIcp_ShSh[iCen] = new TH1F(Form("hSystUncertIcp_ShShFromFitCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hSystUncertIcp_ShShFromFitCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBin, assocZt);
@@ -415,7 +408,7 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 		ALICEtexIcpSyst[iCen]->SetTextFont(42);
 		ALICEtexIcpSyst[iCen]->SetTextSize(0.04);
 		ALICEtexIcpSyst[iCen]->SetNDC();
-		ALICEtexIcpSyst[iCen]->DrawLatex(0.15, 0.85, Form("#it{This Thesis}"));
+		ALICEtexIcpSyst[iCen]->DrawLatex(0.15, 0.85, Form("ALICE #it{Work in progress}"));
 		ALICEtexIcpSyst[iCen]->DrawLatex(0.15, 0.85 - 0.06, Form("#bf{%d-%d %% / 50-90 %%} Pb-Pb, #sqrt{s_{NN}} = 5.02 TeV", cenBins[iCen], cenBins[iCen + 1]));
 		ALICEtexIcpSyst[iCen]->DrawLatex(0.15, 0.85 - 2 * 0.06, Form("|#it{#eta}^{ #it{#gamma}}| < 0.67, %2.0f < #it{p}_{#it{T}}^{#gamma} < %2.0f GeV/#it{c}", ptMin, ptMax));
 	}
@@ -455,7 +448,7 @@ TLatex *LatexStd(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax, 
 	lat->SetTextSize(0.04);
 	lat->SetNDC();
 
-	lat->DrawLatex(xpos, ypos, Form("#it{This Thesis}"));
+	lat->DrawLatex(xpos, ypos, Form("ALICE #it{Work in progress}"));
 	lat->DrawLatex(xpos, ypos - 0.06, Form("%d-%d %% Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV", cenMin, cenMax));
 	lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("|#it{#eta}^{ #it{#gamma}}| < 0.67, %2.0f < #it{p}_{T}^{#gamma} < %2.0f GeV/#it{c}", ptMin, ptMax));
 
