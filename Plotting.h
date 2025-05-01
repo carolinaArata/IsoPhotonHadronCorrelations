@@ -66,7 +66,7 @@ TLatex *LatexStdphi(TLatex *lat, double xpos, double ypos, int cenMin, int cenMa
   lat->SetTextSize(0.04);
   lat->SetNDC();
   //lat->DrawLatex(xpos, ypos + 0.06, Form("%s", sTitle.Data()));
-  lat->DrawLatex(xpos, ypos, "#it{This Thesis}");
+  lat->DrawLatex(xpos, ypos, "ALICE #it{Work in progress}");
   if (bCen)
     lat->DrawLatex(xpos, ypos - 0.08, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ trig}| < 0.67", cenMin, cenMax));
   else if (!bCen)
@@ -82,7 +82,7 @@ TLatex *LatexStd(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax, 
   lat->SetTextSize(0.04);
   lat->SetNDC();
   //lat->DrawLatex(xpos, ypos + 0.06, Form("%s", sTitle.Data()));
-  lat->DrawLatex(xpos, ypos, "#it{This Thesis}");
+  lat->DrawLatex(xpos, ypos, "ALICE #it{Work in progress}");
   if (bCen)
     lat->DrawLatex(xpos, ypos - 0.06, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ trig}| < 0.67", cenMin, cenMax));
   else if (!bCen)
@@ -99,7 +99,7 @@ TLatex *LatexStdSyst(TLatex *lat, double xpos, double ypos, int cenMin, int cenM
   lat->SetTextSize(0.04);
   lat->SetNDC();
   //lat->DrawLatex(xpos, ypos + 0.06, Form("%s", sTitle.Data()));
-  lat->DrawLatex(xpos, ypos, "#it{This Thesis}");
+  lat->DrawLatex(xpos, ypos, "ALICE #it{Work in progress}");
   if (bCen)
     lat->DrawLatex(xpos, ypos - 0.06, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, ", cenMin, cenMax));
   else if (!bCen)
@@ -116,7 +116,7 @@ TLatex *LatexStdISO(TLatex *lat, double xpos, double ypos, double texSize, int c
   lat->SetTextSize(texSize);
   lat->SetNDC();
   //lat->DrawLatex(xpos, ypos, Form("#font[42]{ALICE preliminary}"));
-    lat->DrawLatex(xpos, ypos, Form("#it{This Thesis}"));
+    lat->DrawLatex(xpos, ypos, Form("ALICE #it{Work in progress}"));
   if (bCen)
     lat->DrawLatex(xpos, ypos - 0.045, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV ", cenMin, cenMax));
   else if (!bCen)
@@ -133,7 +133,7 @@ TLatex *LatexStdISORatio(TLatex *lat, double xpos, double ypos, double texSize, 
   lat->SetTextSize(texSize);
   lat->SetNDC();
   //lat->DrawLatex(xpos, ypos, Form("#font[42]{ALICE preliminary}"));
-    lat->DrawLatex(xpos, ypos, Form("#it{This Thesis}"));
+    lat->DrawLatex(xpos, ypos, Form("ALICE #it{Work in progress}"));
   if (bCen)
     lat->DrawLatex(xpos, ypos - 0.06, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV ", cenMin, cenMax));
   else if (!bCen)
@@ -159,7 +159,7 @@ TLatex *LatexDPhi(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax,
   lat->SetTextSize(0.065);
   lat->SetNDC();
   //lat->DrawLatex(xpos, ypos + 0.10, Form("#font[42]{ALICE preliminary}"));
-  lat->DrawLatex(xpos, ypos, Form("#it{This Thesis}"));
+  lat->DrawLatex(xpos, ypos, Form("ALICE #it{Work in progress}"));
   if(bCent)
     lat->DrawLatex(xpos, ypos - 0.10, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ trig}| < 0.67", cenMin, cenMax));
   if(!bCent)
@@ -174,7 +174,7 @@ TLatex *LatexDPhiNopt(TLatex *lat, double xpos, double ypos, int cenMin, int cen
   lat->SetTextSize(0.065);
   lat->SetNDC();
   //lat->DrawLatex(xpos, ypos + 0.10, Form("#font[42]{ALICE preliminary}"));
-  lat->DrawLatex(xpos, ypos, Form("#it{This Thesis}"));
+  lat->DrawLatex(xpos, ypos, Form("ALICE #it{Work in progress}"));
   if(bCent)
     lat->DrawLatex(xpos, ypos - 0.10, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ trig}| < 0.67", cenMin, cenMax));
   if(!bCent)
@@ -203,7 +203,7 @@ TLatex *LatexStdIcp(TLatex *lat, double xpos, double ypos, int cenMin, int cenMa
   lat->SetTextSize(0.04);
   lat->SetNDC();
   //lat->DrawLatex(xpos, ypos, Form("#font[42]{ALICE preliminary}"));
-  lat->DrawLatex(xpos, ypos, Form("#it{This Thesis}"));
+  lat->DrawLatex(xpos, ypos, Form("ALICE #it{Work in progress}"));
   lat->DrawLatex(xpos, ypos - 0.055, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
   lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5} #it{#pi}, |#it{#eta}^{ #it{#gamma}}| < 0.67 "));
   lat->DrawLatex(xpos, ypos - 3 * 0.06, Form("%2.0f < #it{p}_{T}^{ #it{#gamma}} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{ h} > 0.5 GeV/#it{c}", ptMin, ptMax));
