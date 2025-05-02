@@ -960,15 +960,15 @@ void IsoGammaHadron(float ptTrMin = 18, float ptTrMax = 40, TString sFileDirShSi
       // fileDataMix = TFile::Open(Form("/RootFiles/RootFiles/SystematicsNCentrBin/%s.root", tagFile[iCen].Data())); // estimated with shsh = 0.40-1.00
       //  sShShNCentMix = "_ShSh0.40-1.00"
       cout << "N Centrality bin used for Mix Systematics: ON"<< endl;
-      fileDataMix = TFile::Open(Form("RootFiles/NCentBinMix18/EMCAL_MB_0_90.root")); // Old Files with shshBkg = 0.40-2.00
-      sShShNCentMix = "_ShSh0.40-2.00";
+      fileDataMix = TFile::Open(Form("RootFiles/NCentMix18Upd/%s.root", tagFile[iCen].Data())); // Old Files with shshBkg = 0.40-2.00
+      sShShNCentMix = "_ShSh0.40-1.00";
       systNMix = true;
     }
     else if (systNMix45)
     {
       cout << "N Centrality bin used for Mix Systematics: ON"<< endl;
-      fileDataMix = TFile::Open(Form("RootFiles/NCentBinMix45/EMCAL_MB_0_90.root")); // Old Files with shshBkg = 0.40-2.00
-      sShShNCentMix = "_ShSh0.40-2.00";
+      fileDataMix = TFile::Open(Form("RootFiles/NCentMix36Upd/%s.root", tagFile[iCen].Data())); // Old Files with shshBkg = 0.40-2.00
+      sShShNCentMix = "_ShSh0.40-1.00";
       systNMix = true;
     }
 

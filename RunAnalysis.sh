@@ -51,8 +51,20 @@ IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-1.00", "Out
 EOF
 
 root -b -l <<EOF
+.L PlotIsoGammaHadron.C
+PlotIsoGammaHadron(18, 40,  "Output_FigcheckCodeSystNCentrMix18", "0.40-1.00", "Output_checkCodeSystNMix18")
+.q
+EOF
+
+root -b -l <<EOF
 .L IsoGammaHadron.C
 IsoGammaHadron(18, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-1.00", "Output_checkCodeSystNMix45", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, false, false, true)
+.q
+EOF
+
+root -b -l <<EOF
+.L PlotIsoGammaHadron.C
+PlotIsoGammaHadron(18, 40,  "Output_FigcheckCodeSystNCentrMix45", "0.40-1.00", "Output_checkCodeSystNMix45")
 .q
 EOF
 
