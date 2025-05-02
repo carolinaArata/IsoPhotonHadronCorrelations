@@ -242,7 +242,8 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 		for (int ibin = 0; ibin < nZtBins; ibin++)
 		{
 			if (iCen == 1 || iCen == 2)
-				hFitUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+				//hFitUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+				hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
 			else if (iCen == 0)
 			{
 				if (ibin == 0 || ibin == 1 || ibin == 2)
@@ -251,7 +252,8 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 				}
 				else
 				{
-					hFitUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+					//hFitUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+					hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
 				}
 			}
 		}
