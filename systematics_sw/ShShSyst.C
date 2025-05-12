@@ -25,7 +25,7 @@ int nZtBin = 6;
 double assocZt[] = {0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 1.00};
 
 // Definition of various shsh ranges
-int const nShSh = 5;
+int const nShSh = 4;
 //TString shshString[] = {"", "04_10PtDep", "04_15PtDep", "05_20PtDep", "06_20PtDep"};
 TString shshLeg[] = {"0.40-1.00", "0.40-0.80", "0.50-1.00", "0.35-1.00", "0.50-2.00", "0.60-2.00"};
 //Double_t shMin[] = {0.40, 0.40, 0.40, 0.50, 0.6};
@@ -96,13 +96,13 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 		TString sCent = Form("Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
 		fPlot[0][iCen] = new TFile(Form("%s/fPlot%s_%s%s.root", dirInputFileRef.Data(), shshLeg[0].Data(), sCent.Data(), sPtAll.Data()));
 		hZt[0][iCen] = (TH1F *)fPlot[0][iCen]->Get(Form("hZtEffCorrIso1Photon_%s%s", sCent.Data(), sPtAll.Data()));
-		cout << hZt[0][iCen] << endl;
+		//cout << hZt[0][iCen] << endl;
 
 		for (int iSh = 1; iSh < nShShSyst; iSh++)
 		{
 			fPlot[iSh][iCen] = new TFile(Form("%s/fPlot%s_%s%s.root", dirInputFilesSyst.Data(), shshLeg[iSh].Data(), sCent.Data(), sPtAll.Data()));
 			hZt[iSh][iCen] = (TH1F *)fPlot[iSh][iCen]->Get(Form("hZtEffCorrIso1Photon_%s%s", sCent.Data(), sPtAll.Data()));
-			cout << hZt[iSh][iCen] << endl;
+			//cout << hZt[iSh][iCen] << endl;
 		}
 		for (int iSh = 0; iSh < nShShSyst; iSh++)
 		{
@@ -175,13 +175,13 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 		hZtSystem[2][iCen] = new TH1F(Form("hZtSystwrt035_15Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "hZtSystwrt035_15", nZtBin, assocZt);
 		hZtSystem[1][iCen] = new TH1F(Form("hZtSystwrt050_10Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "hZtSystwrt050_10", nZtBin, assocZt);
 		hZtSystem[0][iCen] = new TH1F(Form("hZtSystwrt040_08Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "hZtSystwrt040_08", nZtBin, assocZt);
-		hZtSystFinal[iCen] = new TH1F("hZtSystFinal", "hZtSystFinal", nZtBin, assocZt);
+		hZtSystFinal[iCen] = new TH1F(Form("hZtSystFinal_Cen%d",iCen), "hZtSystFinal", nZtBin, assocZt);
 		for (int ibin = 0; ibin < nBins; ibin++)
 		{
 			shSyst[0][iCen][ibin] = abs(hZt[0][iCen]->GetBinContent(ibin + 1) - hZt[2][iCen]->GetBinContent(ibin + 1)); // std - 0.50-1.00
 			shSyst[0][iCen][ibin] = abs(shSyst[0][iCen][ibin] / hZt[0][iCen]->GetBinContent(ibin + 1));
 			hZtSystem[0][iCen]->SetBinContent(ibin + 1, shSyst[0][iCen][ibin]);
-			// hZtSystem[iCen][0]->SetBinError(ibin + 1, hZt[2][iCen]->GetBinError(ibin + 1) / hZt[2][iCen]->GetBinContent(ibin + 1));
+			hZtSystem[iCen][0]->SetBinError(ibin + 1, hZt[2][iCen]->GetBinError(ibin + 1) + hZt[2][iCen]->GetBinContent(ibin + 1));
 
 			cout << "Zt bin [" << assocZt[ibin] << "-" << assocZt[ibin + 1] << "] : ";
 			cout << "Pur 1: " << hZt[0][iCen]->GetBinContent(ibin + 1) << ", Error: " << hZt[0][iCen]->GetBinError(ibin + 1) / hZt[0][iCen]->GetBinContent(ibin + 1) << endl;
@@ -259,7 +259,24 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 		parPol1[iCen]->SetTextSize(0.04);
 		parPol1[iCen]->SetTextFont(42);
 		parPol1[iCen]->SetNDC();
-		hZtSystFinal[iCen]->Fit(Form("fit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
+    
+    if (cenBins[iCen]==50)
+    {
+      printf("---Fit peripheral!!!\n");
+      
+      // Do not consider bin 0.3-0.4 in fit, too low uncertainty
+      for(Int_t ibin = 1; ibin<=hZtSystFinal[iCen]->GetNbinsX();ibin++)
+      {
+//        printf("ibin %d zt %1.2f, cont %1.2f, err %1.2f\n",ibin,
+//               hZtSystFinal[iCen]->GetBinCenter(ibin),
+//               hZtSystFinal[iCen]->GetBinContent(ibin),
+//               hZtSystFinal[iCen]->GetBinError(ibin));
+        if(ibin == 4)hZtSystFinal[iCen]->SetBinError(ibin,0);
+      }
+      hZtSystFinal[iCen]->Fit(Form("fit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R","",0.1,0.6);
+    }
+    else
+      hZtSystFinal[iCen]->Fit(Form("fit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
 
 		fa1[iCen]->SetLineColor(kAzure + 7);
 		fa1[iCen]->SetLineStyle(10);
