@@ -40,7 +40,6 @@ double fZYAM_Mix(TH1F *hSame, TH1F *hMix);
 TLatex *LatexStd(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax, float ptMin, float ptMax);
 void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TString shshBkg = "0.40-1.00", bool b0_30 = true)
 {
-
 	Int_t nCen;
 	std::vector<Int_t> cenBins;
 	TString dirPlot;
@@ -66,7 +65,7 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 	}
 
 	TString processline = Form(".! mkdir -pv %s",dirPlot.Data()) ;
-  gROOT->ProcessLine(processline.Data());
+        gROOT->ProcessLine(processline.Data());
 
 	TString sPtAll = Form("_Pt%2.0f_%2.0f", ptMin, ptMax);
 	TFile *fNMixCentSyst = new TFile(Form("%s/fNMixCentSyst%s.root", dirPlot.Data(), sPtAll.Data()), "RECREATE");
@@ -190,10 +189,9 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 
 		for (int ibin = 0; ibin < nZtBins; ibin++)
 		{
-			
 			nMixBinSyst[0][iCen][ibin] = abs(hZt[1][iCen]->GetBinContent(ibin + 1) - hZt[0][iCen]->GetBinContent(ibin + 1)) / abs(hZt[0][iCen]->GetBinContent(ibin + 1));
 			nMixBinSyst[1][iCen][ibin] = abs(hZt[2][iCen]->GetBinContent(ibin + 1) - hZt[0][iCen]->GetBinContent(ibin + 1)) / abs(hZt[0][iCen]->GetBinContent(ibin + 1));
-			hNMixCentUncer[iCen]->SetBinContent(ibin + 1, (nMixBinSyst[0][iCen][ibin]+nMixBinSyst[1][iCen][ibin])/ 2);
+                        hNMixCentUncer[iCen]->SetBinContent(ibin + 1, (nMixBinSyst[0][iCen][ibin]+nMixBinSyst[1][iCen][ibin])/ 2);
 			hNMixCentUncer[iCen]->SetBinError(ibin + 1, hZt[0][iCen]->GetBinError(ibin + 1) / abs((hZt[0][iCen]->GetBinContent(ibin + 1))));
 		}
 
@@ -211,51 +209,75 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 		hNMixCentUncer[iCen]->GetYaxis()->SetLabelSize(0.04);
 		hNMixCentUncer[iCen]->SetMarkerColor(kBlue + 2);
 		hNMixCentUncer[iCen]->SetTitle(" ");
-		hNMixCentUncer[iCen]->Draw("histplsame");
+                hNMixCentUncer[iCen]->Draw("histplsame");
 		ALICEtex[iCen] = LatexStd(ALICEtex[iCen], 0.160, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax);
-		if (iCen == 1 || iCen == 2 || iCen == 3)
-			fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.1, 0.8);
-			fConst[iCen] = new TF1(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.2, 0.6);
-		if (iCen == 0)
-		{
-			fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.2, 0.8);
-			fConst[iCen] = new TF1(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.2, 0.6);
-			hNMixCentUncer[iCen]->Fit(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
-			// fConst->SetLineColor(kBlue);
-		}
-		// gStyle->SetOptFit(1111);
-		hNMixCentUncer[iCen]->Fit(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
-		fa0[iCen]->SetLineColor(kRed + 1);
-		fa0[iCen]->SetLineStyle(10);
-		fa0[iCen]->SetLineWidth(3);
-		fa0[iCen]->Draw("same");
-		hNMixCentUncer[iCen]->Fit(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
-		fConst[iCen]->SetLineColor(kGreen + 3);
-		fConst[iCen]->Draw("same");
-		if (iCen == 0)
-		{
-			fConst[iCen]->SetLineColor(kGreen + 3);
-			fConst[iCen]->Draw("same");
-		}
+		if (iCen == 2 || iCen == 3)
+    {
+      //fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.1, 0.8);
+      fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.15, 0.59);
+      fConst[iCen] = new TF1(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.2, 0.8);
+    }
+    if (iCen == 1)
+    {
+      //fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.1, 0.8);
+      fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.25, 0.8);
+      fConst[iCen] = new TF1(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.3, 0.6);
+    }
+    if (iCen == 0)
+    {
+      //fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.2, 0.8);
+      fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "[0]*exp([1]*x)+[2]", 0.3, 0.8);
+      fConst[iCen] = new TF1(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.3, 0.8);
+      hNMixCentUncer[iCen]->Fit(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
+      // fConst->SetLineColor(kBlue);
+    }
+   // gStyle->SetOptFit(1111);
 
-		hFitUncert[iCen] = new TH1F(Form("hFromFitUncertNMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hFromFitUncertNMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBins, assocZt);
-		for (int ibin = 0; ibin < nZtBins; ibin++)
-		{
-			if (iCen == 1 || iCen == 2)
-				//hFitUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
-				hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
-			else if (iCen == 0)
-			{
-				if (ibin == 0 || ibin == 1 || ibin == 2)
-				{
-					hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
-				}
-				else
-				{
-					//hFitUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
-					hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
-				}
-			}
+    hNMixCentUncer[iCen]->Fit(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
+
+    fa0[iCen]->SetLineColor(kRed + 1);
+    fa0[iCen]->SetLineStyle(1);
+    fa0[iCen]->SetLineWidth(3);
+    fa0[iCen]->Draw("same");
+    hNMixCentUncer[iCen]->Fit(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
+    fConst[iCen]->SetLineColor(kGreen + 3);
+    fConst[iCen]->SetLineWidth(4);
+    fConst[iCen]->Draw("same");
+
+    hFitUncert[iCen] = new TH1F(Form("hFromFitUncertNMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hFromFitUncertNMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBins, assocZt);
+    for (int ibin = 0; ibin < nZtBins; ibin++)
+    {
+      if ( iCen == 1 )
+      {
+        hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+        // Average Central and peripheral
+        
+        //        hFitUncert[iCen]->SetBinContent(ibin + 1,
+        //                                        (fa0[0]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)) +
+        //                                         fa0[2]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)))/2);
+      }
+      else
+      {
+        //hFitUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+        hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+      }
+//			if (iCen == 1 || iCen == 2)
+//      {
+//        //hFitUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+//        hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+//      }
+//			else if (iCen == 0)
+//			{
+//				if (ibin == 0 || ibin == 1 || ibin == 2)
+//				{
+//					hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+//				}
+//				else
+//				{
+//					//hFitUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+//					hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+//				}
+//			}
 		}
 		fNMixCentSyst->cd();
 		fConst[iCen]->Write();
@@ -286,7 +308,8 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 	cIcpSyst->Divide((nCen - 1), 1);
 	TLegend *legZTDataIcp[(nCen - 1)];
 	TLatex *lat1[(nCen - 1)];
-
+        TF1 * fConstIcp[(nCen - 1)] ;
+  
 	for (int iCen = 0; iCen < (nCen - 1); iCen++)
 	{
 		for (int iMix = 0; iMix < nCentMixUsed; iMix++)
@@ -313,19 +336,31 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 	cIcpSyst->Print(Form("%s/IcpDistrib%s.pdf", dirPlot.Data(), sPtAll.Data()));
 
 	TH1F *hUncertIcpNcentMix[nCen];
-	TF1 *hfitIcpUncert[nCen];
+	TH1F *hfitIcpUncert[nCen];
 	for (int iCen = 0; iCen < nCen; iCen++)
 	{
-		hUncertIcpNcentMix[iCen] = new TH1F(Form("hUncertIcpNcentMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hUncertIcpNcentMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBins, assocZt);
-		for (int ibin = 0; ibin < nZtBins; ibin++)
-		{
-			double binCont = 100 * (abs(Icp[2][iCen]->GetBinContent(ibin + 1) - Icp[1][iCen]->GetBinContent(ibin + 1)) / abs(Icp[0][iCen]->GetBinContent(ibin + 1)));
-			hUncertIcpNcentMix[iCen]->SetBinContent(ibin + 1, binCont);
-		}
-		hfitIcpUncert[iCen] = new TF1(Form("hfitIcpUncert_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.15, 1.0);
-		fNMixCentSyst->cd();
-		hUncertIcpNcentMix[iCen]->Write();
-	}
+	    hUncertIcpNcentMix[iCen] = new TH1F(Form("hUncertIcpNcentMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hUncertIcpNcentMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBins, 
+assocZt);
+  
+	    for (int ibin = 0; ibin < nZtBins; ibin++)
+	    {
+	      double binCont = 100 * (abs(Icp[2][iCen]->GetBinContent(ibin + 1) - Icp[1][iCen]->GetBinContent(ibin + 1)) / abs(Icp[0][iCen]->GetBinContent(ibin + 1)));
+	      hUncertIcpNcentMix[iCen]->SetBinContent(ibin + 1, binCont);
+	    }
+	    hfitIcpUncert[iCen] = new TH1F(Form("hFromFitUncert_Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]),
+                                   Form("hFromFitUncert_Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBins, assocZt);
+	    fNMixCentSyst->cd();
+    
+            fConstIcp[iCen] = new TF1(Form("ConstIcpNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.2, 0.55);
+            hUncertIcpNcentMix[iCen]->Fit(Form("ConstIcpNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]),"R");
+    
+            for (int ibin = 0; ibin < nZtBins; ibin++)
+            {
+              hfitIcpUncert[iCen]->SetBinContent(ibin + 1, fConstIcp[iCen]->Eval(hUncertIcpNcentMix[iCen]->GetBinCenter(ibin + 1)));
+            }
+            hUncertIcpNcentMix[iCen]->Write();
+            hfitIcpUncert[iCen]->Write();
+        }
 
 	TCanvas *cIcpSystUncert = new TCanvas("cIcpSystUncert", "cIcpSystUncert", (nCen - 1) * 800, 1 * 600);
 	cIcpSystUncert->Divide((nCen - 1), 1);
@@ -338,6 +373,10 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 		hUncertIcpNcentMix[iCen]->Fit(Form("hfitIcpUncert_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
 		hUncertIcpNcentMix[iCen]->SetTitle("");
 		hUncertIcpNcentMix[iCen]->Draw("hist pl");
+    
+                fConstIcp[iCen]->SetLineColor(kGreen+3);
+                fConstIcp[iCen]->SetLineWidth(4);
+                fConstIcp[iCen]->Draw("same");
 		TLatex *lat = new TLatex();
 		lat->SetTextFont(42);
 		lat->SetTextSize(0.04);
