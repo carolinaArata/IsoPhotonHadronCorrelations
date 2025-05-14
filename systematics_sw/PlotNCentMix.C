@@ -191,7 +191,7 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 		{
 			nMixBinSyst[0][iCen][ibin] = abs(hZt[1][iCen]->GetBinContent(ibin + 1) - hZt[0][iCen]->GetBinContent(ibin + 1)) / abs(hZt[0][iCen]->GetBinContent(ibin + 1));
 			nMixBinSyst[1][iCen][ibin] = abs(hZt[2][iCen]->GetBinContent(ibin + 1) - hZt[0][iCen]->GetBinContent(ibin + 1)) / abs(hZt[0][iCen]->GetBinContent(ibin + 1));
-                        hNMixCentUncer[iCen]->SetBinContent(ibin + 1, (nMixBinSyst[0][iCen][ibin]+nMixBinSyst[1][iCen][ibin])/ 2);
+      hNMixCentUncer[iCen]->SetBinContent(ibin + 1, (nMixBinSyst[0][iCen][ibin]+nMixBinSyst[1][iCen][ibin])/ 2);
 			hNMixCentUncer[iCen]->SetBinError(ibin + 1, hZt[0][iCen]->GetBinError(ibin + 1) / abs((hZt[0][iCen]->GetBinContent(ibin + 1))));
 		}
 
@@ -209,7 +209,7 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 		hNMixCentUncer[iCen]->GetYaxis()->SetLabelSize(0.04);
 		hNMixCentUncer[iCen]->SetMarkerColor(kBlue + 2);
 		hNMixCentUncer[iCen]->SetTitle(" ");
-                hNMixCentUncer[iCen]->Draw("histplsame");
+    hNMixCentUncer[iCen]->Draw("histplsame");
 		ALICEtex[iCen] = LatexStd(ALICEtex[iCen], 0.160, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax);
 		if (iCen == 2 || iCen == 3)
     {
@@ -260,7 +260,7 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
     hFitUncert[iCen] = new TH1F(Form("hFromFitUncertNMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hFromFitUncertNMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBins, assocZt);
     for (int ibin = 0; ibin < nZtBins; ibin++)
     {
-      if ( iCen == 1 )
+      if ( iCen == 1 ) //Alla fine è come se per tutte le centrality fosse uguale?
       {
         hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
         // Average Central and peripheral
@@ -357,7 +357,7 @@ assocZt);
   
 	    for (int ibin = 0; ibin < nZtBins; ibin++)
 	    {
-	      double binCont = 100 * (abs(Icp[2][iCen]->GetBinContent(ibin + 1) - Icp[1][iCen]->GetBinContent(ibin + 1)) / abs(Icp[0][iCen]->GetBinContent(ibin + 1)));
+	      double binCont = 100 * (abs(Icp[2][iCen]->GetBinContent(ibin + 1) - Icp[1][iCen]->GetBinContent(ibin + 1)) / abs(Icp[0][iCen]->GetBinContent(ibin + 1))); //not sure this is right as estimation of the error
 	      hUncertIcpNcentMix[iCen]->SetBinContent(ibin + 1, binCont);
 	    }
 	    hfitIcpUncert[iCen] = new TH1F(Form("hFromFitUncert_Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]),
