@@ -20,9 +20,9 @@
 
 using std::cout;
 using std::endl;
-Int_t nCen = 1;
-//Int_t cenBins[] = {0, 10, 30, 50, 90};
-Int_t cenBins[] = {30,50};
+Int_t nCen = 4;
+Int_t cenBins[] = {0, 10, 30, 50, 90};
+//Int_t cenBins[] = {30,50};
 
 // int nZtBin = 10;
 // double assocZt[] = {0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00, 1.20};
