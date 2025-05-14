@@ -30,7 +30,7 @@ double assocZtThinner[] = {0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 0.80, 1.00,
 
 const Int_t fillColors[] = {kGray + 1, kRed - 10, kBlue - 9, kGreen - 8, kMagenta - 9, kOrange - 9, kCyan - 8, kYellow - 7}; // for syst bands
 const Int_t colors[] = {kBlack, kRed, kOrange + 7, kGreen + 3, kAzure + 1, kBlue + 1, kMagenta + 1};
-const Int_t markers[] = {kFullCircle, kFullSquare, kFullCross, 23, kFullStar, 22, 47};
+const Int_t markers[] = {kFullCircle, kFullSquare, kFullCross, 24, kFullStar, 29, 47};
 
 TFile *fNMixSyst;
 void PrintSyst(TH1F *hSyst);
@@ -403,7 +403,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   {
     cIcpResidUESyst->cd(iCen + 1);
     IcpResidUESyst[iCen]->Draw();
-    TLatex *latexIcp = LatexStdIcp(latexIcp, 0.15, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax);
+    //TLatex *latexIcp = LatexStdIcp(latexIcp, 0.15, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax);
   }
   cIcpResidUESyst->Print(dirPlot + Form("/SystSh%s/SystResErrUEIcp%s.pdf", shshBkg.Data(), sPtAll.Data()));
 
@@ -419,7 +419,8 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     fIcp[iCen]->Divide(fZt[nCen - 1]);
     // hUEUncertIcp[iCen] = (TH1F *)fUESyst->Get(Form("SystIcp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     // cout << hUEUncertIcp[iCen] << endl; //
-    hPurUncertIcp[iCen] = (TH1F *)fPurSyst->Get(Form("hIcpUncertSystCen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
+    //hPurUncertIcp[iCen] = (TH1F *)fPurSyst->Get(Form("hIcpUncertSystCen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
+    hPurUncertIcp[iCen] = (TH1F *)fPurSyst->Get(Form("hPurUncertFromFitIcpCen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     cout << hPurUncertIcp[iCen] << endl;
     hShShUncertIcp[iCen] = (TH1F *)fShShSyst->Get(Form("hSystUncertIcp_ShShFromFitCen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     cout << hShShUncertIcp[iCen] << endl;
@@ -541,19 +542,19 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   cSystIcp->cd(3);
   
   TLatex *ALICEtexIcp1 = LatexStdIcp(ALICEtexIcp1, 0., 0.85, cenBins[0], cenBins[1], ptMin, ptMax);
-  lat->SetTextSize(0.05);
+  ALICEtexIcp1->SetTextSize(0.05);
   
   TLegend * legSystIcp = LegStd(legSystIcp, 0., 0.2, 0.7, 0.50);
   legSystIcp->SetTextSize(0.05);
   legSystIcp->SetNColumns(2);
-  legSystIcp->AddEntry(hZtSystSumQuadrIcp[0], "Total Syst.", "ep");
-  legSystIcp->AddEntry(hShShUncertIcp[0], "Bkg #it{#sigma}^{2}_{long, 5x5}", "ep");
-  legSystIcp->AddEntry(hPurUncertIcp[0], "Purity", "ep");
-  // legSystIcp->AddEntry(hUEUncertIcp[iCen], "UE estimation", "ep");
-  legSystIcp->AddEntry(hTrackIneffUncer[0], "#it{#varepsilon}_{Tracking}", "ep");
+  legSystIcp->AddEntry(hZtSystSumQuadrIcp[0], "Total Syst.", "pl");
+  legSystIcp->AddEntry(hShShUncertIcp[0], "Bkg #it{#sigma}^{2}_{long, 5x5}", "pl");
+  legSystIcp->AddEntry(hPurUncertIcp[0], "Purity", "pl");
+  // legSystIcp->AddEntry(hUEUncertIcp[iCen], "UE estimation", "pl");
+  legSystIcp->AddEntry(hTrackIneffUncer[0], "#it{#varepsilon}_{Tracking}", "pl");
 
-  legSystIcp->AddEntry(IcpResidUESyst[0], "#it{#varepsilon}_{ME}", "ep");
-  legSystIcp->AddEntry(hNMixCentUncertIcp[0], "ME centrality match", "ep");
+  legSystIcp->AddEntry(IcpResidUESyst[0], "#it{#varepsilon}_{ME}", "pl");
+  legSystIcp->AddEntry(hNMixCentUncertIcp[0], "ME centrality match", "pl");
   legSystIcp->Draw("same");
   cSystIcp->Print(Form("%s/SystSh%s/%s_cSystIcp_AllSystematicsCen%s.pdf", dirPlot.Data(), shshBkg.Data(), Mixed.Data(), sPtAll.Data()));
 

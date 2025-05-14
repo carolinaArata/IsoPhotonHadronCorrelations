@@ -168,7 +168,8 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 	for (int iCen = 0; iCen < nCen; iCen++)
 	{
 		cout << "Cent: " << cenBins[iCen] << "-" << cenBins[iCen + 1] << " Systematics: " << endl;
-		legZtSyst[iCen] = new TLegend(0.15, 0.42, 0.45, 0.70);
+    //legZtSyst[iCen] = new TLegend(0.15, 0.42, 0.45, 0.70);
+    legZtSyst[iCen] = new TLegend(0.15, 0.6, 0.4, 0.89);
 		legZtSyst[iCen]->SetFillColor(kWhite);
 		legZtSyst[iCen]->SetLineWidth(0);
 		legZtSyst[iCen]->SetTextSize(0.04);
@@ -212,7 +213,9 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 	TLatex *ALICEtex1[nCen];
 	int kColorSyst[3] = {kCyan + 2, kOrange + 6, kAzure + 3};
 
-	TF1 *fa1[nCen];
+  TF1 *fa0[nCen];
+  TF1 *fa1[nCen];
+  TF1 *fEx[nCen];
 	TLatex *parPol1[nCen];
 
 	for (int iCen = 0; iCen < nCen; iCen++)
@@ -225,7 +228,7 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 			hZtSystem[iSyst][iCen]->Scale(100);
 			hZtSystem[iSyst][iCen]->SetDirectory(0);
 			PlotStyle(hZtSystem[iSyst][iCen], 33, 2, kColorSyst[iSyst], "z_{T}", "Uncertainty %");
-			hZtSystem[iSyst][iCen]->GetYaxis()->SetRangeUser(-10, 110);
+			hZtSystem[iSyst][iCen]->GetYaxis()->SetRangeUser(-1, 50);
 			hZtSystem[iSyst][iCen]->Draw("hist same p ");
 		}
 		hZtSystFinal[iCen]->Scale(100);
@@ -237,20 +240,24 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 		legZtSyst[iCen]->AddEntry(hZtSystem[2][iCen], "Bkg. #sigma^{2}_{long, 5#times5}: 0.35-1.00", "lp");
 		legZtSyst[iCen]->AddEntry(hZtSystFinal[iCen], "Mean", "lp");
 
-		ALICEtex1[iCen] = LatexStd(ALICEtex1[iCen], 0.150, 0.86, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax);
+		ALICEtex1[iCen] = LatexStd(ALICEtex1[iCen], 0.55, 0.86, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax);
 
 		////////////////////////////////////////////////////////////////////////////////////
 		////////////////// Compute the fit for polishing the trend:   //////////////////////
 		////////////////// pol0 for 0-10% and expo for 0-30%, 30-50%, 50-90%  //////////////
 		////////////////////////////////////////////////////////////////////////////////////
 
-		if (iCen == 0 && !b0_30)
+		if (iCen == 0)// && !b0_30)
 		{
-			fa1[iCen] = new TF1(Form("fit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.10, 0.60);
+      fa0[iCen] = new TF1(Form("Constfit%d_%d" , cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.20, 0.80);
+      fa1[iCen] = new TF1(Form("Linearfit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol1", 0.20, 0.80);
+      fEx[iCen] = new TF1(Form("Expofit%d_%d"  , cenBins[iCen], cenBins[iCen + 1]), "expo", 0.20, 0.80);
 		}
 		else
 		{
-			fa1[iCen] = new TF1(Form("fit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.10, 0.60);
+      fa0[iCen] = new TF1(Form("Constfit%d_%d" , cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.10, 0.60);
+      fa1[iCen] = new TF1(Form("Linearfit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol1", 0.10, 0.60);
+      fEx[iCen] = new TF1(Form("Expofit%d_%d"  , cenBins[iCen], cenBins[iCen + 1]), "expo", 0.10, 0.60);
 		}
 		gStyle->SetOptStat(0);
 		gStyle->SetOptFit(111);
@@ -273,16 +280,37 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 //               hZtSystFinal[iCen]->GetBinError(ibin));
         if(ibin == 4)hZtSystFinal[iCen]->SetBinError(ibin,0);
       }
-      hZtSystFinal[iCen]->Fit(Form("fit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R","",0.1,0.6);
+      hZtSystFinal[iCen]->Fit(Form("Constfit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R","",0.1,0.6);
+      hZtSystFinal[iCen]->Fit(Form("Linearfit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R","",0.1,0.6);
+      hZtSystFinal[iCen]->Fit(Form("Expofit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R","",0.1,0.6);
     }
     else
-      hZtSystFinal[iCen]->Fit(Form("fit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
-
+    {
+      hZtSystFinal[iCen]->Fit(Form("Constfit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
+      hZtSystFinal[iCen]->Fit(Form("Linearfit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
+      hZtSystFinal[iCen]->Fit(Form("Expofit%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
+    }
 		fa1[iCen]->SetLineColor(kAzure + 7);
 		fa1[iCen]->SetLineStyle(10);
 		fa1[iCen]->SetLineWidth(6);
-		legZtSyst[iCen]->AddEntry(fa1[iCen], "expo ", "l");
+  
+    fa0[iCen]->SetLineColor(kGreen +3);
+    fa0[iCen]->SetLineStyle(1);
+    fa0[iCen]->SetLineWidth(6);
+ 
+    fEx[iCen]->SetLineColor(2);
+    fEx[iCen]->SetLineStyle(1);
+    fEx[iCen]->SetLineWidth(6);
+    
+    legZtSyst[iCen]->AddEntry(fa0[iCen], Form("Constant : %1.2f #pm %1.2f",fa0[iCen]->GetParameter(0),fa0[iCen]->GetParError(0)), "l");
+    fa0[iCen]->Draw("same");
+    
+		legZtSyst[iCen]->AddEntry(fa1[iCen], "Linear ", "l");
 		fa1[iCen]->Draw("same");
+    
+    legZtSyst[iCen]->AddEntry(fEx[iCen], "expo ", "l");
+    fEx[iCen]->Draw("same");
+    
 		// parPol1[iCen]->DrawLatex(0.18, 0.44, Form("expo = %2.2f #pm %2.2f", fa1[iCen]->GetParameter(0), fa1[iCen]->GetParError(0)));
 		//  parPol1[iCen]->DrawLatex(0.18, 0.40, Form("#chi^{2}/NDF: %2.2f/%d", fa1[iCen]->GetChisquare(), fa1[iCen]->GetNDF()));
 		legZtSyst[iCen]->Draw("same");
@@ -299,10 +327,12 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 		hShShUncert[iCen] = new TH1F(Form("hShShUncertFromFitCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hShShUncertFromFitCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBin, assocZt);
 		for (int ibin = 0; ibin < nZtBin; ibin++)
 		{
-			hShShUncert[iCen]->SetBinContent(ibin + 1, fa1[iCen]->Eval((hShShUncert[iCen]->GetBinCenter(ibin + 1))));
+			hShShUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval((hShShUncert[iCen]->GetBinCenter(ibin + 1))));
 		}
 		fShSyst->cd();
-		fa1[iCen]->Write();
+    fa0[iCen]->Write();
+    fa1[iCen]->Write();
+    fEx[iCen]->Write();
 		hZtSystFinal[iCen]->Write();
 		hShShUncert[iCen]->Write();
 	}
@@ -366,7 +396,9 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 	/////////////////////// Evaluate the systematic average and fit //////////////////
 	/////////////////////////////////////////////////////////////////////////////////
 	TH1F *hSystMeanIcp[nCen];
-	TF1 *fa0Icp[nCen];
+  TF1 *fa0Icp[nCen];
+  TF1 *fa1Icp[nCen];
+  TF1 *fExIcp[nCen];
 	TH1F *hSystUncertIcp_ShSh[nCen];
 	for (int iCen = 0; iCen < nCen; iCen++)
 	{
@@ -378,8 +410,13 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 			double binContMean2 = hSystIcp[2][iCen]->GetBinContent(ibin + 1);
 			hSystMeanIcp[iCen]->SetBinContent(ibin + 1, (binContMean0 + binContMean1 + binContMean2) / 3);
 		}
-		fa0Icp[iCen] = new TF1(Form("fa0Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.10, 0.60);
-		hSystMeanIcp[iCen]->Fit(Form("fa0Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
+    fa0Icp[iCen] = new TF1(Form("fa0Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.10, 0.60);
+    fa1Icp[iCen] = new TF1(Form("fa1Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol1", 0.10, 0.60);
+    fExIcp[iCen] = new TF1(Form("fExIcp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.10, 0.60);
+
+    hSystMeanIcp[iCen]->Fit(Form("fa0Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
+    hSystMeanIcp[iCen]->Fit(Form("fa1Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
+    hSystMeanIcp[iCen]->Fit(Form("fExIcp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
 
 		hSystUncertIcp_ShSh[iCen] = new TH1F(Form("hSystUncertIcp_ShShFromFitCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hSystUncertIcp_ShShFromFitCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBin, assocZt);
 		for (int ibin = 0; ibin < nZtBin; ibin++)
@@ -403,22 +440,37 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 		PlotStyle(hSystIcp[1][iCen], 34, 2, kOrange + 6, "#it{z}_{T}", "Uncertainty %");
 		PlotStyle(hSystIcp[2][iCen], 22, 2, kAzure + 3, "#it{z}_{T}", "Uncertainty %");
 		PlotStyle(hSystMeanIcp[iCen], 20, 2, kPink + 5, "#it{z}_{T}", "Uncertainty %");
-		fa0Icp[iCen]->SetLineStyle(10);
-		fa0Icp[iCen]->SetLineStyle(10);
+		
+    fa0Icp[iCen]->SetLineStyle(kGreen+3);
+		fa0Icp[iCen]->SetLineWidth(5);
 		fa0Icp[iCen]->SetLineColor(kAzure + 3);
-		cSystIcp->cd(iCen + 1);
+	
+    fa1Icp[iCen]->SetLineStyle(1);
+    fa1Icp[iCen]->SetLineWidth(5);
+    fa1Icp[iCen]->SetLineColor(kAzure + 3);
+    
+    fExIcp[iCen]->SetLineStyle(10);
+    fExIcp[iCen]->SetLineWidth(5);
+    fExIcp[iCen]->SetLineColor(2);
+    
+    cSystIcp->cd(iCen + 1);
 		hSystIcp[0][iCen]->SetTitle(" ");
-		hSystIcp[0][iCen]->GetYaxis()->SetRangeUser(0, 100);
+    hSystIcp[0][iCen]->GetYaxis()->SetRangeUser(0, 40);
+    hSystIcp[0][iCen]->SetAxisRange(0.1, 0.59,"X");
 		hSystIcp[0][iCen]->Draw("same hist p");
 		hSystIcp[1][iCen]->Draw("same hist p");
 		hSystIcp[2][iCen]->Draw("same hist p");
 		hSystMeanIcp[iCen]->Draw("same hist p");
-		fa0Icp[iCen]->Draw("same hist pc");
+    fa0Icp[iCen]->Draw("same hist pc");
+    fa1Icp[iCen]->Draw("same hist pc");
+    fExIcp[iCen]->Draw("same hist pc");
 		legShShIcp[iCen]->AddEntry(hSystIcp[0][iCen], Form("Bkg. #sigma^{2}_{long, 5#times5}: %s", shshLeg[1].Data()));
 		legShShIcp[iCen]->AddEntry(hSystIcp[1][iCen], Form("Bkg. #sigma^{2}_{long, 5#times5}: %s", shshLeg[2].Data()));
 		legShShIcp[iCen]->AddEntry(hSystIcp[2][iCen], Form("Bkg. #sigma^{2}_{long, 5#times5}: %s", shshLeg[3].Data()));
 		legShShIcp[iCen]->AddEntry(hSystMeanIcp[iCen], Form("Mean"));
-		legShShIcp[iCen]->AddEntry(fa0Icp[iCen], Form("expo"));
+    legShShIcp[iCen]->AddEntry(fa0Icp[iCen], Form("Constant: %1.2f #pm %1.2f",fa0Icp[iCen]->GetParameter(0),fa0Icp[iCen]->GetParError(0)),"L");
+    legShShIcp[iCen]->AddEntry(fa1Icp[iCen], "Linear","L");
+    legShShIcp[iCen]->AddEntry(fExIcp[iCen], "Expo","L");
 		legShShIcp[iCen]->Draw("same");
 
 		ALICEtexIcpSyst[iCen] = new TLatex();

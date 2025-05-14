@@ -211,7 +211,9 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
 
       hZtUncertSyst[iCen]->SetBinContent(ibin + 1, abs(((hZt[1][iCen]->GetBinContent(ibin + 1) - hZt[2][iCen]->GetBinContent(ibin + 1)) / 2) / hZt[0][iCen]->GetBinContent(ibin + 1)));
       hZtUncertSyst[iCen]->SetBinError(ibin + 1, hZt[0][iCen]->GetBinError(ibin + 1) / hZt[0][iCen]->GetBinContent(ibin + 1));
+      
       hIcpUncertSyst[iCen]->SetBinContent(ibin + 1, abs(((hIcp[1][iCen]->GetBinContent(ibin + 1) - hIcp[2][iCen]->GetBinContent(ibin + 1)) / 2) / hIcp[0][iCen]->GetBinContent(ibin + 1)));
+      hIcpUncertSyst[iCen]->SetBinError(ibin + 1, hIcp[0][iCen]->GetBinError(ibin + 1) / hIcp[0][iCen]->GetBinContent(ibin + 1));
     }
   }
   ////////////////////////////////////////////////////////////////////////////////////
@@ -221,7 +223,8 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
   TCanvas *cPurSyst[nCen];
   TH1F *hPurUncertFromFit[nCen];
   TLatex *parPol0[nCen];
-  TF1 *fa0[nCen];
+  TF1 *fExpo[nCen];
+  TF1 *fConst[nCen];
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     TString sCent = Form("Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
@@ -233,32 +236,41 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     cPurSyst[iCen]->cd();
     hZtUncertSyst[iCen]->Scale(100);
     hZtUncertSyst[iCen]->Draw("plhist");
-    if (iCen == 0 && !b0_30) // 0-10%
+    if (iCen == 0)// && !b0_30) // 0-10%
     {
-      fa0[iCen] = new TF1(Form("fitpol0Purity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.30, 1.00);
+      fExpo [iCen] = new TF1(Form("fitexpoPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.15, 0.8);
+      fConst[iCen] = new TF1(Form("fitpol0Purity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.15, 0.8);
     }
     else
     {
-      fa0[iCen] = new TF1(Form("fitpol0Purity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.10, 0.8); // 0-30%, 30-50%, 50-90%
+      fExpo [iCen] = new TF1(Form("fitexpoPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.1, 0.6); // 0-30%, 30-50%, 50-90%
+      fConst[iCen] = new TF1(Form("fitpol0Purity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.1, 0.6); // 0-30%, 30-50%, 50-90%
     }
     // gStyle->SetOptFit(1111);
-    hZtUncertSyst[iCen]->GetYaxis()->SetRangeUser(0, 70);
+    hZtUncertSyst[iCen]->GetYaxis()->SetRangeUser(0, 50);
     hZtUncertSyst[iCen]->Fit(Form("fitpol0Purity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
+    hZtUncertSyst[iCen]->Fit(Form("fitexpoPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
     parPol0[iCen] = new TLatex();
     parPol0[iCen]->SetTextSize(0.04);
     parPol0[iCen]->SetTextFont(42);
     parPol0[iCen]->SetNDC();
-    fa0[iCen]->SetLineColor(kColor[iCen]);
-    fa0[iCen]->SetLineStyle(10);
-    fa0[iCen]->SetLineWidth(5);
-    fa0[iCen]->Draw("same");
-    parPol0[iCen]->DrawLatex(0.50, 0.8, Form("#chi^{2}/NDF: %f/%d", fa0[iCen]->GetChisquare(), fa0[iCen]->GetNDF()));
-    parPol0[iCen]->DrawLatex(0.50, 0.75, Form("par0 = %f#pm%f", fa0[iCen]->GetParameter(0), fa0[iCen]->GetParError(0)));
+    fExpo[iCen]->SetLineColor(2);
+    fExpo[iCen]->SetLineStyle(1);
+    fExpo[iCen]->SetLineWidth(5);
+    fExpo[iCen]->Draw("same");
+    
+    fConst[iCen]->SetLineColor(kGreen+3);
+    fConst[iCen]->SetLineStyle(1);
+    fConst[iCen]->SetLineWidth(5);
+    fConst[iCen]->Draw("same");
+    
+    parPol0[iCen]->DrawLatex(0.50, 0.8, Form("#chi^{2}/NDF: %1.2f/%d", fConst[iCen]->GetChisquare(), fConst[iCen]->GetNDF()));
+    parPol0[iCen]->DrawLatex(0.50, 0.75, Form("par0 = %1.2f#pm%1.2f", fConst[iCen]->GetParameter(0), fConst[iCen]->GetParError(0)));
     TLatex *ALICEtex3 = LatexStd(ALICEtex3, 0.120, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
     cPurSyst[iCen]->Print(Form("%s/hUncertPuritySyst.pdf", PathPlot.Data()));
     for (int ibin = 0; ibin < nZtBin; ibin++)
     {
-      hPurUncertFromFit[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval(hPurUncertFromFit[iCen]->GetBinCenter(ibin + 1)));
+      hPurUncertFromFit[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hPurUncertFromFit[iCen]->GetBinCenter(ibin + 1)));
     }
     PlotStyle(hPurUncertFromFit[iCen], kStyleCen[iCen], 2, kColorCen[iCen], "#font[12]{z}_{T}", "Uncertainty %");
     // new TCanvas();
@@ -266,7 +278,8 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     // hPurUncertFromFit[iCen]->Draw("");
     fPurSyst->cd();
     hZtUncertSyst[iCen]->Write();
-    fa0[iCen]->Write();
+    fConst[iCen]->Write();
+    fExpo[iCen]->Write();
     hPurUncertFromFit[iCen]->Write();
   }
   ////////////////////////////////////////////////////////////////////////////////////
@@ -276,7 +289,8 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
   TCanvas *cPurSystIcp[nCen];
   TH1F *hPurUncertFromFitIcp[nCen];
   TLatex *parPol0Icp[nCen];
-  TF1 *fa0Icp[nCen];
+  TF1 *fExpoIcp[nCen];
+  TF1 *fConstIcp[nCen];
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     TString sCent = Form("Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
@@ -287,46 +301,65 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     PlotStyle(hIcpUncertSyst[iCen], kStyleCen[iCen], 2, kColorCen[iCen], "#font[12]{z}_{T}", "Uncertainty %");
     cPurSystIcp[iCen]->cd();
     hIcpUncertSyst[iCen]->Scale(100);
-    hIcpUncertSyst[iCen]->Draw("p");
-    if (iCen == 0 && !b0_30)
+    hIcpUncertSyst[iCen]->SetMaximum(20);
+    hIcpUncertSyst[iCen]->SetAxisRange(0.1,0.6,"X");
+    hIcpUncertSyst[iCen]->Draw("hist same pl");
+    // Set low uncertainty bin error to 0 to avoid in fit
+    if (iCen == 0)// && !b0_30)
     {
-      fa0Icp[iCen] = new TF1(Form("fitpol1IcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.30, 1.00);
+      fExpoIcp[iCen] = new TF1(Form("fitExpoIcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.15, 0.55);
+      fConstIcp[iCen] = new TF1(Form("fitpol0IcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.15, 0.55);
+//      for (int ibin = 0; ibin < nZtBin; ibin++)
+//      {
+//        if(ibin == 3)  hIcpUncertSyst[iCen]->SetBinError(ibin + 1, 0);
+//      }
     }
     else
     {
-      fa0Icp[iCen] = new TF1(Form("fitpol1IcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.10, 0.6);
+      fExpoIcp[iCen] = new TF1(Form("fitExpoIcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.10, 0.6);
+      fConstIcp[iCen] = new TF1(Form("fitpol0IcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.10, 0.6);
+     
     }
     // gStyle->SetOptFit(1111);
-    hIcpUncertSyst[iCen]->Fit(Form("fitpol1IcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
+    hIcpUncertSyst[iCen]->Fit(Form("fitpol0IcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
+    hIcpUncertSyst[iCen]->Fit(Form("fitExpoIcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
     parPol0Icp[iCen] = new TLatex();
     parPol0Icp[iCen]->SetTextSize(0.04);
     parPol0Icp[iCen]->SetTextFont(42);
     parPol0Icp[iCen]->SetNDC();
-    fa0Icp[iCen]->SetLineColor(kColor[iCen]);
-    fa0Icp[iCen]->SetLineStyle(10);
-    fa0Icp[iCen]->SetLineWidth(5);
-    fa0Icp[iCen]->Draw("same");
-    parPol0Icp[iCen]->DrawLatex(0.60, 0.8, Form("#chi^{2}/NDF: %f/%d", fa0Icp[iCen]->GetChisquare(), fa0Icp[iCen]->GetNDF()));
-    parPol0Icp[iCen]->DrawLatex(0.60, 0.75, Form("const = %f#pm%f", fa0Icp[iCen]->GetParameter(0), fa0Icp[iCen]->GetParError(0)));
+    
+    fExpoIcp[iCen]->SetLineColor(2);
+    fExpoIcp[iCen]->SetLineStyle(1);
+    fExpoIcp[iCen]->SetLineWidth(5);
+    fExpoIcp[iCen]->Draw("same");
+
+    fConstIcp[iCen]->SetLineColor(kGreen+3);
+    fConstIcp[iCen]->SetLineStyle(1);
+    fConstIcp[iCen]->SetLineWidth(5);
+    fConstIcp[iCen]->Draw("same");
+    
+    parPol0Icp[iCen]->DrawLatex(0.60, 0.8, Form("#chi^{2}/NDF: %f/%d", fConstIcp[iCen]->GetChisquare(), fExpoIcp[iCen]->GetNDF()));
+    parPol0Icp[iCen]->DrawLatex(0.60, 0.75, Form("const = %1.2f#pm%1.2f", fConstIcp[iCen]->GetParameter(0), fExpoIcp[iCen]->GetParError(0)));
     TLatex *ALICEtex3Icp = LatexStd(ALICEtex3Icp, 0.120, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
     cPurSystIcp[iCen]->Print(Form("%s/hUncertPuritySystIcp.pdf", PathPlot.Data()));
 
     for (int ibin = 0; ibin < nZtBin; ibin++)
     {
-      if (iCen == 0)
-      {
-        hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fa0Icp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
-      }
-      else
-      {
-        hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, hIcpUncertSyst[iCen]->GetBinContent(ibin + 1));
-      }
+      hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fConstIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
+//      if (iCen == 0)
+//      {
+//        hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fConstIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
+//      }
+//      else
+//      {
+//        hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, hIcpUncertSyst[iCen]->GetBinContent(ibin + 1));
+//      }
     }
     PlotStyle(hPurUncertFromFitIcp[iCen], kStyleCen[iCen], 2, kColorCen[iCen], "#font[12]{z}_{T}", "Uncertainty %");
 
     fPurSyst->cd();
     hIcpUncertSyst[iCen]->Write();
-    fa0[iCen]->Write();
+    fExpo[iCen]->Write();
     hPurUncertFromFitIcp[iCen]->Write();
   }
 
@@ -350,8 +383,8 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     cPurSystAllCenNoFit->cd();
     hZtUncertSyst[iCen]->GetYaxis()->SetRangeUser(0, 70);
     hZtUncertSyst[iCen]->Draw("histsamepl");
-    legUncerFit->AddEntry(fa0[iCen], "", "l");
-    fa0[iCen]->Draw("same");
+    legUncerFit->AddEntry(fExpo[iCen], "", "l");
+    fExpo[iCen]->Draw("same");
   }
   cPurSystAllCen->cd();
   legUncer->Draw("same");
@@ -373,11 +406,11 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     hPurUncertFromFitIcp[iCen]->Draw("histsamepl");
 
     legUncerIcp->AddEntry(hPurUncertFromFitIcp[iCen], Form("#bf{%d#font[122]{-}%d / 50#font[122]{-}90 %%}", cenBins[iCen], cenBins[iCen + 1]));
-    legUncerIcp->AddEntry(fa0[iCen], "", "l");
+    legUncerIcp->AddEntry(fExpo[iCen], "", "l");
     cPurSystAllCenNoFitIcp->cd();
     hIcpUncertSyst[iCen]->GetYaxis()->SetRangeUser(-0.1, 50);
     hIcpUncertSyst[iCen]->Draw("histsamepl");
-    fa0Icp[iCen]->Draw("same");
+    fExpoIcp[iCen]->Draw("same");
   }
 
   cPurSystAllCenIcp->cd();
