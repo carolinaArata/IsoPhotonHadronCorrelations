@@ -211,7 +211,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
     cout << histSystMCXPtAll[iCen] << endl;
     PlotStyle(histSystMCXPtAll[iCen], 21, 1, kOrange + 7, 0, "#font[12]{z_{T}}", "Uncertainty %", false);
     fUEResidSyst->cd();
-    hErrSystNarrNoUE[iCen]->Write();
+    //hErrSystNarrNoUE[iCen]->Write();
     hErrSystWideNoUE[iCen]->Write();
     histSystMCXPtAll[iCen]->Write();
     for (Int_t iptTr = 0; iptTr < nPtTrig; iptTr++)
@@ -323,7 +323,8 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
         // cIsoClustNoUE[iCen][iptTr]->cd(izt + 1)->SetRightMargin(0.0001);
         TGaxis::SetMaxDigits(2);
         gStyle->SetPadRightMargin(0.05);
-        gStyle->SetPadLeftMargin(0.18);
+        gStyle->SetPadLeftMargin(0.1);
+        gStyle->SetPadTopMargin(0.02);
         gStyle->SetPadBottomMargin(0.15);
         gStyle->SetTitleX(0.56);
         hdPhiSamNoUE[iCen][0][izt][iptTr]->SetTitle(sTitle);
@@ -352,7 +353,8 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
         // TGaxis::SetMaxDigits(2);
 
         gStyle->SetPadRightMargin(0.05);
-        gStyle->SetPadLeftMargin(0.18);
+        gStyle->SetPadLeftMargin(0.1);
+        gStyle->SetPadTopMargin(0.02);
         gStyle->SetPadBottomMargin(0.15);
         gStyle->SetTitleX(0.56);
         hdPhiIsoPhoton[iCen][izt][iptTr]->SetTitle(sTitle);
@@ -462,14 +464,85 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
 
   TCanvas *cSystErrAllPt_Narr[nCen];
   TLatex *latSystErrAllPt_Narr[nCen];
+  TF1 *fitConst[nCen];
+  TF1 *fitConstHighZt[nCen];
+  TF1 *fitExpo[nCen];
+  TH1F* hErrSystNarrNoUEFitTrend[nCen];
+  
   for (int iCen = 0; iCen < nCen; iCen++)
   {
+    TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
+
+    if (iCen < 2)
+    fitExpo[iCen] = new TF1(Form("fitExpo_Cen%d",iCen), "expo", 0.2, 0.8);
+    else
+      fitExpo[iCen] = new TF1(Form("fitExpo_Cen%d",iCen), "expo", 0.2, 0.6);
+
+    fitExpo[iCen]->SetLineColor(2);
+    fitExpo[iCen]->SetLineStyle(1);
+    fitExpo[iCen]->SetLineWidth(3);
+    
+    fitConst[iCen] = new TF1(Form("fitConst_Cen%d",iCen), "pol0", 0.1, 0.2);
+    fitConst[iCen]->SetLineColor(kGreen + 3);
+    fitConst[iCen]->SetLineStyle(1);
+    fitConst[iCen]->SetLineWidth(3);
+    
+    if (iCen < 3)
+      fitConstHighZt[iCen] = new TF1(Form("fitConstHighZt_Cen%d",iCen), "pol0", 0.2, 0.6);
+    else
+      fitConstHighZt[iCen] = new TF1(Form("fitConstHighZt_Cen%d",iCen), "pol0", 0.1, 0.6);
+    fitConstHighZt[iCen]->SetLineColor(kGreen - 3);
+    fitConstHighZt[iCen]->SetLineStyle(1);
+    fitConstHighZt[iCen]->SetLineWidth(3);
+    
     cSystErrAllPt_Narr[iCen] = canvasStd(Form("cSystErrAllPt_Narr_Cen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()), 1, 1);
     cSystErrAllPt_Narr[iCen]->cd();
+    
     hErrSystNarrNoUE[iCen]->GetYaxis()->SetRangeUser(-0.10, 60);
     hErrSystNarrNoUE[iCen]->Draw("pl");
+    
+    hErrSystNarrNoUE[iCen]->Fit(Form("fitExpo_Cen%d",iCen), "R");
+    hErrSystNarrNoUE[iCen]->Fit(Form("fitConst_Cen%d",iCen), "R");
+    hErrSystNarrNoUE[iCen]->Fit(Form("fitConstHighZt_Cen%d",iCen), "R");
+    
+    fitExpo[iCen]->Draw("same");
+    fitConst[iCen]->Draw("same");
+    fitConstHighZt[iCen]->Draw("same");
+    
     latSystErrAllPt_Narr[iCen] = LatexStdSyst(latSystErrAllPt_Narr[iCen - 1], 0.450, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true, " ");
+    
+    TLegend *legUncert = LegStd(legUncert, 0.4, 0.55, 0.80, 0.68);
+    legUncert->AddEntry(fitExpo[iCen], "expo", "l");
+    legUncert->AddEntry(fitConst[iCen], Form("const low #it{z}_{T}: %1.2f #pm %1.2f",
+                                       fitConst[iCen]->GetParameter(0),fitConst[iCen]->GetParError(0)), "l");
+    legUncert->AddEntry(fitConstHighZt[iCen], Form("const high #it{z}_{T}: %1.2f #pm %1.2f",
+                                             fitConstHighZt[iCen]->GetParameter(0),fitConstHighZt[iCen]->GetParError(0)), "l");
+    legUncert->Draw("same");
+    
     cSystErrAllPt_Narr[iCen]->Print(dirPlot + Form("/SystErrNarrCen%d_%d.pdf", cenBins[iCen], cenBins[iCen + 1]));
+    
+    hErrSystNarrNoUEFitTrend[iCen] = new TH1F(
+                                              Form("hErrSystNarrNoUEFitTrend%s%s", sCent.Data(), sPtAll.Data()),
+                                              Form("hErrSystNarrNoUEFitTrend%s%s", sCent.Data(), sPtAll.Data()),
+                                              nZtBin, assocZt);
+    
+    for (int ibin = 0; ibin < nZtBin; ibin++)
+    {
+      Float_t center = hErrSystNarrNoUEFitTrend[iCen]->GetBinCenter(ibin + 1);
+      if (iCen < 3 && (ibin == 0 || ibin == 1))
+      {
+        hErrSystNarrNoUEFitTrend[iCen]->SetBinContent(ibin + 1, fitConst[iCen]->Eval(center));
+      }
+      else
+      {
+        //histSystErrFitNoUENarr0_30PtRangeFitTrend->SetBinContent(ibin + 1, fitExpo[0]->Eval(histSystErrFitNoUENarr0_30PtRangeFitTrend->GetBinCenter(ibin + 1)));
+        hErrSystNarrNoUEFitTrend[iCen]->SetBinContent(ibin + 1, fitConstHighZt[0]->Eval(center));
+      }
+    }
+    printf("*** Write: %s\n",hErrSystNarrNoUEFitTrend[iCen]->GetName());
+    fUEResidSyst->cd();
+    hErrSystNarrNoUE[iCen]->Write();
+    hErrSystNarrNoUEFitTrend[iCen]->Write();
   }
 
   TF1 *fitNoUENarrCl[nCen][nZtBin][nPtTrig];
@@ -490,9 +563,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
 
   TH1F *histSystErrFitNoUENarr0_30PtRange = new TH1F(Form("histSystErrFitNoUENarr0_30PtRange%s", sPtAll.Data()), Form("histSystErrFitNoUENarr0_30PtRange%s", sPtAll.Data()), nZtBin, assocZt);
   TH1F *histSystErrFitNoUENarr0_30PtRangeFitTrend;
-  TF1 *fitConst;
-  TF1 *fitExpo;
-
+ 
   if (b0_30)
   {
     for (int iCen = 0; iCen < 2; iCen++)
@@ -552,24 +623,24 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
   // histSystErrFitNoUE0_30XPt[0][iptTr] = (TH1F *)histSystErrFitNoUE0_30[0][iptTr]->Clone("histSystErrFitNoUEXPt_ShSh0.10_0.30"+ sPtTrig);
   histSystErrFitNoUENarr0_30PtRange = SumPtBinXzt0_30(numbTrig0_30[0], ptTrig, index1, index2, histSystErrFitNoUE0_30[0], histSystErrFitNoUENarr0_30PtRange, histPur[0], funcPur[0], histPur[1], funcPur[1], numbTrig[0][0], numbTrig[1][0], 1, true);
 
-  fitExpo = new TF1(Form("fitExpo_Cen0_30"), "expo", 0.2, 0.8);
-  fitExpo->SetLineColor(kGreen + 3);
-  fitExpo->SetLineStyle(10);
-  fitExpo->SetLineWidth(3);
-  fitConst = new TF1(Form("fitConst_Cen0_30"), "pol0", 0.05, 0.2);
-  histSystErrFitNoUENarr0_30PtRange->Fit("fitExpo_Cen0_30", "R");
-  histSystErrFitNoUENarr0_30PtRange->Fit("fitConst_Cen0_30", "R");
+  histSystErrFitNoUENarr0_30PtRange->Fit("fitExpo_Cen0", "R");
+  histSystErrFitNoUENarr0_30PtRange->Fit("fitConst_Cen0", "R");
+  histSystErrFitNoUENarr0_30PtRange->Fit("fitConstHighZt_Cen0", "R");
   TCanvas *cSystNarr0_30 = new TCanvas("cSystNarr0_30", "cSystNarr0_30", 800, 600);
   PlotStyle(histSystErrFitNoUENarr0_30PtRange, 20, 1.5, kAzure + 7, 0, "#it{z}_{T}", "Uncertainty %", false);
   // gStyle->SetOptFit(00000);
   histSystErrFitNoUENarr0_30PtRange->SetTitle("");
   histSystErrFitNoUENarr0_30PtRange->Draw("same");
-  fitExpo->Draw("same");
-  fitConst->Draw("same");
-  TLatex *latUncer = LatexStd(latUncer, 0.450, 0.84, 0, 30, ptMin, ptMax, true);
-  TLegend *legUncert = LegStd(legUncert, 0.45, 0.55, 0.80, 0.68);
-  legUncert->AddEntry(fitExpo, "expo", "lp");
-  legUncert->AddEntry(fitConst, "const", "lp");
+  fitExpo[0]->Draw("same");
+  fitConst[0]->Draw("same");
+  fitConstHighZt[0]->Draw("same");
+  TLatex *latUncer = LatexStd(latUncer, 0.4, 0.84, 0, 30, ptMin, ptMax, true);
+  TLegend *legUncert = LegStd(legUncert, 0.4, 0.55, 0.80, 0.68);
+  legUncert->AddEntry(fitExpo[0], "expo", "l");
+  legUncert->AddEntry(fitConst[0], Form("const low #it{z}_{T}: %1.2f #pm %1.2f",
+                                     fitConst[0]->GetParameter(0),fitConst[0]->GetParError(0)), "l");
+  legUncert->AddEntry(fitConstHighZt[0], Form("const high #it{z}_{T}: %1.2f #pm %1.2f",
+                                           fitConstHighZt[0]->GetParameter(0),fitConstHighZt[0]->GetParError(0)), "l");
   legUncert->Draw("same");
   cSystNarr0_30->Print(dirPlot + Form("/SystErrNarrCen0_30.pdf"));
   histSystErrFitNoUENarr0_30PtRangeFitTrend = new TH1F(Form("histSystErrFitNoUENarr0_30PtRangeFitTrend%s", sPtAll.Data()), Form("histSystErrFitNoUENarr0_30PtRangeFitTrend%s", sPtAll.Data()), nZtBin, assocZt);
@@ -577,11 +648,12 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
   {
     if (ibin == 0 || ibin == 1)
     {
-      histSystErrFitNoUENarr0_30PtRangeFitTrend->SetBinContent(ibin + 1, fitConst->Eval(histSystErrFitNoUENarr0_30PtRangeFitTrend->GetBinCenter(ibin + 1)));
+      histSystErrFitNoUENarr0_30PtRangeFitTrend->SetBinContent(ibin + 1, fitConst[0]->Eval(histSystErrFitNoUENarr0_30PtRangeFitTrend->GetBinCenter(ibin + 1)));
     }
     else
     {
-      histSystErrFitNoUENarr0_30PtRangeFitTrend->SetBinContent(ibin + 1, fitExpo->Eval(histSystErrFitNoUENarr0_30PtRangeFitTrend->GetBinCenter(ibin + 1)));
+      //histSystErrFitNoUENarr0_30PtRangeFitTrend->SetBinContent(ibin + 1, fitExpo[0]->Eval(histSystErrFitNoUENarr0_30PtRangeFitTrend->GetBinCenter(ibin + 1)));
+      histSystErrFitNoUENarr0_30PtRangeFitTrend->SetBinContent(ibin + 1, fitConstHighZt[0]->Eval(histSystErrFitNoUENarr0_30PtRangeFitTrend->GetBinCenter(ibin + 1)));
     }
   }
   TCanvas *cSystNarr0_30FitTrend = new TCanvas("cSystNarr0_30FitTrend", "cSystNarr0_30FitTrend", 800, 600);
@@ -605,7 +677,7 @@ TLatex *LatexStdIcp(TLatex *lat, double xpos, double ypos, int cenMin, int cenMa
   lat->SetTextFont(42);
   lat->SetTextSize(0.04);
   lat->SetNDC();
-  lat->DrawLatex(xpos, ypos, Form("#it{Work in progress}"));
+  //lat->DrawLatex(xpos, ypos, Form("#it{Work in progress}"));
   lat->DrawLatex(xpos, ypos - 0.06, Form("%d-%d%% / 50-90%% Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV", cenMin, cenMax));
   if (sPttrig)
     lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("%2.0f < #it{p}_{#it{T}}^{trig} < %2.0f GeV/#it{c}", ptMin, ptMax));
@@ -654,9 +726,7 @@ TH1F *SumPtBinXzt(TH1F *hTrigSame, Float_t PtTrigger[npt], int index1, int index
     intPtAll = intPtAll + nPtRec * pur;
     // cout << nPtRec << endl;
   }
-  cout << "intPtAll" << intPtAll << endl;
   hzTbinAll->Scale(1 / intPtAll);
-  cout << "pippo11111" << endl;
   return hzTbinAll;
 }
 
