@@ -494,8 +494,8 @@ void PlotStyle(TH1F *hPlot, int kMarker, double kMarkerSize, int kColor, TString
 	//  gStyle->SetLabelSize(.5, "XY");
 	gStyle->SetLineScalePS(1);
 	gStyle->SetTitleAlign(23);
-	gStyle->SetPadRightMargin(0.03);
-	gStyle->SetPadLeftMargin(0.12);
+	gStyle->SetPadLeftMargin(0.1);
+	gStyle->SetPadTopMargin(0.02);
 	hPlot->SetMarkerStyle(kMarker);
 	hPlot->SetMarkerSize(1.1);
 	// hPlot->SetMarkerSize(2);
