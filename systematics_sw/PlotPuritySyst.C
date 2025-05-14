@@ -183,7 +183,7 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     ALICEtex10->SetTextFont(42);
     ALICEtex10->SetTextSize(0.04);
     ALICEtex10->SetNDC();
-    ALICEtex10->DrawLatex(0.15, 0.85, Form("#it{This Thesis}"));
+    //ALICEtex10->DrawLatex(0.15, 0.85, Form("#it{This Thesis}"));
     ALICEtex10->DrawLatex(0.15, 0.85 - 0.06, Form("#bf{%d-%d %% / 50-90 %%} Pb-Pb, #sqrt{s_{NN}} = 5.02 TeV", cenBins[iCen], cenBins[iCen + 1]));
     ALICEtex10->DrawLatex(0.15, 0.85 - 2 * 0.06, Form("|#it{#eta}^{ #it{#gamma}}| < 0.67, %2.0f < #it{p}_{#it{T}}^{#gamma} < %2.0f GeV/#it{c}", ptMin, ptMax));
     TLatex *ALICEtex1Icp = LatexStd(ALICEtex1Icp, 0.500, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
@@ -264,8 +264,18 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     fConst[iCen]->SetLineWidth(5);
     fConst[iCen]->Draw("same");
     
-    parPol0[iCen]->DrawLatex(0.50, 0.8, Form("#chi^{2}/NDF: %1.2f/%d", fConst[iCen]->GetChisquare(), fConst[iCen]->GetNDF()));
-    parPol0[iCen]->DrawLatex(0.50, 0.75, Form("par0 = %1.2f#pm%1.2f", fConst[iCen]->GetParameter(0), fConst[iCen]->GetParError(0)));
+    //parPol0[iCen]->DrawLatex(0.55, 0.8, Form("#chi^{2}/NDF: %1.2f/%d", fConst[iCen]->GetChisquare(), fConst[iCen]->GetNDF()));
+    //parPol0[iCen]->DrawLatex(0.55, 0.75, Form("par0 = %1.2f#pm%1.2f", fConst[iCen]->GetParameter(0), fConst[iCen]->GetParError(0)));
+    TLegend *legFit = LegStd(legFit, 0.55, 0.70, 0.75, 0.85);
+    legFit->SetTextSize(0.04);
+    legFit->AddEntry(fConst[iCen],Form("Constant: %1.2f#pm%1.2f,",
+                                       fConst[iCen]->GetParameter(0), fConst[iCen]->GetParError(0)
+                                       ),"L");
+    legFit->AddEntry("",Form("        #chi^{2}/NDF: %1.2f/%d",
+                                       fConst[iCen]->GetChisquare(), fConst[iCen]->GetNDF()
+                                       ),"");
+    legFit->AddEntry(fExpo[iCen],"Expo","L");
+    legFit->Draw("same");
     TLatex *ALICEtex3 = LatexStd(ALICEtex3, 0.120, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
     cPurSyst[iCen]->Print(Form("%s/hUncertPuritySyst.pdf", PathPlot.Data()));
     for (int ibin = 0; ibin < nZtBin; ibin++)
@@ -338,8 +348,20 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     fConstIcp[iCen]->SetLineWidth(5);
     fConstIcp[iCen]->Draw("same");
     
-    parPol0Icp[iCen]->DrawLatex(0.60, 0.8, Form("#chi^{2}/NDF: %f/%d", fConstIcp[iCen]->GetChisquare(), fExpoIcp[iCen]->GetNDF()));
-    parPol0Icp[iCen]->DrawLatex(0.60, 0.75, Form("const = %1.2f#pm%1.2f", fConstIcp[iCen]->GetParameter(0), fExpoIcp[iCen]->GetParError(0)));
+//    parPol0Icp[iCen]->DrawLatex(0.60, 0.8, Form("#chi^{2}/NDF: %f/%d", fConstIcp[iCen]->GetChisquare(), fExpoIcp[iCen]->GetNDF()));
+//    parPol0Icp[iCen]->DrawLatex(0.60, 0.75, Form("const = %1.2f#pm%1.2f", fConstIcp[iCen]->GetParameter(0), fExpoIcp[iCen]->GetParError(0)));
+    
+    TLegend *legFitIcp = LegStd(legFitIcp, 0.55, 0.70, 0.75, 0.85);
+    legFitIcp->SetTextSize(0.04);
+    legFitIcp->AddEntry(fConst[iCen],Form("Constant: %1.2f#pm%1.2f,",
+                                       fConstIcp[iCen]->GetParameter(0), fConstIcp[iCen]->GetParError(0)
+                                       ),"L");
+    legFitIcp->AddEntry("",Form("        #chi^{2}/NDF: %1.2f/%d",
+                                       fConstIcp[iCen]->GetChisquare(), fConstIcp[iCen]->GetNDF()
+                                       ),"");
+    legFitIcp->AddEntry(fExpoIcp[iCen],"Expo","L");
+    legFitIcp->Draw("same");
+    
     TLatex *ALICEtex3Icp = LatexStd(ALICEtex3Icp, 0.120, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
     cPurSystIcp[iCen]->Print(Form("%s/hUncertPuritySystIcp.pdf", PathPlot.Data()));
 
@@ -376,6 +398,7 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
   {
     cPurSystAllCen->cd();
     hPurUncertFromFit[iCen]->GetYaxis()->SetRangeUser(0, 70);
+    hPurUncertFromFit[iCen]->GetXaxis()->SetRangeUser(0.1, 0.8);
     hPurUncertFromFit[iCen]->Draw("histsamepl");
 
     legUncer->AddEntry(hPurUncertFromFit[iCen], Form("%d-%d %%", cenBins[iCen], cenBins[iCen + 1]));
@@ -400,7 +423,6 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
   // Systematics Icp
   for (int iCen = 0; iCen < nCen - 1; iCen++)
   {
-
     cPurSystAllCenIcp->cd();
     hPurUncertFromFitIcp[iCen]->GetYaxis()->SetRangeUser(-0.1, 50);
     hPurUncertFromFitIcp[iCen]->Draw("histsamepl");
@@ -409,6 +431,7 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     legUncerIcp->AddEntry(fExpo[iCen], "", "l");
     cPurSystAllCenNoFitIcp->cd();
     hIcpUncertSyst[iCen]->GetYaxis()->SetRangeUser(-0.1, 50);
+    hIcpUncertSyst[iCen]->GetXaxis()->SetRangeUser(0.1, 0.6);
     hIcpUncertSyst[iCen]->Draw("histsamepl");
     fExpoIcp[iCen]->Draw("same");
   }
@@ -461,13 +484,13 @@ TLatex *LatexStd(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax, 
   lat->SetNDC();
   if (bCen)
   {
-    lat->DrawLatex(xpos, ypos, Form("#it{This Thesis}"));
+    //lat->DrawLatex(xpos, ypos, Form("#it{This Thesis}"));
     lat->DrawLatex(xpos, ypos - 0.06, Form("%d#font[122]{-}%d %% Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV", cenMin, cenMax));
     lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("|#it{#eta}^{ #it{#gamma}}| < 0.67 , %2.0f < #it{p}_{T}^{#gamma} < %2.0f GeV/#it{c}", ptMin, ptMax));
   }
   else if (!bCen)
   {
-    lat->DrawLatex(xpos, ypos, Form("#it{This Thesis}"));
+    //lat->DrawLatex(xpos, ypos, Form("#it{This Thesis}"));
     lat->DrawLatex(xpos, ypos - 0.06, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV"));
     lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("|#it{#eta}^{ #it{#gamma}}| < 0.67 , %2.0f < #it{p}_{T}^{#gamma} < %2.0f GeV/#it{c}", ptMin, ptMax));
   }
@@ -489,7 +512,7 @@ TLatex *LatexStdISORatio(TLatex *lat, double xpos, double ypos, double texSize, 
   lat->SetTextSize(texSize);
   lat->SetNDC();
   // lat->DrawLatex(xpos, ypos, Form("#font[42]{ALICE preliminary}"));
-  lat->DrawLatex(xpos, ypos, Form("#it{This Thesis}"));
+  //lat->DrawLatex(xpos, ypos, Form("#it{This Thesis}"));
   if (bCen)
     lat->DrawLatex(xpos, ypos - 0.06, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV ", cenMin, cenMax));
   else if (!bCen)
