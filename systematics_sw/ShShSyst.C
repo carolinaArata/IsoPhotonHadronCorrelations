@@ -181,7 +181,7 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 			shSyst[0][iCen][ibin] = abs(hZt[0][iCen]->GetBinContent(ibin + 1) - hZt[2][iCen]->GetBinContent(ibin + 1)); // std - 0.50-1.00
 			shSyst[0][iCen][ibin] = abs(shSyst[0][iCen][ibin] / hZt[0][iCen]->GetBinContent(ibin + 1));
 			hZtSystem[0][iCen]->SetBinContent(ibin + 1, shSyst[0][iCen][ibin]);
-			hZtSystem[iCen][0]->SetBinError(ibin + 1, hZt[2][iCen]->GetBinError(ibin + 1) + hZt[2][iCen]->GetBinContent(ibin + 1));
+			hZtSystem[iCen][0]->SetBinError(ibin + 1, hZt[2][iCen]->GetBinError(ibin + 1) / hZt[2][iCen]->GetBinContent(ibin + 1));
 
 			cout << "Zt bin [" << assocZt[ibin] << "-" << assocZt[ibin + 1] << "] : ";
 			cout << "Pur 1: " << hZt[0][iCen]->GetBinContent(ibin + 1) << ", Error: " << hZt[0][iCen]->GetBinError(ibin + 1) / hZt[0][iCen]->GetBinContent(ibin + 1) << endl;
