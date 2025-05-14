@@ -134,9 +134,9 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
             // cout << hdPhiMix[iCen][iso][iSh][izt][iptTr] << endl;
             hdPhiSamNoUE[iCen][iso][iSh][izt][iptTr] = (TH1F *)fPlot[iCen]->Get("hdPhiSameNoUE" + sIso + sShSh + sZtBin + sPtTrig);
             // cout << hdPhiSamNoUE[iCen][iso][iSh][izt][iptTr] << endl;
-            PlotStyle(hdPhiSam[iCen][iso][iSh][izt][iptTr], kMarkStyle[iSh], 2, kBlue + 2, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}|", false);
-            PlotStyle(hdPhiMix[iCen][iso][iSh][izt][iptTr], 21, 2, kRed - 4, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}|", false);
-            PlotStyle(hdPhiSamNoUE[iCen][iso][iSh][izt][iptTr], kMarkStyleNoUE[iSh], 2, kAzure + 2, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}|", false);
+            PlotStyle(hdPhiSam[iCen][iso][iSh][izt][iptTr], kMarkStyle[iSh], 2, kBlue + 2, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
+            PlotStyle(hdPhiMix[iCen][iso][iSh][izt][iptTr], 21, 2, kRed - 4, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
+            PlotStyle(hdPhiSamNoUE[iCen][iso][iSh][izt][iptTr], kMarkStyleNoUE[iSh], 2, kAzure + 2, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
           }
           hdPhiSamNoUERatio[iCen][iso][izt][iptTr] = (TH1F *)fPlot[iCen]->Get(Form("hdPhiSameNoUERatio%s%s_%s", sIso.Data(), sZtBin.Data(), sPtTrig.Data())); // ratio between photon and pi0
           cout << "Get azimuthal distributions after purity correction" << endl;
@@ -148,8 +148,8 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
 
           cout << "Set plots style" << endl;
           PlotStyle(hdPhiSamNoUERatio[iCen][iso][izt][iptTr], kMarkStyle[1], 2, kBlue + 2, kBlue + 2, "#Delta#it{#varphi} (rad)", "Ratio", false);
-          PlotStyle(hdPhiSamPi0Pur[iCen][iso][izt][iptTr], kMarkStyleNoUE[1], 2, kAzure + 2, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}|", false);
-          PlotStyle(hdPhiPhoton[iCen][iso][izt][iptTr], 25, 1.6, kRed - 7, kOrange + 8, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}|", false);
+          PlotStyle(hdPhiSamPi0Pur[iCen][iso][izt][iptTr], kMarkStyleNoUE[1], 2, kAzure + 2, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
+          PlotStyle(hdPhiPhoton[iCen][iso][izt][iptTr], 25, 1.6, kRed - 7, kOrange + 8, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
         }
         cout << "Get Zt distributions for different Pt bins" << endl;
         hZtPhotonPtBin[iCen][iso][iptTr] = (TH1F *)fPlot[iCen]->Get(Form("hZt%sPhotonPtBin_%s", sIso.Data(), sPtTrig.Data()));
@@ -170,7 +170,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         {
           TString sShSh = Form("_ShSh%s", shshString[iSh].Data());
           hdPhiSamNoUEPtAll[iCen][iso][iSh][izt] = (TH1F *)fPlot[iCen]->Get(Form("hdPhiSamNoUEPtAll" + sIso + sShSh + "%s%s%s", sCent.Data(), sZtBin.Data(), sPtAll.Data()));
-          PlotStyle(hdPhiSamNoUEPtAll[iCen][iso][iSh][izt], kMarkStyleNoUE[1], 2, kAzure + 2, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}|", false);
+          PlotStyle(hdPhiSamNoUEPtAll[iCen][iso][iSh][izt], kMarkStyleNoUE[1], 2, kAzure + 2, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
         }
       }
     }
@@ -206,27 +206,27 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
             hdPhiMixMCRec[iCen][iso][iSh][izt][iptTr] = (TH1F *)fPlot[iCen]->Get("hdPhiMixMCRecMirror" + sIso + sShSh + sZtBin + sPtTrig + sGenPartMC[iSh]);
             hdPhiSamMCRecNoUE[iCen][iso][iSh][izt][iptTr] = (TH1F *)fPlot[iCen]->Get("hdPhiSameMCRecNoUE" + sIso + sShSh + sZtBin + sPtTrig + sGenPartMC[iSh]);
 
-            PlotStyle(hdPhiMCGenUE[iCen][iso][iSh][izt][iptTr], 25, 2, kBlue + 2, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}|", false);
-            PlotStyle(hdPhiMCGen[iCen][iso][iSh][izt][iptTr], 21, 2, kBlue + 2, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}|", false);
-            PlotStyle(hdPhiSamMCRec[iCen][iso][iSh][izt][iptTr], 21, 2, kPink + 6, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}|", false);
-            PlotStyle(hdPhiMixMCRec[iCen][iso][iSh][izt][iptTr], kMarkStyleIso_NotIso[iso], 2, kRed - 3, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}|", false);
-            PlotStyle(hdPhiSamMCRecNoUE[iCen][iso][iSh][izt][iptTr], 21, 2, kOrange + 7, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}|", false);
+            PlotStyle(hdPhiMCGenUE[iCen][iso][iSh][izt][iptTr], 25, 2, kBlue + 2, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
+            PlotStyle(hdPhiMCGen[iCen][iso][iSh][izt][iptTr], 21, 2, kBlue + 2, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
+            PlotStyle(hdPhiSamMCRec[iCen][iso][iSh][izt][iptTr], 21, 2, kPink + 6, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
+            PlotStyle(hdPhiMixMCRec[iCen][iso][iSh][izt][iptTr], kMarkStyleIso_NotIso[iso], 2, kRed - 3, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
+            PlotStyle(hdPhiSamMCRecNoUE[iCen][iso][iSh][izt][iptTr], 21, 2, kOrange + 7, kBlue + 2, "#Delta#it{#varphi} (rad)", "1 / #it{N}^{ trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
           }
 
           hZtPtBinMCGen[iCen][iso][iSh][iptTr] = (TH1F *)fPlot[iCen]->Get(Form("hZtPtBinMCGen_%s%s%s", sIso.Data(), sPtTrig.Data(), sGenPartMC[iSh].Data()));
           hZtPtBinMCRec[iCen][iso][iSh][iptTr] = (TH1F *)fPlot[iCen]->Get(Form("hZtPtBinMCRec_%s%s%s", sIso.Data(), sPtTrig.Data(), sGenPartMC[iSh].Data()));
           hRatioEffCorrPtBin[iCen][iso][iSh][iptTr] = (TH1F *)fPlot[iCen]->Get(Form("hRatioEffCorrPtBin%s%s%s", sIso.Data(), sPtTrig.Data(), sGenPartMC[iSh].Data()));
-          PlotStyle(hZtPtBinMCGen[iCen][iso][iSh][iptTr], kMarkStyleShSh[iSh], 1, kAzure + 7, kBlue + 2, "#it{z}_{T}", "1 / #it{N}^{ trig} d^{3}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}| d#it{z}_{T}", false);
-          PlotStyle(hZtPtBinMCRec[iCen][iso][iSh][iptTr], kMarkStyleShSh[iSh], 1, kOrange + 7, kBlue + 2, "#it{z}_{T}", "1 / #it{N}^{ trig} d^{3}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}| d#it{z}_{T}", false);
+          PlotStyle(hZtPtBinMCGen[iCen][iso][iSh][iptTr], kMarkStyleShSh[iSh], 1, kAzure + 7, kBlue + 2, "#it{z}_{T}", "1 / #it{N}^{ trig} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
+          PlotStyle(hZtPtBinMCRec[iCen][iso][iSh][iptTr], kMarkStyleShSh[iSh], 1, kOrange + 7, kBlue + 2, "#it{z}_{T}", "1 / #it{N}^{ trig} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
           PlotStyle(hRatioEffCorrPtBin[iCen][iso][iSh][iptTr], kMarkStyleShSh[iSh], 1, kTeal - 7, kBlue + 2, "#it{z}_{T}", "1/N^{trig}dN^{charg}/d#it{z}_{T}", false);
         }
 
         hZtMCGen[iCen][iso][iSh] = (TH1F *)fPlot[iCen]->Get(Form("hZtMCGen%s%s%s%s", sIso.Data(), sGenPartMC[iSh].Data(), sCent.Data(), sPtAll.Data()));
         hZtMCRec[iCen][iso][iSh] = (TH1F *)fPlot[iCen]->Get(Form("hZtMCRec%s%s%s%s", sIso.Data(), sGenPartMC[iSh].Data(), sCent.Data(), sPtAll.Data()));
         hZtEffCorr[iCen][iso][iSh] = (TH1F *)fPlot[iCen]->Get(Form("hZtEffCorr%s%s%s%s", sIso.Data(), sGenPartMC[iSh].Data(), sCent.Data(), sPtAll.Data()));
-        PlotStyle(hZtMCGen[iCen][iso][iSh], kMarkStyleShSh[iSh], 1, kAzure + 7, kBlue + 2, "#it{z}_{T}", "1 / #it{N}^{ trig} d^{3}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}| d#it{z}_{T}", false);
-        PlotStyle(hZtMCRec[iCen][iso][iSh], kMarkStyleShSh[iSh], 1, kOrange + 7, kBlue + 2, "#it{z}_{T}", "1 / #it{N}^{ trig} d^{3}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}| d#it{z}_{T}", false);
-        PlotStyle(hZtEffCorr[iCen][iso][iSh], kMarkStyleShSh[iSh], 1, kCyan + 2, kBlue + 2, "#it{z}_{T}", "1 / #it{N}^{ trig} d^{3}#it{N} / d#Delta#it{#eta} d |#Delta#it{#varphi}| d#it{z}_{T}", false);
+        PlotStyle(hZtMCGen[iCen][iso][iSh], kMarkStyleShSh[iSh], 1, kAzure + 7, kBlue + 2, "#it{z}_{T}", "1 / #it{N}^{ trig} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
+        PlotStyle(hZtMCRec[iCen][iso][iSh], kMarkStyleShSh[iSh], 1, kOrange + 7, kBlue + 2, "#it{z}_{T}", "1 / #it{N}^{ trig} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
+        PlotStyle(hZtEffCorr[iCen][iso][iSh], kMarkStyleShSh[iSh], 1, kCyan + 2, kBlue + 2, "#it{z}_{T}", "1 / #it{N}^{ trig} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
       }
     }
   }
@@ -248,12 +248,14 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
   TCanvas *cMixIsoGamma_Clust[nCen][nPtTrig];
   TLegend *legMixIsoGamma_Clust[nCen][nPtTrig];
   TCanvas *cSame_Mix_NoUEIsoClust[nCen][nPtTrig];
+  TCanvas *cSame_Mix_NoUEIsoClustSingleZt[nCen][nPtTrig];
   TLegend *legSame_Mix_NoUEIsoClust[nCen][nPtTrig];
   TCanvas *cIsoClust_Pi0NoUE[nCen][nPtTrig];
   TLegend *legIsoClust_Pi0NoUE[nCen][nPtTrig];
   TCanvas *cIsoClust_Pi0NoUERatio[nCen][nPtTrig];
   TLegend *legIsoClust_Pi0NoUERatio[nCen][nPtTrig];
   TCanvas *cIsoClust_Pi0Pur[nCen][nPtTrig];
+  TCanvas *cIsoClust_Pi0Pur_SingleZt[nCen][nPtTrig];
   TLegend *legIsoClust_Pi0Pur[nCen][nPtTrig];
   TLatex *latDphi[nCen];
 
@@ -291,6 +293,10 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       legMixIsoGamma_Clust[iCen][iptTr] = LegStd(legMixIsoGamma_Clust[iCen][iptTr], 0.10, 0.11, 0.12, 0.46);
       cSame_Mix_NoUEIsoClust[iCen][iptTr] = new TCanvas("cSame_Mix_NoUEIsoClust" + sCent + sPtTrig, "cSame_Mix_NoUEIsoClust" + sCent + sPtTrig, xNumPad * 800, 2 * 600);
       cSame_Mix_NoUEIsoClust[iCen][iptTr]->Divide(xNumPad, 2);
+      
+      cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr] = new TCanvas("cSame_Mix_NoUEIsoClustSingleZt" + sCent + sPtTrig, "cSame_Mix_NoUEIsoClustSingleZt" + sCent + sPtTrig, 3 * 800, 1 * 600);
+      cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr]->Divide(3, 1);
+      
       legSame_Mix_NoUEIsoClust[iCen][iptTr] = LegStd(legSame_Mix_NoUEIsoClust[iCen][iptTr], 0.10, 0.10, 0.12, 0.465);
       cIsoClust_Pi0NoUE[iCen][iptTr] = new TCanvas("cIsoClust_Pi0NoUE" + sCent + sPtTrig, "cIsoClust_Pi0NoUE" + sCent + sPtTrig, xNumPad * 800, 2 * 600);
       cIsoClust_Pi0NoUE[iCen][iptTr]->Divide(xNumPad, 2);
@@ -302,6 +308,10 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       cIsoClust_Pi0Pur[iCen][iptTr] = new TCanvas("cIsoClust_Pi0Pur" + sCent + sPtTrig, "cIsoClust_Pi0Pur" + sCent + sPtTrig, xNumPad * 800, 2 * 600);
       cIsoClust_Pi0Pur[iCen][iptTr]->Divide(xNumPad, 2);
       legIsoClust_Pi0Pur[iCen][iptTr] = LegStd(legIsoClust_Pi0Pur[iCen][iptTr], 0.10, 0.08, 0.12, 0.435);
+      
+      cIsoClust_Pi0Pur_SingleZt[iCen][iptTr] = new TCanvas("cIsoClust_Pi0Pur_SingleZt" + sCent + sPtTrig, "cIsoClust_Pi0Pur_SingleZt" + sCent + sPtTrig, 2 * 800, 1 * 600);
+      cIsoClust_Pi0Pur_SingleZt[iCen][iptTr]->Divide(2, 1);
+
       for (Int_t izt = 0; izt < nZtBin; izt++)
       {
         // TString sTitle = Form("%2.0f < #it{p}_{T}^{tr} < %2.0f GeV/#it{c}, %2.2f < #it{z}_{T}^{as} < %2.2f ", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], assocZt[izt], assocZt[izt + 1]);
@@ -418,6 +428,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       legSame_Mix_NoUEIsoClust[iCen][iptTr]->Draw("same");
       cSame_Mix_NoUEIsoClust[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/Same_MixIsoClustGamma_NoUE" + sCent + sPtTrig + ".pdf");
 
+  
       cIsoClust_Pi0NoUE[iCen][iptTr]->cd(legPad);
       latDphi[iCen] = LatexDPhi(latDphi[iCen], 0.08, 0.87, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
       latDphi[iCen]->DrawLatex(0.08, 0.87 - 3 * 0.10, "cluster^{iso}_{narrow}: 0.10 < #it{#sigma}^{2}_{long , 5x5} < 0.30");
@@ -451,6 +462,128 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       latDphi[iCen]->DrawLatex(0.15, 0.12, "#it{#gamma}^{iso}");
       legIsoClust_Pi0Pur[iCen][iptTr]->Draw("same");
       cIsoClust_Pi0Pur[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/IsoGamma_SameNoUE_Pi0pur" + sCent + sPtTrig + ".pdf");
+      
+      
+      
+      
+      //=========================================================================
+
+      Int_t selZt = 1;
+      cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr]->cd(1);
+      // hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->SetMinimum(-5e-3);
+      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetYaxis()->SetRangeUser(-0.2 * hdPhiSam[iCen][1][0][selZt][iptTr]->GetMaximum(), 1.2 * hdPhiSam[iCen][1][0][selZt][iptTr]->GetMaximum());
+      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->Draw("same");
+      TGaxis::SetMaxDigits(3);
+
+      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetXaxis()->SetLabelSize(0.06);
+      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetXaxis()->SetTitleSize(0.06);
+      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetYaxis()->SetLabelSize(0.06);
+      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetYaxis()->SetTitleSize(0.06);
+      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetYaxis()->SetLabelOffset(0.01);
+      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetYaxis()->SetTitleOffset(1.25);
+      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetXaxis()->SetTitleOffset(1.1);
+
+      hdPhiSam[iCen][1][0][selZt][iptTr]->Draw("sameE0");
+      hdPhiMix[iCen][1][0][selZt][iptTr]->Draw("same");
+      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->SetTitle("Narrow: #bf{0.1 < #it{#sigma}^{2}_{long, 5x5} < 0.3}");
+      lineX0->Draw("same");
+
+      cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr]->cd(2);
+      // hdPhiSamNoUE[iCen][1][1][selZt][iptTr]->SetMinimum(-5e-3);
+      
+      // Make both plots equivalent markers
+      hdPhiSamNoUE[iCen][1][1][selZt][iptTr]->SetMarkerStyle(24);
+      hdPhiSam[iCen][1][1][selZt][iptTr]->SetMarkerStyle(20);
+
+      hdPhiSamNoUE[iCen][1][1][selZt][iptTr]->GetXaxis()->SetLabelSize(0.06);
+      hdPhiSamNoUE[iCen][1][1][selZt][iptTr]->GetXaxis()->SetTitleSize(0.06);
+      hdPhiSamNoUE[iCen][1][1][selZt][iptTr]->GetYaxis()->SetLabelSize(0.06);
+      hdPhiSamNoUE[iCen][1][1][selZt][iptTr]->GetYaxis()->SetTitleSize(0.06);
+      hdPhiSamNoUE[iCen][1][1][selZt][iptTr]->GetYaxis()->SetLabelOffset(0.01);
+      hdPhiSamNoUE[iCen][1][1][selZt][iptTr]->GetYaxis()->SetTitleOffset(1.25);
+      hdPhiSamNoUE[iCen][1][1][selZt][iptTr]->GetXaxis()->SetTitleOffset(1.1);
+ 
+      // Make sure same axis as narrow
+      hdPhiSamNoUE[iCen][1][1][selZt][iptTr]->GetYaxis()->SetRangeUser(-0.2 * hdPhiSam[iCen][1][0][selZt][iptTr]->GetMaximum(), 1.2 * hdPhiSam[iCen][1][0][selZt][iptTr]->GetMaximum());
+      
+//      hdPhiSamNoUE[iCen][1][1][selZt][iptTr]->GetYaxis()->SetRangeUser(-0.45, 0.7);
+//      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetYaxis()->SetRangeUser(-0.45, 0.7);
+
+      hdPhiSamNoUE[iCen][1][1][selZt][iptTr]->Draw("same");
+      hdPhiSam[iCen][1][1][selZt][iptTr]->Draw("sameE0");
+      hdPhiMix[iCen][1][1][selZt][iptTr]->Draw("same");
+      hdPhiSamNoUE[iCen][1][1][selZt][iptTr]->SetTitle("Wide: #bf{0.4 < #it{#sigma}^{2}_{long, 5x5} < 1}");
+
+      lineX0->Draw("same");
+      
+      cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr]->cd(3);
+      
+      TLegend * legZt = new TLegend(0.05, 0.5, 0.05, 0.9);
+      legZt->SetTextSize(0.06);
+      legZt->SetLineColorAlpha(0,0);
+      legZt->SetHeader(Form("ALICE, %d#font[122]{-}%d %% Pb#font[122]{-}Pb, #sqrt{s_{NN}} = 5.02 TeV",cenBins[iCen], cenBins[iCen + 1]));
+      legZt->AddEntry("",Form("Trigger: %1.1f < #it{p}_{T}^{trig} < %1.1f GeV/#it{c}, |#it{#eta}^{trig}| < 0.67, ", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]),"");
+      legZt->AddEntry("","           #it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #it{R} = 0.2","");
+
+      legZt->AddEntry("","Associated: #it{p}_{T}^{h} > 0.5 GeV/#it{c}, |#it{#eta}^{h}| < 0.9","");
+      legZt->AddEntry("",Form("              %1.2f < #it{z}_{T} < %1.2f", assocZt[selZt], assocZt[selZt + 1]),"");
+      legZt->Draw();
+      
+      TLegend * legZtM = new TLegend(0.05, 0.05, 0.5, 0.5);
+      legZtM->SetTextSize(0.06);
+      legZtM->SetLineColorAlpha(0,0);
+      legZtM->AddEntry(hdPhiSam[iCen][1][0][0][0], "Same event", "lep");
+      legZtM->AddEntry(hdPhiMix[iCen][1][0][0][0], "Mixed event", "lep");
+      legZtM->AddEntry(hdPhiSamNoUE[iCen][1][0][0][0], "Same event #font[122]{-} Mixed event", "lep");
+      legZtM->Draw();
+      
+      TString zTTitle = Form("_Zt%2.2f_%2.2f", assocZt[selZt], assocZt[selZt + 1]);
+      cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/Same_MixIsoClustGamma_NoUE" + sCent + sPtTrig + zTTitle+".pdf");
+      //=========================================================================
+      
+      
+      
+      cIsoClust_Pi0Pur_SingleZt[iCen][iptTr]->cd(1);
+      hdPhiPhoton[iCen][1][selZt][iptTr]->SetTitle("");//(sTitle);
+      //hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->SetTitle(sTitle);
+      // hdPhiPhoton[iCen][izt][iptTr]->GetYaxis()->SetRangeUser(-1*hdPhiSamPi0Pur[iCen][izt][iptTr]->GetMaximum(), hdPhiSamPi0Pur[iCen][izt][iptTr]->GetMaximum());
+      //  cout << "MAXXXXX: " << hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetMaximum() << endl;
+
+      // cout << (hdPhiPhoton[iCen][izt][iptTr]->GetMinimum() - hdPhiPhoton[iCen][izt][iptTr]->GetBinError(5)) << endl;
+      // hdPhiSamNoUE[iCen][1][0][izt][iptTr]->SetMinimum(0.1 * (hdPhiPhoton[iCen][izt][iptTr]->GetMinimum() - hdPhiPhoton[iCen][izt][iptTr]->GetBinError(6)));
+      if (iCen == 0 && selZt == 1)
+      {
+        hdPhiPhoton[iCen][1][selZt][iptTr]->GetYaxis()->SetRangeUser(-60 * 1e-3, 65 * 1e-13);
+      }
+      
+      hdPhiPhoton[iCen][1][selZt][iptTr]->GetXaxis()->SetLabelSize(0.06);
+      hdPhiPhoton[iCen][1][selZt][iptTr]->GetXaxis()->SetTitleSize(0.06);
+      hdPhiPhoton[iCen][1][selZt][iptTr]->GetYaxis()->SetLabelSize(0.06);
+      hdPhiPhoton[iCen][1][selZt][iptTr]->GetYaxis()->SetTitleSize(0.06);
+      hdPhiPhoton[iCen][1][selZt][iptTr]->GetYaxis()->SetLabelOffset(0.01);
+      hdPhiPhoton[iCen][1][selZt][iptTr]->GetYaxis()->SetTitleOffset(1.25);
+      hdPhiPhoton[iCen][1][selZt][iptTr]->GetXaxis()->SetTitleOffset(1.1);
+      //TGaxis::SetMaxDigits(2);
+
+      hdPhiPhoton[iCen][1][selZt][iptTr]->Draw("same");
+      hdPhiSamPi0Pur[iCen][1][selZt][iptTr]->Draw("same");
+      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->Draw("same");
+      hdPhiPhoton[iCen][1][selZt][selZt]->Draw("same");
+      lineX0->Draw("same");
+      cIsoClust_Pi0Pur_SingleZt[iCen][iptTr]->cd(2);
+      
+      legZt->Draw();
+      
+      TLegend * legZtP = new TLegend(0.05, 0.05, 0.5, 0.5);
+      legZtP->SetTextSize(0.06);
+      legZtP->SetLineColorAlpha(0,0);
+      legZtP->AddEntry(hdPhiSamNoUE[iCen][1][0][0][0], "Narrow", "lep");
+      legZtP->AddEntry(hdPhiSamPi0Pur[iCen][1][0][0], "Wide #times (1 #font[122]{-} #it{P})", "lep");
+      legZtP->AddEntry(hdPhiPhoton[iCen][1][0][0], "Isolated #it{#gamma}", "lep");
+      legZtP->Draw();
+      
+      cIsoClust_Pi0Pur_SingleZt[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/IsoGamma_SameNoUE_Pi0pur" + sCent + sPtTrig + zTTitle+".pdf");
+
     }
 
     cSameNoUE_pTBin_pTAllIsoClust[iCen] = new TCanvas("cSameNoUE_pTBin_pTAllIsoClust" + sCent, "cSameNoUE_pTBin_pTAllIsoClust" + sCent, xNumPad * 800, 2 * 600);
