@@ -87,7 +87,7 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 
 	TString direct = "Mixed";
 
-	TF1 *fa0[nCen];
+	TF1 *fExpo[nCen];
 	TF1 *fConst[nCen];
 	TLatex *ALICEtex[nCen];
 
@@ -213,20 +213,20 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 		ALICEtex[iCen] = LatexStd(ALICEtex[iCen], 0.160, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax);
 		if (iCen == 2 || iCen == 3)
     {
-      //fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.1, 0.8);
-      fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.15, 0.59);
+      //fExpo[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.1, 0.8);
+      fExpo[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.15, 0.59);
       fConst[iCen] = new TF1(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.2, 0.8);
     }
     if (iCen == 1)
     {
-      //fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.1, 0.8);
-      fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.25, 0.8);
+      //fExpo[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.1, 0.8);
+      fExpo[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.2, 0.6);
       fConst[iCen] = new TF1(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.3, 0.6);
     }
     if (iCen == 0)
     {
-      //fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.2, 0.8);
-      fa0[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "[0]*exp([1]*x)+[2]", 0.3, 0.8);
+      //fExpo[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.2, 0.8);
+      fExpo[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "[0]*exp([1]*x)+[2]", 0.3, 0.8);
       fConst[iCen] = new TF1(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.3, 0.8);
       hNMixCentUncer[iCen]->Fit(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
       // fConst->SetLineColor(kBlue);
@@ -235,15 +235,28 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 
     hNMixCentUncer[iCen]->Fit(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
 
-    fa0[iCen]->SetLineColor(kRed + 1);
-    fa0[iCen]->SetLineStyle(1);
-    fa0[iCen]->SetLineWidth(3);
-    fa0[iCen]->Draw("same");
+    fExpo[iCen]->SetLineColor(kRed + 1);
+    fExpo[iCen]->SetLineStyle(1);
+    fExpo[iCen]->SetLineWidth(3);
+    fExpo[iCen]->Draw("same");
     hNMixCentUncer[iCen]->Fit(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
     fConst[iCen]->SetLineColor(kGreen + 3);
     fConst[iCen]->SetLineWidth(4);
     fConst[iCen]->Draw("same");
 
+    TLegend *legFit = new TLegend(0.6, 0.70, 0.8, 0.85);
+    legFit->SetFillColor(kWhite);
+    legFit->SetLineWidth(0);
+    legFit->SetTextSize(0.04);
+    legFit->AddEntry(fConst[iCen],Form("Constant: %1.2f#pm%1.2f,",
+                                       fConst[iCen]->GetParameter(0), fConst[iCen]->GetParError(0)
+                                       ),"L");
+    legFit->AddEntry("",Form("        #chi^{2}/NDF: %1.2f/%d",
+                                       fConst[iCen]->GetChisquare(), fConst[iCen]->GetNDF()
+                                       ),"");
+    legFit->AddEntry(fExpo[iCen],"Expo","L");
+    legFit->Draw("same");
+    
     hFitUncert[iCen] = new TH1F(Form("hFromFitUncertNMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hFromFitUncertNMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBins, assocZt);
     for (int ibin = 0; ibin < nZtBins; ibin++)
     {
@@ -253,17 +266,17 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
         // Average Central and peripheral
         
         //        hFitUncert[iCen]->SetBinContent(ibin + 1,
-        //                                        (fa0[0]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)) +
-        //                                         fa0[2]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)))/2);
+        //                                        (fExpo[0]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)) +
+        //                                         fExpo[2]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)))/2);
       }
       else
       {
-        //hFitUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+        //hFitUncert[iCen]->SetBinContent(ibin + 1, fExpo[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
         hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
       }
 //			if (iCen == 1 || iCen == 2)
 //      {
-//        //hFitUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+//        //hFitUncert[iCen]->SetBinContent(ibin + 1, fExpo[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
 //        hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
 //      }
 //			else if (iCen == 0)
@@ -274,14 +287,14 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 //				}
 //				else
 //				{
-//					//hFitUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
+//					//hFitUncert[iCen]->SetBinContent(ibin + 1, fExpo[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
 //					hFitUncert[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hFitUncert[iCen]->GetBinCenter(ibin + 1)));
 //				}
 //			}
 		}
 		fNMixCentSyst->cd();
 		fConst[iCen]->Write();
-		fa0[iCen]->Write();
+		fExpo[iCen]->Write();
 		hNMixCentUncer[iCen]->Write();
 		hFitUncert[iCen]->Write();
 	}
