@@ -122,15 +122,22 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   if (b0_30)
   {
     hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("histSystErrFitNoUENarr0_30PtRangeFitTrend_Pt18_40"));
-    hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen30_50_Pt18_40"));
-    hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen50_90_Pt18_40"));
+    //hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen30_50_Pt18_40"));
+    //hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen50_90_Pt18_40"));
+    hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen30_50_Pt18_40"));
+    hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen50_90_Pt18_40"));
+    
   }
   else if (!b0_30)
   {
-    hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen0_10_Pt18_40"));
-    hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen10_30_Pt18_40"));
-    hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen30_50_Pt18_40"));
-    hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen50_90_Pt18_40"));
+    //hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen0_10_Pt18_40"));
+    //hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen10_30_Pt18_40"));
+    //hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen30_50_Pt18_40"));
+    //hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen50_90_Pt18_40"));
+    hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen0_10_Pt18_40"));
+    hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen10_30_Pt18_40"));
+    hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen30_50_Pt18_40"));
+    hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen50_90_Pt18_40"));
   }
 
   for (int iCen = 0; iCen < nCen; iCen++)
@@ -293,7 +300,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
 //    legUncert_Stat[iCen]->SetTextSize(0.035);
 //    legUncert_Stat[iCen]->AddEntry(hZtStatUncert[iCen], "Statistical errors", "ep");
 //    legUncert_Stat[iCen]->AddEntry(hZtSystSumQuadr[iCen], "Total Syst.", "ep");
-    hGeneral->GetYaxis()->SetRangeUser(0, 46);
+    hGeneral->GetYaxis()->SetRangeUser(0, 43);
     hGeneral->GetXaxis()->SetRangeUser(0.05, 0.85);
     hGeneral->GetYaxis()->SetTitleSize(0.05);
     hGeneral->GetXaxis()->SetTitleSize(0.05);
@@ -383,20 +390,43 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   /////////////////////////////////////////////////////////////////////
 
   TH1F *IcpResidUESyst[nCen];
-  for (int iCen = 0; iCen < nCen; iCen++)
-  {
+//  TFile *fzTFinal[nCen];
+//  TH1F *hzTFinal[nCen];
+//  for (int iCen = 0; iCen < nCen; iCen++)
+//  {
+//    fzTFinal[iCen] = TFile::Open(Form("Output_checkCode/fPlot0.40-1.00_Cen%d_%d_Pt18_40.root",cenBins[iCen],cenBins[iCen+1]));
+//    printf("icen %d file %p\n",iCen, fzTFinal[iCen]);
+//    hzTFinal[iCen] = (TH1F*) fzTFinal[iCen]
+//    ->Get(Form("hZtEffCorrIso1Photon_Cen%d_%d_Pt18_40",cenBins[iCen],cenBins[iCen+1]));
+//    printf("icen %d histo %p\n",iCen,hzTFinal[iCen]);
+//  }
+  for (int iCen = 0; iCen < nCen-1; iCen++)
+    {
     IcpResidUESyst[iCen] = (TH1F *)hUEresidUncert[iCen]->Clone(Form("IcpResidUESyst_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     for (int ibin = 0; ibin < nZtBin; ibin++)
     {
       double errC = hUEresidUncert[iCen]->GetBinContent(ibin + 1);
       double errP = hUEresidUncert[nCen - 1]->GetBinContent(ibin + 1);
       double errorCP = sqrt(errC * errC + errP * errP);
+      
+//      double valC = hzTFinal[iCen]->GetBinContent(ibin + 1);
+//      double valP = hzTFinal[nCen - 1]->GetBinContent(ibin + 1);
+//      errC = errC / 100. * valC;
+//      errP = errP / 100. * valP;
+//      double errorCPfrac = sqrt( (errC * errC) / (valP*valP) +
+//                             (valC * valC * errP * errP) / (valP * valP * valP * valP));
+//
+//      errorCPfrac *= 100 / (valC/valP);
+//
+//      printf("ICP: icen %d, ibin %d, val C %1.2f (%1.2f), val P %1.2f (%1.2f), val CP %1.2f errSum %1.2f err %1.2f\n", iCen,ibin,valC,errP,valP,errP, valC/valP, errorCP, errorCPfrac);
+      
       IcpResidUESyst[iCen]->SetBinContent(ibin + 1, errorCP);
     }
 
     IcpResidUESyst[iCen]->SetDirectory(0);
     PlotStyle(IcpResidUESyst[iCen], 20, 1, kAzure + 3, kAzure + 3, "#font[12]{z_{T}}", "Uncertainty %", false);
   }
+  
   TCanvas *cIcpResidUESyst = new TCanvas("cIcpResidUESyst", "cIcpResidUESyst", (nCen - 1) * 800, 1 * 600);
   cIcpResidUESyst->Divide((nCen - 1), 1);
   for (int iCen = 0; iCen < nCen - 1; iCen++)
@@ -515,7 +545,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     // hUEUncertIcp[iCen]->GetXaxis()->SetRangeUser(0.05, 0.6);
     hNMixCentUncertIcp[iCen]->GetXaxis()->SetRangeUser(0.05, 0.6);
     hGeneral->GetXaxis()->SetRangeUser(0.05, 0.65);
-    hGeneral->GetYaxis()->SetRangeUser(0, 46);
+    hGeneral->GetYaxis()->SetRangeUser(0, 44);
     hGeneral->GetYaxis()->SetTitle(" #it{I}_{CP} uncert. (%) ");
     hGeneral->GetYaxis()->SetTitleSize(0.05);
     hGeneral->GetXaxis()->SetTitleSize(0.05);
