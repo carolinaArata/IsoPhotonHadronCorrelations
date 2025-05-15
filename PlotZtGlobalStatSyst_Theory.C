@@ -30,7 +30,7 @@ Int_t kColorMarkFill[] = {kAzure + 5, kOrange + 7, kViolet + 6, kCyan - 2};
 Int_t nAssoc = 7;
 
 int nZtBinThin = 9;
-double assocZtThinner[] = {0, 0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 0.80, 1.00, 1.05};
+double assocZtThinner[] = {0., 0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 0.80, 1.00, 1.05};
 
 void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror = true, TString sMixed = "Mixed", TString shshBkg = "0.40-1.00", TString dirPlot = "zTresults_PbPb_TheorycheckCode", TString dirInputRef = "Output_checkCode", bool b0_30 = true)
 {
@@ -253,7 +253,9 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     // hPbPbPYTHIA_NLOSyst[iCen] = new TH1F(Form("hPbPbPYTHIA%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), Form("hPbPb%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), nAssocNLO, assocZtNLO);
     for (int ibin = 0; ibin < nAssocNLO; ibin++)
     {
-      cout << hPbPb_NLO[iCen]->GetBinCenter(ibin + 1) << "____" << hZtCent[iCen]->GetBinCenter(ibin + 1) << endl;
+      cout << grDztNLOmedianpp->GetBinCenter(ibin)<<endl;
+      cout << hPbPb_NLOSyst[iCen]->GetBinCenter(ibin)<<endl;
+      cout << hPbPb_NLO[iCen]->GetBinCenter(ibin ) << "____" << hZtCent[iCen]->GetBinCenter(ibin + 1) << endl;
       cout << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) << "____" << grDztNLOmedianpp->GetBinContent(ibin + 1) << " Ratio: " << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) / grDztNLOmedianpp->GetBinContent(ibin + 1) << endl;
       
       hPbPb_NLO[iCen]->SetBinContent(ibin + 1, hZtCent[iCen]->GetBinContent(ibin + 1));
@@ -267,11 +269,9 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       cout << hPbPb_NLOSyst[iCen]->GetBinError(ibin + 1) << endl;
       cout << grDztNLOmedianpp->GetBinError(ibin + 1) << endl;
     }
-    cout<<"pippo2"<<endl;
+
     hPbPb_NLO[iCen]->Divide(grDztNLOmedianpp);
-    cout<<"pippo1"<<endl;
     hPbPbPYTHIA_NLO[0]->Divide(histDztPbPbCOLBTmedian[0]);
-    cout<<"pippo"<<endl;
     hPbPb_NLOSyst[iCen]->Divide(grDztNLOmedianpp);
     
     PlotStyle(hPbPb_NLO[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "Ratio", false);
@@ -280,16 +280,16 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     // PlotStyle(hPbPb_NLOSyst[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "#it{I}_{NLO} = Pb#font[122]{-}Pb/NLO pQCD", true);
   }
   
-  hPbPb_NLO[0]->GetXaxis()->SetRangeUser(0, 1.0);
-  hPbPb_NLO[1]->GetXaxis()->SetRangeUser(0, 0.6);
-  hPbPb_NLO[2]->GetXaxis()->SetRangeUser(0, 0.6);
-  hPbPb_NLOSyst[0]->GetXaxis()->SetRangeUser(0, 1.0);
-  hPbPb_NLOSyst[1]->GetXaxis()->SetRangeUser(0, 0.6);
-  hPbPb_NLOSyst[2]->GetXaxis()->SetRangeUser(0, 0.6);
+  hPbPb_NLO[0]->GetXaxis()->SetRangeUser(0., 1.0);
+  hPbPb_NLO[1]->GetXaxis()->SetRangeUser(0., 0.6);
+  hPbPb_NLO[2]->GetXaxis()->SetRangeUser(0., 0.6);
+  hPbPb_NLOSyst[0]->GetXaxis()->SetRangeUser(0., 1.0);
+  hPbPb_NLOSyst[1]->GetXaxis()->SetRangeUser(0., 0.6);
+  hPbPb_NLOSyst[2]->GetXaxis()->SetRangeUser(0., 0.6);
   
-  hPbPbPYTHIA_NLO[0]->GetXaxis()->SetRangeUser(0, 1.0);
-  hPbPbPYTHIA_NLO[1]->GetXaxis()->SetRangeUser(0, 0.6);
-  hPbPbPYTHIA_NLO[2]->GetXaxis()->SetRangeUser(0, 0.6);
+  hPbPbPYTHIA_NLO[0]->GetXaxis()->SetRangeUser(0., 1.0);
+  hPbPbPYTHIA_NLO[1]->GetXaxis()->SetRangeUser(0., 0.6);
+  hPbPbPYTHIA_NLO[2]->GetXaxis()->SetRangeUser(0., 0.6);
   
   ////////////////////////////////////////////////////////
   //////// Plotting final results and theory /////////////
@@ -393,7 +393,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hPbPb_NLOSyst[iCen]->Draw("E2Psame ");
     hPbPb_NLO[iCen]->Draw("EPX0same");
     // grIaaNLOmedian[iCen]->Draw("pl3 same");
-    hPbPb_NLOSyst[iCen]->SetLineColor(kWhite);
+    //hPbPb_NLOSyst[iCen]->SetLineColor(kWhite);
     legPbPb_NLOratioAll->AddEntry(hPbPb_NLO[iCen], Form("%d#font[122]{-}%d%% stat.", cenBins[iCen], cenBins[iCen + 1]), "ep");
     legPbPb_NLOratioAll->AddEntry(hPbPb_NLOSyst[iCen], "syst. unc.", "f");
   }
@@ -1168,6 +1168,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   }
   PlotStyle(hIaaPHENIX, 20, 1, kAzure + 2, kAzure + 2, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", false);
   PlotStyle(hIaaPHENIXSys, 20, 1, kAzure + 2, kAzure + 2, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", true);
+  PlotStyle(hPbPb_NLOSyst[0], 21, 1, kRed+1, kRed+1, "#it{z}_{T}", "Ratio", true);
   
   cPHENIX->cd(1);
   cPHENIX->cd(1)->SetTopMargin(0.015);
@@ -1197,6 +1198,11 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hPbPb_NLOSyst[0]->SetFillStyle(0);
   hPbPb_NLOSyst[0]->SetLineWidth(2);
   hPbPb_NLOSyst[0]->SetMarkerSize(1.3);
+  for (int ibin = 0; ibin < hPbPb_NLOSyst[0]->GetNbinsX() + 1; ++ibin) {
+    cout<<"bin cent:"<< hPbPb_NLOSyst[0]->GetBinCenter(ibin)<<endl;
+    cout<<"bin content:"<< hPbPb_NLOSyst[0]->GetBinContent(ibin)<<endl;
+    cout<<"bin error:"<< hPbPb_NLOSyst[0]->GetBinError(ibin)<<endl;
+}
   // h3[0]->SetLineColor(kRed + 1);
   // h3[0]->SetMarkerColor(kRed + 1);
   // h3[0]->SetMarkerSize(1.3);
@@ -1205,13 +1211,12 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   // hsyst[0]->SetLineColor(kRed + 1);
   // hsyst[0]->SetFillStyle(0);
   // hsyst[0]->SetMarkerSize(1.3);
+  hPbPb_NLOSyst[0]->Draw("E2Psame");
+  hPbPb_NLO[0]->Draw("EP X0 same");
   hIaaPHENIXSys->Draw("samee2");
   hIaaPHENIX->Draw("EP X0 same");
   grIaaSTARSys->Draw("p2 same");
   grIaaSTAR->Draw("p same");
-
-  hPbPb_NLOSyst[0]->Draw("same pe2");
-  hPbPb_NLO[0]->Draw("EP X0 same");
   // hsyst[0]->Draw("p samee2");
   // h3[0]->Draw("EP X0 same");
   
