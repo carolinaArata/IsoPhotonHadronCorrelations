@@ -433,12 +433,12 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
     hErrSystNarrNoUE[iCen]->SetMinimum(-0.10);
     hErrSystNarrNoUE[iCen]->Draw("same");
     hErrSystWideNoUE[iCen]->Draw("same");
-    // histSystMCXPtAll[iCen]->Draw("same");
+    histSystMCXPtAll[iCen]->Draw("same");
     latSystErrAllCen[iCen] = LatexStdSyst(latSystErrAllCen[iCen - 1], 0.450, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true, " ");
     legSystNarrWideMC[iCen] = LegStd(legSystNarrWideMC[iCen], 0.55, 0.55, 0.8, 0.65);
     legSystNarrWideMC[iCen]->AddEntry(hErrSystNarrNoUE[iCen], "Data #it{N}^{iso}_{narrow}", "lp");
     legSystNarrWideMC[iCen]->AddEntry(hErrSystWideNoUE[iCen], "Data #it{N}^{iso}_{wide}", "lp");
-    // legSystNarrWideMC[iCen]->AddEntry(histSystMCXPtAll[iCen], "MC GJ cluster^{iso}_{narr}", "lp");
+    legSystNarrWideMC[iCen]->AddEntry(histSystMCXPtAll[iCen], "MC GJ cluster^{iso}_{narr}", "lp");
     //  hErrSystIsoPhoton[iCen]->Draw("same");
     //  hErrSystMediaNoUE[iCen]->Draw("same");
   }
@@ -508,6 +508,8 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
     fitExpo[iCen]->Draw("same");
     fitConst[iCen]->Draw("same");
     fitConstHighZt[iCen]->Draw("same");
+    hErrSystWideNoUE[iCen]->Draw("same");
+    histSystMCXPtAll[iCen]->Draw("same");
     
     latSystErrAllPt_Narr[iCen] = LatexStdSyst(latSystErrAllPt_Narr[iCen - 1], 0.450, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true, " ");
     
@@ -562,7 +564,9 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
   TH1F *histSystErrFitNoUE0_30XPt[nShSh][nPtTrig];
 
   TH1F *histSystErrFitNoUENarr0_30PtRange = new TH1F(Form("histSystErrFitNoUENarr0_30PtRange%s", sPtAll.Data()), Form("histSystErrFitNoUENarr0_30PtRange%s", sPtAll.Data()), nZtBin, assocZt);
+  TH1F *histSystErrFitNoUEWide0_30PtRange = new TH1F(Form("histSystErrFitNoUEWide0_30PtRange%s", sPtAll.Data()), Form("histSystErrFitNoUEWide0_30PtRange%s", sPtAll.Data()), nZtBin, assocZt);
   TH1F *histSystErrFitNoUENarr0_30PtRangeFitTrend;
+  TH1F *histSystErrFitNoUEWide0_30PtRangeFitTrend;
  
   if (b0_30)
   {
@@ -622,15 +626,18 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
   // TString sPtTrig = Form("_PtTr%2.0f_%2.0f", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]);
   // histSystErrFitNoUE0_30XPt[0][iptTr] = (TH1F *)histSystErrFitNoUE0_30[0][iptTr]->Clone("histSystErrFitNoUEXPt_ShSh0.10_0.30"+ sPtTrig);
   histSystErrFitNoUENarr0_30PtRange = SumPtBinXzt0_30(numbTrig0_30[0], ptTrig, index1, index2, histSystErrFitNoUE0_30[0], histSystErrFitNoUENarr0_30PtRange, histPur[0], funcPur[0], histPur[1], funcPur[1], numbTrig[0][0], numbTrig[1][0], 1, true);
+  histSystErrFitNoUEWide0_30PtRange = SumPtBinXzt0_30(numbTrig0_30[1], ptTrig, index1, index2, histSystErrFitNoUE0_30[1], histSystErrFitNoUEWide0_30PtRange, histPur[0], funcPur[0], histPur[1], funcPur[1], numbTrig[0][1], numbTrig[1][1], 1, false);
 
   histSystErrFitNoUENarr0_30PtRange->Fit("fitExpo_Cen0", "R");
   histSystErrFitNoUENarr0_30PtRange->Fit("fitConst_Cen0", "R");
   histSystErrFitNoUENarr0_30PtRange->Fit("fitConstHighZt_Cen0", "R");
   TCanvas *cSystNarr0_30 = new TCanvas("cSystNarr0_30", "cSystNarr0_30", 800, 600);
   PlotStyle(histSystErrFitNoUENarr0_30PtRange, 20, 1.5, kAzure + 7, 0, "#it{z}_{T}", "Uncertainty %", false);
+  PlotStyle(histSystErrFitNoUEWide0_30PtRange, 24, 1.5, kBlue +1, 0, "#it{z}_{T}", "Uncertainty %", false);
   // gStyle->SetOptFit(00000);
   histSystErrFitNoUENarr0_30PtRange->SetTitle("");
   histSystErrFitNoUENarr0_30PtRange->Draw("same");
+  histSystErrFitNoUEWide0_30PtRange->Draw("same");
   fitExpo[0]->Draw("same");
   fitConst[0]->Draw("same");
   fitConstHighZt[0]->Draw("same");
