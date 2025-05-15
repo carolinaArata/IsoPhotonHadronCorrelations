@@ -631,8 +631,9 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     hIcpSyst[iCen]->Draw("samee2");
     fIcp[iCen]->Draw("EP X0same");
     // grIcpNLOmedian[iCen]->Draw("pl3 same");
-    legIcp->SetTextSize(0.04);
   }
+  
+  legIcp->SetTextSize(0.04);
   legIcp->AddEntry(fIcp[0], Form("0#font[122]{-}30%%  / 50#font[122]{-}90%% stat. unc."), "ep");
   legIcp->AddEntry(hIcpSyst[0], Form("syst. unc."), "f");
   legIcp->AddEntry(fIcp[1], Form("30#font[122]{-}50%% / 50#font[122]{-}90%% stat. unc."), "ep");
@@ -657,6 +658,18 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   cIcp->Print(Form("%s/SystSh%s/%s_cSystIcp%s.pdf", dirPlot.Data(), shshBkg.Data(), Mixed.Data(), sPtAll.Data()));
 
   fSystFile->Close();
+  
+  TFile * fileICP = new TFile(Form("%s/fIcpWithSyst%s%s%s%s.root", dirPlot.Data(), Mixed.Data(), shshBkg.Data(), sMirror.Data(), sPtAll.Data()), "RECREATE");
+  printf("Write Icp in: %s\n",fileICP->GetName());
+  
+  
+  for(Int_t iCen = 0; iCen < nCen-1; iCen++)
+  {
+    hIcpSyst[iCen]->Write();
+    fIcp[iCen]->Write();
+  }
+  
+  fileICP->Close();
 }
 
 void PrintSyst(TH1F *hSyst)
