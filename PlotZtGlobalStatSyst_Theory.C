@@ -125,27 +125,31 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     
     cout << "Get NLO calclulations and set Plot style: " << sCent << endl;
     grIaaNLOmedian[iCen] = (TGraphAsymmErrors *)fileNLO->Get(Form("grIaaNLOmedian%s", sCent.Data()));
+    cout<<grIaaNLOmedian[iCen]->GetName()<<endl;
     grIaaNLOmedian[iCen]->SetLineWidth(8);
     grIaaNLOmedian[iCen]->SetLineColor(kPink + 4);
     grIaaNLOmedian[iCen]->SetFillColorAlpha(kMagenta - 7, 0.75);
     grIaaNLOmedian[iCen]->SetFillStyle(3008);
     
     grDztNLOmedian[iCen] = (TGraphAsymmErrors *)fileNLO->Get(Form("grDztNLOmedian%s", sCent.Data()));
+    cout<<grDztNLOmedian[iCen]->GetName()<<endl;
     grDztNLOmedian[iCen]->SetLineWidth(8);
     grDztNLOmedian[iCen]->SetLineColor(kPink + 4);
     grDztNLOmedian[iCen]->SetFillColorAlpha(kMagenta - 7, 0.75);
     grDztNLOmedian[iCen]->SetFillStyle(3008);
-    
+
     grIcpNLOmedian[iCen] = (TGraphAsymmErrors *)fileNLO->Get(Form("grDztNLOmedian%s", sCent.Data()));
+    cout<<grDztNLOmedian[iCen]->GetName()<<endl;
     grIcpNLOmedian[iCen]->SetLineWidth(8);
     grIcpNLOmedian[iCen]->SetFillStyle(3008);
     grIcpNLOmedian[iCen]->SetLineColor(kPink + 4);
     grIcpNLOmedian[iCen]->SetFillColorAlpha(kMagenta - 7, 0.75);
-    
+  }
     // Set x error, in case it helps in plotting, it does not seem
     Float_t widthPqcd[] = {0.025, 0.025, 0.05, 0.05, 0.10, 0.10};
-    for(Int_t iCen = 0; iCen < nCen-1; iCen++)
+    for(Int_t iCen = 0; iCen < nCen; iCen++)
     {
+      cout<<iCen<<endl;
       Int_t nPoints = grIaaNLOmedian[iCen]->GetN();
       for(Int_t ibin = 0; ibin < nPoints; ibin++)
       {
@@ -157,8 +161,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
         grIcpNLOmedian[iCen]->SetPointEXlow (ibin,widthPqcd[ibin]);
       }
     }
-  }
-  
+
   ////////////////////////////////////
   /////////// theory: COLBt /////////
   //////////////////////////////////
@@ -1117,7 +1120,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   // Iaa STAR and PHENIX
   
   TH1F *hGeneralIaa = new TH1F("hGeneralIaa", "hGeneralIaa", 10, -0.05, 1.05);
-  PlotStyle(hGeneralIaa, 20, 0, kWhite, kWhite, "#it{z}_{T}", "#it{I}_{NLO pQCD}, #it{I}_{AA}", false);
+  //PlotStyle(hGeneralIaa, 20, 0, kWhite, kWhite, "#it{z}_{T}", "#it{I}_{NLO pQCD}, #it{I}_{AA}", false);
   // PlotStyle(hGeneralIaa, 20, 0, kWhite, kWhite, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", false);
   hGeneralIaa->SetDirectory(0);
   double IaaSTAR[7] = {0.734072, 0.435526, 0.415985, 0.273841, 0.429596, 0.13371, 0.281805};
@@ -1172,6 +1175,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   cPHENIX->cd(1)->SetLeftMargin(0.12);
   cPHENIX->cd(1)->SetBottomMargin(0.11);
   hGeneralIaa->SetTitle(" ");
+  hGeneralIaa->GetXaxis()->SetTitle("#it{z}_{T}");
+  hGeneralIaa->GetYaxis()->SetTitle("#it{I}_{NLO pQCD}, #it{I}_{AA}");
   hGeneralIaa->GetYaxis()->SetTitleSize(0.052);
   hGeneralIaa->GetXaxis()->SetTitleSize(0.05);
   hGeneralIaa->GetYaxis()->SetLabelSize(0.04);
@@ -1204,7 +1209,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hIaaPHENIX->Draw("EP X0 same");
   grIaaSTARSys->Draw("p2 same");
   grIaaSTAR->Draw("p same");
-  hPbPb_NLOSyst[0]->Draw("p samee2");
+
+  hPbPb_NLOSyst[0]->Draw("same pe2");
   hPbPb_NLO[0]->Draw("EP X0 same");
   // hsyst[0]->Draw("p samee2");
   // h3[0]->Draw("EP X0 same");
@@ -1414,16 +1420,16 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   cCMS_Zhad->cd(1)->SetBottomMargin(0.11);
   hIaaCMSSys_Zhad->SetFillStyle(0);
   hIaaCMSSys_Zhad->SetLineWidth(2);
-  hGeneralIaa->SetTitle(" ");
-  hGeneralIaa->GetYaxis()->SetRangeUser(0, 3);
-  hGeneralIaa->GetXaxis()->SetRangeUser(-0.0, 1.1);
-  hGeneralIaa->GetYaxis()->SetTitleSize(0.052);
-  hGeneralIaa->GetYaxis()->SetTitleOffset(1.25);
-  hGeneralIaa->GetXaxis()->SetTitleSize(0.045);
-  hGeneralIaa->GetYaxis()->SetLabelSize(0.04);
-  hGeneralIaa->GetXaxis()->SetLabelSize(0.04);
-  hGeneralIaa->SetLineWidth(0);
-  hGeneralIaa->Draw("hist");
+  //hGeneralIaa->SetTitle(" ");
+  //hGeneralIaa->GetYaxis()->SetRangeUser(0, 3);
+  ////hGeneralIaa->GetXaxis()->SetRangeUser(0.0, 1.1);
+  //hGeneralIaa->GetYaxis()->SetTitleSize(0.052);
+  //hGeneralIaa->GetYaxis()->SetTitleOffset(1.25);
+  //hGeneralIaa->GetXaxis()->SetTitleSize(0.045);
+  //hGeneralIaa->GetYaxis()->SetLabelSize(0.04);
+  //hGeneralIaa->GetXaxis()->SetLabelSize(0.04);
+  //hGeneralIaa->SetLineWidth(0);
+  //hGeneralIaa->Draw("hist");
   hIaaCMSSys->SetLineWidth(2);
   hIaaCMSSys->SetFillStyle(0);
   hIaaCMSSys->Draw("samee2");
