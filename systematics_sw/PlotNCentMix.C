@@ -191,7 +191,8 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 		{
 			nMixBinSyst[0][iCen][ibin] = abs(hZt[1][iCen]->GetBinContent(ibin + 1) - hZt[0][iCen]->GetBinContent(ibin + 1)) / abs(hZt[0][iCen]->GetBinContent(ibin + 1));
 			nMixBinSyst[1][iCen][ibin] = abs(hZt[2][iCen]->GetBinContent(ibin + 1) - hZt[0][iCen]->GetBinContent(ibin + 1)) / abs(hZt[0][iCen]->GetBinContent(ibin + 1));
-      hNMixCentUncer[iCen]->SetBinContent(ibin + 1, (nMixBinSyst[0][iCen][ibin]+nMixBinSyst[1][iCen][ibin])/ 2);
+      //hNMixCentUncer[iCen]->SetBinContent(ibin + 1, (nMixBinSyst[0][iCen][ibin]+nMixBinSyst[1][iCen][ibin])/ 2);
+      hNMixCentUncer[iCen]->SetBinContent(ibin + 1, (nMixBinSyst[0][iCen][ibin]));
 			hNMixCentUncer[iCen]->SetBinError(ibin + 1, hZt[0][iCen]->GetBinError(ibin + 1) / abs((hZt[0][iCen]->GetBinContent(ibin + 1))));
 		}
 
@@ -341,9 +342,9 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
 		legZTDataIcp[iCen] = new TLegend(0.70, 0.700, 0.86, 0.82);
 		legZTDataIcp[iCen]->SetFillColor(kWhite);
 		legZTDataIcp[iCen]->SetLineWidth(0);
-		legZTDataIcp[iCen]->AddEntry(hZt[0][iCen], "N Mix = 9");
-		legZTDataIcp[iCen]->AddEntry(hZt[1][iCen], "N Mix = 18");
-		legZTDataIcp[iCen]->AddEntry(hZt[2][iCen], "N Mix = 36");
+		legZTDataIcp[iCen]->AddEntry(Icp[0][iCen], "N Mix = 9 nominal");
+		legZTDataIcp[iCen]->AddEntry(Icp[1][iCen], "N Mix = 18");
+		legZTDataIcp[iCen]->AddEntry(Icp[2][iCen], "N Mix = 36");
 		legZTDataIcp[iCen]->Draw("same");
 	}
 	cIcpSyst->Print(Form("%s/IcpDistrib%s.pdf", dirPlot.Data(), sPtAll.Data()));
@@ -357,7 +358,8 @@ assocZt);
   
 	    for (int ibin = 0; ibin < nZtBins; ibin++)
 	    {
-	      double binCont = 100 * (abs(Icp[2][iCen]->GetBinContent(ibin + 1) - Icp[1][iCen]->GetBinContent(ibin + 1)) / abs(Icp[0][iCen]->GetBinContent(ibin + 1))); //not sure this is right as estimation of the error
+	      //double binCont = 100 * (abs(Icp[2][iCen]->GetBinContent(ibin + 1) - Icp[1][iCen]->GetBinContent(ibin + 1)) / abs(Icp[0][iCen]->GetBinContent(ibin + 1))); //not sure this is right as estimation of the error
+	      double binCont = 100 * (abs(Icp[1][iCen]->GetBinContent(ibin + 1) - Icp[0][iCen]->GetBinContent(ibin + 1)) / abs(Icp[0][iCen]->GetBinContent(ibin + 1))); //not sure this is right as estimation of the error
 	      hUncertIcpNcentMix[iCen]->SetBinContent(ibin + 1, binCont);
 	    }
 	    hfitIcpUncert[iCen] = new TH1F(Form("hFromFitUncert_Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]),
