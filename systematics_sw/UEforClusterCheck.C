@@ -545,6 +545,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
     fUEResidSyst->cd();
     hErrSystNarrNoUE[iCen]->Write();
     hErrSystNarrNoUEFitTrend[iCen]->Write();
+    hErrSystWideNoUE[iCen]->Write();
   }
 
   TF1 *fitNoUENarrCl[nCen][nZtBin][nPtTrig];
@@ -675,6 +676,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
   fUEResidSyst->cd();
   histSystErrFitNoUENarr0_30PtRange->Write();
   histSystErrFitNoUENarr0_30PtRangeFitTrend->Write();
+  histSystErrFitNoUEWide0_30PtRange->Write();
 }
 
 
