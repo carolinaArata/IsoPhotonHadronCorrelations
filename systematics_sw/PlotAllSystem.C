@@ -121,11 +121,19 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
 
   if (b0_30)
   {
-    hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("histSystErrFitNoUENarr0_30PtRangeFitTrend_Pt18_40"));
-    //hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen30_50_Pt18_40"));
-    //hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen50_90_Pt18_40"));
-    hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen30_50_Pt18_40"));
-    hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen50_90_Pt18_40"));
+    // hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("histSystErrFitNoUENarr0_30PtRangeFitTrend_Pt18_40"));
+    // //hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen30_50_Pt18_40"));
+    // //hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen50_90_Pt18_40"));
+    // hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen30_50_Pt18_40"));
+    // hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen50_90_Pt18_40"));
+
+    hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("histSystErrFitNoUEWide0_30PtRange_Pt18_40"));
+    //hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen30_50_Pt18_40"));
+    //hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen50_90_Pt18_40"));
+    hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen30_50_Pt18_40"));
+    hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen50_90_Pt18_40"));
+
+
     
   }
   else if (!b0_30)
@@ -134,10 +142,15 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     //hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen10_30_Pt18_40"));
     //hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen30_50_Pt18_40"));
     //hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen50_90_Pt18_40"));
-    hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen0_10_Pt18_40"));
-    hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen10_30_Pt18_40"));
-    hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen30_50_Pt18_40"));
-    hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen50_90_Pt18_40"));
+    // hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen0_10_Pt18_40"));
+    // hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen10_30_Pt18_40"));
+    // hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen30_50_Pt18_40"));
+    // hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen50_90_Pt18_40"));
+
+    hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen0_10_Pt18_40"));
+    hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen10_30_Pt18_40"));
+    hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen30_50_Pt18_40"));
+    hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen50_90_Pt18_40"));
   }
 
   for (int iCen = 0; iCen < nCen; iCen++)
@@ -175,6 +188,8 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     // PlotStyle(hUEUncert[iCen], markers[2], 1.1, colors[2], colors[2], "#it{z}_{T}", "Uncertainty %", false);
     PlotStyle(hPurUncert[iCen], markers[3], 1.5, colors[3], colors[3], "#it{z}_{T}", "Uncertainty %", false);
     PlotStyle(hTrackIneffUncer[iCen], markers[4], 1.5, colors[4], colors[4], "#it{z}_{T}", "Uncertainty %", false);
+    cout<<"problem"<<endl;
+    cout<<hUEresidUncert[iCen]<<endl;
     PlotStyle(hUEresidUncert[iCen], markers[5], 1.5, colors[5], colors[5], "#it{z}_{T}", "Uncertainty %", false);
     PlotStyle(hNMixCentUncert[iCen], markers[6], 1.5, colors[6], colors[6], "#it{z}_{T}", "Uncertainty %", false);
     PlotStyle(hZtStatUncert[iCen], 25, 1.5, kBlue + 1, 1, "#it{z}_{T}", "Uncertainty %", false);
