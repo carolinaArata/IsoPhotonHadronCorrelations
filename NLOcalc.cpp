@@ -159,6 +159,8 @@ void NLOcalc()
   histIaaCOLBTmedian[1] = new TH1F(Form("histIaaCOLBTmedian_Cen%d_%d", cenBins[1], cenBins[2]), Form("histIaaCOLBTmedian_Cen%d_%d", cenBins[1], cenBins[2]), nAssocCLBT, assocZtCLBT);
   histDztPbPbCOLBTmedian[1] = new TH1F(Form("histDztPbPbCOLBTmedian_Cen%d_%d", cenBins[1], cenBins[2]), Form("histDztPbPbCOLBTmedian_Cen%d_%d", cenBins[1], cenBins[2]), nAssocCLBT, assocZtCLBT);
 
+  //histIaaCOLBTmedian[2] = new TH1F(Form("histIaaCOLBTmedian_Cen%d_%d", cenBins[2], cenBins[3]), Form("histIaaCOLBTmedian_Cen%d_%d", cenBins[2], cenBins[3]), nAssocCLBT, assocZtCLBT);
+  //histDztPbPbCOLBTmedian[2] = new TH1F(Form("histDztPbPbCOLBTmedian_Cen%d_%d", cenBins[2], cenBins[3]), Form("histDztPbPbCOLBTmedian_Cen%d_%d", cenBins[2], cenBins[3]), nAssocCLBT, assocZtCLBT);
   for (int ibin = 0; ibin < nAssocCLBT; ibin++)
   {
     // Iaa
