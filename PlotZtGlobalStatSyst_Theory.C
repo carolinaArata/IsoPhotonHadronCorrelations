@@ -253,10 +253,11 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     // hPbPbPYTHIA_NLOSyst[iCen] = new TH1F(Form("hPbPbPYTHIA%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), Form("hPbPb%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), nAssocNLO, assocZtNLO);
     for (int ibin = 0; ibin < nAssocNLO; ibin++)
     {
-      cout << grDztNLOmedianpp->GetBinCenter(ibin)<<endl;
-      cout << hPbPb_NLOSyst[iCen]->GetBinCenter(ibin)<<endl;
-      cout << hPbPb_NLO[iCen]->GetBinCenter(ibin ) << "____" << hZtCent[iCen]->GetBinCenter(ibin + 1) << endl;
-      cout << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) << "____" << grDztNLOmedianpp->GetBinContent(ibin + 1) << " Ratio: " << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) / grDztNLOmedianpp->GetBinContent(ibin + 1) << endl;
+      cout<<"Cent: "<<iCen<<endl;
+      //cout << grDztNLOmedianpp->GetBinCenter(ibin)<<endl;
+      //cout << hPbPb_NLOSyst[iCen]->GetBinCenter(ibin)<<endl;
+      //cout << hPbPb_NLO[iCen]->GetBinCenter(ibin ) << "____" << hZtCent[iCen]->GetBinCenter(ibin + 1) << endl;
+      cout << hPbPb_NLO[iCen]->GetBinCenter(ibin + 1)<<")"<<hPbPb_NLO[iCen]->GetBinContent(ibin + 1) << "____" << grDztNLOmedianpp->GetBinContent(ibin + 1) << " Ratio: " << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) / grDztNLOmedianpp->GetBinContent(ibin + 1) << endl;
       
       hPbPb_NLO[iCen]->SetBinContent(ibin + 1, hZtCent[iCen]->GetBinContent(ibin + 1));
       hPbPb_NLO[iCen]->SetBinError(ibin + 1, hZtCent[iCen]->GetBinError(ibin + 1));
@@ -268,12 +269,13 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       hPbPb_NLOSyst[iCen]->SetBinError(ibin + 1, hSystZt[iCen]->GetBinError(ibin + 1));
       cout << hPbPb_NLOSyst[iCen]->GetBinError(ibin + 1) << endl;
       cout << grDztNLOmedianpp->GetBinError(ibin + 1) << endl;
+      cout<<"Cent: "<<iCen<<endl;
     }
-
+    cout<<"Centrality"<<iCen<<endl;
     hPbPb_NLO[iCen]->Divide(grDztNLOmedianpp);
-    hPbPbPYTHIA_NLO[0]->Divide(histDztPbPbCOLBTmedian[0]);
+    hPbPbPYTHIA_NLO[0]->Divide(histDztPbPbCOLBTmedian[0]); //different number of bins
     hPbPb_NLOSyst[iCen]->Divide(grDztNLOmedianpp);
-    
+
     PlotStyle(hPbPb_NLO[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "Ratio", false);
     // PlotStyle(hPbPb_NLO[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "#it{I}_{NLO} = Pb#font[122]{-}Pb/NLO pQCD", false);
     PlotStyle(hPbPb_NLOSyst[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "Ratio", true);
@@ -1063,60 +1065,6 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   TH1F *hGeneralCMS = new TH1F("hGeneral", "hGeneral", 10, -0.05, 1.1);
   PlotStyle(hGeneralCMS, 71, 1, kWhite, kWhite, "#it{z}_{T}", "1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
   
-  TCanvas *cPHENIX = new TCanvas("cPHENIX", "cPHENIX", 2 * 800, 1 * 600);
-  cPHENIX->Divide(2, 1);
-//  cPHENIX->cd(1);
-//  cPHENIX->cd(1)->SetTopMargin(0.015);
-//  cPHENIX->cd(1)->SetRightMargin(0.02);
-//  cPHENIX->cd(1)->SetLeftMargin(0.12);
-//  cPHENIX->cd(1)->SetBottomMargin(0.11);
-//  hGeneralCMS->SetTitle(" ");
-//  hGeneralCMS->GetYaxis()->SetTitleSize(0.045);
-//  hGeneralCMS->GetXaxis()->SetTitleSize(0.05);
-//  hGeneralCMS->GetYaxis()->SetLabelSize(0.04);
-//  hGeneralCMS->GetXaxis()->SetLabelSize(0.045);
-//  hGeneralCMS->GetYaxis()->SetLabelOffset(0.02);
-//  hGeneralCMS->GetXaxis()->SetLabelOffset(0.02);
-//  gPad->SetLogy();
-//  hGeneralCMS->GetYaxis()->SetRangeUser(1e-4, 10);
-//  // grSTARSys->GetXaxis()->SetRangeUser(0, 1.00);
-//  grSTARSys->GetYaxis()->SetTitle("1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}");
-//  grSTARSys->GetXaxis()->SetTitle("#it{z}_{T}");
-//  grSTARSys->SetTitle(" ");
-//  hzTPHENIXSys->SetTitle(" ");
-//  hzTPHENIXSys->SetLineWidth(2);
-//  hzTPHENIXSys->SetLineColorAlpha(kAzure + 2, 1.00);
-//  hzTPHENIXSys->SetFillColorAlpha(kGray, 0.80);
-//  hzTPHENIXSys->SetFillStyle(0);
-//  hzTPHENIXSys->SetLineWidth(2);
-//  hGeneralCMS->Draw("hist");
-//  hzTPHENIXSys->Draw("samee2");
-//  hzTPHENIX->Draw("EP X0 same");
-//  hSystZt[0]->SetMarkerColor(kRed + 1);
-//  hSystZt[0]->SetFillColor(kRed + 1);
-//  hSystZt[0]->SetLineColor(kRed + 1);
-//  hSystZt[0]->SetLineWidth(2);
-//  hZtCent[0]->SetMarkerColor(kRed + 1);
-//  hZtCent[0]->SetLineColor(kRed + 1);
-//  hZtCent[0]->SetMarkerSize(1.2);
-//  hSystZt[0]->SetFillStyle(0);
-//  grSTARSys->SetLineColorAlpha(kTeal + 4, 1.00);
-//  grSTARSys->SetFillStyle(0);
-//  grSTARSys->SetLineWidth(2);
-//  grSTARSys->Draw(" p2 same");
-//  grSTAR->Draw("p SAME");
-//  hSystZt[0]->Draw("samee2");
-//  hZtCent[0]->Draw("EP X0 same");
-  //TLatex *latALICEPHENIX = LatexStdISORatio(latALICEPHENIX, 0.400, 0.92, 0.045, cenBins[0], cenBins[1], ptMin, ptMax, true);
-  //TLegend *legALICE1 = LegStd(legALICE1, 0.140, 0.16, 0.40, 0.40);
-//  TLegend *legALICE1 = LegStd(legALICE1, 0.5, 0.7, 0.9, 0.95);
-//  legALICE1->SetTextSize(0.042);
-//  legALICE1->AddEntry(hZtCent[0], "ALICE, stat. unc.", "ep");
-//  legALICE1->AddEntry(grSTAR, "STAR, stat. unc. ", "ep");
-//  legALICE1->AddEntry(hzTPHENIX, "PHENIX, stat. unc. ", "ep");
-//  legALICE1->AddEntry(hSystZt[0], " syst. unc.", "f");
-//  legALICE1->Draw("same");
-  
   // Iaa STAR and PHENIX
   
   TH1F *hGeneralIaa = new TH1F("hGeneralIaa", "hGeneralIaa", 10, -0.05, 1.05);
@@ -1171,6 +1119,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   PlotStyle(hIaaPHENIXSys, 20, 1, kOrange-8, kOrange-8, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", true);
   //PlotStyle(hPbPb_NLOSyst[0], 21, 1, kRed+1, kRed+1, "#it{z}_{T}", "Ratio", true);
   
+  TCanvas *cPHENIX = new TCanvas("cPHENIX", "cPHENIX", 2 * 800, 1 * 600);
+  cPHENIX->Divide(2, 1);
   cPHENIX->cd(1);
   cPHENIX->cd(1)->SetTopMargin(0.015);
   cPHENIX->cd(1)->SetRightMargin(0.02);
