@@ -61,9 +61,9 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     dirPlot = "Systematics_checkCode";
   }
 
-	TString processline = Form(".! mkdir -pv %s",dirPlot.Data()) ;
+  TString processline = Form(".! mkdir -pv %s", dirPlot.Data());
   gROOT->ProcessLine(processline.Data());
-  
+
   TString sMirror = " ";
   if (bMirror)
     sMirror = "Mirror";
@@ -128,24 +128,21 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     // hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen50_90_Pt18_40"));
 
     hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("histSystErrFitNoUEWide0_30PtRange_Pt18_40"));
-    //hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen30_50_Pt18_40"));
-    //hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen50_90_Pt18_40"));
+    // hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen30_50_Pt18_40"));
+    // hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen50_90_Pt18_40"));
     hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen30_50_Pt18_40"));
     hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen50_90_Pt18_40"));
-
-
-    
   }
   else if (!b0_30)
   {
-    //hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen0_10_Pt18_40"));
-    //hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen10_30_Pt18_40"));
-    //hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen30_50_Pt18_40"));
-    //hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen50_90_Pt18_40"));
-    // hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen0_10_Pt18_40"));
-    // hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen10_30_Pt18_40"));
-    // hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen30_50_Pt18_40"));
-    // hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen50_90_Pt18_40"));
+    // hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen0_10_Pt18_40"));
+    // hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen10_30_Pt18_40"));
+    // hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen30_50_Pt18_40"));
+    // hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUE_Cen50_90_Pt18_40"));
+    //  hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen0_10_Pt18_40"));
+    //  hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen10_30_Pt18_40"));
+    //  hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen30_50_Pt18_40"));
+    //  hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen50_90_Pt18_40"));
 
     hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen0_10_Pt18_40"));
     hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen10_30_Pt18_40"));
@@ -188,8 +185,8 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     // PlotStyle(hUEUncert[iCen], markers[2], 1.1, colors[2], colors[2], "#it{z}_{T}", "Uncertainty %", false);
     PlotStyle(hPurUncert[iCen], markers[3], 1.5, colors[3], colors[3], "#it{z}_{T}", "Uncertainty %", false);
     PlotStyle(hTrackIneffUncer[iCen], markers[4], 1.5, colors[4], colors[4], "#it{z}_{T}", "Uncertainty %", false);
-    cout<<"problem"<<endl;
-    cout<<hUEresidUncert[iCen]<<endl;
+    cout << "problem" << endl;
+    cout << hUEresidUncert[iCen] << endl;
     PlotStyle(hUEresidUncert[iCen], markers[5], 1.5, colors[5], colors[5], "#it{z}_{T}", "Uncertainty %", false);
     PlotStyle(hNMixCentUncert[iCen], markers[6], 1.5, colors[6], colors[6], "#it{z}_{T}", "Uncertainty %", false);
     PlotStyle(hZtStatUncert[iCen], 25, 1.5, kBlue + 1, 1, "#it{z}_{T}", "Uncertainty %", false);
@@ -218,19 +215,19 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   ////////////////////////////////////////
   //////// Plotting final results ///////////
   //////////////////////////////////////
-  //TLegend *legUncert[nCen];
+  // TLegend *legUncert[nCen];
   TCanvas *cAllSyst = new TCanvas(Form("cAllSyst"), Form("cAllSyst"), 3 * 800, 1 * 600);
   cAllSyst->Divide(3, 1, 0.006, 0.001);
 
   TCanvas *cAllSyst_Stat = new TCanvas(Form("cAllSyst_Stat"), Form("cAllSyst_Stat"), 3 * 800, 1 * 600);
   cAllSyst_Stat->Divide(3, 1, 0.006, 0.001);
-  //TLegend *legUncert_Stat[nCen];
+  // TLegend *legUncert_Stat[nCen];
 
   TLatex *lat = new TLatex();
   lat->SetTextFont(42);
   lat->SetTextSize(0.04);
   lat->SetNDC();
-  //TH1F *hGeneral = new TH1F("hGeneral", "hGeneral", nZtBinThin, assocZtThinner);
+  // TH1F *hGeneral = new TH1F("hGeneral", "hGeneral", nZtBinThin, assocZtThinner);
   TH1F *hGeneral = new TH1F("hGeneral", "hGeneral", 100, 0, 2);
   PlotStyle(hGeneral, 20, 1, kWhite, kWhite, "#it{z}_{T}", " D(#it{z}_{T}) uncert. (%) ", false);
   hGeneral->SetTitle(" ");
@@ -241,24 +238,24 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   hGeneral->GetXaxis()->SetLabelSize(0.042);
   for (int iCen = 0; iCen < nCen; iCen++)
   {
-//    legUncert[iCen] = LegStd(legUncert[iCen], 0.18, 0.430, 0.65, 0.66);
-//    legUncert[iCen]->SetNColumns(2);
-//    legUncert[iCen]->SetTextSize(0.035);
-//    // legUncert[iCen]->AddEntry(hZtStatUncert[iCen], "Statistical errors", "ep");
-//    legUncert[iCen]->AddEntry(hZtSystSumQuadr[iCen], "Total Syst.", "ep");
-//    legUncert[iCen]->AddEntry(hShShUncert[iCen], "Bkg #it{#sigma}^{2}_{long, 5x5}", "ep");
-//    legUncert[iCen]->AddEntry(hPurUncert[iCen], "Purity", "ep");
-//    // legUncert[iCen]->AddEntry(hUEUncert[iCen], "UE estimation", "ep");
-//    legUncert[iCen]->AddEntry(hUEresidUncert[iCen], "#it{#varepsilon}_{ME}", "ep");
-//    legUncert[iCen]->AddEntry(hTrackIneffUncer[iCen], "#it{#varepsilon}_{Tracking}", "ep");
-//    legUncert[iCen]->AddEntry(hNMixCentUncert[iCen], "ME centrality match", "ep");
+    //    legUncert[iCen] = LegStd(legUncert[iCen], 0.18, 0.430, 0.65, 0.66);
+    //    legUncert[iCen]->SetNColumns(2);
+    //    legUncert[iCen]->SetTextSize(0.035);
+    //    // legUncert[iCen]->AddEntry(hZtStatUncert[iCen], "Statistical errors", "ep");
+    //    legUncert[iCen]->AddEntry(hZtSystSumQuadr[iCen], "Total Syst.", "ep");
+    //    legUncert[iCen]->AddEntry(hShShUncert[iCen], "Bkg #it{#sigma}^{2}_{long, 5x5}", "ep");
+    //    legUncert[iCen]->AddEntry(hPurUncert[iCen], "Purity", "ep");
+    //    // legUncert[iCen]->AddEntry(hUEUncert[iCen], "UE estimation", "ep");
+    //    legUncert[iCen]->AddEntry(hUEresidUncert[iCen], "#it{#varepsilon}_{ME}", "ep");
+    //    legUncert[iCen]->AddEntry(hTrackIneffUncer[iCen], "#it{#varepsilon}_{Tracking}", "ep");
+    //    legUncert[iCen]->AddEntry(hNMixCentUncert[iCen], "ME centrality match", "ep");
     //////////////////////////////////////
     ////// Plot only systematics ////////
     /////////////////////////////////////
     cAllSyst->cd(iCen + 1);
     gPad->SetTickx();
     gPad->SetTicky();
-    
+
     cAllSyst->cd(iCen + 1)->SetTopMargin(0.015);
     cAllSyst->cd(iCen + 1)->SetRightMargin(0.022);
     cAllSyst->cd(iCen + 1)->SetLeftMargin(0.1);
@@ -270,7 +267,8 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
 
     hZtStatUncert[iCen]->GetYaxis()->SetNdivisions(511);
     hZtStatUncert[iCen]->GetYaxis()->SetDecimals();
-    hGeneral->GetYaxis()->SetRangeUser(0, 75);
+    hGeneral->GetYaxis()->SetRangeUser(0, 20);
+    hGeneral->GetXaxis()->SetRangeUser(0.05, 0.85);
     hGeneral->SetTitle(" ");
     hGeneral->SetMinimum(-2);
     hGeneral->Draw("same");
@@ -295,27 +293,33 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     lat->SetTextFont(42);
     lat->SetTextSize(0.05);
     lat->SetNDC();
-    //lat->DrawLatex(0.45, 0.920, Form("#it{This Thesis}"));
-    //lat->DrawLatex(0.4, 0.920 - 0.055, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV ", cenBins[iCen], cenBins[iCen + 1]));
+    // lat->DrawLatex(0.45, 0.920, Form("#it{This Thesis}"));
+    // lat->DrawLatex(0.4, 0.920 - 0.055, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV ", cenBins[iCen], cenBins[iCen + 1]));
     lat->DrawLatex(0.4, 0.920 - 0.055, Form("#bf{%d#font[122]{-}%d%%}", cenBins[iCen], cenBins[iCen + 1]));
-//    lat->DrawLatex(0.45, 0.920 - 2 * 0.055, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5} #it{#pi}, |#it{#eta}^{ #it{#gamma}}| < 0.67 "));
-//    lat->DrawLatex(0.45, 0.920 - 3 * 0.058, Form("%2.0f < #it{p}_{T}^{ #it{#gamma}} < %2.0f GeV/#it{c} ", ptMin, ptMax));
-//    lat->DrawLatex(0.45, 0.920 - 4 * 0.058, Form("#it{p}_{T}^{ h} > 0.5 GeV/#it{c} "));
+    //    lat->DrawLatex(0.45, 0.920 - 2 * 0.055, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5} #it{#pi}, |#it{#eta}^{ #it{#gamma}}| < 0.67 "));
+    //    lat->DrawLatex(0.45, 0.920 - 3 * 0.058, Form("%2.0f < #it{p}_{T}^{ #it{#gamma}} < %2.0f GeV/#it{c} ", ptMin, ptMax));
+    //    lat->DrawLatex(0.45, 0.920 - 4 * 0.058, Form("#it{p}_{T}^{ h} > 0.5 GeV/#it{c} "));
+  }
+  // cAllSyst->cd(2);
+  // legUncert[0]->Draw("same");
+  cAllSyst->Print(Form("%s/SystSh%s/%s_AllSystematicsNoueVis%s.pdf", dirPlot.Data(), shshBkg.Data(), Mixed.Data(), sPtAll.Data()));
 
+  for (int iCen = 0; iCen < nCen; iCen++)
+  {
     //////////////////////////////////////////////////////
     ////// Plot systematics + statistical errors ////////
     ////////////////////////////////////////////////////
-    
-    cAllSyst_Stat->cd(iCen + 1)->SetTopMargin(0.015);
+
+    cAllSyst_Stat->cd(iCen + 1)->SetTopMargin(0.022);
     cAllSyst_Stat->cd(iCen + 1)->SetRightMargin(0.022);
-    cAllSyst_Stat->cd(iCen + 1)->SetLeftMargin(0.1);
-    cAllSyst_Stat->cd(iCen + 1)->SetBottomMargin(0.11);
-//    legUncert_Stat[iCen] = LegStd(legUncert_Stat[iCen], 0.6, 0.45, 0.85, 0.56);
-//    legUncert_Stat[iCen]->SetNColumns(2);
-//    legUncert_Stat[iCen]->SetTextSize(0.035);
-//    legUncert_Stat[iCen]->AddEntry(hZtStatUncert[iCen], "Statistical errors", "ep");
-//    legUncert_Stat[iCen]->AddEntry(hZtSystSumQuadr[iCen], "Total Syst.", "ep");
-    hGeneral->GetYaxis()->SetRangeUser(0, 43);
+    cAllSyst_Stat->cd(iCen + 1)->SetLeftMargin(0.12);
+    cAllSyst_Stat->cd(iCen + 1)->SetBottomMargin(0.15);
+    //    legUncert_Stat[iCen] = LegStd(legUncert_Stat[iCen], 0.6, 0.45, 0.85, 0.56);
+    //    legUncert_Stat[iCen]->SetNColumns(2);
+    //    legUncert_Stat[iCen]->SetTextSize(0.035);
+    //    legUncert_Stat[iCen]->AddEntry(hZtStatUncert[iCen], "Statistical errors", "ep");
+    //    legUncert_Stat[iCen]->AddEntry(hZtSystSumQuadr[iCen], "Total Syst.", "ep");
+    hGeneral->GetYaxis()->SetRangeUser(0, 110);
     hGeneral->GetXaxis()->SetRangeUser(0.05, 0.85);
     hGeneral->GetYaxis()->SetTitleSize(0.05);
     hGeneral->GetXaxis()->SetTitleSize(0.05);
@@ -323,8 +327,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     hGeneral->GetXaxis()->SetLabelSize(0.05);
     hGeneral->GetXaxis()->SetTitleOffset(1.0);
     hGeneral->GetYaxis()->SetTitleOffset(1.);
-    
-    
+
     hGeneral->Draw("same");
     hZtSystSumQuadr[iCen]->GetXaxis()->SetRangeUser(rangeMin[iCen], rangeMax[iCen]);
     hZtStatUncert[iCen]->GetXaxis()->SetRangeUser(rangeMin[iCen], rangeMax[iCen]);
@@ -333,16 +336,12 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     // hGeneral->Draw("same");
     hZtStatUncert[iCen]->Draw("histsame pl");
     hZtSystSumQuadr[iCen]->Draw("histsame pl ");
-    TLatex *lat_Syst_Stat = LatexStdISO(lat_Syst_Stat, 0.55, 0.920, 0.035, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
+    TLatex *lat_Syst_Stat = LatexStdISO(lat_Syst_Stat, 0.40, 0.900, 0.038, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
     lat_Syst_Stat->SetTextSize(0.05);
   }
 
-  //cAllSyst->cd(2);
-  //legUncert[0]->Draw("same");
-  cAllSyst->Print(Form("%s/SystSh%s/%s_AllSystematicsNoueVis%s.pdf", dirPlot.Data(), shshBkg.Data(), Mixed.Data(), sPtAll.Data()));
-
   cAllSyst_Stat->cd(2);
-  //legUncert_Stat[0]->Draw("same");
+  // legUncert_Stat[0]->Draw("same");
   cAllSyst_Stat->Print(Form("%s/SystSh%s/%s_AllSystematicsStatNoueVis%s.pdf", dirPlot.Data(), shshBkg.Data(), Mixed.Data(), sPtAll.Data()));
 
   //////////////////////////////////////
@@ -405,50 +404,50 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   /////////////////////////////////////////////////////////////////////
 
   TH1F *IcpResidUESyst[nCen];
-//  TFile *fzTFinal[nCen];
-//  TH1F *hzTFinal[nCen];
-//  for (int iCen = 0; iCen < nCen; iCen++)
-//  {
-//    fzTFinal[iCen] = TFile::Open(Form("Output_checkCode/fPlot0.40-1.00_Cen%d_%d_Pt18_40.root",cenBins[iCen],cenBins[iCen+1]));
-//    printf("icen %d file %p\n",iCen, fzTFinal[iCen]);
-//    hzTFinal[iCen] = (TH1F*) fzTFinal[iCen]
-//    ->Get(Form("hZtEffCorrIso1Photon_Cen%d_%d_Pt18_40",cenBins[iCen],cenBins[iCen+1]));
-//    printf("icen %d histo %p\n",iCen,hzTFinal[iCen]);
-//  }
-  for (int iCen = 0; iCen < nCen-1; iCen++)
-    {
+  //  TFile *fzTFinal[nCen];
+  //  TH1F *hzTFinal[nCen];
+  //  for (int iCen = 0; iCen < nCen; iCen++)
+  //  {
+  //    fzTFinal[iCen] = TFile::Open(Form("Output_checkCode/fPlot0.40-1.00_Cen%d_%d_Pt18_40.root",cenBins[iCen],cenBins[iCen+1]));
+  //    printf("icen %d file %p\n",iCen, fzTFinal[iCen]);
+  //    hzTFinal[iCen] = (TH1F*) fzTFinal[iCen]
+  //    ->Get(Form("hZtEffCorrIso1Photon_Cen%d_%d_Pt18_40",cenBins[iCen],cenBins[iCen+1]));
+  //    printf("icen %d histo %p\n",iCen,hzTFinal[iCen]);
+  //  }
+  for (int iCen = 0; iCen < nCen - 1; iCen++)
+  {
     IcpResidUESyst[iCen] = (TH1F *)hUEresidUncert[iCen]->Clone(Form("IcpResidUESyst_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     for (int ibin = 0; ibin < nZtBin; ibin++)
     {
       double errC = hUEresidUncert[iCen]->GetBinContent(ibin + 1);
       double errP = hUEresidUncert[nCen - 1]->GetBinContent(ibin + 1);
       double errorCP = sqrt(errC * errC + errP * errP);
-      
-//      double valC = hzTFinal[iCen]->GetBinContent(ibin + 1);
-//      double valP = hzTFinal[nCen - 1]->GetBinContent(ibin + 1);
-//      errC = errC / 100. * valC;
-//      errP = errP / 100. * valP;
-//      double errorCPfrac = sqrt( (errC * errC) / (valP*valP) +
-//                             (valC * valC * errP * errP) / (valP * valP * valP * valP));
-//
-//      errorCPfrac *= 100 / (valC/valP);
-//
-//      printf("ICP: icen %d, ibin %d, val C %1.2f (%1.2f), val P %1.2f (%1.2f), val CP %1.2f errSum %1.2f err %1.2f\n", iCen,ibin,valC,errP,valP,errP, valC/valP, errorCP, errorCPfrac);
-      
+
+      //      double valC = hzTFinal[iCen]->GetBinContent(ibin + 1);
+      //      double valP = hzTFinal[nCen - 1]->GetBinContent(ibin + 1);
+      //      errC = errC / 100. * valC;
+      //      errP = errP / 100. * valP;
+      //      double errorCPfrac = sqrt( (errC * errC) / (valP*valP) +
+      //                             (valC * valC * errP * errP) / (valP * valP * valP * valP));
+      //
+      //      errorCPfrac *= 100 / (valC/valP);
+      //
+      //      printf("ICP: icen %d, ibin %d, val C %1.2f (%1.2f), val P %1.2f (%1.2f), val CP %1.2f errSum %1.2f err %1.2f\n", iCen,ibin,valC,errP,valP,errP, valC/valP, errorCP, errorCPfrac);
+
       IcpResidUESyst[iCen]->SetBinContent(ibin + 1, errorCP);
     }
 
     IcpResidUESyst[iCen]->SetDirectory(0);
     PlotStyle(IcpResidUESyst[iCen], 20, 1, kAzure + 3, kAzure + 3, "#font[12]{z_{T}}", "Uncertainty %", false);
   }
-  
+
   TCanvas *cIcpResidUESyst = new TCanvas("cIcpResidUESyst", "cIcpResidUESyst", (nCen - 1) * 800, 1 * 600);
   cIcpResidUESyst->Divide((nCen - 1), 1);
   for (int iCen = 0; iCen < nCen - 1; iCen++)
   {
     cIcpResidUESyst->cd(iCen + 1);
     IcpResidUESyst[iCen]->Draw();
-    //TLatex *latexIcp = LatexStdIcp(latexIcp, 0.15, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax);
+    // TLatex *latexIcp = LatexStdIcp(latexIcp, 0.15, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax);
   }
   cIcpResidUESyst->Print(dirPlot + Form("/SystSh%s/SystResErrUEIcp%s.pdf", shshBkg.Data(), sPtAll.Data()));
 
@@ -464,12 +463,12 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     fIcp[iCen]->Divide(fZt[nCen - 1]);
     // hUEUncertIcp[iCen] = (TH1F *)fUESyst->Get(Form("SystIcp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     // cout << hUEUncertIcp[iCen] << endl; //
-    //hPurUncertIcp[iCen] = (TH1F *)fPurSyst->Get(Form("hIcpUncertSystCen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
+    // hPurUncertIcp[iCen] = (TH1F *)fPurSyst->Get(Form("hIcpUncertSystCen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     hPurUncertIcp[iCen] = (TH1F *)fPurSyst->Get(Form("hPurUncertFromFitIcpCen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     cout << hPurUncertIcp[iCen] << endl;
     hShShUncertIcp[iCen] = (TH1F *)fShShSyst->Get(Form("hSystUncertIcp_ShShFromFitCen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     cout << hShShUncertIcp[iCen] << endl;
-    //hNMixCentUncertIcp[iCen] = (TH1F *)fNMixSyst->Get(Form("hUncertIcpNcentMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1])); //
+    // hNMixCentUncertIcp[iCen] = (TH1F *)fNMixSyst->Get(Form("hUncertIcpNcentMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1])); //
     hNMixCentUncertIcp[iCen] = (TH1F *)fNMixSyst->Get(Form("hFromFitUncert_Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1])); //
     cout << hNMixCentUncertIcp[iCen] << endl;
     //  hZtStatUncert[iCen] = new TH1F(Form("hZTStatistCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hZTStatistCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBin, assocZt);
@@ -493,7 +492,6 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
       cout << "ErrSyst: " << systQuadIcp << " Icp: " << fIcp[iCen]->GetBinContent(ibin + 1) << endl;
     }
 
-    
     PlotStyle(hShShUncertIcp[iCen], markers[1], 1.1, colors[1], colors[1], "#it{z}_{T}", "Uncertainty %", false);
     // PlotStyle(hUEUncertIcp[iCen], markers[2], 1.1, colors[2], colors[2], "#it{z}_{T}", "Uncertainty %", false);
     PlotStyle(hPurUncertIcp[iCen], markers[3], 1.5, colors[3], colors[3], "#it{z}_{T}", "Uncertainty %", false);
@@ -534,17 +532,17 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   ///////////////////////////////////////////////
   TCanvas *cSystIcp = new TCanvas(Form("cSystIcp"), Form("cSystIcp"), 3 * 800, 1 * 600);
   cSystIcp->Divide(3, 1);
-  //TLegend *legSystIcp[nCen];
+  // TLegend *legSystIcp[nCen];
   for (int iCen = 0; iCen < nCen - 1; iCen++)
   {
-//    legSystIcp[iCen] = LegStd(legSystIcp[iCen], 0.14, 0.48, 0.46, 0.70);
-//    legSystIcp[iCen]->SetNColumns(2);
-//    legSystIcp[iCen]->AddEntry(hZtSystSumQuadrIcp[iCen], "Total Syst.", "ep");
-//    legSystIcp[iCen]->AddEntry(hShShUncertIcp[iCen], "Bkg #it{#sigma}^{2}_{long, 5x5}", "ep");
-//    legSystIcp[iCen]->AddEntry(hPurUncertIcp[iCen], "Purity", "ep");
-//    // legSystIcp[iCen]->AddEntry(hUEUncertIcp[iCen], "UE estimation", "ep");
-//    legSystIcp[iCen]->AddEntry(IcpResidUESyst[iCen], "#it{#varepsilon}_{ME}", "ep");
-//    legSystIcp[iCen]->AddEntry(hNMixCentUncertIcp[iCen], "ME centrality match", "ep");
+    //    legSystIcp[iCen] = LegStd(legSystIcp[iCen], 0.14, 0.48, 0.46, 0.70);
+    //    legSystIcp[iCen]->SetNColumns(2);
+    //    legSystIcp[iCen]->AddEntry(hZtSystSumQuadrIcp[iCen], "Total Syst.", "ep");
+    //    legSystIcp[iCen]->AddEntry(hShShUncertIcp[iCen], "Bkg #it{#sigma}^{2}_{long, 5x5}", "ep");
+    //    legSystIcp[iCen]->AddEntry(hPurUncertIcp[iCen], "Purity", "ep");
+    //    // legSystIcp[iCen]->AddEntry(hUEUncertIcp[iCen], "UE estimation", "ep");
+    //    legSystIcp[iCen]->AddEntry(IcpResidUESyst[iCen], "#it{#varepsilon}_{ME}", "ep");
+    //    legSystIcp[iCen]->AddEntry(hNMixCentUncertIcp[iCen], "ME centrality match", "ep");
     cSystIcp->cd(iCen + 1);
     cSystIcp->cd(iCen + 1)->SetTopMargin(0.015);
     cSystIcp->cd(iCen + 1)->SetRightMargin(0.022);
@@ -552,7 +550,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     cSystIcp->cd(iCen + 1)->SetBottomMargin(0.11);
     gStyle->SetHistFillStyle(0);
     // gStyle->SetPalette(kCMYK);
-    hZtSystSumQuadrIcp[iCen]->GetYaxis()->SetRangeUser(0, 80);
+    hZtSystSumQuadrIcp[iCen]->GetYaxis()->SetRangeUser(0, 25);
     hZtSystSumQuadrIcp[iCen]->GetXaxis()->SetRangeUser(0.05, 0.6);
     hPurUncertIcp[iCen]->GetXaxis()->SetRangeUser(0.05, 0.6);
     IcpResidUESyst[iCen]->GetXaxis()->SetRangeUser(0.05, 0.6);
@@ -560,7 +558,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     // hUEUncertIcp[iCen]->GetXaxis()->SetRangeUser(0.05, 0.6);
     hNMixCentUncertIcp[iCen]->GetXaxis()->SetRangeUser(0.05, 0.6);
     hGeneral->GetXaxis()->SetRangeUser(0.05, 0.65);
-    hGeneral->GetYaxis()->SetRangeUser(0, 44);
+    hGeneral->GetYaxis()->SetRangeUser(0, 20);
     hGeneral->GetYaxis()->SetTitle(" #it{I}_{CP} uncert. (%) ");
     hGeneral->GetYaxis()->SetTitleSize(0.05);
     hGeneral->GetXaxis()->SetTitleSize(0.05);
@@ -580,17 +578,17 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     latIcp->SetTextSize(0.05);
     latIcp->SetNDC();
     latIcp->DrawLatex(0.5, 0.84, Form("#bf{%d#font[122]{-}%d%% / 50#font[122]{-}90%%}", cenBins[iCen], cenBins[iCen + 1]));
-    //TLatex *ALICEtexIcp1 = LatexStdIcp(ALICEtexIcp1, 0.46, 0.92, cenBins[0], cenBins[1], ptMin, ptMax);
-    //legSystIcp[iCen]->Draw("same");
+    // TLatex *ALICEtexIcp1 = LatexStdIcp(ALICEtexIcp1, 0.46, 0.92, cenBins[0], cenBins[1], ptMin, ptMax);
+    // legSystIcp[iCen]->Draw("same");
   }
-  
+
   cSystIcp->cd(3);
-  
+
   TLatex *ALICEtexIcp1 = LatexStdIcp(ALICEtexIcp1, 0., 0.85, cenBins[0], cenBins[1], ptMin, ptMax);
-  ALICEtexIcp1->SetTextSize(0.05);
-  
-  TLegend * legSystIcp = LegStd(legSystIcp, 0., 0.2, 0.7, 0.50);
-  legSystIcp->SetTextSize(0.05);
+  ALICEtexIcp1->SetTextSize(0.08);
+
+  TLegend *legSystIcp = LegStd(legSystIcp, 0., 0.2, 0.76, 0.60);
+  legSystIcp->SetTextSize(0.06);
   legSystIcp->SetNColumns(2);
   legSystIcp->AddEntry(hZtSystSumQuadrIcp[0], "Total Syst.", "pl");
   legSystIcp->AddEntry(hShShUncertIcp[0], "Bkg #it{#sigma}^{2}_{long, 5x5}", "pl");
@@ -608,12 +606,12 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   // TCanvas *cIcp = new TCanvas("Icp", "Icp", 800, 600);
   TCanvas *cIcp = canvasStd("Icp", 1, 1);
   TLegend *legIcp = LegStd(legIcp, 0.14, 0.72, 0.360, 0.96);
-  
+
   cIcp->cd(1)->SetTopMargin(0.015);
   cIcp->cd(1)->SetRightMargin(0.015);
   cIcp->cd(1)->SetLeftMargin(0.12);
   cIcp->cd(1)->SetBottomMargin(0.13);
-  
+
   // hIcpSyst[0]->SetFillStyle(0);
   hIcpSyst[0]->SetFillColorAlpha(kAzure + 5, 0.30);
   hIcpSyst[0]->SetLineColorAlpha(kOrange + 7, 1.00);
@@ -630,7 +628,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     hIcpSyst[iCen]->SetDirectory(0);
     PlotStyle(hIcpSyst[iCen], kMarkerStyleIcp[iCen], 1, kMarkerColIcp[iCen], kMarkerColIcp[iCen], "#it{z}_{T}", "#it{I}_{CP}", false);
     PlotStyle(fIcp[iCen], kMarkerStyleIcp[iCen], 1, kMarkerColIcp[iCen], kMarkerColIcp[iCen], "#it{z}_{T}", "#it{I}_{CP}", false);
-    //hGeneralIcp->GetYaxis()->SetRangeUser(-0.1, 2.25);
+    // hGeneralIcp->GetYaxis()->SetRangeUser(-0.1, 2.25);
     hGeneralIcp->GetYaxis()->SetRangeUser(-0.075, 1.95);
     hGeneralIcp->GetXaxis()->SetRangeUser(0.05, 0.65);
     hGeneralIcp->SetTitle(" ");
@@ -647,7 +645,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     fIcp[iCen]->Draw("EP X0same");
     // grIcpNLOmedian[iCen]->Draw("pl3 same");
   }
-  
+
   legIcp->SetTextSize(0.04);
   legIcp->AddEntry(fIcp[0], Form("0#font[122]{-}30%%  / 50#font[122]{-}90%% stat. unc."), "ep");
   legIcp->AddEntry(hIcpSyst[0], Form("syst. unc."), "f");
@@ -664,7 +662,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   ALICEtexIcp2->SetTextFont(42);
   ALICEtexIcp2->SetTextSize(0.04);
   ALICEtexIcp2->SetNDC();
-  //ALICEtexIcp2->DrawLatex(0.56, 0.86, Form("#it{This Thesis}"));
+  // ALICEtexIcp2->DrawLatex(0.56, 0.86, Form("#it{This Thesis}"));
   ALICEtexIcp2->DrawLatex(0.6, 0.92, Form("ALICE"));
   ALICEtexIcp2->DrawLatex(0.6, 0.92 - 0.055, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
   ALICEtexIcp2->DrawLatex(0.6, 0.92 - 2 * 0.06, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5} #it{#pi}, |#it{#eta}^{ #it{#gamma}}| < 0.67 "));
@@ -673,17 +671,16 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   cIcp->Print(Form("%s/SystSh%s/%s_cSystIcp%s.pdf", dirPlot.Data(), shshBkg.Data(), Mixed.Data(), sPtAll.Data()));
 
   fSystFile->Close();
-  
-  TFile * fileICP = new TFile(Form("%s/fIcpWithSyst%s%s%s%s.root", dirPlot.Data(), Mixed.Data(), shshBkg.Data(), sMirror.Data(), sPtAll.Data()), "RECREATE");
-  printf("Write Icp in: %s\n",fileICP->GetName());
-  
-  
-  for(Int_t iCen = 0; iCen < nCen-1; iCen++)
+
+  TFile *fileICP = new TFile(Form("%s/fIcpWithSyst%s%s%s%s.root", dirPlot.Data(), Mixed.Data(), shshBkg.Data(), sMirror.Data(), sPtAll.Data()), "RECREATE");
+  printf("Write Icp in: %s\n", fileICP->GetName());
+
+  for (Int_t iCen = 0; iCen < nCen - 1; iCen++)
   {
     hIcpSyst[iCen]->Write();
     fIcp[iCen]->Write();
   }
-  
+
   fileICP->Close();
 }
 
@@ -694,4 +691,3 @@ void PrintSyst(TH1F *hSyst)
     cout << "Error: " << hSyst->GetBinContent(ibin + 1) << "%" << endl;
   }
 }
-

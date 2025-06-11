@@ -211,7 +211,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
     cout << histSystMCXPtAll[iCen] << endl;
     PlotStyle(histSystMCXPtAll[iCen], 21, 1, kOrange + 7, 0, "#font[12]{z_{T}}", "Uncertainty %", false);
     fUEResidSyst->cd();
-    //hErrSystNarrNoUE[iCen]->Write();
+    hErrSystNarrNoUE[iCen]->Write();
     hErrSystWideNoUE[iCen]->Write();
     histSystMCXPtAll[iCen]->Write();
     for (Int_t iptTr = 0; iptTr < nPtTrig; iptTr++)
@@ -333,11 +333,11 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
         hdPhiSamNoUE[iCen][0][izt][iptTr]->GetXaxis()->SetLabelSize(0.05);
         hdPhiSamNoUE[iCen][0][izt][iptTr]->GetYaxis()->SetLabelSize(0.05);
         hdPhiSamNoUE[iCen][0][izt][iptTr]->Draw("same");
-        // hdPhiSamNoUE[iCen][1][izt][iptTr]->Draw("same");
+        hdPhiSamNoUE[iCen][1][izt][iptTr]->Draw("same");
         legfitNoUE[iCen][izt][iptTr] = LegStd(legfitNoUE[iCen][izt][iptTr], 0.25, 0.7, 0.6, 0.85);
         legfitNoUE[iCen][izt][iptTr]->SetTextSize(0.05);
         legfitNoUE[iCen][izt][iptTr]->AddEntry(fitNoUE[iCen][0][izt][iptTr], Form("clust^{iso}_{narr} p0 = %0.5f#pm%0.5f", fitNoUE[iCen][0][izt][iptTr]->GetParameter(0), fitNoUE[iCen][0][izt][iptTr]->GetParError(0)), "lp");
-        // legfitNoUE[iCen][izt][iptTr]->AddEntry(fitNoUE[iCen][1][izt][iptTr], Form("clust^{iso}_{wide} p0 = %0.5f#pm%0.5f", fitNoUE[iCen][1][izt][iptTr]->GetParameter(0), fitNoUE[iCen][1][izt][iptTr]->GetParError(0)), "lp");
+        legfitNoUE[iCen][izt][iptTr]->AddEntry(fitNoUE[iCen][1][izt][iptTr], Form("clust^{iso}_{wide} p0 = %0.5f#pm%0.5f", fitNoUE[iCen][1][izt][iptTr]->GetParameter(0), fitNoUE[iCen][1][izt][iptTr]->GetParError(0)), "lp");
         legfitNoUE[iCen][izt][iptTr]->Draw("same");
 
         cNoUEDiff[iCen][iptTr]->cd(izt + 1);
@@ -455,7 +455,7 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
     hErrSystNarrNoUE[iCen]->SetMinimum(-0.10);
     hErrSystNarrNoUE[iCen]->Draw("same");
     latSystErrAllCen_Narr[iCen] = LatexStdSyst(latSystErrAllCen_Narr[iCen - 1], 0.450, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true, "");
-    // hErrSystWideNoUE[iCen]->Draw("same");
+    hErrSystWideNoUE[iCen]->Draw("same");
     // histSystMCXPtAll[iCen]->Draw("same");
     //   hErrSystIsoPhoton[iCen]->Draw("same");
     //  hErrSystMediaNoUE[iCen]->Draw("same");
@@ -468,15 +468,27 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
   TF1 *fitConstHighZt[nCen];
   TF1 *fitExpo[nCen];
   TH1F* hErrSystNarrNoUEFitTrend[nCen];
+
+  TCanvas *cSystErrAllPt_Wide[nCen];
+  TLatex *latSystErrAllPt_Wide[nCen];
+  TF1 *fitConstWide[nCen];
+  TF1 *fitConstHighZtWide[nCen];
+  TF1 *fitExpoWide[nCen];
   
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
 
     if (iCen < 2)
+    {
     fitExpo[iCen] = new TF1(Form("fitExpo_Cen%d",iCen), "expo", 0.2, 0.8);
+    fitExpoWide[iCen] = new TF1(Form("fitExpoWide_Cen%d",iCen), "expo", 0.2, 0.8);
+    }
     else
+    {
       fitExpo[iCen] = new TF1(Form("fitExpo_Cen%d",iCen), "expo", 0.2, 0.6);
+      fitExpoWide[iCen] = new TF1(Form("fitExpoWide_Cen%d",iCen), "expo", 0.2, 0.6);
+    }
 
     fitExpo[iCen]->SetLineColor(2);
     fitExpo[iCen]->SetLineStyle(1);
@@ -486,42 +498,74 @@ void UEforClusterCheck(float ptMin = 18, float ptMax = 40, TString shshBkg = "0.
     fitConst[iCen]->SetLineColor(kGreen + 3);
     fitConst[iCen]->SetLineStyle(1);
     fitConst[iCen]->SetLineWidth(3);
+
+    fitConstWide[iCen] = new TF1(Form("fitConstWide_Cen%d",iCen), "pol0", 0.1, 0.2);
+    fitConstWide[iCen]->SetLineColor(kGreen + 3);
+    fitConstWide[iCen]->SetLineStyle(2);
+    fitConstWide[iCen]->SetLineWidth(3);
     
     if (iCen < 3)
+    {
       fitConstHighZt[iCen] = new TF1(Form("fitConstHighZt_Cen%d",iCen), "pol0", 0.2, 0.6);
+      fitConstHighZtWide[iCen] = new TF1(Form("fitConstHighZtWide_Cen%d",iCen), "pol0", 0.2, 0.6);
+    }
     else
+    {
       fitConstHighZt[iCen] = new TF1(Form("fitConstHighZt_Cen%d",iCen), "pol0", 0.1, 0.6);
+      fitConstHighZtWide[iCen] = new TF1(Form("fitConstHighZtWide_Cen%d",iCen), "pol0", 0.1, 0.6);
+    }
     fitConstHighZt[iCen]->SetLineColor(kGreen - 3);
     fitConstHighZt[iCen]->SetLineStyle(1);
     fitConstHighZt[iCen]->SetLineWidth(3);
+
+    fitConstHighZtWide[iCen]->SetLineColor(kGreen - 3);
+    fitConstHighZtWide[iCen]->SetLineStyle(2);
+    fitConstHighZtWide[iCen]->SetLineWidth(3);
     
     cSystErrAllPt_Narr[iCen] = canvasStd(Form("cSystErrAllPt_Narr_Cen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()), 1, 1);
     cSystErrAllPt_Narr[iCen]->cd();
     
-    hErrSystNarrNoUE[iCen]->GetYaxis()->SetRangeUser(-0.10, 60);
-    hErrSystNarrNoUE[iCen]->Draw("pl");
-    
+    hErrSystNarrNoUE[iCen]->GetYaxis()->SetRangeUser(-0.10, 70);
     hErrSystNarrNoUE[iCen]->Fit(Form("fitExpo_Cen%d",iCen), "R");
     hErrSystNarrNoUE[iCen]->Fit(Form("fitConst_Cen%d",iCen), "R");
     hErrSystNarrNoUE[iCen]->Fit(Form("fitConstHighZt_Cen%d",iCen), "R");
-    
+    hErrSystNarrNoUE[iCen]->Draw("pl same");
     fitExpo[iCen]->Draw("same");
     fitConst[iCen]->Draw("same");
     fitConstHighZt[iCen]->Draw("same");
-    hErrSystWideNoUE[iCen]->Draw("same");
-    histSystMCXPtAll[iCen]->Draw("same");
-    
     latSystErrAllPt_Narr[iCen] = LatexStdSyst(latSystErrAllPt_Narr[iCen - 1], 0.450, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true, " ");
-    
     TLegend *legUncert = LegStd(legUncert, 0.4, 0.55, 0.80, 0.68);
     legUncert->AddEntry(fitExpo[iCen], "expo", "l");
     legUncert->AddEntry(fitConst[iCen], Form("const low #it{z}_{T}: %1.2f #pm %1.2f",
                                        fitConst[iCen]->GetParameter(0),fitConst[iCen]->GetParError(0)), "l");
     legUncert->AddEntry(fitConstHighZt[iCen], Form("const high #it{z}_{T}: %1.2f #pm %1.2f",
                                              fitConstHighZt[iCen]->GetParameter(0),fitConstHighZt[iCen]->GetParError(0)), "l");
+    cSystErrAllPt_Narr[iCen]->cd();
     legUncert->Draw("same");
-    
     cSystErrAllPt_Narr[iCen]->Print(dirPlot + Form("/SystErrNarrCen%d_%d.pdf", cenBins[iCen], cenBins[iCen + 1]));
+    
+    cSystErrAllPt_Wide[iCen] = canvasStd(Form("cSystErrAllPt_Wide_Cen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()), 1, 1);
+    cSystErrAllPt_Wide[iCen]->cd();
+    hErrSystWideNoUE[iCen]->GetYaxis()->SetRangeUser(-0.10, 70);
+    hErrSystWideNoUE[iCen]->Fit(Form("fitExpoWide_Cen%d",iCen), "R");
+    hErrSystWideNoUE[iCen]->Fit(Form("fitConstWide_Cen%d",iCen), "R");
+    hErrSystWideNoUE[iCen]->Fit(Form("fitConstHighZtWide_Cen%d",iCen), "R");
+    hErrSystWideNoUE[iCen]->Draw("pl same");
+    fitExpoWide[iCen]->Draw("same");
+    fitConstHighZtWide[iCen]->Draw("same");
+    fitConstWide[iCen]->Draw("same");
+    latSystErrAllPt_Wide[iCen] = LatexStdSyst(latSystErrAllPt_Wide[iCen - 1], 0.450, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true, " ");
+    
+    TLegend *legUncertWide = LegStd(legUncertWide, 0.4, 0.55, 0.80, 0.68);
+    legUncertWide->AddEntry(fitExpoWide[iCen], "expo", "l");
+    legUncertWide->AddEntry(fitConstWide[iCen], Form("const low #it{z}_{T}: %1.2f #pm %1.2f",
+                                       fitConstWide[iCen]->GetParameter(0),fitConstWide[iCen]->GetParError(0)), "l");
+    legUncertWide->AddEntry(fitConstHighZtWide[iCen], Form("const high #it{z}_{T}: %1.2f #pm %1.2f",
+                                             fitConstHighZtWide[iCen]->GetParameter(0),fitConstHighZtWide[iCen]->GetParError(0)), "l");
+    cSystErrAllPt_Wide[iCen]->cd();
+    legUncertWide->Draw("same");
+    
+    cSystErrAllPt_Wide[iCen]->Print(dirPlot + Form("/SystErrWideCen%d_%d.pdf", cenBins[iCen], cenBins[iCen + 1]));
     
     hErrSystNarrNoUEFitTrend[iCen] = new TH1F(
                                               Form("hErrSystNarrNoUEFitTrend%s%s", sCent.Data(), sPtAll.Data()),
