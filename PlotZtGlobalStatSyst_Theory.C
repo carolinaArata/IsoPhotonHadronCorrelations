@@ -305,7 +305,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   PlotStyle(hGeneralRatio, 20, 1, kWhite, kWhite, " #it{z}_{T} ", " #it{I}_{NLO pQCD} ", false);
   TGraph *lineNLO = DrawLine(lineNLO, 0, 0.5, 1.2, 0.5);
   TGraph *lineNLO1 = DrawLine(lineNLO1, 0, 1, 1.2, 1);
-  TLegend *legRatioNLO = LegStd(legRatioNLO, 0.22, 0.86, 0.42, 0.94);
+  TLegend *legRatioNLO = LegStd(legRatioNLO, 0.12, 0.80, 0.32, 0.88);
   // legRatioNLO->SetHeader("#it{I}_{NLO pQCD} = #frac{Pb#font[122]{-}Pb}{NLO pQCD pp} ");
   legRatioNLO->SetTextSize(0.03);
   legRatioNLO->SetHeader("#it{I}_{NLO pQCD} = #frac{Pb#font[122]{-}Pb}{NLO pQCD pp} ");
@@ -372,7 +372,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   
   TCanvas *cPbPb_NLORatioAll = canvasStd(Form("cPbPb_NLORatioAll"), 1, 1);
   TLatex *latPbPb_NLOAll;
-  TLegend *legPbPb_NLOratioAll = LegStd(legPbPb_NLOratioAll, 0.54, 0.52, 0.92, 0.72);
+  TLegend *legPbPb_NLOratioAll = LegStd(legPbPb_NLOratioAll, 0.50, 0.46, 0.88, 0.62);
   legPbPb_NLOratioAll->SetNColumns(2);
   legPbPb_NLOratioAll->SetTextSize(0.038);
   for (int iCen = 0; iCen < nCen; iCen++)
@@ -399,7 +399,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     legPbPb_NLOratioAll->AddEntry(hPbPb_NLO[iCen], Form("%d#font[122]{-}%d%% stat.", cenBins[iCen], cenBins[iCen + 1]), "ep");
     legPbPb_NLOratioAll->AddEntry(hPbPb_NLOSyst[iCen], "syst. unc.", "f");
   }
-  latPbPb_NLOAll = LatexStdISORatio(latPbPb_NLOAll, 0.48, 0.94, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
+  latPbPb_NLOAll = LatexStdISORatio(latPbPb_NLOAll, 0.40, 0.84, 0.038, cenBins[0], cenBins[1], ptMin, ptMax, false);
   legPbPb_NLOratioAll->Draw("same");
   legRatioNLO->Draw("same");
   lineNLO->Draw("l");
@@ -407,7 +407,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   cPbPb_NLORatioAll->Print(dirPlot + Form("/I_NLOCenAll.pdf"));
   
   TH1F *hGeneral = new TH1F("hGeneral", "hGeneral", nZtBinThin, assocZtThinner);
-  PlotStyle(hGeneral, 20, 1, kWhite, kWhite, "#it{z}_{T}", "1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
+  PlotStyle(hGeneral, 20, 1, kWhite, kWhite, "#it{z}_{T}", "1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
   hSystZt[0]->GetXaxis()->SetRangeUser(0.10, 1.0);
   hZtCent[0]->GetXaxis()->SetRangeUser(0.10, 1.0);
   hSystZt[1]->GetXaxis()->SetRangeUser(0.10, 0.6);
@@ -440,7 +440,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hZtDiffCentSys[iCen]->SetMarkerStyle(kMarkCen[iCen]);
     hZtDiffCentSys[iCen]->SetMarkerColor(kColorMark[iCen]);
     hZtDiffCentSys[iCen]->SetFillStyle(0);
-    hGeneral->GetYaxis()->SetRangeUser(2 * 1e-4, 99);
+    hGeneral->GetYaxis()->SetRangeUser(2 * 1e-3, 99);
     hGeneral->Draw("hist");
     hZtDiffCentSys[iCen]->Draw("E2Psame");
     hZtDiffCent[iCen]->Draw("EPX0same");
@@ -461,7 +461,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     gPad->SetLogy();
     legZTPbPbpp[iCen]->AddEntry(hZt_MC_Gen[iCen], Form("PYTHIA 8 pp "), "l");
     legZTPbPbpp[iCen]->AddEntry(hZtCent[iCen], "Pb#font[122]{-}Pb stat. unc. ", "ep");
-    hGeneral->GetYaxis()->SetRangeUser(2 * 1e-4, 99);
+    hGeneral->GetYaxis()->SetRangeUser(2 * 1e-3, 99);
     hGeneral->Draw("histSAME");
     hSystZt[iCen]->Draw("E2Psame ");
     hZtCent[iCen]->Draw("EPX0same");
@@ -515,7 +515,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     legdiffcen[iCen]->AddEntry(hSystZt[iCen], "Pb#font[122]{-}Pb syst. unc. ", "f");
     legdiffcen[iCen]->Draw("same");
     legdiffcenpp[iCen]->Draw("same");
-    TLatex *latdiffCent1 = LatexStdISO(latdiffCent1, 0.320, 0.94, 0.04, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
+    TLatex *latdiffCent1 = LatexStdISO(latdiffCent1, 0.30, 0.94, 0.04, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
     // cDiffCent_Pythia[iCen]->Print(dirPlot + Form("/withModelNoppztPbPb_pp_Cen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
     cDiffCent_Pythia[iCen]->Print(dirPlot + Form("/ztPbPb_Cen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
   }
@@ -1119,8 +1119,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   PlotStyle(hIaaPHENIXSys, 20, 1, kOrange-8, kOrange-8, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", true);
   //PlotStyle(hPbPb_NLOSyst[0], 21, 1, kRed+1, kRed+1, "#it{z}_{T}", "Ratio", true);
   
-  TCanvas *cPHENIX = new TCanvas("cPHENIX", "cPHENIX", 2 * 800, 1 * 600);
-  cPHENIX->Divide(2, 1);
+  TCanvas *cPHENIX = new TCanvas("cPHENIX", "cPHENIX", 1 * 800, 1 * 600);
+  cPHENIX->Divide(1, 1);
   cPHENIX->cd(1);
   cPHENIX->cd(1)->SetTopMargin(0.015);
   cPHENIX->cd(1)->SetRightMargin(0.02);
@@ -1136,7 +1136,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hGeneralIaa->GetYaxis()->SetTitleOffset(1.25);
   hGeneralIaa->GetYaxis()->SetLabelOffset(0.02);
   hGeneralIaa->GetXaxis()->SetLabelOffset(0.02);
-  hGeneralIaa->GetYaxis()->SetRangeUser(-0.3, 5);
+  hGeneralIaa->GetYaxis()->SetRangeUser(-0.3, 3.8);
   hGeneralIaa->SetLineWidth(0);
   hGeneralIaa->Draw("histsame");
   for (int ibin = 0; ibin < hPbPb_NLOSyst[0]->GetNbinsX() + 1; ++ibin) {
@@ -1162,11 +1162,12 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   legIaaALICE1_Head->SetTextSize(0.045);
   legIaaALICE1_Head->SetHeader("Pb#font[122]{-}Pb #sqrt{#it{s}_{NN}} = 5.02 TeV");
   legIaaALICE1_Head->Draw("same");
-  TLegend *legIaaALICE1_gamhad = LegStd(legIaaALICE1_gamhad, 0.18, 0.82, 0.450, 0.86);
+  TLegend *legIaaALICE1_gamhad = LegStd(legIaaALICE1_gamhad, 0.16, 0.76, 0.450, 0.86);
   legIaaALICE1_gamhad->SetTextSize(0.040);
   legIaaALICE1_gamhad->SetHeader("ALICE, #bf{0#font[122]{-}30%} #bf{#it{#gamma}^{iso}#font[122]{-}hadron}");
+  legIaaALICE1_gamhad->AddEntry((TObject *)0,"18 < #it{p}_{T}^{#it{#gamma}} < 40 GeV/#it{c}", "");
   legIaaALICE1_gamhad->Draw("same");
-  TLegend *legIaaALICE1_gamhadMarker = LegStd(legIaaALICE1_gamhadMarker, 0.18, 0.76, 0.50, 0.80);
+  TLegend *legIaaALICE1_gamhadMarker = LegStd(legIaaALICE1_gamhadMarker, 0.16, 0.70, 0.50, 0.74);
   legIaaALICE1_gamhadMarker->SetNColumns(2);
   legIaaALICE1_gamhadMarker->AddEntry(hPbPb_NLO[0], "stat. unc.", "ep");
   legIaaALICE1_gamhadMarker->AddEntry(hPbPb_NLOSyst[0], "syst. unc.", "f");
@@ -1177,24 +1178,25 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   legIaaSTARPHENIX_Head->SetHeader("Au#font[122]{-}Au #sqrt{#it{s}_{NN}} = 200 GeV");
   legIaaSTARPHENIX_Head->Draw("same");
 
-  TLegend *legIaaALICE1_STAR = LegStd(legIaaALICE1_STAR, 0.58, 0.76, 0.78, 0.87);
+  TLegend *legIaaALICE1_STAR = LegStd(legIaaALICE1_STAR, 0.56, 0.72, 0.78, 0.87);
   legIaaALICE1_STAR->SetTextSize(0.040);
   legIaaALICE1_STAR->SetHeader("STAR, #bf{0#font[122]{-}12%} #bf{#it{#gamma}^{dir}#font[122]{-}hadron}");
-
+  legIaaALICE1_STAR->AddEntry((TObject *)0, "12 < #it{p}_{T}^{#it{#gamma}} < 20 GeV/#it{c}", "");
   legIaaALICE1_STAR->AddEntry((TObject *)0, "PL B 760 (2016) 689-696", "");
   legIaaALICE1_STAR->Draw("same");
-  TLegend *legIaaALICE1_STARMarker = LegStd(legIaaALICE1_STARMarker, 0.580, 0.68, 0.950, 0.74);
+  TLegend *legIaaALICE1_STARMarker = LegStd(legIaaALICE1_STARMarker, 0.560, 0.66, 0.950, 0.70);
   legIaaALICE1_STARMarker->SetNColumns(2);
   legIaaALICE1_STARMarker->AddEntry(grIaaSTAR, "stat. unc.", "ep");
   legIaaALICE1_STARMarker->AddEntry(grIaaSTARSys, "syst. unc.", "f");
   legIaaALICE1_STARMarker->Draw("same");
 
-  TLegend *legIaaALICE1_PHENIX = LegStd(legIaaALICE1_PHENIX, 0.58, 0.53, 0.78, 0.64);
+  TLegend *legIaaALICE1_PHENIX = LegStd(legIaaALICE1_PHENIX, 0.56, 0.50, 0.78, 0.64);
   legIaaALICE1_PHENIX->SetTextSize(0.040);
   legIaaALICE1_PHENIX->SetHeader("PHENIX, #bf{0#font[122]{-}40%} #bf{#it{#gamma}^{dir}#font[122]{-}hadron}");
-  legIaaALICE1_PHENIX->AddEntry((TObject *)0, " PRL 111, 032301 (2013)", "");
+  legIaaALICE1_PHENIX->AddEntry((TObject *)0, "5 < #it{p}_{T}^{#it{#gamma}} < 9 GeV/#it{c}", "");
+  legIaaALICE1_PHENIX->AddEntry((TObject *)0, "PRL 111, 032301 (2013)", "");
   legIaaALICE1_PHENIX->Draw("same");
-  TLegend *legIaaALICE1_PHENIXMarker = LegStd(legIaaALICE1_PHENIXMarker, 0.58, 0.44, 0.950, 0.50);
+  TLegend *legIaaALICE1_PHENIXMarker = LegStd(legIaaALICE1_PHENIXMarker, 0.56, 0.46, 0.950, 0.50);
   legIaaALICE1_PHENIXMarker->SetNColumns(2);
   legIaaALICE1_PHENIXMarker->AddEntry(hIaaPHENIX, "stat. unc.", "ep");
   legIaaALICE1_PHENIXMarker->AddEntry(hIaaPHENIXSys, "syst. unc.", "f");
@@ -1208,19 +1210,19 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
 
   
   
-  cPHENIX->cd(2);
+  //cPHENIX->cd(2);
 //  TLegend *legGH = LegStd(legGH, 0, 0.95, 0.00, 1);
 //  legGH->SetTextSize(0.045);
 //  legGH->SetHeader("#bf{#it{#gamma}#font[122]{-}hadron}");
 //  legGH->Draw("same");
   
-  TLegend *legALICE = LegStd(legALICE, 0, 0.74, 0.20, 0.99);
-  legALICE->SetTextSize(0.045);
-  legALICE->SetHeader("ALICE");
-  legALICE->AddEntry((TObject *)0, "#bf{#it{#gamma}#font[122]{-}hadron} Pb#font[122]{-}Pb #sqrt{#it{s}_{NN}} = 5.02 TeV", "");
-  legALICE->AddEntry((TObject *)0, "|#Delta #it{#varphi}| < #frac{3}{5}#pi, |#it{#eta}^{#it{#gamma}}| < 0.67", "");
-  legALICE->AddEntry((TObject *)0, "18 < #it{p}_{T}^{ #it{#gamma}} < 40 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1 GeV/#it{c}", "");
-  legALICE->Draw("same");
+  //TLegend *legALICE = LegStd(legALICE, 0, 0.74, 0.20, 0.99);
+  //legALICE->SetTextSize(0.045);
+  //legALICE->SetHeader("ALICE");
+  //legALICE->AddEntry((TObject *)0, "#bf{#it{#gamma}#font[122]{-}hadron} Pb#font[122]{-}Pb #sqrt{#it{s}_{NN}} = 5.02 TeV", "");
+  //legALICE->AddEntry((TObject *)0, "|#Delta #it{#varphi}| < #frac{3}{5}#pi, |#it{#eta}^{#it{#gamma}}| < 0.67", "");
+  //legALICE->AddEntry((TObject *)0, "18 < #it{p}_{T}^{ #it{#gamma}} < 40 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1 GeV/#it{c}", "");
+  //legALICE->Draw("same");
   
   
   //  //TLatex *latALICEIaa = LatexStdISORatio(latALICEIaa, 0.400, 0.920, 0.045, cenBins[0], cenBins[1], ptMin, ptMax, true);
@@ -1235,25 +1237,25 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   //  legALICE3->Draw("same");
   
 
-
-  
-  TLegend *legSTAR1 = LegStd(legSTAR1, 0, 0.44, 0.20, 0.69);
-  legSTAR1->SetTextSize(0.045);
-  
-  //legSTAR1->SetHeader("STAR, Phys.Lett.B 760 (2016) 689-696");
-  legSTAR1->AddEntry((TObject *)0, "#bf{0#font[122]{-}12%} Au#font[122]{-}Au, #sqrt{#it{s}_{NN}} = 200 GeV ", "");
-  legSTAR1->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h} #font[122]{-} #it{#pi}| #leq 1.4 ", "");
-  legSTAR1->AddEntry((TObject *)0, "12 < #it{p}_{T}^{ #it{#gamma}} < 20 GeV/#it{c} #otimes #it{p}_{T}^{ h} > 1.2 GeV/#it{c} ", "");
-  legSTAR1->Draw("same");
-  
-  TLegend *legPHENIX = LegStd(legPHENIX, 0, 0.14, 0.20, 0.39);
-  legPHENIX->SetTextSize(0.045);
-  //legPHENIX->SetHeader("PHENIX, PRL 111, 032301 (2013)");
-  legPHENIX->AddEntry((TObject *)0, "#bf{0#font[122]{-}40%} Au#font[122]{-}Au, #sqrt{#it{s}_{NN}} = 200 GeV ", "");
-  legPHENIX->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h} #font[122]{-} #it{#pi}| < #it{#pi}/2, |#it{y}| < 0.35 ", "");
-  legPHENIX->AddEntry((TObject *)0, "5 < #it{p}_{T}^{ #it{#gamma}} < 9 GeV/#it{c} #otimes 0.5 < #it{p}_{T}^{ h} < 7 GeV/#it{c} ", "");
-  legPHENIX->Draw("same");
-  
+//
+  //
+  //TLegend *legSTAR1 = LegStd(legSTAR1, 0, 0.44, 0.20, 0.69);
+  //legSTAR1->SetTextSize(0.045);
+  //
+  ////legSTAR1->SetHeader("STAR, Phys.Lett.B 760 (2016) 689-696");
+  //legSTAR1->AddEntry((TObject *)0, "#bf{0#font[122]{-}12%} Au#font[122]{-}Au, #sqrt{#it{s}_{NN}} = 200 GeV ", "");
+  //legSTAR1->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h} #font[122]{-} #it{#pi}| #leq 1.4 ", "");
+  //legSTAR1->AddEntry((TObject *)0, "12 < #it{p}_{T}^{ #it{#gamma}} < 20 GeV/#it{c} #otimes #it{p}_{T}^{ h} > 1.2 GeV/#it{c} ", "");
+  //legSTAR1->Draw("same");
+  //
+  //TLegend *legPHENIX = LegStd(legPHENIX, 0, 0.14, 0.20, 0.39);
+  //legPHENIX->SetTextSize(0.045);
+  ////legPHENIX->SetHeader("PHENIX, PRL 111, 032301 (2013)");
+  //legPHENIX->AddEntry((TObject *)0, "#bf{0#font[122]{-}40%} Au#font[122]{-}Au, #sqrt{#it{s}_{NN}} = 200 GeV ", "");
+  //legPHENIX->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h} #font[122]{-} #it{#pi}| < #it{#pi}/2, |#it{y}| < 0.35 ", "");
+  //legPHENIX->AddEntry((TObject *)0, "5 < #it{p}_{T}^{ #it{#gamma}} < 9 GeV/#it{c} #otimes 0.5 < #it{p}_{T}^{ h} < 7 GeV/#it{c} ", "");
+  //legPHENIX->Draw("same");
+  //
   //cPHENIX->Print(dirPlot + Form("/ppNLOpQCD_DztIaa_ALICESTARPHENIX%s.pdf", sPtAll.Data()));
   cPHENIX->Print(dirPlot + Form("/ppNLOpQCD_Iaa_ALICESTARPHENIX%s.pdf", sPtAll.Data()));
 
@@ -1284,8 +1286,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hzTCMSSys->SetBinContent(ibin + 1, DzTCMS0_10[7 - ibin]);
     hzTCMSSys->SetBinError(ibin + 1, DzTCMS_Sys0_10[7 - ibin]);
   }
-  PlotStyle(hzTCMS, 20, 1.2, kPink-5, kPink-5, "#it{z}_{T}", "1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
-  PlotStyle(hzTCMSSys, 20, 1.2, kPink+2, kPink+2, "#it{z}_{T}", "1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", true);
+  PlotStyle(hzTCMS, 20, 1.2, kPink-5, kPink-5, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
+  PlotStyle(hzTCMSSys, 20, 1.2, kPink+2, kPink+2, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", true);
   
   TH1F *hIaaCMS = new TH1F("hIaaCMS", "hIaaCMS", 8, zTCMS);
   TH1F *hIaaCMSSys = new TH1F("hIaaCMSSys", "hIaaCMSSys", 8, zTCMS);
@@ -1328,8 +1330,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hzTCMSSys_Zhad->SetBinContent(ibin + 1, DzTCMS0_10_Zhad[9 - ibin]);
     hzTCMSSys_Zhad->SetBinError(ibin + 1, DzTCMS_Sys0_10_Zhad[9 - ibin]);
   }
-  PlotStyle(hzTCMS_Zhad, kFullCross, 1.3, kTeal+3, kTeal+3, "#it{z}_{T}", "1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
-  PlotStyle(hzTCMSSys_Zhad, kFullCross, 1.3, kTeal+3, kTeal+3, "#it{z}_{T}", "1 / #it{N}^{ #it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", true);
+  PlotStyle(hzTCMS_Zhad, kFullCross, 1.3, kTeal+3, kTeal+3, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
+  PlotStyle(hzTCMSSys_Zhad, kFullCross, 1.3, kTeal+3, kTeal+3, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", true);
   
   TH1F *hIaaCMS_Zhad = new TH1F("hIaaCMS_Zhad", "hIaaCMS_Zhad", 10, zTCMS_Zhad);
   TH1F *hIaaCMSSys_Zhad = new TH1F("hIaaCMSSys_Zhad", "hIaaCMSSys_Zhad", 10, zTCMS_Zhad);
@@ -1344,8 +1346,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   // PlotStyle(hGeneralCMSIaa, 71, 1, kBlack, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", false);
   PlotStyle(hIaaCMSSys_Zhad, kFullCross, 1.2, kTeal-5, kTeal-5, "#it{z}_{T}", "#it{I}_{NLO pQCD}, #it{I}_{AA}", true);
   
-  TCanvas *cCMS_Zhad = new TCanvas("cCMS_Zhad", "cCMS_Zhad", 2 * 800, 1 * 600);
-  cCMS_Zhad->Divide(2, 1);
+  TCanvas *cCMS_Zhad = new TCanvas("cCMS_Zhad", "cCMS_Zhad", 1 * 800, 1 * 600);
+  cCMS_Zhad->Divide(1, 1);
 //  cCMS_Zhad->cd(1);
 //  cCMS_Zhad->cd(1)->SetTopMargin(0.015);
 //  cCMS_Zhad->cd(1)->SetRightMargin(0.02);
@@ -1401,7 +1403,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   //hIaaCMSSys_Zhad->SetFillStyle(0);
   //hIaaCMSSys_Zhad->SetLineWidth(2);
   //hGeneralIaa->SetTitle(" ");
-  hGeneralIaa->GetYaxis()->SetRangeUser(0, 5);
+  hGeneralIaa->GetYaxis()->SetRangeUser(0, 3.8);
   ////hGeneralIaa->GetXaxis()->SetRangeUser(0.0, 1.1);
   //hGeneralIaa->GetYaxis()->SetTitleSize(0.052);
   //hGeneralIaa->GetYaxis()->SetTitleOffset(1.25);
@@ -1436,37 +1438,40 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   // hsyst[0]->SetMarkerSize(1.3);
   // hsyst[0]->Draw("samee2");
   // h3[0]->Draw("EP X0 same");
-  TLegend *legALICE2_Head = LegStd(legALICE2_Head, 0.650, 0.88, 0.80, 0.92);
-  legALICE2_Head->SetTextSize(0.040);
-  legALICE2_Head->SetHeader("Pb#font[122]{-}Pb #sqrt{#it{s}_{NN}} = 5.02 TeV");
-  legALICE2_Head->Draw("same");
-  TLegend *legALICE2_Zhad = LegStd(legALICE2_Zhad, 0.22, 0.88, 0.50, 0.92);
+  //TLegend *legALICE2_Head = LegStd(legALICE2_Head, 0.50, 0.88, 0.80, 0.92);
+  //legALICE2_Head->SetTextSize(0.040);
+  //legALICE2_Head->SetHeader("Pb#font[122]{-}Pb #sqrt{#it{s}_{NN}} = 5.02 TeV");
+  //legALICE2_Head->Draw("same");
+  TLegend *legALICE2_Zhad = LegStd(legALICE2_Zhad, 0.18, 0.80, 0.40, 0.92);
   legALICE2_Zhad->SetTextSize(0.040);
   legALICE2_Zhad->SetHeader("ALICE, #bf{0#font[122]{-}30%} #bf{#it{#gamma}#font[122]{-}hadron}");
+  legALICE2_Zhad->AddEntry((TObject *)0, "18 < #it{p}_{T}^{#it{#gamma}} < 40 GeV/#it{c}","");
   legALICE2_Zhad->Draw("same");
-  TLegend *legALICE2_ZhadMarker = LegStd(legALICE2_ZhadMarker, 0.22, 0.80, 0.60, 0.86);
+  TLegend *legALICE2_ZhadMarker = LegStd(legALICE2_ZhadMarker, 0.18, 0.72, 0.50, 0.78);
   legALICE2_ZhadMarker->SetNColumns(2);
   legALICE2_ZhadMarker->AddEntry(hPbPb_NLO[0], "stat. unc.", "ep");
   legALICE2_ZhadMarker->AddEntry(hPbPb_NLOSyst[0], "syst. unc.", "f");
   legALICE2_ZhadMarker->Draw("same");
 
-  TLegend *legALICE2_CMSjet = LegStd(legALICE2_CMSjet, 0.22, 0.68, 0.50, 0.78);
+  TLegend *legALICE2_CMSjet = LegStd(legALICE2_CMSjet, 0.54, 0.74, 0.78, 0.92);
   legALICE2_CMSjet->SetTextSize(0.040);
   legALICE2_CMSjet->SetHeader("CMS, #bf{0#font[122]{-}10%} #bf{#it{#gamma}#font[122]{-}jet}");
+  legALICE2_CMSjet->AddEntry((TObject *)0, "#it{p}_{T}^{#it{#gamma}} > 60 GeV/#it{c}", "");
   legALICE2_CMSjet->AddEntry((TObject *)0, "PRL 121 (2018) 24, 242301", "");
   legALICE2_CMSjet->Draw("same");
-  TLegend *legALICE2_CMSjetMarker = LegStd(legALICE2_CMSjetMarker, 0.22, 0.60, 0.60, 0.66);
+  TLegend *legALICE2_CMSjetMarker = LegStd(legALICE2_CMSjetMarker, 0.54, 0.68, 0.90, 0.74);
   legALICE2_CMSjetMarker->SetNColumns(2);
   legALICE2_CMSjetMarker->AddEntry(hIaaCMS, "stat. unc.", "ep");
   legALICE2_CMSjetMarker->AddEntry(hIaaCMSSys, "syst. unc.", "f");
   legALICE2_CMSjetMarker->Draw("same");
 
-  TLegend *legALICE2_CMSZhad = LegStd(legALICE2_CMSZhad, 0.22, 0.48, 0.50, 0.58);
+  TLegend *legALICE2_CMSZhad = LegStd(legALICE2_CMSZhad, 0.54, 0.46, 0.80, 0.66);
   legALICE2_CMSZhad->SetTextSize(0.040);
-  legALICE2_CMSZhad->SetHeader("CMS,  #bf{0#font[122]{-}30%} #bf{#it{Z}#font[122]{-}hadron}");
+  legALICE2_CMSZhad->SetHeader("CMS, #bf{0#font[122]{-}30%} #bf{Z#font[122]{-}hadron}");
+  legALICE2_CMSZhad->AddEntry((TObject *)0, "#it{p}_{T}^{Z} > 30 GeV/#it{c}", "");
   legALICE2_CMSZhad->AddEntry((TObject *)0, "PRL 128 (2022) 12, 122301", "");
   legALICE2_CMSZhad->Draw("same");
-  TLegend *legALICE2_CMSZhadMarker = LegStd(legALICE2_CMSZhadMarker, 0.22, 0.40, 0.60, 0.46);
+  TLegend *legALICE2_CMSZhadMarker = LegStd(legALICE2_CMSZhadMarker, 0.54, 0.38, 0.90, 0.44);
   legALICE2_CMSZhadMarker->SetNColumns(2);
   legALICE2_CMSZhadMarker->AddEntry(hIaaCMS_Zhad, "stat. unc.", "ep");
   legALICE2_CMSZhadMarker->AddEntry(hIaaCMSSys_Zhad, "syst. unc.", "f");
@@ -1478,30 +1483,30 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   TGraph *lineCMS1 = DrawLine(lineCMS1, -0.05, 1, 1.1, 1);
   lineCMS1->Draw("l");
   
-  cCMS_Zhad->cd(2);
-  
-  TLegend *legALICEEE = LegStd(legALICE, 0, 0.74, 0.20, 0.99);
-  legALICEEE->SetTextSize(0.045);
-  legALICEEE->SetHeader("ALICE");
-  //legALICEEE->AddEntry((TObject *)0, "#bf{0#font[122]{-}30%} #bf{#it{#gamma}#font[122]{-}hadron}", "");
-  legALICEEE->AddEntry((TObject *)0, "|#Delta #it{#varphi}| < #frac{3}{5}#pi, |#it{#eta}^{#it{#gamma}}| < 0.67", "");
-  legALICEEE->AddEntry((TObject *)0, "18 < #it{p}_{T}^{ #it{#gamma}} < 40 GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c}", "");
-  legALICEEE->Draw("same");
-  
-  
-  TLegend *legCMS1 = LegStd(legCMS1, 0, 0.45, 0.20, 0.7);
-  legCMS1->SetTextSize(0.045);
-  legCMS1->SetHeader("CMS, Phys.Rev.Lett. 121 (2018) 24, 242301");
-  //legCMS1->AddEntry((TObject *)0, "#bf{#it{#gamma}#font[122]{-}jet}, #bf{0#font[122]{-}10%} ", "");
-  legCMS1->AddEntry((TObject *)0, "anti-k_{T} jet #it{R} = 0.3, #it{p}_{T}^{jet} > 30 GeV/#it{c}, |#it{#eta}^{jet}| < 1.6 ", "");
-  legCMS1->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}jet}| > #frac{7}{8} #it{#pi}, |#it{#eta}^{ #it{#gamma}}| < 1.44 #it{p}_{T}^{ #it{#gamma}} > 60 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1 GeV/#it{c} ", "");
-  legCMS1->Draw("same");
-  TLegend *legCMS1_Zhad = LegStd(legCMS1_Zhad, 0, 0.16, 0.20, 0.36);
-  legCMS1_Zhad->SetTextSize(0.045);
-  legCMS1_Zhad->SetHeader("CMS, Phys.Rev.Lett. 128 (2022) 12, 122301");
-  //legCMS1_Zhad->AddEntry((TObject *)0, "#bf{#it{Z}#font[122]{-}hadron}, #bf{0#font[122]{-}30%} ", "");
-  legCMS1_Zhad->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{Z#font[122]{-}h}| > #frac{7}{8} #it{#pi}, #it{p}_{T}^{Z} > 30 GeV/#it{c} #otimes #it{p}_{T}^{ h} > 1 GeV/#it{c} ", "");
-  legCMS1_Zhad->Draw("same");
+  //cCMS_Zhad->cd(2);
+  //
+  //TLegend *legALICE = LegStd(legALICE, 0, 0.74, 0.20, 0.99);
+  //legALICE->SetTextSize(0.045);
+  //legALICE->SetHeader("ALICE");
+  ////legALICE->AddEntry((TObject *)0, "#bf{0#font[122]{-}30%} #bf{#it{#gamma}#font[122]{-}hadron}", "");
+  //legALICE->AddEntry((TObject *)0, "|#Delta #it{#varphi}| < #frac{3}{5}#pi, |#it{#eta}^{#it{#gamma}}| < 0.67", "");
+  //legALICE->AddEntry((TObject *)0, "18 < #it{p}_{T}^{ #it{#gamma}} < 40 GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c}", "");
+  //legALICE->Draw("same");
+  //
+  //
+  //TLegend *legCMS1 = LegStd(legCMS1, 0, 0.45, 0.20, 0.7);
+  //legCMS1->SetTextSize(0.045);
+  //legCMS1->SetHeader("CMS, Phys.Rev.Lett. 121 (2018) 24, 242301");
+  ////legCMS1->AddEntry((TObject *)0, "#bf{#it{#gamma}#font[122]{-}jet}, #bf{0#font[122]{-}10%} ", "");
+  //legCMS1->AddEntry((TObject *)0, "anti-k_{T} jet #it{R} = 0.3, #it{p}_{T}^{jet} > 30 GeV/#it{c}, |#it{#eta}^{jet}| < 1.6 ", "");
+  //legCMS1->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}jet}| > #frac{7}{8} #it{#pi}, |#it{#eta}^{ #it{#gamma}}| < 1.44 #it{p}_{T}^{ #it{#gamma}} > 60 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1 GeV/#it{c} ", "");
+  //legCMS1->Draw("same");
+  //TLegend *legCMS1_Zhad = LegStd(legCMS1_Zhad, 0, 0.16, 0.20, 0.36);
+  //legCMS1_Zhad->SetTextSize(0.045);
+  //legCMS1_Zhad->SetHeader("CMS, Phys.Rev.Lett. 128 (2022) 12, 122301");
+  ////legCMS1_Zhad->AddEntry((TObject *)0, "#bf{#it{Z}#font[122]{-}hadron}, #bf{0#font[122]{-}30%} ", "");
+  //legCMS1_Zhad->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{Z#font[122]{-}h}| > #frac{7}{8} #it{#pi}, #it{p}_{T}^{Z} > 30 GeV/#it{c} #otimes #it{p}_{T}^{ h} > 1 GeV/#it{c} ", "");
+  //legCMS1_Zhad->Draw("same");
   //cCMS_Zhad->Print(dirPlot + Form("/ppNLOpQCD_DztIaa_ZhadALICECMS%s.pdf", sPtAll.Data()));
   cCMS_Zhad->Print(dirPlot + Form("/ppNLOpQCD_Iaa_ZhadALICECMS%s.pdf", sPtAll.Data()));
 
@@ -1604,8 +1609,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hIcpSys[1]->SetFillColorAlpha(kOrange + 8, 0.30);
   
   TLegend *legIcp[2];
-  legIcp[0] = LegStd(legIcp[0], 0.12, 0.75, 0.37, 0.98);
-  legIcp[1] = LegStd(legIcp[1], 0.4, 0.75, 0.7, 0.98);
+  legIcp[0] = LegStd(legIcp[0], 0.12, 0.75, 0.32, 0.98);
+  legIcp[1] = LegStd(legIcp[1], 0.36, 0.75, 0.7, 0.98);
 
   grIcpNLOmedian[0]->SetFillColor(kGray);
   
@@ -1634,11 +1639,11 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   ALICEtexIcp2->SetTextSize(0.04);
   ALICEtexIcp2->SetNDC();
   //ALICEtexIcp2->DrawLatex(0.56, 0.86, Form("#it{This Thesis}"));
-  ALICEtexIcp2->DrawLatex(0.69, 0.94, Form("ALICE"));
-  ALICEtexIcp2->DrawLatex(0.69, 0.94 - 0.055, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
-  ALICEtexIcp2->DrawLatex(0.69, 0.94 - 2 * 0.06, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5} #it{#pi}, |#it{#eta}^{ #it{#gamma}}| < 0.67 "));
-  ALICEtexIcp2->DrawLatex(0.69, 0.94 - 3 * 0.06, Form("%2.0f < #it{p}_{T}^{ #it{#gamma}} < %2.0f GeV/#it{c} ", ptMin, ptMax));
-  ALICEtexIcp2->DrawLatex(0.69, 0.94 - 4 * 0.06, Form("#it{p}_{T}^{ h} > 0.5 GeV/#it{c} "));
+  ALICEtexIcp2->DrawLatex(0.65, 0.94, Form("ALICE"));
+  ALICEtexIcp2->DrawLatex(0.65, 0.94 - 0.055, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
+  ALICEtexIcp2->DrawLatex(0.65, 0.94 - 2 * 0.06, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
+  ALICEtexIcp2->DrawLatex(0.65, 0.94 - 3 * 0.06, Form("%2.0f < #it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c} ", ptMin, ptMax));
+  ALICEtexIcp2->DrawLatex(0.65, 0.94 - 4 * 0.06, Form("#it{p}_{T}^{h} > 0.5 GeV/#it{c} "));
   
  
   cICP->Print(dirPlot + Form("/Icp_Data_NLOpQCD%s.pdf", sPtAll.Data()));
