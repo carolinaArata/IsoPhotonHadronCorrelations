@@ -89,8 +89,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   TH1F* hIpPbpp_stat;
   TH1F* hIpPbpp_syst;
 
-  //TFile *fileNLO = new TFile("RootFiles/fileNLO.root ");
-  TFile *fileNLO = new TFile("fileNLOtest.root");
+  TFile *fileNLO = new TFile("RootFiles/fileNLO.root ");
+  
   // Getter NLO pQCD calculations
   TGraphAsymmErrors *grIaaNLOmedian[nCen];
   TH1F *grDztNLOmedianpp;
