@@ -89,7 +89,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   TH1F* hIpPbpp_stat;
   TH1F* hIpPbpp_syst;
 
-  TFile *fileNLO = new TFile("RootFiles/fileNLO.root ");
+  //TFile *fileNLO = new TFile("RootFiles/fileNLO.root ");
+  TFile *fileNLO = new TFile("fileNLOtest.root");
   // Getter NLO pQCD calculations
   TGraphAsymmErrors *grIaaNLOmedian[nCen];
   TH1F *grDztNLOmedianpp;
@@ -137,7 +138,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     PlotStyle(hZtCent[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
     h3[iCen] = (TH1F *)hZtCent[iCen]->Clone(Form("h3%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     h3[iCen]->Divide(hZt_MC_Gen[iCen]);
-    
+
     /////////////////////////////////////////////////
     /////////// theory: NLO + qhat (eLoss) /////////
     ///////////////////////////////////////////////
@@ -217,6 +218,25 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     cPYTHIA_CoLBT[iCen]->Print(dirPlot + Form("/cPYTHIA_CoLBTCen%d_%d.pdf", cenBins[iCen], cenBins[iCen + 1]));
   }
   
+  /////////////////////////////////////////////
+  /////////// theory: nPDF only //////////////
+  ///////////////////////////////////////////
+
+  double zT_nPDF[] = {0.15, 0.2, 0.3, 0.4, 0.6, 0.8, 1.0};
+  double Iaa_nPDFval[] = {1.0491, 1.0511, 1.0338, 1.0165, 1.0207, 1.0197, 1.0162};
+
+  TH1F *hIaa_nPDF = new TH1F("hIaa_nPDF", "hIaa_nPDF", 6, zT_nPDF);
+
+  for (int ibin = 0; ibin < 6; ibin++)
+  {
+    hIaa_nPDF->SetBinContent(ibin + 1, Iaa_nPDFval[ibin]);
+    hIaa_nPDF->SetBinError(ibin + 1, 0);
+  }
+
+  hIaa_nPDF->SetLineWidth(8);
+  hIaa_nPDF->SetLineColor(kAzure + 3);
+  hIaa_nPDF->SetLineStyle(10);
+
   /////////////////////////////////////
   /////////// theory: NLO pp /////////
   ///////////////////////////////////
@@ -231,7 +251,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   grDztNLOmedianpp->Draw("hist same c ");
   hZt_MC_Gen[0]->Draw("hist same c");
   cPP_NLO->Print(dirPlot + Form("/Checkpp_NLO.pdf"));
-  
+
   //////////////////////////////////////////
   //////// Get total systematics //////////
   ////////////////////////////////////////

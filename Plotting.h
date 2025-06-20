@@ -70,8 +70,8 @@ TLatex *LatexStdphi(TLatex *lat, double xpos, double ypos, int cenMin, int cenMa
   if (bCen)
     lat->DrawLatex(xpos, ypos - 0.08, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{trig}| < 0.67", cenMin, cenMax));
   else if (!bCen)
-    lat->DrawLatex(xpos, ypos - 0.08, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ trig}| < 0.67"));
-  lat->DrawLatex(xpos, ypos - 2 * 0.08, Form("%2.0f < #it{p}_{T}^{ trig} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{ h} > 0.5 GeV/#it{c}", ptMin, ptMax));
+    lat->DrawLatex(xpos, ypos - 0.08, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{trig}| < 0.67"));
+  lat->DrawLatex(xpos, ypos - 2 * 0.08, Form("%2.0f < #it{p}_{T}^{trig} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c}", ptMin, ptMax));
   return lat;
 }
 
@@ -86,8 +86,8 @@ TLatex *LatexStd(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax, 
   if (bCen)
     lat->DrawLatex(xpos, ypos - 0.06, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ trig}| < 0.67", cenMin, cenMax));
   else if (!bCen)
-    lat->DrawLatex(xpos, ypos - 0.06, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ trig}| < 0.67"));
-  lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("%2.0f < #it{p}_{T}^{ trig} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{ h} > 0.5 GeV/#it{c}", ptMin, ptMax));
+    lat->DrawLatex(xpos, ypos - 0.06, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{trig}| < 0.67"));
+  lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("%2.0f < #it{p}_{T}^{trig} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c}", ptMin, ptMax));
   return lat;
 }
 
@@ -103,8 +103,8 @@ TLatex *LatexStdSyst(TLatex *lat, double xpos, double ypos, int cenMin, int cenM
   if (bCen)
     lat->DrawLatex(xpos, ypos - 0.06, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, ", cenMin, cenMax));
   else if (!bCen)
-    lat->DrawLatex(xpos, ypos - 0.06, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ trig}| < 0.67"));
-  lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("|#it{#eta}^{ trig}| < 0.67, %2.0f < #it{p}_{T}^{ trig} < %2.0f GeV/#it{c}", ptMin, ptMax));
+    lat->DrawLatex(xpos, ypos - 0.06, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{trig}| < 0.67"));
+  lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("|#it{#eta}^{trig}| < 0.67, %2.0f < #it{p}_{T}^{trig} < %2.0f GeV/#it{c}", ptMin, ptMax));
   return lat;
 }
 

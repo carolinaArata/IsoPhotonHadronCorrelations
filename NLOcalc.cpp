@@ -30,7 +30,7 @@ Int_t kMarkCen[] = {21, 47, 33, 25};
 // Int_t kColorMark[] = {kCyan + 2, kAzure - 3, kViolet + 6, kCyan - 2};
 Int_t kColorMark[] = {kCyan + 2, kOrange + 7, kViolet + 6, kCyan - 2};
 Int_t nAssoc = 6;
-double assocZt[] = {0.1 ,0.15, 0.2, 0.3, 0.4, 0.6, 1.0};
+double assocZt[] = {0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 1.00};
 Int_t nAssocCLBT = 6;
 double assocZtCLBT[] = {0.15, 0.2, 0.3, 0.4, 0.6, 0.8, 1.0};
 
@@ -198,11 +198,12 @@ void NLOcalc()
   {
     TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
     cout << "Getter zt distributions: " << sCent << endl;
-    fPlot[iCen] = new TFile(Form("~/work/histogram/FromScratch/ResultsNewMixMC_ZtMergedMoreQM/fPlot%s%s%s.root", shshString[1].Data(), sCent.Data(), sPtAll.Data()));
+    //fPlot[iCen] = new TFile(Form("~/work/histogram/FromScratch/ResultsNewMixMC_ZtMergedMoreQM/fPlot%s%s%s.root", shshString[1].Data(), sCent.Data(), sPtAll.Data()));
+    fPlot[iCen] = new TFile(Form("Output_checkCode/fPlot%s%s%s.root", shshString[1].Data(), sCent.Data(), sPtAll.Data()));
 
-    hZt_MC_Gen[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtIsoGammaMCGen%s%s", sCent.Data(), sPtAll.Data()));
-    hZt_MC_Rec[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtIsoGammaMCRec%s%s", sCent.Data(), sPtAll.Data()));
-    hZtCent[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtEffCorr%s%s", sCent.Data(), sPtAll.Data()));
+    hZt_MC_Gen[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtMCGenIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
+    hZt_MC_Rec[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtMCRecIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
+    hZtCent[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtEffCorrIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
   }
 
   histRatioPYTHIA_NLOPbPb[0] = new TH1F(Form("histRatioPYTHIA_NLOPbPb_Cen%d_%d", cenBins[0], cenBins[1]), Form("histRatioPYTHIA_NLOPbPb_Cen%d_%d", cenBins[0], cenBins[1]), nAssocCLBT, assocZtCLBT);
