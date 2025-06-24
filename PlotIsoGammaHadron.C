@@ -316,11 +316,11 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       {
         // TString sTitle = Form("%2.0f < #it{p}_{T}^{tr} < %2.0f GeV/#it{c}, %2.2f < #it{z}_{T}^{as} < %2.2f ", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], assocZt[izt], assocZt[izt + 1]);
         TString sTitle = Form(" %2.2f < #it{z}_{T} < %2.2f ", assocZt[izt], assocZt[izt + 1]);
-        gStyle->SetPadTopMargin(0.06);
-        gStyle->SetPadRightMargin(0.02);
-        gStyle->SetPadLeftMargin(0.15);
-        gStyle->SetPadBottomMargin(0.15);
-        gStyle->SetTitleX(0.56);
+        //gStyle->SetPadTopMargin(0.06);
+        //gStyle->SetPadRightMargin(0.05);
+        gStyle->SetPadLeftMargin(0.1);
+        //gStyle->SetPadBottomMargin(0.15);
+        //gStyle->SetTitleX(0.56);
         cSame_MixIsoClust[iCen][iptTr]->cd(izt + 1);
         TGaxis::SetMaxDigits(1);
         hdPhiSam[iCen][1][0][izt][iptTr]->SetTitle(sTitle);
@@ -388,8 +388,8 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         lineX0->Draw("same");
       }
       cSame_MixIsoClust[iCen][iptTr]->cd(legPad);
-      latDphi[iCen] = LatexDPhi(latDphi[iCen], 0.08, 0.84, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
-      latDphi[iCen]->DrawLatex(0.08, 0.84 - 3 * 0.10, "cluster^{iso}_{narrow}: 0.10 < #it{#sigma}^{2}_{long , 5x5} < 0.30");
+      latDphi[iCen] = LatexDPhi(latDphi[iCen], 0.01, 0.84, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
+      latDphi[iCen]->DrawLatex(0.01, 0.84 - 3 * 0.10, "0.10 < #it{#sigma}^{2}_{long , 5x5} < 0.30, #it{p}_{T}^{iso} < 1.5 GeV/#it{c}, #it{R} = 0.2");
       legSame_MixIsoClust[iCen][iptTr]->AddEntry(hdPhiSam[iCen][1][0][0][0], " ", "lep");
       latDphi[iCen]->DrawLatex(0.15, 0.355, "Same Event");
       legSame_MixIsoClust[iCen][iptTr]->AddEntry(hdPhiMix[iCen][1][0][0][0], " ", "lep");
@@ -468,7 +468,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       
       
       //=========================================================================
-
+/*
       Int_t selZt = 1;
       cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr]->cd(1);
       // hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->SetMinimum(-5e-3);
@@ -555,8 +555,8 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       TString zTTitle = Form("_Zt%2.2f_%2.2f", assocZt[selZt], assocZt[selZt + 1]);
       cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/Same_MixIsoClustGamma_NoUE" + sCent + sPtTrig + zTTitle+".pdf");
       //=========================================================================
-      
-      
+      */
+    /*  
       
       cIsoClust_Pi0Pur_SingleZt[iCen][iptTr]->cd(1);
       hdPhiPhoton[iCen][1][selZt][iptTr]->SetTitle("");//(sTitle);
@@ -620,7 +620,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       legZtP->Draw();
       
       cIsoClust_Pi0Pur_SingleZt[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/IsoGamma_SameNoUE_Pi0pur" + sCent + sPtTrig + zTTitle+".pdf");
-
+*/
     }
 
     cSameNoUE_pTBin_pTAllIsoClust[iCen] = new TCanvas("cSameNoUE_pTBin_pTAllIsoClust" + sCent, "cSameNoUE_pTBin_pTAllIsoClust" + sCent, xNumPad * 800, 2 * 600);
@@ -630,10 +630,10 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
     {
       // TString sTitle = Form("%2.0f < #it{p}_{T}^{tr} < %2.0f GeV/#it{c}, %2.2f < #it{z}_{T}^{as} < %2.2f ", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], assocZt[izt], assocZt[izt + 1]);
       TString sTitle = Form(" %2.2f < #it{z}_{T} < %2.2f ", assocZt[izt], assocZt[izt + 1]);
-      gStyle->SetPadRightMargin(0.05);
-      gStyle->SetPadLeftMargin(0.20);
-      gStyle->SetPadBottomMargin(0.15);
-      gStyle->SetTitleX(0.56);
+      //gStyle->SetPadRightMargin(0.05);
+      //gStyle->SetPadLeftMargin(0.20);
+      //gStyle->SetPadBottomMargin(0.15);
+      //gStyle->SetTitleX(0.56);
       cSameNoUE_pTBin_pTAllIsoClust[iCen]->cd(izt + 1);
       hdPhiSamNoUE[iCen][1][0][izt][0]->GetYaxis()->SetRangeUser(0.9 * hdPhiSamNoUE[iCen][1][0][izt][0]->GetMinimum(), 1.15 * hdPhiSamNoUEPtAll[iCen][1][0][izt]->GetMaximum());
       hdPhiSamNoUE[iCen][1][0][izt][0]->Draw("same");

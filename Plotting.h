@@ -101,7 +101,7 @@ TLatex *LatexStdSyst(TLatex *lat, double xpos, double ypos, int cenMin, int cenM
   lat->SetTextSize(0.04);
   lat->SetNDC();
   lat->DrawLatex(xpos, ypos + 0.06, Form("%s", sTitle.Data()));
-  //lat->DrawLatex(xpos, ypos, "ALICE #it{Work in progress}");
+  lat->DrawLatex(xpos, ypos, "ALICE ");
   if (bCen)
     lat->DrawLatex(xpos, ypos - 0.06, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, ", cenMin, cenMax));
   else if (!bCen)
@@ -173,7 +173,7 @@ TLatex *LatexDPhi(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax,
   lat->SetTextFont(42);
   lat->SetTextSize(0.065);
   lat->SetNDC();
-  lat->DrawLatex(xpos, ypos + 0.10, Form("#font[42]{ALICE}"));
+  lat->DrawLatex(xpos, ypos, Form("#font[42]{ALICE}"));
   //lat->DrawLatex(xpos, ypos, Form("ALICE #it{Work in progress}"));
   if(bCent)
     lat->DrawLatex(xpos, ypos - 0.10, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ trig}| < 0.67", cenMin, cenMax));
@@ -232,9 +232,9 @@ TCanvas *canvasStd(TString name, int xPad, int yPad)
   for (int iPad = 0; iPad < xPad * yPad; iPad++)
   {
     canvas->cd(iPad + 1);
-    //canvas->GetPad(iPad + 1)->SetTopMargin(0.015);
-    //canvas->GetPad(iPad + 1)->SetRightMargin(0.05);
-    //canvas->GetPad(iPad + 1)->SetLeftMargin(0.2);
+    canvas->GetPad(iPad + 1)->SetTopMargin(0.015);
+    canvas->GetPad(iPad + 1)->SetRightMargin(0.05);
+    canvas->GetPad(iPad + 1)->SetLeftMargin(0.2);
     canvas->GetPad(iPad + 1)->SetBottomMargin(0.11);
     //gStyle->SetPadRightMargin(0.05);
     //gStyle->SetPadLeftMargin(0.20);
