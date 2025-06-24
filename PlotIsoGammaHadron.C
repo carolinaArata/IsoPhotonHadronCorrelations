@@ -468,7 +468,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       
       
       //=========================================================================
-/*
+
       Int_t selZt = 1;
       cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr]->cd(1);
       // hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->SetMinimum(-5e-3);
@@ -555,8 +555,8 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       TString zTTitle = Form("_Zt%2.2f_%2.2f", assocZt[selZt], assocZt[selZt + 1]);
       cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/Same_MixIsoClustGamma_NoUE" + sCent + sPtTrig + zTTitle+".pdf");
       //=========================================================================
-      */
-    /*  
+      
+      
       
       cIsoClust_Pi0Pur_SingleZt[iCen][iptTr]->cd(1);
       hdPhiPhoton[iCen][1][selZt][iptTr]->SetTitle("");//(sTitle);
@@ -620,7 +620,6 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       legZtP->Draw();
       
       cIsoClust_Pi0Pur_SingleZt[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/IsoGamma_SameNoUE_Pi0pur" + sCent + sPtTrig + zTTitle+".pdf");
-*/
     }
 
     cSameNoUE_pTBin_pTAllIsoClust[iCen] = new TCanvas("cSameNoUE_pTBin_pTAllIsoClust" + sCent, "cSameNoUE_pTBin_pTAllIsoClust" + sCent, xNumPad * 800, 2 * 600);
