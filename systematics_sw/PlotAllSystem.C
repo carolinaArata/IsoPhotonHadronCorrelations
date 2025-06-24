@@ -127,11 +127,11 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     // hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen30_50_Pt18_40"));
     // hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen50_90_Pt18_40"));
 
-    hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("histSystErrFitNoUEWide0_30PtRange_Pt18_40"));
+    hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("histSystErrFitNoUEWide0_30PtRangeFitTrend_Pt18_40"));
     // hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen30_50_Pt18_40"));
     // hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen50_90_Pt18_40"));
-    hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen30_50_Pt18_40"));
-    hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen50_90_Pt18_40"));
+    hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUEFitTrend_Cen30_50_Pt18_40"));
+    hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUEFitTrend_Cen50_90_Pt18_40"));
   }
   else if (!b0_30)
   {
@@ -144,10 +144,10 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     //  hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen30_50_Pt18_40"));
     //  hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystNarrNoUEFitTrend_Cen50_90_Pt18_40"));
 
-    hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen0_10_Pt18_40"));
-    hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen10_30_Pt18_40"));
-    hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen30_50_Pt18_40"));
-    hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUE_Cen50_90_Pt18_40"));
+    hUEresidUncert[0] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUEFitTrend_Cen0_10_Pt18_40"));
+    hUEresidUncert[1] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUEFitTrend_Cen10_30_Pt18_40"));
+    hUEresidUncert[2] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUEFitTrend_Cen30_50_Pt18_40"));
+    hUEresidUncert[3] = (TH1F *)fUEResidSyst->Get(Form("hErrSystWideNoUEFitTrend_Cen50_90_Pt18_40"));
   }
 
   for (int iCen = 0; iCen < nCen; iCen++)
