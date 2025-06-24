@@ -29,7 +29,7 @@ void PlotStyle(TH1F *hPlot, int kMarker, double kMarkerSize, int kColor, int kCo
   gStyle->SetOptStat(0);
   gStyle->SetLineScalePS(1);
   // gStyle->SetOptFit(1111111);
-gStyle->SetTitleFontSize(0.06);
+  gStyle->SetTitleFontSize(0.06);
   gStyle->SetTitleAlign(23);
 
   gStyle->SetPadTickY(1);
@@ -42,6 +42,8 @@ gStyle->SetTitleFontSize(0.06);
   if (onFill)
   {
     hPlot->SetFillColorAlpha(kColorFill, 0.30);
+    hPlot->SetLineWidth(0);
+    hPlot->SetLineColor(0);
   }
 
   hPlot->GetYaxis()->SetTitle(Form("%s", titleY.Data()));
@@ -121,8 +123,8 @@ TLatex *LatexStdISO(TLatex *lat, double xpos, double ypos, double texSize, int c
     lat->DrawLatex(xpos, ypos - 0.045, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV ", cenMin, cenMax));
   else if (!bCen)
     lat->DrawLatex(xpos, ypos - 0.045, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
-  lat->DrawLatex(xpos, ypos - 2 * 0.048, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5} #it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
-  lat->DrawLatex(xpos, ypos - 3 * 0.048, Form("%2.0f < #it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
+  lat->DrawLatex(xpos, ypos - 2 * 0.050, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
+  lat->DrawLatex(xpos, ypos - 3 * 0.050, Form("%2.0f < #it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
   return lat;
 }
 
@@ -138,8 +140,8 @@ TLatex *LatexStdISORatio(TLatex *lat, double xpos, double ypos, double texSize, 
     lat->DrawLatex(xpos, ypos - 0.045, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV ", cenMin, cenMax));
   else if (!bCen)
     lat->DrawLatex(xpos, ypos - 0.045, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
-  lat->DrawLatex(xpos, ypos - 2 * 0.046, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
-  lat->DrawLatex(xpos, ypos - 3 * 0.046, Form("%2.0f < #it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
+  lat->DrawLatex(xpos, ypos - 2 * 0.050, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
+  lat->DrawLatex(xpos, ypos - 3 * 0.050, Form("%2.0f < #it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
   return lat;
 }
 
@@ -150,8 +152,8 @@ TLatex *LatexStdISORatioNoPbPb(TLatex *lat, double xpos, double ypos, double tex
   lat->SetTextSize(texSize);
   lat->SetNDC();
   lat->DrawLatex(xpos, ypos, Form("#font[42]{ALICE}, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
-  lat->DrawLatex(xpos, ypos - 1 * 0.048, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
-  lat->DrawLatex(xpos, ypos - 2 * 0.048, Form("%2.0f < #it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
+  lat->DrawLatex(xpos, ypos - 1 * 0.06, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
+  lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("%2.0f < #it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
   return lat;
 }
 
@@ -234,6 +236,28 @@ TCanvas *canvasStd(TString name, int xPad, int yPad)
     //canvas->GetPad(iPad + 1)->SetRightMargin(0.05);
     //canvas->GetPad(iPad + 1)->SetLeftMargin(0.2);
     canvas->GetPad(iPad + 1)->SetBottomMargin(0.11);
+    //gStyle->SetPadRightMargin(0.05);
+    //gStyle->SetPadLeftMargin(0.20);
+    //gStyle->SetPadBottomMargin(0.15);
+    //gStyle->SetTitleX(0.56);
+  }
+
+  return canvas;
+}
+TCanvas *canvasStdIaa(TString name, int xPad, int yPad)
+{
+  TCanvas *canvas = new TCanvas(name, name, xPad * 800, yPad * 600);
+  canvas->Divide(xPad, yPad);
+  for (int iPad = 0; iPad < xPad * yPad; iPad++)
+  {
+    canvas->cd(iPad + 1);
+    //canvas->GetPad(iPad + 1)->SetTopMargin(0.015);
+    //canvas->GetPad(iPad + 1)->SetRightMargin(0.05);
+    //canvas->GetPad(iPad + 1)->SetLeftMargin(0.2);
+    canvas->GetPad(iPad + 1)->SetTopMargin(0.015);
+    canvas->GetPad(iPad + 1)->SetRightMargin(0.015);
+    canvas->GetPad(iPad + 1)->SetLeftMargin(0.1);
+    canvas->GetPad(iPad + 1)->SetBottomMargin(0.15);
     //gStyle->SetPadRightMargin(0.05);
     //gStyle->SetPadLeftMargin(0.20);
     //gStyle->SetPadBottomMargin(0.15);
