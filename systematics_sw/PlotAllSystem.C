@@ -249,8 +249,8 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     //    legUncert[iCen]->AddEntry(hUEresidUncert[iCen], "#it{#varepsilon}_{ME}", "ep");
     //    legUncert[iCen]->AddEntry(hTrackIneffUncer[iCen], "#it{#varepsilon}_{Tracking}", "ep");
     //    legUncert[iCen]->AddEntry(hNMixCentUncert[iCen], "ME centrality match", "ep");
-    //////////////////////////////////////
-    ////// Plot only systematics ////////
+    ///////////////////////////////////////
+    ////// Plot only systematics /////////
     /////////////////////////////////////
     cAllSyst->cd(iCen + 1);
     gPad->SetTickx();
