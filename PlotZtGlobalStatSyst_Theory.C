@@ -86,10 +86,10 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   
 
   //Getter pp-pPb data
-  TH1F* hIpPbpp;
-  TH1F* hIpPbpp_stat;
-  TH1F* hIpPbpp_systErrGet;
-  TH1F* hIpPbpp_syst;
+  TH1F* hDztpp, *hDztpPb, *hIpPbpp;
+  TH1F* hDztpp_stat, *hDztpPb_stat, *hIpPbpp_stat;
+  TH1F* hDztpp_systErrGet, *hDztpPb_systErrGet, *hIpPbpp_systErrGet;
+  TH1F* hDztpp_syst, *hDztpPb_syst, *hIpPbpp_syst;
 
   TFile *fileNLO = new TFile("RootFiles/fileNLO.root ");
 
@@ -110,9 +110,46 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   
   cout << "Getter zt distributions: data and models" << endl;
 
-  ///////////////////////////////////////
-  /////////// data: pPb and pp /////////
-  /////////////////////////////////////
+  ///////////////////////////////////////////
+  /////////// data: Dzt pPb and pp /////////
+  /////////////////////////////////////////
+
+  TFile *finputpp_pPbPaper_DztpPb = new TFile("TheoryCalculations/HEPData-ins1798523-v1-root.root");
+  TDirectory *dirPaper_DztpPb = (TDirectory*)finputpp_pPbPaper_DztpPb->Get("Figure 5 Top Panel");
+  
+  hDztpPb = (TH1F*)dirPaper_DztpPb->Get("Hist1D_y1");
+  hDztpPb_stat = (TH1F*)dirPaper_DztpPb->Get("Hist1D_y1_e1");
+  hDztpPb_systErrGet = (TH1F*)dirPaper_DztpPb->Get("Hist1D_y1_e2");
+  hDztpPb_syst = (TH1F*)hDztpPb->Clone("hDztpPb_syst");
+  for(int ibin = 0; ibin<hDztpPb->GetNbinsX(); ibin++)
+  {
+    hDztpPb->SetBinError(ibin+1, hDztpPb_stat->GetBinContent(ibin+1));
+    hDztpPb_syst->SetBinError(ibin+1, hDztpPb_systErrGet->GetBinContent(ibin+1));
+  }
+  cout<<"Address DztpPb "<<endl;
+  cout<<hDztpPb_stat<<endl;
+  cout<<hDztpPb_syst<<endl;
+  PlotStyle(hDztpPb, 20, 1, kBlack, kBlack,"#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false); 
+  PlotStyle(hDztpPb_syst, 20, 1, kBlack, kBlack,"#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false); 
+
+  hDztpp = (TH1F*)dirPaper_DztpPb->Get("Hist1D_y2");
+  hDztpp_stat = (TH1F*)dirPaper_DztpPb->Get("Hist1D_y2_e1");
+  hDztpp_systErrGet = (TH1F*)dirPaper_DztpPb->Get("Hist1D_y2_e2");
+  hDztpp_syst = (TH1F*)hDztpPb->Clone("hDztpp_syst");
+  for(int ibin = 0; ibin<hDztpp->GetNbinsX(); ibin++)
+  {
+    hDztpp->SetBinError(ibin+1, hDztpp_stat->GetBinContent(ibin+1));
+    hDztpp_syst->SetBinError(ibin+1, hDztpp_systErrGet->GetBinContent(ibin+1));
+  }
+  cout<<"Address Dztpp "<<endl;
+  cout<<hDztpp_stat<<endl;
+  cout<<hDztpp_syst<<endl;
+  PlotStyle(hDztpp, 20, 1, kBlack, kBlack,"#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false); 
+  PlotStyle(hDztpp_syst, 20, 1, kBlack, kBlack,"#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false); 
+
+  ////////////////////////////////////////////
+  /////////// data: IpA, pPb and pp /////////
+  //////////////////////////////////////////
   TFile *finputpp_pPbPaper_IpPbpp = new TFile("TheoryCalculations/HEPData-ins1798523-v1-Figure_5_Bottom_Panel.root");
   TDirectory *dirPaper_IpPbpp = (TDirectory*)finputpp_pPbPaper_IpPbpp->Get("Figure 5 Bottom Panel");
   hIpPbpp = (TH1F*)dirPaper_IpPbpp->Get("Hist1D_y1");
@@ -1037,12 +1074,6 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     legRatioSinglePadIpQCDIaaCNM[iCen]->Draw("same");
     
 
-
-
-
-
-
-
     TGraph *linea = DrawLine(linea, 0, 0.5, 1.2, 0.5);
     linea->Draw("l");
     TGraph *lineb = DrawLine(lineb, 0, 1, 1.2, 1);
@@ -1053,7 +1084,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   // TCanvas *cAllZt = new TCanvas("cAllZt", "cAllZt", 800, 600);
   TCanvas *cAllZt = canvasStd("cAllZt", 1, 1);
   TLegend *legdiffcenZtPYTHIA = LegStd(legdiffcenZtPYTHIA, 0.14, 0.30, 0.4, 0.35);
-  TLegend *legdiffcenZt = LegStd(legdiffcenZt, 0.14, 0.12, 0.5, 0.30);
+  TLegend *legdiffcenZt = LegStd(legdiffcenZt, 0.14, 0.18, 0.5, 0.35);
   // cAllZt->cd();
   // cAllZt->SetTopMargin(0.015);
   // cAllZt->SetRightMargin(0.02);
@@ -1075,8 +1106,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   legdiffcenZt->SetNColumns(2);
   for (int iCen = 0; iCen < nCen; iCen++)
   {
-    legdiffcenZt->AddEntry(hZtCent[iCen], Form(" %d#font[122]{-}%d%% stat. ", cenBins[iCen], cenBins[iCen + 1]), "ep");
-    legdiffcenZt->AddEntry(hSystZt[iCen], Form(" syst. unc"), "f");
+    legdiffcenZt->AddEntry(hZtCent[iCen], Form("%d#font[122]{-}%d%% stat. ", cenBins[iCen], cenBins[iCen + 1]), "ep");
+    legdiffcenZt->AddEntry(hSystZt[iCen], Form("syst. unc"), "f");
   }
   legdiffcenZtPYTHIA->Draw("SAME");
   legdiffcenZt->Draw("SAME");
@@ -1089,13 +1120,9 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   TLatex *latAliceZtOnly = LatexStdISORatio(latAliceZtOnly, 0.420, 0.92, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
   cAllZt->Print(dirPlot + Form("/ZtAllCent030%s.pdf", sPtAll.Data()));
   
-  TCanvas *cAllZtNLOpQCD = canvasStd("cAllZtNLOpQCD", 1, 1);
-  TLegend *legdiffcenZtNLOpQCD = LegStd(legdiffcenZtNLOpQCD, 0.14, 0.30, 0.4, 0.35);
+  TCanvas *cAllZtNLOpQCD = canvasStdIaa("cAllZtNLOpQCD", 1, 1);
+  TLegend *legdiffcenZtNLOpQCD = LegStd(legdiffcenZtNLOpQCD, 0.14, 0.35, 0.4, 0.4);
   // cAllZtNLOpQCD->cd();
-  // cAllZtNLOpQCD->SetTopMargin(0.015);
-  // cAllZtNLOpQCD->SetRightMargin(0.02);
-  // cAllZtNLOpQCD->SetLeftMargin(0.12);
-  // cAllZtNLOpQCD->SetBottomMargin(0.11);
   gPad->SetLogy();
   hGeneral->GetYaxis()->SetTitleSize(0.055);
   hGeneral->GetXaxis()->SetRangeUser(0.05, 1.05);
@@ -1118,6 +1145,42 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   legdiffcenZt->Draw("SAME");
   TLatex *latAliceZtOnlyNLOpQCD = LatexStdISORatio(latAliceZtOnlyNLOpQCD, 0.420, 0.92, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
   cAllZtNLOpQCD->Print(dirPlot + Form("/NLOpQCDZtAllCent030%s.pdf", sPtAll.Data()));
+
+  TCanvas *cAllZtNLOpQCD_pPbpp = canvasStdIaa("cAllZtNLOpQCD_pPbpp", 1, 1);
+  TLegend *legdiffcenZtpPbpp = LegStd(legdiffcenZtpPbpp, 0.14, 0.35, 0.55, 0.4);
+  legdiffcenZtpPbpp->SetNColumns(2);
+  TH1F *hGeneralDztpPbpp = new TH1F("hGeneralDztpPbpp", "hGeneralDztpPbpp", 17, assocZtThinnerPbpp);
+  PlotStyle(hGeneralDztpPbpp, 20, 1, kWhite, kWhite, " #it{z}_{T} ", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
+  // cAllZtNLOpQCD->cd();
+  gPad->SetLogy();
+  hGeneralDztpPbpp->GetYaxis()->SetTitleSize(0.055);
+  hGeneralDztpPbpp->GetXaxis()->SetRangeUser(0.05, 1.05);
+  hGeneralDztpPbpp->GetXaxis()->SetLabelSize(0.040);
+  hGeneralDztpPbpp->GetXaxis()->SetTitleSize(0.055);
+  hGeneralDztpPbpp->GetYaxis()->SetRangeUser(2 * 1e-4, 99);
+  hGeneralDztpPbpp->GetYaxis()->SetLabelSize(0.04);
+  hGeneralDztpPbpp->GetYaxis()->SetTitleSize(0.045);
+  hGeneralDztpPbpp->GetYaxis()->SetTitleOffset(1.0);
+  hGeneralDztpPbpp->SetTitle("");
+  hGeneralDztpPbpp->Draw("same");
+  grDztNLOmedianpp->Draw("HISTSAMEC ");
+  legdiffcenZtpPbpp->AddEntry(hDztpPb, "p#font[122]{-}Pb stat.", "ep");
+  legdiffcenZtpPbpp->AddEntry(hDztpPb_syst, "syst. unc.", "f");
+  legdiffcenZtpPbpp->Draw("SAME");
+  hDztpPb_syst->SetFillStyle(0); 
+  hDztpPb_syst->SetLineColor(kBlack);
+  hDztpPb_syst->SetLineWidth(1);
+  hDztpPb_syst->Draw("samee2");
+  hDztpPb->Draw("EP X0 same");
+  hSystZt[0]->Draw("samee2");
+  hZtCent[0]->Draw("EP X0 same");
+  hSystZt[2]->Draw("samee2");
+  hZtCent[2]->Draw("EP X0 same");
+  hSystZt[1]->Draw("samee2");
+  hZtCent[1]->Draw("EP X0 same");
+  legdiffcenZt->Draw("SAME");
+  TLatex *latAliceZtOnlyNLOpQCD_pPbpp = LatexStdISORatioNoPbPb(latAliceZtOnlyNLOpQCD_pPbpp, 0.420, 0.92, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
+  cAllZtNLOpQCD_pPbpp->Print(dirPlot + Form("/ZtAllCent_pPbpp%s.pdf", sPtAll.Data()));
   
   // TCanvas *cRatioSuppres = new TCanvas("cRatioSuppres", "cRatioSuppres", 800, 600);
   TCanvas *cRatioSuppres = canvasStd("cRatioSuppres", 1, 1);
