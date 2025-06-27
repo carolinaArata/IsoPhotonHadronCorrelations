@@ -620,9 +620,9 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   hIcpSyst[1]->SetLineColorAlpha(kMarkerColIcp[1], 1.00);
   hIcpSyst[1]->SetFillColorAlpha(kMarkerColIcp[1], 0.30);
   TH1F *hGeneralIcp = new TH1F("hGeneralIcp", "hGeneralIcp", 10, 0, 0.7);
+  PlotStyle(hGeneralIcp, 20, 1, kWhite, kWhite, "#it{z}_{T}", "#it{I}_{CP}", false);
   hGeneralIcp->SetDirectory(0);
   hGeneralIcp->Draw("histsame");
-  PlotStyle(hGeneralIcp, 20, 1, kWhite, kWhite, "#it{z}_{T}", "#it{I}_{CP}", false);
   for (int iCen = 0; iCen < nCen - 1; iCen++)
   {
     hIcpSyst[iCen]->SetDirectory(0);
@@ -669,6 +669,45 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   ALICEtexIcp2->DrawLatex(0.6, 0.92 - 3 * 0.06, Form("%2.0f < #it{p}_{T}^{ #it{#gamma}} < %2.0f GeV/#it{c} ", ptMin, ptMax));
   ALICEtexIcp2->DrawLatex(0.6, 0.92 - 4 * 0.06, Form("#it{p}_{T}^{ h} > 0.5 GeV/#it{c} "));
   cIcp->Print(Form("%s/SystSh%s/%s_cSystIcp%s.pdf", dirPlot.Data(), shshBkg.Data(), Mixed.Data(), sPtAll.Data()));
+
+  TCanvas *cIcp_StatOnly = canvasStd("cIcp_StatOnly", 1, 1);
+  TLegend *legIcp_StatOnly = LegStd(legIcp_StatOnly, 0.14, 0.72, 0.360, 0.96);
+  cIcp_StatOnly->cd(1)->SetTopMargin(0.015);
+  cIcp_StatOnly->cd(1)->SetRightMargin(0.015);
+  cIcp_StatOnly->cd(1)->SetLeftMargin(0.12);
+  cIcp_StatOnly->cd(1)->SetBottomMargin(0.13);
+  PlotStyle(hGeneralIcp, 20, 1, kWhite, kWhite, "#it{z}_{T}", "#it{I}_{CP}", false);
+  hGeneralIcp->SetDirectory(0);
+  hGeneralIcp->Draw("histsame");
+  for (int iCen = 0; iCen < nCen - 1; iCen++)
+  {
+    PlotStyle(fIcp[iCen], kMarkerStyleIcp[iCen], 1, kMarkerColIcp[iCen], kMarkerColIcp[iCen], "#it{z}_{T}", "#it{I}_{CP}", false);
+    fIcp[iCen]->Draw("EP X0same");
+  }
+
+  legIcp_StatOnly->SetTextSize(0.04);
+  legIcp_StatOnly->AddEntry(fIcp[0], Form("0#font[122]{-}30%%  / 50#font[122]{-}90%% stat. unc."), "ep");
+  legIcp_StatOnly->AddEntry(fIcp[1], Form("30#font[122]{-}50%% / 50#font[122]{-}90%% stat. unc."), "ep");
+  legIcp_StatOnly->Draw("same");
+
+  line->Draw("same");
+  line1->Draw("same");
+  // TLatex *ALICEtexIcp2 = LatexStdIcp(ALICEtexIcp2, 0.52, 0.92, cenBins[0], cenBins[1], ptMin, ptMax);
+  TLatex *ALICEtexIcp2_StatOnly = new TLatex();
+  ALICEtexIcp2_StatOnly->SetTextFont(42);
+  ALICEtexIcp2_StatOnly->SetTextSize(0.04);
+  ALICEtexIcp2_StatOnly->SetNDC();
+  // ALICEtexI_StatOnlycp2->DrawLatex(0.56, 0.86, Form("#it{This Thesis}"));
+  ALICEtexIcp2_StatOnly->DrawLatex(0.6, 0.92, Form("ALICE"));
+  ALICEtexIcp2_StatOnly->DrawLatex(0.6, 0.92 - 0.055, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
+  ALICEtexIcp2_StatOnly->DrawLatex(0.6, 0.92 - 2 * 0.06, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5} #it{#pi}, |#it{#eta}^{ #it{#gamma}}| < 0.67 "));
+  ALICEtexIcp2_StatOnly->DrawLatex(0.6, 0.92 - 3 * 0.06, Form("%2.0f < #it{p}_{T}^{ #it{#gamma}} < %2.0f GeV/#it{c} ", ptMin, ptMax));
+  ALICEtexIcp2_StatOnly->DrawLatex(0.6, 0.92 - 4 * 0.06, Form("#it{p}_{T}^{ h} > 0.5 GeV/#it{c} "));
+  cIcp_StatOnly->Print(Form("%s/SystSh%s/%s_c_StatOnlyIcp%s.pdf", dirPlot.Data(), shshBkg.Data(), Mixed.Data(), sPtAll.Data()));
+
+
+
+
 
   fSystFile->Close();
 
