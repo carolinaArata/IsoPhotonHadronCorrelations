@@ -196,19 +196,19 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     grIaaNLOmedian[iCen]->SetLineWidth(8);
     grIaaNLOmedian[iCen]->SetLineColor(kPink + 4);
     grIaaNLOmedian[iCen]->SetFillColorAlpha(kPink - 4, 0.75);
-    grIaaNLOmedian[iCen]->SetFillStyle(3008);
+    grIaaNLOmedian[iCen]->SetFillStyle(3001);
     
     grDztNLOmedian[iCen] = (TGraphAsymmErrors *)fileNLO->Get(Form("grDztNLOmedian%s", sCent.Data()));
     cout<<grDztNLOmedian[iCen]->GetName()<<endl;
     grDztNLOmedian[iCen]->SetLineWidth(8);
     grDztNLOmedian[iCen]->SetLineColor(kPink + 4);
     grDztNLOmedian[iCen]->SetFillColorAlpha(kPink - 4, 0.75);
-    grDztNLOmedian[iCen]->SetFillStyle(3008);
+    grDztNLOmedian[iCen]->SetFillStyle(3001);
 
     grIcpNLOmedian[iCen] = (TGraphAsymmErrors *)fileNLO->Get(Form("grDztNLOmedian%s", sCent.Data()));
     cout<<grDztNLOmedian[iCen]->GetName()<<endl;
     grIcpNLOmedian[iCen]->SetLineWidth(8);
-    grIcpNLOmedian[iCen]->SetFillStyle(3008);
+    grIcpNLOmedian[iCen]->SetFillStyle(3001);
     grIcpNLOmedian[iCen]->SetLineColor(kPink + 4);
     grIcpNLOmedian[iCen]->SetFillColorAlpha(kMagenta - 7, 0.75);
   }
@@ -236,7 +236,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   {
     histIaaCOLBTmedian[iCen] = (TH1F *)fileNLO->Get(Form("histIaaCOLBTmedian_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     histIaaCOLBTmedian[iCen]->SetLineWidth(8);
-    histIaaCOLBTmedian[iCen]->SetFillStyle(3008);
+    histIaaCOLBTmedian[iCen]->SetFillStyle(3001);
     histIaaCOLBTmedian[iCen]->SetLineColor(kTeal + 3);
     histIaaCOLBTmedian[iCen]->SetFillColorAlpha(kGreen + 2, 0.450);
     
@@ -244,7 +244,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     
     histDztPbPbCOLBTmedian[iCen] = (TH1F *)fileNLO->Get(Form("histDztPbPbCOLBTmedian_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     histDztPbPbCOLBTmedian[iCen]->SetLineWidth(8);
-    histDztPbPbCOLBTmedian[iCen]->SetFillStyle(3008);
+    histDztPbPbCOLBTmedian[iCen]->SetFillStyle(3001);
     histDztPbPbCOLBTmedian[iCen]->SetLineColor(kTeal + 3);
     histDztPbPbCOLBTmedian[iCen]->SetFillColorAlpha(kGreen + 2, 0.45);
     
@@ -980,8 +980,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     if (iCen == 0)
     {
       legZTPbPbppSingleModNLO[iCen] = LegStd(legZTPbPbppSingleModNLO[iCen], 0.170, 0.02, 0.350, 0.315);
-      legZTPbPbppSingleModNLO[iCen]->AddEntry(grDztNLOmedianpp, Form("NLO pQCD, pp"), "l");
-      legZTPbPbppSingleModNLO[iCen]->AddEntry(grDztNLOmedian[0], "NLO pQCD, Pb#font[122]{-}Pb with #hat{#it{q}},", "lf");
+      legZTPbPbppSingleModNLO[iCen]->AddEntry(grDztNLOmedianpp, Form("NLO pQCD"), "l");
+      legZTPbPbppSingleModNLO[iCen]->AddEntry(grDztNLOmedian[0], "NLO pQCD with #it{E}_{loss}, Pb#font[122]{-}Pb", "lf");
       legZTPbPbppSingleModNLO[iCen]->AddEntry((TObject *)0, "CT18A + EPPS21 nPDFs, KKP FFs,", "");
       legZTPbPbppSingleModNLO[iCen]->AddEntry((TObject *)0, "X. N. Wang and M. Xie", "");
       legZTPbPbppSingleModNLO[iCen]->AddEntry(histDztPbPbCOLBTmedianSyst[0], "CoLBT-hydro, Pb#font[122]{-}Pb,", "lf");
@@ -990,8 +990,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     else if (iCen == 1)
     {
       legZTPbPbppSingleModNLO[iCen] = LegStd(legZTPbPbppSingleModNLO[iCen], 0.170, 0.02, 0.350, 0.315);
-      legZTPbPbppSingleModNLO[iCen]->AddEntry(grDztNLOmedianpp, Form("NLO pQCD, pp"), "l");
-      legZTPbPbppSingleModNLO[iCen]->AddEntry(grDztNLOmedian[1], "NLO pQCD, Pb#font[122]{-}Pb with #hat{#it{q}},", "lf");
+      legZTPbPbppSingleModNLO[iCen]->AddEntry(grDztNLOmedianpp, Form("NLO pQCD"), "l");
+      legZTPbPbppSingleModNLO[iCen]->AddEntry(grDztNLOmedian[1], "NLO pQCD with #it{E}_{loss}, Pb#font[122]{-}Pb", "lf");
       legZTPbPbppSingleModNLO[iCen]->AddEntry((TObject *)0, "CT18A + EPPS21 nPDFs, KKP FFs,", "");
       legZTPbPbppSingleModNLO[iCen]->AddEntry((TObject *)0, "X. N. Wang and M. Xie", "");
       legZTPbPbppSingleModNLO[iCen]->AddEntry(histDztPbPbCOLBTmedianSyst[1], "CoLBT-hydro, Pb#font[122]{-}Pb,", "lf");
@@ -1000,8 +1000,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     else if (iCen == 2)
     {
       legZTPbPbppSingleModNLO[iCen] = LegStd(legZTPbPbppSingleModNLO[iCen], 0.170, 0.134, 0.350, 0.315);
-      legZTPbPbppSingleModNLO[iCen]->AddEntry(grDztNLOmedianpp, Form("NLO pQCD, pp"), "l");
-      legZTPbPbppSingleModNLO[iCen]->AddEntry(grDztNLOmedian[2], "NLO pQCD, Pb#font[122]{-}Pb with #hat{q},", "lf");
+      legZTPbPbppSingleModNLO[iCen]->AddEntry(grDztNLOmedianpp, Form("NLO pQCD"), "l");
+      legZTPbPbppSingleModNLO[iCen]->AddEntry(grDztNLOmedian[2], "NLO pQCD with #it{E}_{loss}, Pb#font[122]{-}Pb", "lf");
       legZTPbPbppSingleModNLO[iCen]->AddEntry((TObject *)0, "CT18A + EPPS21 nPDFs, KKP FFs,", "");
       legZTPbPbppSingleModNLO[iCen]->AddEntry((TObject *)0, "X. N. Wang and M. Xie", "");
     }
@@ -1053,7 +1053,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hIaa_nPDF->Draw("hist same c");
     legRatioSinglePadIpQCDIaaCNM[iCen]->AddEntry(h3[iCen], "#it{I}_{pQCD}", "ep");
     legRatioSinglePadIpQCDIaaCNM[iCen]->AddEntry(hIaa_nPDF, "#it{I}_{AA}, NLO pQCD with CNM only", "l");
-    legRatioSinglePadIpQCDIaaCNM[iCen]->AddEntry(grIaaNLOmedian[iCen], "#it{I}_{AA}, NLO pQCD", "lf");
+    legRatioSinglePadIpQCDIaaCNM[iCen]->AddEntry(grIaaNLOmedian[iCen], "#it{I}_{AA}, NLO pQCD with #it{E}_{loss}", "lf");
     if (iCen == 0)
     {
       histIaaCOLBTmedianSyst[0]->Draw("X0sameE3 ");
@@ -1134,7 +1134,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hGeneral->GetYaxis()->SetTitleOffset(1.0);
   hGeneral->Draw("same");
   grDztNLOmedianpp->Draw("HISTSAMEC ");
-  legdiffcenZtNLOpQCD->AddEntry(grDztNLOmedianpp, "NLO pQCD pp ", "l");
+  legdiffcenZtNLOpQCD->AddEntry(grDztNLOmedianpp, "NLO pQCD", "l");
   legdiffcenZtNLOpQCD->Draw("SAME");
   hSystZt[0]->Draw("samee2");
   hZtCent[0]->Draw("EP X0 same");
