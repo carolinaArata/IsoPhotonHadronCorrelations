@@ -235,7 +235,7 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     PlotStyle(hZtUncertSyst[iCen], kStyleCen[iCen], 2, kColorCen[iCen], "#font[12]{z}_{T}", "Uncertainty %");
     cPurSyst[iCen]->cd();
     hZtUncertSyst[iCen]->Scale(100);
-    hZtUncertSyst[iCen]->Draw("plhist");
+    hZtUncertSyst[iCen]->Draw("pelhist");
     if (iCen == 0)// && !b0_30) // 0-10%
     {
       fExpo [iCen] = new TF1(Form("fitexpoPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.15, 0.8);
@@ -313,7 +313,7 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     hIcpUncertSyst[iCen]->Scale(100);
     hIcpUncertSyst[iCen]->SetMaximum(20);
     hIcpUncertSyst[iCen]->SetAxisRange(0.1,0.6,"X");
-    hIcpUncertSyst[iCen]->Draw("hist same pl");
+    hIcpUncertSyst[iCen]->Draw("hist same ple");
     // Set low uncertainty bin error to 0 to avoid in fit
     if (iCen == 0)// && !b0_30)
     {

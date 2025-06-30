@@ -231,11 +231,13 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   TH1F *hGeneral = new TH1F("hGeneral", "hGeneral", 100, 0, 2);
   PlotStyle(hGeneral, 20, 1, kWhite, kWhite, "#it{z}_{T}", " D(#it{z}_{T}) uncert. (%) ", false);
   hGeneral->SetTitle(" ");
-  hGeneral->GetYaxis()->SetTitleOffset(1.35);
-  hGeneral->GetYaxis()->SetTitleSize(0.052);
-  hGeneral->GetXaxis()->SetTitleSize(0.052);
-  hGeneral->GetYaxis()->SetLabelSize(0.042);
-  hGeneral->GetXaxis()->SetLabelSize(0.042);
+  hGeneral->GetXaxis()->SetRangeUser(0.05, 0.85);
+  hGeneral->GetYaxis()->SetTitleSize(0.05);
+  hGeneral->GetXaxis()->SetTitleSize(0.05);
+  hGeneral->GetYaxis()->SetLabelSize(0.05);
+  hGeneral->GetXaxis()->SetLabelSize(0.05);
+  hGeneral->GetXaxis()->SetTitleOffset(1.0);
+  hGeneral->GetYaxis()->SetTitleOffset(1.);
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     //    legUncert[iCen] = LegStd(legUncert[iCen], 0.18, 0.430, 0.65, 0.66);
@@ -256,13 +258,18 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     gPad->SetTickx();
     gPad->SetTicky();
 
-    cAllSyst->cd(iCen + 1)->SetTopMargin(0.015);
+    //cAllSyst->cd(iCen + 1)->SetTopMargin(0.015);
+    //cAllSyst->cd(iCen + 1)->SetRightMargin(0.022);
+    //cAllSyst->cd(iCen + 1)->SetLeftMargin(0.1);
+    //cAllSyst->cd(iCen + 1)->SetBottomMargin(0.11);
+
+    cAllSyst->cd(iCen + 1)->SetTopMargin(0.022);
     cAllSyst->cd(iCen + 1)->SetRightMargin(0.022);
-    cAllSyst->cd(iCen + 1)->SetLeftMargin(0.1);
-    cAllSyst->cd(iCen + 1)->SetBottomMargin(0.11);
-    gStyle->SetPadRightMargin(0.05);
-    gStyle->SetPadLeftMargin(0.20);
-    gStyle->SetPadBottomMargin(0.15);
+    cAllSyst->cd(iCen + 1)->SetLeftMargin(0.12);
+    cAllSyst->cd(iCen + 1)->SetBottomMargin(0.15);
+    //gStyle->SetPadRightMargin(0.05);
+    //gStyle->SetPadLeftMargin(0.20);
+    //gStyle->SetPadBottomMargin(0.15);
     hZtStatUncert[iCen]->Scale(100);
 
     hZtStatUncert[iCen]->GetYaxis()->SetNdivisions(511);
@@ -370,6 +377,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   ////// Plot zT with systematics ////////
   ///////////////////////////////////////
 
+  TCanvas *cPlotZtStatOnly = canvasStd("cPlotZtStatOnly", 1, 1);
   TCanvas *cOverlap[nCen];
   TH1F *hfZtSyst[nCen];
   for (int iCen = 0; iCen < nCen; iCen++)
@@ -389,13 +397,16 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     hfZtSyst[iCen]->SetFillColor(kBlue - 10);
     hfZtSyst[iCen]->Draw("samee2");
     fZt[iCen]->Draw("same");
+    cPlotZtStatOnly->cd();
+    fZt[iCen]->Draw("same");
     TLatex *ALICEtex1 = LatexStdISO(ALICEtex1, 0.50, 0.84, 0.04, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
     cOverlap[iCen]->Print(Form("%s/SystSh%s/zTwithSystCent%d_%d%s.pdf", dirPlot.Data(), shshBkg.Data(), cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
-
     fSystFile->cd();
     fZt[iCen]->Write();
     hfZtSyst[iCen]->Write();
   }
+    //TLatex *ALICEtex1ZtStatOnly = LatexStdISO(ALICEtex1ZtStatOnly, 0.50, 0.84, 0.04, cenBins[0], cenBins[1], ptMin, ptMax, false);
+    cPlotZtStatOnly->Print(Form("%s/SystSh%s/cZtStatOnlyAllCent%s.pdf", dirPlot.Data(), shshBkg.Data(), sPtAll.Data()));
 
   /////////////////////////////////////////////////////////////////////////
   //////////////         Compute Icp systematics       ///////////////////
@@ -578,8 +589,6 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     latIcp->SetTextSize(0.05);
     latIcp->SetNDC();
     latIcp->DrawLatex(0.5, 0.84, Form("#bf{%d#font[122]{-}%d%% / 50#font[122]{-}90%%}", cenBins[iCen], cenBins[iCen + 1]));
-    // TLatex *ALICEtexIcp1 = LatexStdIcp(ALICEtexIcp1, 0.46, 0.92, cenBins[0], cenBins[1], ptMin, ptMax);
-    // legSystIcp[iCen]->Draw("same");
   }
 
   cSystIcp->cd(3);

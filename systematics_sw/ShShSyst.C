@@ -229,12 +229,12 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 			hZtSystem[iSyst][iCen]->SetDirectory(0);
 			PlotStyle(hZtSystem[iSyst][iCen], 33, 2, kColorSyst[iSyst], "z_{T}", "Uncertainty %");
 			hZtSystem[iSyst][iCen]->GetYaxis()->SetRangeUser(-1, 50);
-			hZtSystem[iSyst][iCen]->Draw("hist same p ");
+			hZtSystem[iSyst][iCen]->Draw("hist same pe");
 		}
 		hZtSystFinal[iCen]->Scale(100);
 		hZtSystFinal[iCen]->SetDirectory(0);
 		PlotStyle(hZtSystFinal[iCen], 20, 2, kPink + 5, "z_{T}", "Uncertainty %");
-		hZtSystFinal[iCen]->Draw("hist same p ");
+		hZtSystFinal[iCen]->Draw("hist same pe");
 		legZtSyst[iCen]->AddEntry(hZtSystem[0][iCen], "Bkg. #sigma^{2}_{long, 5#times5}: 0.50-1.00", "lp");
 		legZtSyst[iCen]->AddEntry(hZtSystem[1][iCen], "Bkg. #sigma^{2}_{long, 5#times5}: 0.40-0.80", "lp");
 		legZtSyst[iCen]->AddEntry(hZtSystem[2][iCen], "Bkg. #sigma^{2}_{long, 5#times5}: 0.35-1.00", "lp");
