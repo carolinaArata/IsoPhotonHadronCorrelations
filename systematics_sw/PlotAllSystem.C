@@ -274,7 +274,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
 
     hZtStatUncert[iCen]->GetYaxis()->SetNdivisions(511);
     hZtStatUncert[iCen]->GetYaxis()->SetDecimals();
-    hGeneral->GetYaxis()->SetRangeUser(0, 20);
+    hGeneral->GetYaxis()->SetRangeUser(0, 35);
     hGeneral->GetXaxis()->SetRangeUser(0.05, 0.85);
     hGeneral->SetTitle(" ");
     hGeneral->SetMinimum(-2);

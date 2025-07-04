@@ -127,8 +127,8 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     }
   }
 
-  //////////////////////////////////////////////////////////
-  ////////////////// Plotting style ///////////////////////
+  ////////////////////////////////////////////////////////
+  ////////////////// Plotting style //////////////////////
   ////////////////////////////////////////////////////////
 
   TCanvas *cZt[nCen];
@@ -280,12 +280,12 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     cPurSyst[iCen]->Print(Form("%s/hUncertPuritySyst.pdf", PathPlot.Data()));
     for (int ibin = 0; ibin < nZtBin; ibin++)
     {
-      hPurUncertFromFit[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hPurUncertFromFit[iCen]->GetBinCenter(ibin + 1)));
+      // Modification required by ARC: syst estimated from expo not constant
+      // hPurUncertFromFit[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hPurUncertFromFit[iCen]->GetBinCenter(ibin + 1)));
+      hPurUncertFromFit[iCen]->SetBinContent(ibin + 1, fExpo[iCen]->Eval(hPurUncertFromFit[iCen]->GetBinCenter(ibin + 1)));
     }
     PlotStyle(hPurUncertFromFit[iCen], kStyleCen[iCen], 2, kColorCen[iCen], "#font[12]{z}_{T}", "Uncertainty %");
-    // new TCanvas();
-    // hPurUncertFromFit[iCen]->SetDirectory(0);
-    // hPurUncertFromFit[iCen]->Draw("");
+
     fPurSyst->cd();
     hZtUncertSyst[iCen]->Write();
     fConst[iCen]->Write();
@@ -311,7 +311,8 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     PlotStyle(hIcpUncertSyst[iCen], kStyleCen[iCen], 2, kColorCen[iCen], "#font[12]{z}_{T}", "Uncertainty %");
     cPurSystIcp[iCen]->cd();
     hIcpUncertSyst[iCen]->Scale(100);
-    hIcpUncertSyst[iCen]->SetMaximum(20);
+    hIcpUncertSyst[iCen]->GetYaxis()->SetRangeUser(-20,50);
+    //hIcpUncertSyst[iCen]->SetMaximum(20);
     hIcpUncertSyst[iCen]->SetAxisRange(0.1,0.6,"X");
     hIcpUncertSyst[iCen]->Draw("hist same ple");
     // Set low uncertainty bin error to 0 to avoid in fit
@@ -367,7 +368,9 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
 
     for (int ibin = 0; ibin < nZtBin; ibin++)
     {
-      hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fConstIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
+      // Modification required by ARC: syst estimated from expo not constant 
+      // hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fConstIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
+      hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fExpoIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
 //      if (iCen == 0)
 //      {
 //        hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fConstIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
