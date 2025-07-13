@@ -29,12 +29,13 @@ Int_t kColorMark[] = {kAzure + 2, kOrange + 8, kViolet + 7, kCyan - 2};
 Int_t kColorMarkFill[] = {kAzure + 6, kOrange + 7, kViolet + 6, kCyan - 2};
 Int_t nAssoc = 7;
 
-int nZtBinThin = 9;
-double assocZtThinner[] = {0., 0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 0.80, 1.00, 1.05};
+int nZtBinThin = 28;
+double assocZtThinner[] = {0., 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.18, 0.20, 0.21, 0.22, 0.23, 0.24, 0.28, 0.30, 0.40, 0.60, 0.80, 1.00, 1.05};
+TH1F *shiftBinXinHisto(TH1F *h1, TH1F *h1Shifted, int iCen);
 
 void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror = true, TString sMixed = "Mixed", TString shshBkg = "0.40-1.00", TString dirPlot = "zTresults_PbPb_TheorycheckCode", TString dirInputRef = "Output_checkCode", bool b0_30 = true)
 {
-  
+
   TString sMirror;
   if (Mirror)
   {
@@ -67,29 +68,27 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     cenBins.push_back(90);
     dirSyst = "Systematics_checkCode";
   }
-  
-  
+
   TString shshString[2] = {"0.10-0.30", shshBkg};
   TString sPtAll = Form("_Pt%2.0f_%2.0f", ptMin, ptMax);
-  
+
   // Define where to save the results
-  TString processline = Form(".! mkdir -pv %s",dirPlot.Data()) ;
+  TString processline = Form(".! mkdir -pv %s", dirPlot.Data());
   gROOT->ProcessLine(processline.Data());
-  
+
   // Getter zT distributions
   TFile *fPlot[nCen]; // root file with data and MC
-  
+
   TH1F *hZtCent[nCen];    // zT data
   TH1F *hZt_MC_Gen[nCen]; // MC Gen pp
   TH1F *hZt_MC_Rec[nCen]; // MC Rec pp
   TH1F *h3[nCen];
-  
 
-  //Getter pp-pPb data
-  TH1F* hDztpp, *hDztpPb, *hIpPbpp;
-  TH1F* hDztpp_stat, *hDztpPb_stat, *hIpPbpp_stat;
-  TH1F* hDztpp_systErrGet, *hDztpPb_systErrGet, *hIpPbpp_systErrGet;
-  TH1F* hDztpp_syst, *hDztpPb_syst, *hIpPbpp_syst;
+  // Getter pp-pPb data
+  TH1F *hDztpp, *hDztpPb, *hIpPbpp;
+  TH1F *hDztpp_stat, *hDztpPb_stat, *hIpPbpp_stat;
+  TH1F *hDztpp_systErrGet, *hDztpPb_systErrGet, *hIpPbpp_systErrGet;
+  TH1F *hDztpp_syst, *hDztpPb_syst, *hIpPbpp_syst;
 
   TFile *fileNLO = new TFile("RootFiles/fileNLO.root ");
 
@@ -107,7 +106,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   TH1F *histRatioPYTHIACoLBt[2];
   TCanvas *cRatioPYTHIACoLBt[2];
   TCanvas *cPYTHIA_CoLBT[2];
-  
+
   cout << "Getter zt distributions: data and models" << endl;
 
   ///////////////////////////////////////////
@@ -115,57 +114,57 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   /////////////////////////////////////////
 
   TFile *finputpp_pPbPaper_DztpPb = new TFile("TheoryCalculations/HEPData-ins1798523-v1-root.root");
-  TDirectory *dirPaper_DztpPb = (TDirectory*)finputpp_pPbPaper_DztpPb->Get("Figure 5 Top Panel");
-  
-  hDztpPb = (TH1F*)dirPaper_DztpPb->Get("Hist1D_y1");
-  hDztpPb_stat = (TH1F*)dirPaper_DztpPb->Get("Hist1D_y1_e1");
-  hDztpPb_systErrGet = (TH1F*)dirPaper_DztpPb->Get("Hist1D_y1_e2");
-  hDztpPb_syst = (TH1F*)hDztpPb->Clone("hDztpPb_syst");
-  for(int ibin = 0; ibin<hDztpPb->GetNbinsX(); ibin++)
-  {
-    hDztpPb->SetBinError(ibin+1, hDztpPb_stat->GetBinContent(ibin+1));
-    hDztpPb_syst->SetBinError(ibin+1, hDztpPb_systErrGet->GetBinContent(ibin+1));
-  }
-  cout<<"Address DztpPb "<<endl;
-  cout<<hDztpPb_stat<<endl;
-  cout<<hDztpPb_syst<<endl;
-  PlotStyle(hDztpPb, 20, 1, kBlack, kBlack,"#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false); 
-  PlotStyle(hDztpPb_syst, 20, 1, kBlack, kBlack,"#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false); 
+  TDirectory *dirPaper_DztpPb = (TDirectory *)finputpp_pPbPaper_DztpPb->Get("Figure 5 Top Panel");
 
-  hDztpp = (TH1F*)dirPaper_DztpPb->Get("Hist1D_y2");
-  hDztpp_stat = (TH1F*)dirPaper_DztpPb->Get("Hist1D_y2_e1");
-  hDztpp_systErrGet = (TH1F*)dirPaper_DztpPb->Get("Hist1D_y2_e2");
-  hDztpp_syst = (TH1F*)hDztpPb->Clone("hDztpp_syst");
-  for(int ibin = 0; ibin<hDztpp->GetNbinsX(); ibin++)
+  hDztpPb = (TH1F *)dirPaper_DztpPb->Get("Hist1D_y1");
+  hDztpPb_stat = (TH1F *)dirPaper_DztpPb->Get("Hist1D_y1_e1");
+  hDztpPb_systErrGet = (TH1F *)dirPaper_DztpPb->Get("Hist1D_y1_e2");
+  hDztpPb_syst = (TH1F *)hDztpPb->Clone("hDztpPb_syst");
+  for (int ibin = 0; ibin < hDztpPb->GetNbinsX(); ibin++)
   {
-    hDztpp->SetBinError(ibin+1, hDztpp_stat->GetBinContent(ibin+1));
-    hDztpp_syst->SetBinError(ibin+1, hDztpp_systErrGet->GetBinContent(ibin+1));
+    hDztpPb->SetBinError(ibin + 1, hDztpPb_stat->GetBinContent(ibin + 1));
+    hDztpPb_syst->SetBinError(ibin + 1, hDztpPb_systErrGet->GetBinContent(ibin + 1));
   }
-  cout<<"Address Dztpp "<<endl;
-  cout<<hDztpp_stat<<endl;
-  cout<<hDztpp_syst<<endl;
-  PlotStyle(hDztpp, 20, 1, kBlack, kBlack,"#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false); 
-  PlotStyle(hDztpp_syst, 20, 1, kBlack, kBlack,"#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false); 
+  cout << "Address DztpPb " << endl;
+  cout << hDztpPb_stat << endl;
+  cout << hDztpPb_syst << endl;
+  PlotStyle(hDztpPb, 20, 1, kBlack, kBlack, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
+  PlotStyle(hDztpPb_syst, 20, 1, kBlack, kBlack, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
+
+  hDztpp = (TH1F *)dirPaper_DztpPb->Get("Hist1D_y2");
+  hDztpp_stat = (TH1F *)dirPaper_DztpPb->Get("Hist1D_y2_e1");
+  hDztpp_systErrGet = (TH1F *)dirPaper_DztpPb->Get("Hist1D_y2_e2");
+  hDztpp_syst = (TH1F *)hDztpp->Clone("hDztpp_syst");
+  for (int ibin = 0; ibin < hDztpp->GetNbinsX(); ibin++)
+  {
+    hDztpp->SetBinError(ibin + 1, hDztpp_stat->GetBinContent(ibin + 1));
+    hDztpp_syst->SetBinError(ibin + 1, hDztpp_systErrGet->GetBinContent(ibin + 1));
+  }
+  cout << "Address Dztpp " << endl;
+  cout << hDztpp_stat << endl;
+  cout << hDztpp_syst << endl;
+  PlotStyle(hDztpp, 20, 1, kBlack, kBlack, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
+  PlotStyle(hDztpp_syst, 20, 1, kBlack, kBlack, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
 
   ////////////////////////////////////////////
   /////////// data: IpA, pPb and pp /////////
   //////////////////////////////////////////
   TFile *finputpp_pPbPaper_IpPbpp = new TFile("TheoryCalculations/HEPData-ins1798523-v1-Figure_5_Bottom_Panel.root");
-  TDirectory *dirPaper_IpPbpp = (TDirectory*)finputpp_pPbPaper_IpPbpp->Get("Figure 5 Bottom Panel");
-  hIpPbpp = (TH1F*)dirPaper_IpPbpp->Get("Hist1D_y1");
-  hIpPbpp_stat = (TH1F*)dirPaper_IpPbpp->Get("Hist1D_y1_e1");
-  hIpPbpp_systErrGet = (TH1F*)dirPaper_IpPbpp->Get("Hist1D_y1_e2");
-  hIpPbpp_syst = (TH1F*)hIpPbpp->Clone("hIpPbpp_syst");
-  for(int ibin = 0; ibin<hIpPbpp->GetNbinsX(); ibin++)
+  TDirectory *dirPaper_IpPbpp = (TDirectory *)finputpp_pPbPaper_IpPbpp->Get("Figure 5 Bottom Panel");
+  hIpPbpp = (TH1F *)dirPaper_IpPbpp->Get("Hist1D_y1");
+  hIpPbpp_stat = (TH1F *)dirPaper_IpPbpp->Get("Hist1D_y1_e1");
+  hIpPbpp_systErrGet = (TH1F *)dirPaper_IpPbpp->Get("Hist1D_y1_e2");
+  hIpPbpp_syst = (TH1F *)hIpPbpp->Clone("hIpPbpp_syst");
+  for (int ibin = 0; ibin < hIpPbpp->GetNbinsX(); ibin++)
   {
-    hIpPbpp->SetBinError(ibin+1, hIpPbpp_stat->GetBinContent(ibin+1));
-    hIpPbpp_syst->SetBinError(ibin+1, hIpPbpp_systErrGet->GetBinContent(ibin+1));
+    hIpPbpp->SetBinError(ibin + 1, hIpPbpp_stat->GetBinContent(ibin + 1));
+    hIpPbpp_syst->SetBinError(ibin + 1, hIpPbpp_systErrGet->GetBinContent(ibin + 1));
   }
-  cout<<"Address Iaa = pPb/pp"<<endl;
-  cout<<hIpPbpp_stat<<endl;
-  cout<<hIpPbpp_syst<<endl;
-  PlotStyle(hIpPbpp, 72, 1, kBlack, kBlack,"#it{z}_{T}", "p-Pb/pp", false); 
-  PlotStyle(hIpPbpp_syst, 72, 1, kBlack, kBlack,"#it{z}_{T}", "p-Pb/pp", false); 
+  cout << "Address Iaa = pPb/pp" << endl;
+  cout << hIpPbpp_stat << endl;
+  cout << hIpPbpp_syst << endl;
+  PlotStyle(hIpPbpp, 72, 1, kBlack, kBlack, "#it{z}_{T}", "p-Pb/pp", false);
+  PlotStyle(hIpPbpp_syst, 72, 1, kBlack, kBlack, "#it{z}_{T}", "p-Pb/pp", false);
 
   for (int iCen = 0; iCen < nCen; iCen++)
   {
@@ -175,11 +174,11 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     /////////// data: PbPb /////////
     ///////////////////////////////
     cout << "Get Data and MC and set Plot style" << sCent << endl;
-    fPlot[iCen] = new TFile(Form("%s/fPlot%s%s%s.root", dirInputRef.Data(),shshString[1].Data(), sCent.Data(), sPtAll.Data()));
+    fPlot[iCen] = new TFile(Form("%s/fPlot%s%s%s.root", dirInputRef.Data(), shshString[1].Data(), sCent.Data(), sPtAll.Data()));
     hZt_MC_Gen[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtMCGenIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
     hZt_MC_Rec[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtMCRecIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
     hZtCent[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtEffCorrIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
-    
+
     PlotStyle(hZt_MC_Gen[iCen], 72, 1, kBlack, kBlack, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
     PlotStyle(hZt_MC_Rec[iCen], 21, 1, kOrange + 7, kOrange + 7, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
     PlotStyle(hZtCent[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
@@ -189,45 +188,45 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     /////////////////////////////////////////////////
     /////////// theory: NLO + qhat (eLoss) /////////
     ///////////////////////////////////////////////
-    
+
     cout << "Get NLO calclulations and set Plot style: " << sCent << endl;
     grIaaNLOmedian[iCen] = (TGraphAsymmErrors *)fileNLO->Get(Form("grIaaNLOmedian%s", sCent.Data()));
-    cout<<grIaaNLOmedian[iCen]->GetName()<<endl;
+    cout << grIaaNLOmedian[iCen]->GetName() << endl;
     grIaaNLOmedian[iCen]->SetLineWidth(8);
     grIaaNLOmedian[iCen]->SetLineColor(kPink + 4);
     grIaaNLOmedian[iCen]->SetFillColorAlpha(kPink - 4, 0.25);
     grIaaNLOmedian[iCen]->SetFillStyle(1001);
-    
+
     grDztNLOmedian[iCen] = (TGraphAsymmErrors *)fileNLO->Get(Form("grDztNLOmedian%s", sCent.Data()));
-    cout<<grDztNLOmedian[iCen]->GetName()<<endl;
+    cout << grDztNLOmedian[iCen]->GetName() << endl;
     grDztNLOmedian[iCen]->SetLineWidth(8);
     grDztNLOmedian[iCen]->SetLineColor(kPink + 4);
     grDztNLOmedian[iCen]->SetFillColorAlpha(kPink - 4, 0.25);
     grDztNLOmedian[iCen]->SetFillStyle(1001);
 
     grIcpNLOmedian[iCen] = (TGraphAsymmErrors *)fileNLO->Get(Form("grDztNLOmedian%s", sCent.Data()));
-    cout<<grDztNLOmedian[iCen]->GetName()<<endl;
+    cout << grDztNLOmedian[iCen]->GetName() << endl;
     grIcpNLOmedian[iCen]->SetLineWidth(8);
     grIcpNLOmedian[iCen]->SetFillStyle(1001);
     grIcpNLOmedian[iCen]->SetLineColor(kPink + 4);
     grIcpNLOmedian[iCen]->SetFillColorAlpha(kMagenta - 7, 0.30);
   }
-    // Set x error, in case it helps in plotting, it does not seem
-    Float_t widthPqcd[] = {0.025, 0.025, 0.05, 0.05, 0.10, 0.10};
-    for(Int_t iCen = 0; iCen < nCen; iCen++)
+  // Set x error, in case it helps in plotting, it does not seem
+  Float_t widthPqcd[] = {0.025, 0.025, 0.05, 0.05, 0.10, 0.10};
+  for (Int_t iCen = 0; iCen < nCen; iCen++)
+  {
+    cout << iCen << endl;
+    Int_t nPoints = grIaaNLOmedian[iCen]->GetN();
+    for (Int_t ibin = 0; ibin < nPoints; ibin++)
     {
-      cout<<iCen<<endl;
-      Int_t nPoints = grIaaNLOmedian[iCen]->GetN();
-      for(Int_t ibin = 0; ibin < nPoints; ibin++)
-      {
-        grIaaNLOmedian[iCen]->SetPointEXhigh(ibin,widthPqcd[ibin]);
-        grIaaNLOmedian[iCen]->SetPointEXlow (ibin,widthPqcd[ibin]);
-        grDztNLOmedian[iCen]->SetPointEXhigh(ibin,widthPqcd[ibin]);
-        grDztNLOmedian[iCen]->SetPointEXlow (ibin,widthPqcd[ibin]);
-        grIcpNLOmedian[iCen]->SetPointEXhigh(ibin,widthPqcd[ibin]);
-        grIcpNLOmedian[iCen]->SetPointEXlow (ibin,widthPqcd[ibin]);
-      }
+      grIaaNLOmedian[iCen]->SetPointEXhigh(ibin, widthPqcd[ibin]);
+      grIaaNLOmedian[iCen]->SetPointEXlow(ibin, widthPqcd[ibin]);
+      grDztNLOmedian[iCen]->SetPointEXhigh(ibin, widthPqcd[ibin]);
+      grDztNLOmedian[iCen]->SetPointEXlow(ibin, widthPqcd[ibin]);
+      grIcpNLOmedian[iCen]->SetPointEXhigh(ibin, widthPqcd[ibin]);
+      grIcpNLOmedian[iCen]->SetPointEXlow(ibin, widthPqcd[ibin]);
     }
+  }
 
   ////////////////////////////////////
   /////////// theory: COLBt /////////
@@ -237,17 +236,17 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     histIaaCOLBTmedian[iCen] = (TH1F *)fileNLO->Get(Form("histIaaCOLBTmedian_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     histIaaCOLBTmedian[iCen]->SetLineWidth(8);
     histIaaCOLBTmedian[iCen]->SetFillStyle(1001);
-    histIaaCOLBTmedian[iCen]->SetLineColor(kAzure+4);
-    histIaaCOLBTmedian[iCen]->SetFillColorAlpha(kBlue-5, 0.20);
-    
+    histIaaCOLBTmedian[iCen]->SetLineColor(kAzure + 4);
+    histIaaCOLBTmedian[iCen]->SetFillColorAlpha(kBlue - 5, 0.20);
+
     histIaaCOLBTmedianSyst[iCen] = (TH1F *)histIaaCOLBTmedian[iCen]->Clone(Form("histIaaCOLBTmedianSyst_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
-    
+
     histDztPbPbCOLBTmedian[iCen] = (TH1F *)fileNLO->Get(Form("histDztPbPbCOLBTmedian_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     histDztPbPbCOLBTmedian[iCen]->SetLineWidth(8);
     histDztPbPbCOLBTmedian[iCen]->SetFillStyle(1001);
-    histDztPbPbCOLBTmedian[iCen]->SetLineColor(kAzure+4);
-    histDztPbPbCOLBTmedian[iCen]->SetFillColorAlpha(kBlue-5, 0.20);
-    
+    histDztPbPbCOLBTmedian[iCen]->SetLineColor(kAzure + 4);
+    histDztPbPbCOLBTmedian[iCen]->SetFillColorAlpha(kBlue - 5, 0.20);
+
     histDztPbPbCOLBTmedianSyst[iCen] = (TH1F *)histDztPbPbCOLBTmedian[iCen]->Clone(Form("histDztPbPbCOLBTmedianSyst_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     //////////////////////////////////////////
     //////// Test ratio PYTHIA/COLBT ////////
@@ -255,16 +254,16 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     histRatioPYTHIACoLBt[iCen] = (TH1F *)hZt_MC_Rec[iCen]->Clone(Form("histRatioPYTHIACoLBt_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     histRatioPYTHIACoLBt[iCen]->Divide(histDztPbPbCOLBTmedian[iCen]);
     cRatioPYTHIACoLBt[iCen] = new TCanvas(Form("cRatioPYTHIACoLBtCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("cRatioPYTHIACoLBtCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), 800, 600);
-    
+
     histRatioPYTHIACoLBt[iCen]->Draw("hist");
     cRatioPYTHIACoLBt[iCen]->Print(dirPlot + Form("/cRatioPYTHIACoLBtCen%d_%d.pdf", cenBins[iCen], cenBins[iCen + 1]));
-    
+
     cPYTHIA_CoLBT[iCen] = new TCanvas(Form("cPYTHIA_CoLBTCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("cPYTHIA_CoLBTCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), 800, 600);
     histDztPbPbCOLBTmedian[iCen]->Draw("hist same ");
     hZt_MC_Rec[iCen]->Draw("hist same ");
     cPYTHIA_CoLBT[iCen]->Print(dirPlot + Form("/cPYTHIA_CoLBTCen%d_%d.pdf", cenBins[iCen], cenBins[iCen + 1]));
   }
-  
+
   /////////////////////////////////////////////
   /////////// theory: nPDF only //////////////
   ///////////////////////////////////////////
@@ -287,12 +286,12 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   /////////////////////////////////////
   /////////// theory: NLO pp /////////
   ///////////////////////////////////
-  
+
   grDztNLOmedianpp = (TH1F *)fileNLO->Get(Form("grDztNLOmedian_pp"));
   grDztNLOmedianpp->SetLineWidth(8);
   grDztNLOmedianpp->SetLineColor(kRed - 4);
   grDztNLOmedianpp->SetLineStyle(1);
-  
+
   TCanvas *cPP_NLO = new TCanvas("cPP_NLO", "cPP_NLO", 800, 600);
   gPad->SetLogy();
   grDztNLOmedianpp->Draw("hist same c ");
@@ -302,7 +301,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   //////////////////////////////////////////
   //////// Get total systematics //////////
   ////////////////////////////////////////
-  
+
   cout << "Getter zt distribution systematics" << endl;
   TFile *fSystFile = new TFile(Form("%s/fAllSystFile%s%s%s%s.root", dirSyst.Data(), sMixed.Data(), shshBkg.Data(), sMirror.Data(), sPtAll.Data()));
   cout << dirSyst << endl;
@@ -320,36 +319,36 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       cout << ibin << "-" << ibin + 1 << " systematics: " << hSystZt[iCen]->GetBinContent(ibin + 1) << " pm " << hSystZt[iCen]->GetBinError(ibin + 1) << endl;
     }
   }
-  
+
   //////////////////////////////////////////////////////////
   //////// Compute Iaa with pp from theory ////////////////
   /////// Different binning between data and theory //////
   ///////////////////////////////////////////////////////
-  
+
   Int_t nAssocNLO = 6;
   double assocZtNLO[] = {0.1, 0.15, 0.2, 0.3, 0.4, 0.6, 1.0};
   TH1F *hPbPb_NLO[nCen];
   TH1F *hPbPbPYTHIA_NLO[nCen];
   TH1F *hPbPb_NLOSyst[nCen];
-  
+
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     hPbPb_NLO[iCen] = new TH1F(Form("hPbPb%d_%d_NLO", cenBins[iCen], cenBins[iCen + 1]), Form("hPbPb%d_%d_NLO", cenBins[iCen], cenBins[iCen + 1]), nAssocNLO, assocZtNLO);
     hPbPb_NLOSyst[iCen] = new TH1F(Form("hPbPb%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), Form("hPbPb%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), nAssocNLO, assocZtNLO);
-    
+
     hPbPbPYTHIA_NLO[iCen] = new TH1F(Form("hPbPbPYTHIA%d_%d_NLO", cenBins[iCen], cenBins[iCen + 1]), Form("hPbPbPYTHIA%d_%d_NLO", cenBins[iCen], cenBins[iCen + 1]), nAssocNLO, assocZtNLO);
     // hPbPbPYTHIA_NLOSyst[iCen] = new TH1F(Form("hPbPbPYTHIA%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), Form("hPbPb%d_%d_NLOSyst", cenBins[iCen], cenBins[iCen + 1]), nAssocNLO, assocZtNLO);
     for (int ibin = 0; ibin < nAssocNLO; ibin++)
     {
-      cout<<"Cent: "<<iCen<<endl;
-      //cout << grDztNLOmedianpp->GetBinCenter(ibin)<<endl;
-      //cout << hPbPb_NLOSyst[iCen]->GetBinCenter(ibin)<<endl;
-      //cout << hPbPb_NLO[iCen]->GetBinCenter(ibin ) << "____" << hZtCent[iCen]->GetBinCenter(ibin + 1) << endl;
-      cout << hPbPb_NLO[iCen]->GetBinCenter(ibin + 1)<<")"<<hPbPb_NLO[iCen]->GetBinContent(ibin + 1) << "____" << grDztNLOmedianpp->GetBinContent(ibin + 1) << " Ratio: " << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) / grDztNLOmedianpp->GetBinContent(ibin + 1) << endl;
-      
+      cout << "Cent: " << iCen << endl;
+      // cout << grDztNLOmedianpp->GetBinCenter(ibin)<<endl;
+      // cout << hPbPb_NLOSyst[iCen]->GetBinCenter(ibin)<<endl;
+      // cout << hPbPb_NLO[iCen]->GetBinCenter(ibin ) << "____" << hZtCent[iCen]->GetBinCenter(ibin + 1) << endl;
+      cout << hPbPb_NLO[iCen]->GetBinCenter(ibin + 1) << ")" << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) << "____" << grDztNLOmedianpp->GetBinContent(ibin + 1) << " Ratio: " << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) / grDztNLOmedianpp->GetBinContent(ibin + 1) << endl;
+
       hPbPb_NLO[iCen]->SetBinContent(ibin + 1, hZtCent[iCen]->GetBinContent(ibin + 1));
       hPbPb_NLO[iCen]->SetBinError(ibin + 1, hZtCent[iCen]->GetBinError(ibin + 1));
-      
+
       cout << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) << "____" << grDztNLOmedianpp->GetBinContent(ibin + 1) << " Ratio: " << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) / grDztNLOmedianpp->GetBinContent(ibin + 1) << endl;
       hPbPbPYTHIA_NLO[iCen]->SetBinContent(ibin + 1, hZt_MC_Rec[iCen]->GetBinContent(ibin + 1));
       hPbPbPYTHIA_NLO[iCen]->SetBinError(ibin + 1, hZt_MC_Rec[iCen]->GetBinError(ibin + 1));
@@ -357,11 +356,11 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       hPbPb_NLOSyst[iCen]->SetBinError(ibin + 1, hSystZt[iCen]->GetBinError(ibin + 1));
       cout << hPbPb_NLOSyst[iCen]->GetBinError(ibin + 1) << endl;
       cout << grDztNLOmedianpp->GetBinError(ibin + 1) << endl;
-      cout<<"Cent: "<<iCen<<endl;
+      cout << "Cent: " << iCen << endl;
     }
-    cout<<"Centrality"<<iCen<<endl;
+    cout << "Centrality" << iCen << endl;
     hPbPb_NLO[iCen]->Divide(grDztNLOmedianpp);
-    hPbPbPYTHIA_NLO[0]->Divide(histDztPbPbCOLBTmedian[0]); //different number of bins
+    hPbPbPYTHIA_NLO[0]->Divide(histDztPbPbCOLBTmedian[0]); // different number of bins
     hPbPb_NLOSyst[iCen]->Divide(grDztNLOmedianpp);
 
     PlotStyle(hPbPb_NLO[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "Ratio", false);
@@ -369,34 +368,35 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     PlotStyle(hPbPb_NLOSyst[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "Ratio", true);
     // PlotStyle(hPbPb_NLOSyst[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "#it{I}_{NLO} = Pb#font[122]{-}Pb/NLO pQCD", true);
   }
-  
+
   hPbPb_NLO[0]->GetXaxis()->SetRangeUser(0., 1.0);
   hPbPb_NLO[1]->GetXaxis()->SetRangeUser(0., 0.6);
   hPbPb_NLO[2]->GetXaxis()->SetRangeUser(0., 0.6);
   hPbPb_NLOSyst[0]->GetXaxis()->SetRangeUser(0., 1.0);
   hPbPb_NLOSyst[1]->GetXaxis()->SetRangeUser(0., 0.6);
   hPbPb_NLOSyst[2]->GetXaxis()->SetRangeUser(0., 0.6);
-  
+
   hPbPbPYTHIA_NLO[0]->GetXaxis()->SetRangeUser(0., 1.0);
   hPbPbPYTHIA_NLO[1]->GetXaxis()->SetRangeUser(0., 0.6);
   hPbPbPYTHIA_NLO[2]->GetXaxis()->SetRangeUser(0., 0.6);
-  
+
   ////////////////////////////////////////////////////////
   //////// Plotting final results and theory /////////////
   ///////////////////////////////////////////////////////
-  
+
   TCanvas *cPbPbPYTHIA_NLORatio[nCen];
   TCanvas *cPbPb_NLORatio[nCen];
   TLatex *latPbPb_NLO[nCen];
   TLegend *legPbPb_NLOratio[nCen];
-  TH1F *hGeneralRatio = new TH1F("hGeneralRatio", "hGeneralRatio", nZtBinThin, assocZtThinner);
+  // TH1F *hGeneralRatio = new TH1F("hGeneralRatio", "hGeneralRatio", nZtBinThin, assocZtThinner);
+  TH1F *hGeneralRatio = new TH1F("hGeneralRatio", "hGeneralRatio", 105, 0., 1.05);
   PlotStyle(hGeneralRatio, 20, 1, kWhite, kWhite, " #it{z}_{T} ", " #it{I}_{pQCD} = Pb#font[122]{-}Pb (data) / pp (pQCD)", false);
   TGraph *lineNLO = DrawLine(lineNLO, 0, 0.5, 1.2, 0.5);
   TGraph *lineNLO1 = DrawLine(lineNLO1, 0, 1, 1.2, 1);
   TLegend *legRatioNLO = LegStd(legRatioNLO, 0.12, 0.80, 0.32, 0.88);
   // legRatioNLO->SetHeader("#it{I}_{NLO pQCD} = #frac{Pb#font[122]{-}Pb}{NLO pQCD pp} ");
-  //legRatioNLO->SetTextSize(0.03);
-  //legRatioNLO->SetHeader("#it{I}_{pQCD} = #frac{Pb#font[122]{-}Pb}{pQCD pp}");
+  // legRatioNLO->SetTextSize(0.03);
+  // legRatioNLO->SetHeader("#it{I}_{pQCD} = #frac{Pb#font[122]{-}Pb}{pQCD pp}");
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     cPbPb_NLORatio[iCen] = canvasStdIaa(Form("cPbPb_NLORatioCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), 1, 1);
@@ -414,7 +414,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hPbPb_NLOSyst[iCen]->Draw("E2Psame ");
     hPbPb_NLO[iCen]->Draw("EPX0same");
     grIaaNLOmedian[iCen]->Draw("pl3 same");
-    
+
     if (iCen == 0)
     {
       legPbPb_NLOratio[iCen] = LegStd(legPbPb_NLOratio[iCen], 0.14, 0.16, 0.36, 0.40);
@@ -456,10 +456,12 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hPbPbPYTHIA_NLO[iCen]->Draw("HIST");
     cPbPbPYTHIA_NLORatio[iCen]->Print(dirPlot + Form("/RatioPYTHIANLOCen%d_%d.pdf", cenBins[iCen], cenBins[iCen + 1]));
   }
-  
+
   TCanvas *cPbPb_NLORatioAll = canvasStdIaa(Form("cPbPb_NLORatioAll"), 1, 1);
   TLatex *latPbPb_NLOAll;
   TLegend *legPbPb_NLOratioAll = LegStd(legPbPb_NLOratioAll, 0.52, 0.52, 0.96, 0.72);
+  TH1F *hPbPb_NLO_Shifted[nCen];
+  TH1F *hPbPb_NLOSyst_Shifted[nCen];
   legPbPb_NLOratioAll->SetNColumns(2);
   legPbPb_NLOratioAll->SetTextSize(0.034);
   for (int iCen = 0; iCen < nCen; iCen++)
@@ -467,6 +469,10 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     // hGeneralRatio->GetYaxis()->SetNdivisions(505);
     // hGeneralRatio->GetYaxis()->SetNdivisions(505);
     //  hGeneralRatio->GetXaxis()->SetRangeUser(0.15, 1.0);
+    hPbPb_NLO_Shifted[iCen] = new TH1F(Form("hPbPb_NLO_Shifted_Cen%d_%d", iCen, iCen + 1), Form("hPbPb_NLO_Shifted_Cen%d_%d", iCen, iCen + 1), 105, 0, 1.05);
+    hPbPb_NLOSyst_Shifted[iCen] = new TH1F(Form("hPbPb_NLOSyst_Shifted_Cen%d_%d", iCen, iCen + 1), Form("hPbPb_NLOSyst_Shifted_Cen%d_%d", iCen, iCen + 1), 105, 0, 1.05);
+    PlotStyle(hPbPb_NLO_Shifted[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "Ratio", false);
+    PlotStyle(hPbPb_NLOSyst_Shifted[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "Ratio", true);
     hGeneralRatio->SetTitle(" ");
     hGeneralRatio->GetYaxis()->CenterTitle(false);
     hGeneralRatio->GetYaxis()->SetRangeUser(-0.01, 2.4);
@@ -478,20 +484,25 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hGeneralRatio->GetXaxis()->SetTitleSize(0.055);
     hGeneralRatio->SetLineWidth(0);
     hGeneralRatio->Draw("histsame");
-    hPbPb_NLOSyst[iCen]->Draw("E2Psame ");
-    hPbPb_NLO[iCen]->Draw("EPX0same");
-    // grIaaNLOmedian[iCen]->Draw("pl3 same");
-    //hPbPb_NLOSyst[iCen]->SetLineColor(kWhite);
+    ///////// Shift a bit the distributions //////
+    hPbPb_NLO_Shifted[iCen] = shiftBinXinHisto(hPbPb_NLO[iCen], hPbPb_NLO_Shifted[iCen], iCen);
+    hPbPb_NLOSyst_Shifted[iCen] = shiftBinXinHisto(hPbPb_NLOSyst[iCen], hPbPb_NLOSyst_Shifted[iCen], iCen);
+    //
+    hPbPb_NLOSyst_Shifted[iCen]->Draw("E2Psame");
+    hPbPb_NLO_Shifted[iCen]->Draw("EPX0same");
+    // hPbPb_NLOSyst[iCen]->Draw("E2Psame");
+    // hPbPb_NLO[iCen]->Draw("EPX0same");
+    //  grIaaNLOmedian[iCen]->Draw("pl3 same");
+    // hPbPb_NLOSyst[iCen]->SetLineColor(kWhite);
     legPbPb_NLOratioAll->AddEntry(hPbPb_NLO[iCen], Form("#it{I}_{pQCD}, %d#font[122]{-}%d%% stat.", cenBins[iCen], cenBins[iCen + 1]), "ep");
     legPbPb_NLOratioAll->AddEntry(hPbPb_NLOSyst[iCen], "syst. unc.", "f");
   }
   latPbPb_NLOAll = LatexStdISORatio(latPbPb_NLOAll, 0.440, 0.92, 0.04, cenBins[0], cenBins[1], ptMin, ptMax, false);
   legPbPb_NLOratioAll->Draw("same");
-  //legRatioNLO->Draw("same");
+  // legRatioNLO->Draw("same");
   lineNLO->Draw("l");
   lineNLO1->Draw("l");
   cPbPb_NLORatioAll->Print(dirPlot + Form("/I_NLOCenAll.pdf"));
-
 
   //////////////////////////////////////////////////
   ////////// Comparison with I_pPbpp  //////////////
@@ -500,7 +511,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   TCanvas *cPbPb_NLORatioAll_IpPbpp = canvasStdIaa(Form("cPbPb_NLORatioAll_IpPbpp"), 1, 1);
   TLatex *latPbPb_NLOAll_IpPbpp;
   TLegend *legPbPb_NLOratioAll_IpPbpp = LegStd(legPbPb_NLOratioAll_IpPbpp, 0.52, 0.48, 0.96, 0.78);
-  double assocZtThinnerPbpp[] = {0., 0.06, 0.08, 0.10, 0.107, 0.142, 0.15, 0.19, 0.20, 0.253, 0.30,0.337, 0.40, 0.45, 0.60, 0.80, 1.00, 1.05};
+  double assocZtThinnerPbpp[] = {0., 0.06, 0.08, 0.10, 0.107, 0.142, 0.15, 0.19, 0.20, 0.253, 0.30, 0.337, 0.40, 0.45, 0.60, 0.80, 1.00, 1.05};
   TH1F *hGeneralRatiopPbpp = new TH1F("hGeneralRatiopPbpp", "hGeneralRatiopPbpp", 17, assocZtThinnerPbpp);
   PlotStyle(hGeneralRatiopPbpp, 20, 1, kWhite, kWhite, " #it{z}_{T} ", " #it{I}_{pQCD} = Pb#font[122]{-}Pb (data) / pp (pQCD), #it{I}_{pA}", false);
   legPbPb_NLOratioAll_IpPbpp->SetNColumns(2);
@@ -523,37 +534,37 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hGeneralRatiopPbpp->Draw("histsame");
     hPbPb_NLOSyst[iCen]->Draw("E2Psame ");
     hPbPb_NLO[iCen]->Draw("EPX0same");
-    // grIaaNLOmedian[iCen]->Draw("pl3 same");
-    //hPbPb_NLOSyst[iCen]->SetLineColor(kWhite);
+    // hPbPb_NLOSyst_Shifted[iCen]->Draw("E2Psame ");
+    // hPbPb_NLO_Shifted[iCen]->Draw("EPX0same");
+    //  grIaaNLOmedian[iCen]->Draw("pl3 same");
+    //  hPbPb_NLOSyst[iCen]->SetLineColor(kWhite);
     legPbPb_NLOratioAll_IpPbpp->AddEntry(hPbPb_NLO[iCen], Form("#it{I}_{pQCD}, %d#font[122]{-}%d%% stat.", cenBins[iCen], cenBins[iCen + 1]), "ep");
     legPbPb_NLOratioAll_IpPbpp->AddEntry(hPbPb_NLOSyst[iCen], "syst. unc.", "f");
   }
-  
-  hIpPbpp_syst->SetFillStyle(0); 
+
+  hIpPbpp_syst->SetFillStyle(0);
   hIpPbpp_syst->SetLineColor(kBlack);
   hIpPbpp_syst->SetLineWidth(1);
   hIpPbpp_syst->Draw("E2same");
   hIpPbpp->Draw("EPX0same");
-  legPbPb_NLOratioAll_IpPbpp->AddEntry(hIpPbpp,"#it{I}_{pA}, p#font[122]{-}Pb/pp stat.", "ep");
+  legPbPb_NLOratioAll_IpPbpp->AddEntry(hIpPbpp, "#it{I}_{pA}, p#font[122]{-}Pb/pp stat.", "ep");
   legPbPb_NLOratioAll_IpPbpp->AddEntry(hIpPbpp_syst, "syst. unc.", "f");
   legPbPb_NLOratioAll_IpPbpp->AddEntry((TObject *)0, "12 <#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}< 40 GeV/#it{c}", "");
   latPbPb_NLOAll_IpPbpp = LatexStdISORatioNoPbPb(latPbPb_NLOAll_IpPbpp, 0.440, 0.92, 0.04, cenBins[0], cenBins[1], ptMin, ptMax, false);
-  //latPbPb_NLOAll_IpPbpp = new TLatex();
-  //latPbPb_NLOAll_IpPbpp->SetTextFont(42);
-  //latPbPb_NLOAll_IpPbpp->SetTextSize(texSize);
-  //latPbPb_NLOAll_IpPbpp->SetNDC();
-  //latPbPb_NLOAll_IpPbpp->DrawLatex(xpos, ypos, Form("#font[42]{ALICE}"));
-  //  latPbPb_NLOAll_IpPbpp->DrawLatex(xpos, ypos - 0.06, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV ", cenMin, cenMax));
-  //latPbPb_NLOAll_IpPbpp->DrawLatex(xpos, ypos - 2 * 0.06, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5} #it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
-  //latPbPb_NLOAll_IpPbpp->DrawLatex(xpos, ypos - 3 * 0.06, Form("%2.0f < #it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
-  
-  
+  // latPbPb_NLOAll_IpPbpp = new TLatex();
+  // latPbPb_NLOAll_IpPbpp->SetTextFont(42);
+  // latPbPb_NLOAll_IpPbpp->SetTextSize(texSize);
+  // latPbPb_NLOAll_IpPbpp->SetNDC();
+  // latPbPb_NLOAll_IpPbpp->DrawLatex(xpos, ypos, Form("#font[42]{ALICE}"));
+  //   latPbPb_NLOAll_IpPbpp->DrawLatex(xpos, ypos - 0.06, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV ", cenMin, cenMax));
+  // latPbPb_NLOAll_IpPbpp->DrawLatex(xpos, ypos - 2 * 0.06, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5} #it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
+  // latPbPb_NLOAll_IpPbpp->DrawLatex(xpos, ypos - 3 * 0.06, Form("%2.0f < #it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
+
   legPbPb_NLOratioAll_IpPbpp->Draw("same");
   legRatioNLO->Draw("same");
   lineNLO->Draw("l");
   lineNLO1->Draw("l");
   cPbPb_NLORatioAll_IpPbpp->Print(dirPlot + Form("/I_NLOCenAll_IpPbpp.pdf"));
-
 
   /////////////////////////////////////////////////////////
   ////////// Comparison with I_aa nPDF only  //////////////
@@ -580,7 +591,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hPbPb_NLOSyst[iCen]->Draw("E2Psame ");
     hPbPb_NLO[iCen]->Draw("EPX0same");
     // grIaaNLOmedian[iCen]->Draw("pl3 same");
-    //hPbPb_NLOSyst[iCen]->SetLineColor(kWhite);
+    // hPbPb_NLOSyst[iCen]->SetLineColor(kWhite);
     legPbPb_NLOratioAll_IaanPDF->AddEntry(hPbPb_NLO[iCen], Form("#it{I}_{pQCD}, %d#font[122]{-}%d%% stat.", cenBins[iCen], cenBins[iCen + 1]), "ep");
     legPbPb_NLOratioAll_IaanPDF->AddEntry(hPbPb_NLOSyst[iCen], "syst. unc.", "f");
   }
@@ -593,10 +604,49 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   lineNLO1->Draw("l");
   cPbPb_NLORatioAll_IaanPDF->Print(dirPlot + Form("/I_NLOCenAll_IaanPDF.pdf"));
 
+  ///////////////////////////////////////////////////////////////////////////
+  ////////// Comparison with I_aa central, I_pPbpp and I_CNM ///////////////
+  /////////////////////////////////////////////////////////////////////////
 
+  TCanvas *cPbPb_NLORatio0_10_Iaa_CNM_pA = canvasStdIaa(Form("cPbPb_NLORatio0_10_Iaa_CNM_pA"), 1, 1);
+  TLatex *latPbPb_NLORatio0_10_Iaa_CNM_pA;
+  TLegend *legPbPb_NLORatio0_10_Iaa_CNM_pA = LegStd(legPbPb_NLOratioAll_IaanPDF, 0.54, 0.48, 0.96, 0.740);
+  legPbPb_NLORatio0_10_Iaa_CNM_pA->SetNColumns(2);
+  legPbPb_NLORatio0_10_Iaa_CNM_pA->SetTextSize(0.034);
+  hGeneralRatio->SetTitle(" ");
+  hGeneralRatio->GetYaxis()->CenterTitle(false);
+  hGeneralRatio->GetYaxis()->SetRangeUser(-0.01, 2.8);
+  hGeneralRatio->GetYaxis()->SetTitleSize(0.046);
+  hGeneralRatio->GetYaxis()->SetTitleOffset(1.);
+  hGeneralRatio->GetYaxis()->SetLabelSize(0.040);
+  hGeneralRatio->GetXaxis()->SetRangeUser(0.05, 1.05);
+  hGeneralRatio->GetXaxis()->SetLabelSize(0.040);
+  hGeneralRatio->GetXaxis()->SetTitleSize(0.055);
+  hGeneralRatio->SetLineWidth(0);
+  hGeneralRatio->Draw("histsame");
+  hPbPb_NLOSyst[0]->Draw("E2Psame ");
+  hPbPb_NLO[0]->Draw("EPX0same");
+    hIpPbpp_syst->SetFillStyle(0);
+  hIpPbpp_syst->SetLineColor(kBlack);
+  hIpPbpp_syst->SetLineWidth(1);
+  hIpPbpp_syst->Draw("E2same");
+  hIpPbpp->Draw("EPX0same");
+  hIaa_nPDF->Draw("hist same c");
+  // grIaaNLOmedian[iCen]->Draw("pl3 same");
+  // hPbPb_NLOSyst[iCen]->SetLineColor(kWhite);
+  legPbPb_NLORatio0_10_Iaa_CNM_pA->AddEntry(hPbPb_NLO[0], Form("#it{I}_{pQCD}, %d#font[122]{-}%d%% stat.", cenBins[0], cenBins[1]), "ep");
+  legPbPb_NLORatio0_10_Iaa_CNM_pA->AddEntry(hPbPb_NLOSyst[0], "syst. unc.", "f");
+  legPbPb_NLORatio0_10_Iaa_CNM_pA->AddEntry(hIpPbpp, "#it{I}_{pA}, p#font[122]{-}Pb/pp stat.", "ep");
+  legPbPb_NLORatio0_10_Iaa_CNM_pA->AddEntry(hIpPbpp_syst, "syst. unc.", "f");
+  //legPbPb_NLORatio0_10_Iaa_CNM_pA->AddEntry((TObject *)0, "12 <#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}< 40 GeV/#it{c}", "");
+  legPbPb_NLORatio0_10_Iaa_CNM_pA->AddEntry(hIaa_nPDF, "#it{I}_{AA}, pQCD + CNM", "l");
+  latPbPb_NLORatio0_10_Iaa_CNM_pA = LatexStdISORatio(latPbPb_NLORatio0_10_Iaa_CNM_pA, 0.440, 0.92, 0.04, cenBins[0], cenBins[1], ptMin, ptMax, false);
+  legPbPb_NLORatio0_10_Iaa_CNM_pA->Draw("same");
+  legRatioNLO->Draw("same");
+  lineNLO->Draw("l");
+  lineNLO1->Draw("l");
+  cPbPb_NLORatio0_10_Iaa_CNM_pA->Print(dirPlot + Form("/I_NLORatio0_10_Iaa_CNM_pA.pdf"));
 
-
-  
   TH1F *hGeneral = new TH1F("hGeneral", "hGeneral", nZtBinThin, assocZtThinner);
   PlotStyle(hGeneral, 20, 1, kWhite, kWhite, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
   hSystZt[0]->GetXaxis()->SetRangeUser(0.10, 1.0);
@@ -614,7 +664,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hsyst[0]->GetXaxis()->SetRangeUser(0.10, 1.0);
   hsyst[1]->GetXaxis()->SetRangeUser(0.10, 0.6);
   hsyst[2]->GetXaxis()->SetRangeUser(0.10, 0.6);
-  
+
   TLegend *legZTData = LegStd(legZTData, 0.7, 0.50, 0.85, 0.70);
   TCanvas *cDiffCent = new TCanvas("cDiffCent", "cDiffCent", 800, 600);
   TH1F *hZtDiffCent[nCen];
@@ -637,11 +687,11 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hZtDiffCent[iCen]->Draw("EPX0same");
     legZTData->AddEntry(hZtDiffCent[iCen], Form("%d-%d %%", cenBins[iCen], cenBins[iCen + 1]), "ep");
   }
-  
+
   TLatex *lat = LatexStdISORatio(lat, 0.450, 0.84, 0.045, cenBins[0], cenBins[0], ptMin, ptMax, false);
   legZTData->Draw();
   cDiffCent->Print(dirPlot + Form("/ztDiffMethMixed_Cen%d_%d%s.pdf", cenBins[2], cenBins[3], sPtAll.Data()));
-  
+
   TLegend *legZTPbPbpp[nCen];
   TCanvas *cPbPb[nCen];
   TLatex *lat0 = new TLatex();
@@ -664,12 +714,12 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     lat0 = LatexStdISO(lat0, 0.45, 0.84, 0.05, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
     cPbPb[iCen]->Print(dirPlot + Form("/ztPbPbOverlapppCen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
   }
-  
+
   TCanvas *cDiffCent_Pythia[nCen];
   TLegend *legdiffcen[nCen];
   TLegend *legdiffcenpp[nCen];
   TLatex *latCent[nCen];
-  
+
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     cDiffCent_Pythia[iCen] = new TCanvas(Form("cDiffCent_Pythia%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("cDiffCent_Pythia%d_%d", cenBins[iCen], cenBins[iCen + 1]), 600, 800);
@@ -695,12 +745,12 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hGeneral->Draw("histSAME");
     hSystZt[iCen]->Draw("E2P same ");
     hZtCent[iCen]->Draw("EPX0same");
-    
+
     hZt_MC_Gen[iCen]->SetFillStyle(0);
     // hZt_MC_Gen[iCen]->SetLineStyle(0);
     hZt_MC_Gen[iCen]->SetLineWidth(10);
     hZt_MC_Gen[iCen]->SetLineColorAlpha(kBlack, 1);
-    
+
     hSystZt[iCen]->SetLineColor(kWhite);
     legdiffcen[iCen]->AddEntry(hZtCent[iCen], "Pb#font[122]{-}Pb stat. unc. ", "ep");
     legdiffcen[iCen]->AddEntry(hSystZt[iCen], "Pb#font[122]{-}Pb syst. unc. ", "f");
@@ -710,16 +760,15 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     // cDiffCent_Pythia[iCen]->Print(dirPlot + Form("/withModelNoppztPbPb_pp_Cen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
     cDiffCent_Pythia[iCen]->Print(dirPlot + Form("/ztPbPb_Cen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
   }
-  
+
   TCanvas *cPbPbppRatio = new TCanvas(Form("cPbPbpp_Ipythia"), Form("cPbPbpp_Ipythia"), 3 * 800, 1 * 800);
   cPbPbppRatio->Divide(3, 1);
   TLatex *lat1[nCen];
   TPad *pad1[nCen];
   TPad *pad2[nCen];
-  
-  
+
   PlotStyle(hGeneralRatio, 20, 1, kWhite, kWhite, " #it{z}_{T} ", "Ratio", false);
-  
+
   TCanvas *cPbPbppRatioSingle[nCen];
   TPad *pad1Single[nCen];
   TPad *pad2Single[nCen];
@@ -745,7 +794,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     pad1Single[iCen]->cd();
     gPad->SetLogy();
     gPad->SetTickx();
-    
+
     hGeneral->GetYaxis()->SetRangeUser(2 * 1e-4, 99);
     hGeneral->GetYaxis()->SetLabelSize(0.05);
     hGeneral->GetYaxis()->SetTitleSize(0.055);
@@ -771,7 +820,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       histDztPbPbCOLBTmedian[1]->SetFillStyle(0);
       histDztPbPbCOLBTmedian[1]->Draw(" HISTSAMEL ");
     }
-    
+
     // hZt_MC_Rec[iCen]->Draw("same");
     hSystZt[iCen]->SetTitle("");
     hSystZt[iCen]->GetXaxis()->SetLabelSize(0);
@@ -784,7 +833,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     legZTPbPbppSingle[iCen]->AddEntry(hZt_MC_Gen[iCen], Form("PYTHIA 8 pp"), "l");
     legZTPbPbppSingle[iCen]->AddEntry(hZtCent[iCen], "Pb#font[122]{-}Pb stat. unc. ", "ep");
     legZTPbPbppSingle[iCen]->AddEntry(hSystZt[iCen], "Pb#font[122]{-}Pb syst. unc. ", "f");
-    
+
     if (iCen == 0)
     {
       legZTPbPbppSingleMod[iCen] = LegStd(legZTPbPbppSingleMod[iCen], 0.170, 0.02, 0.350, 0.305);
@@ -812,7 +861,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     }
     legZTPbPbppSingle[iCen]->Draw("same");
     legZTPbPbppSingleMod[iCen]->Draw("same");
-    //legRatioSingleMod[iCen] = LegStd(legRatioSingleMod[iCen], 0.40, 0.80, 0.80, 0.995);
+    // legRatioSingleMod[iCen] = LegStd(legRatioSingleMod[iCen], 0.40, 0.80, 0.80, 0.995);
     legRatioSingleMod[iCen] = LegStd(legRatioSingleMod[iCen], 0.45, 0.88, 0.65, 0.995);
     legRatioSingleMod[iCen]->SetTextSize(0.06);
     cPbPbppRatioSingle[iCen]->cd(); // Go back to the main canvas before defining pad2
@@ -825,7 +874,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     pad2Single[iCen]->Draw();
     pad2Single[iCen]->cd();
     pad2Single[iCen]->SetTicks();
-    
+
     h3[iCen]->Sumw2();
     h3[iCen]->SetStats(0);
     hsyst[iCen]->SetLineColor(kColorMark[iCen]);
@@ -838,7 +887,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hGeneralRatio->GetYaxis()->SetLabelSize(0.082);
     hGeneralRatio->GetYaxis()->SetLabelOffset(0.01);
     hGeneralRatio->GetYaxis()->CenterTitle(true);
-    
+
     // X axis ratio plot settings
     hGeneralRatio->SetTitle("");
     hGeneralRatio->GetYaxis()->SetNdivisions(505);
@@ -855,12 +904,12 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     h3[iCen]->Draw("X0SAMEpe");
     grIaaNLOmedian[iCen]->Draw("pl3 same");
     hIaa_nPDF->Draw("hist same c");
-    //legPbPb_NLOratioAll_IaanPDF->AddEntry(hIaa_nPDF, "#it{I}_{AA} + CNM", "l");
+    // legPbPb_NLOratioAll_IaanPDF->AddEntry(hIaa_nPDF, "#it{I}_{AA} + CNM", "l");
     legNLO[iCen]->AddEntry(h3[iCen], "#frac{Pb#font[122]{-}Pb}{PYTHIA 8 pp}", "ep");
     legRatioSingleMod[iCen]->AddEntry(grIaaNLOmedian[iCen], "#it{I}_{AA}: NLO pQCD (X. N. Wang and M. Xie)", "lf");
     if (iCen == 0)
     {
-      
+
       histIaaCOLBTmedianSyst[0]->Draw("X0sameE3 ");
       histIaaCOLBTmedian[0]->SetFillStyle(0);
       histIaaCOLBTmedian[0]->Draw("histsameL ");
@@ -873,17 +922,17 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       histIaaCOLBTmedian[1]->Draw("histsameL ");
       legRatioSingleMod[iCen]->AddEntry(histIaaCOLBTmedianSyst[1], "#it{I}_{AA}: CoLBT-hydro (X. N. Wang, et al.)", "lf");
     }
-    //else if (iCen == 2)
-    //  legRatioSingleMod[iCen]->SetY1(0.8975);
-    
+    // else if (iCen == 2)
+    //   legRatioSingleMod[iCen]->SetY1(0.8975);
+
     legNLO[iCen]->Draw("same");
     legRatioSingleMod[iCen]->Draw("same");
     //  cPbPbpp->Update();
     //  pad2->Update();
     //  TLine line(0.0, 1., 1.2, 1.);
-    
+
     // Y axis ratio plot settings
-    
+
     hsyst[iCen]->SetTitle("");
     hsyst[iCen]->GetYaxis()->SetNdivisions(510);
     hsyst[iCen]->GetXaxis()->SetLabelSize(16);
@@ -892,9 +941,9 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hsyst[iCen]->GetYaxis()->SetTitle("#frac{Data}{PYTHIA}");
     hsyst[iCen]->GetYaxis()->CenterTitle(true);
     hsyst[iCen]->GetYaxis()->SetTitleOffset(0.52);
-    
+
     // X axis ratio plot settings
-    
+
     hsyst[iCen]->GetXaxis()->SetTitleSize(20);
     hsyst[iCen]->GetXaxis()->SetTitleFont(43);
     hsyst[iCen]->GetXaxis()->SetTitleOffset(1.2);
@@ -902,28 +951,28 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hsyst[iCen]->GetXaxis()->SetLabelSize(20);
     hsyst[iCen]->GetXaxis()->SetTitle("#it{z}_{T}/#Delta#it{z}_{T}");
     // h3[iCen]->GetXaxis()->SetTitle("z_{#rm{T}} = p_{#rm{T}}^{had}}/p_{#rm{T}}^{#gamma}}");
-    
+
     TGraph *linea = DrawLine(linea, 0, 0.5, 1.2, 0.5);
     linea->Draw("l");
-    
+
     TGraph *lineb = DrawLine(lineb, 0, 1, 1.2, 1);
     lineb->Draw("l");
     cPbPbppRatioSingle[iCen]->Print(dirPlot + Form("/SingleztPbPb_pp_Cen%d_%d%s.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
   }
-  
+
   TCanvas *cPbPbppRatioSingleNLOpQCD[nCen];
   TPad *pad1SingleNLOpQCD[nCen];
   TPad *pad2SingleNLOpQCD[nCen];
   TLatex *lat1SingleNLOpQCD[nCen];
-  
+
   TLegend *legZTPbPbppSingleModNLO[nCen];
   TLegend *legNLOpQCD[nCen];
   TLegend *legZTPbPbppSingleNLOpQCD[nCen];
   TLegend *legRatioSinglePadIpQCDIaaCNM[nCen];
   for (int iCen = 0; iCen < nCen; iCen++)
   {
-    //legNLOpQCD[iCen] = LegStd(legNLOpQCD[iCen], 0.16, 0.80, 0.35, 0.995);
-    //legNLOpQCD[iCen]->SetTextSize(0.06);
+    // legNLOpQCD[iCen] = LegStd(legNLOpQCD[iCen], 0.16, 0.80, 0.35, 0.995);
+    // legNLOpQCD[iCen]->SetTextSize(0.06);
     legRatioSinglePadIpQCDIaaCNM[iCen] = LegStd(legRatioSinglePadIpQCDIaaCNM[iCen], 0.320, 0.70, 0.92, 0.98);
     legRatioSinglePadIpQCDIaaCNM[iCen]->SetTextSize(0.056);
     legRatioSinglePadIpQCDIaaCNM[iCen]->SetNColumns(2);
@@ -939,7 +988,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     pad1SingleNLOpQCD[iCen]->cd();
     gPad->SetLogy();
     gPad->SetTickx();
-    
+
     hGeneral->GetYaxis()->SetRangeUser(2 * 1e-4, 99);
     hGeneral->GetYaxis()->SetLabelSize(0.05);
     hGeneral->GetYaxis()->SetTitleSize(0.055);
@@ -963,7 +1012,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       histDztPbPbCOLBTmedian[1]->SetFillStyle(0);
       histDztPbPbCOLBTmedian[1]->Draw(" HISTSAMEL ");
     }
-    
+
     // hZt_MC_Rec[iCen]->Draw("same");
     hSystZt[iCen]->SetTitle("");
     hSystZt[iCen]->GetXaxis()->SetLabelSize(0);
@@ -973,11 +1022,10 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     //  lat1->SetNDC();
     //  lat->SetTextSize(32);
     legZTPbPbppSingleNLOpQCD[iCen] = LegStd(legZTPbPbppSingleNLOpQCD[iCen], 0.650, 0.5, 0.830, 0.665);
-    //legZTPbPbppSingleNLOpQCD[iCen]->AddEntry(grDztNLOmedianpp, Form("NLO pQCD pp"), "l");
+    // legZTPbPbppSingleNLOpQCD[iCen]->AddEntry(grDztNLOmedianpp, Form("NLO pQCD pp"), "l");
     legZTPbPbppSingleNLOpQCD[iCen]->AddEntry(hZtCent[iCen], "Pb#font[122]{-}Pb stat. unc.", "ep");
     legZTPbPbppSingleNLOpQCD[iCen]->AddEntry(hSystZt[iCen], "Pb#font[122]{-}Pb syst. unc.", "f");
-    
-    
+
     if (iCen == 0)
     {
       legZTPbPbppSingleModNLO[iCen] = LegStd(legZTPbPbppSingleModNLO[iCen], 0.170, 0.02, 0.350, 0.315);
@@ -1006,7 +1054,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       legZTPbPbppSingleModNLO[iCen]->AddEntry((TObject *)0, "CT18A + EPPS21 nPDFs, KKP FFs,", "");
       legZTPbPbppSingleModNLO[iCen]->AddEntry((TObject *)0, "X. N. Wang and M. Xie", "");
     }
-    
+
     legZTPbPbppSingleNLOpQCD[iCen]->Draw("same");
     legZTPbPbppSingleModNLO[iCen]->Draw("same");
     cPbPbppRatioSingleNLOpQCD[iCen]->cd(); // Go back to the main canvas before defining pad2
@@ -1019,21 +1067,21 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     pad2SingleNLOpQCD[iCen]->Draw();
     pad2SingleNLOpQCD[iCen]->cd();
     pad2SingleNLOpQCD[iCen]->SetTicks();
-    
+
     h3[iCen]->Sumw2();
     h3[iCen]->SetStats(0);
     hsyst[iCen]->SetLineColor(kColorMark[iCen]);
     hsyst[iCen]->SetMarkerColor(kColorMark[iCen]);
     hGeneralRatio->GetYaxis()->SetRangeUser(0.05, 2.1);
-    //hGeneralRatio->GetYaxis()->SetRangeUser(0, 1.64);
-    //if (iCen == 2)
-    //  hGeneralRatio->GetYaxis()->SetRangeUser(0, 1.64);
+    // hGeneralRatio->GetYaxis()->SetRangeUser(0, 1.64);
+    // if (iCen == 2)
+    //   hGeneralRatio->GetYaxis()->SetRangeUser(0, 1.64);
     hGeneralRatio->GetYaxis()->SetTitleSize(0.1);
     hGeneralRatio->GetYaxis()->SetTitleOffset(0.7);
     hGeneralRatio->GetYaxis()->SetLabelSize(0.082);
     hGeneralRatio->GetYaxis()->SetLabelOffset(0.01);
     hGeneralRatio->GetYaxis()->CenterTitle(true);
-    
+
     // X axis ratio plot settings
     hGeneralRatio->SetTitle("");
     hGeneralRatio->GetYaxis()->SetNdivisions(505);
@@ -1069,11 +1117,10 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       histIaaCOLBTmedian[1]->Draw("histsameL ");
       legRatioSinglePadIpQCDIaaCNM[iCen]->AddEntry(histIaaCOLBTmedianSyst[1], "#it{I}_{AA}, CoLBT-hydro", "lf");
     }
-    
-    //legNLOpQCD[iCen]->Draw("same");
-    //  cPbPbpp->Update();
+
+    // legNLOpQCD[iCen]->Draw("same");
+    //   cPbPbpp->Update();
     legRatioSinglePadIpQCDIaaCNM[iCen]->Draw("same");
-    
 
     TGraph *linea = DrawLine(linea, 0, 0.5, 1.2, 0.5);
     linea->Draw("l");
@@ -1081,16 +1128,13 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     lineb->Draw("l");
     cPbPbppRatioSingleNLOpQCD[iCen]->Print(dirPlot + Form("/SingleztPbPb_pp_Cen%d_%d%s_ppNLOpQCD.pdf", cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
   }
-  
-  // TCanvas *cAllZt = new TCanvas("cAllZt", "cAllZt", 800, 600);
+  /////////////////////////////////////////////////////////
+  ////////////// Dzt all centralities /////////////////////
+  /////////////////////////////////////////////////////////
+
   TCanvas *cAllZt = canvasStd("cAllZt", 1, 1);
   TLegend *legdiffcenZtPYTHIA = LegStd(legdiffcenZtPYTHIA, 0.14, 0.30, 0.4, 0.35);
   TLegend *legdiffcenZt = LegStd(legdiffcenZt, 0.14, 0.18, 0.5, 0.35);
-  // cAllZt->cd();
-  // cAllZt->SetTopMargin(0.015);
-  // cAllZt->SetRightMargin(0.02);
-  // cAllZt->SetLeftMargin(0.12);
-  // cAllZt->SetBottomMargin(0.11);
   gPad->SetLogy();
   hGeneral->GetYaxis()->SetTitleSize(0.055);
   hGeneral->GetXaxis()->SetRangeUser(0.05, 1.05);
@@ -1120,10 +1164,13 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hZtCent[1]->Draw("EP X0 same");
   TLatex *latAliceZtOnly = LatexStdISORatio(latAliceZtOnly, 0.420, 0.92, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
   cAllZt->Print(dirPlot + Form("/ZtAllCent030%s.pdf", sPtAll.Data()));
-  
+
+  /////////////////////////////////////////////////////////////////
+  ////////////// Dzt all centralities, pp and NLO pQCD ////////////
+  /////////////////////////////////////////////////////////////////
+
   TCanvas *cAllZtNLOpQCD = canvasStdIaa("cAllZtNLOpQCD", 1, 1);
   TLegend *legdiffcenZtNLOpQCD = LegStd(legdiffcenZtNLOpQCD, 0.14, 0.35, 0.4, 0.4);
-  // cAllZtNLOpQCD->cd();
   gPad->SetLogy();
   hGeneral->GetYaxis()->SetTitleSize(0.055);
   hGeneral->GetXaxis()->SetRangeUser(0.05, 1.05);
@@ -1148,10 +1195,51 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   cAllZtNLOpQCD->Print(dirPlot + Form("/NLOpQCDZtAllCent030%s.pdf", sPtAll.Data()));
 
   TCanvas *cAllZtNLOpQCD_pPbpp = canvasStdIaa("cAllZtNLOpQCD_pPbpp", 1, 1);
-  TLegend *legdiffcenZtpPbpp = LegStd(legdiffcenZtpPbpp, 0.14, 0.35, 0.55, 0.4);
+  TLegend *legdiffcenZtpPbpp = LegStd(legdiffcenZtpPbpp, 0.14, 0.35, 0.5025, 0.4);
   legdiffcenZtpPbpp->SetNColumns(2);
+  TLegend *legdiffcenZtpPbppNLO = LegStd(legdiffcenZtpPbppNLO, 0.55, 0.20, 0.85, 0.30);
   TH1F *hGeneralDztpPbpp = new TH1F("hGeneralDztpPbpp", "hGeneralDztpPbpp", 17, assocZtThinnerPbpp);
   PlotStyle(hGeneralDztpPbpp, 20, 1, kWhite, kWhite, " #it{z}_{T} ", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
+  gPad->SetLogy();
+  hGeneralDztpPbpp->GetYaxis()->SetTitleSize(0.055);
+  hGeneralDztpPbpp->GetXaxis()->SetRangeUser(0.05, 1.05);
+  hGeneralDztpPbpp->GetXaxis()->SetLabelSize(0.040);
+  hGeneralDztpPbpp->GetXaxis()->SetTitleSize(0.055);
+  hGeneralDztpPbpp->GetYaxis()->SetRangeUser(2 * 1e-4, 99);
+  hGeneralDztpPbpp->GetYaxis()->SetLabelSize(0.04);
+  hGeneralDztpPbpp->GetYaxis()->SetTitleSize(0.045);
+  hGeneralDztpPbpp->GetYaxis()->SetTitleOffset(1.0);
+  hGeneralDztpPbpp->SetTitle("");
+  hGeneralDztpPbpp->Draw("same");
+  grDztNLOmedianpp->Draw("HISTSAMEC ");
+  legdiffcenZtpPbpp->AddEntry(hDztpp, "pp stat.    ", "ep");
+  legdiffcenZtpPbpp->AddEntry(hDztpp_syst, "syst. unc.", "f");
+  legdiffcenZtpPbpp->Draw("SAME");
+  legdiffcenZtpPbppNLO->AddEntry(grDztNLOmedianpp, "NLO pQCD, pp", "l");
+  legdiffcenZtpPbppNLO->Draw("SAME");
+  hDztpp_syst->SetFillStyle(0);
+  hDztpp_syst->SetLineColor(kBlack);
+  hDztpp_syst->SetLineWidth(1);
+  hDztpp_syst->Draw("samee2");
+  hDztpp->Draw("EP X0 same");
+  hSystZt[0]->Draw("samee2");
+  hZtCent[0]->Draw("EP X0 same");
+  hSystZt[2]->Draw("samee2");
+  hZtCent[2]->Draw("EP X0 same");
+  hSystZt[1]->Draw("samee2");
+  hZtCent[1]->Draw("EP X0 same");
+  legdiffcenZt->Draw("SAME");
+  TLatex *latAliceZtOnlyNLOpQCD_pPbpp = LatexStdISORatioNoPbPb(latAliceZtOnlyNLOpQCD_pPbpp, 0.420, 0.92, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
+  cAllZtNLOpQCD_pPbpp->Print(dirPlot + Form("/ZtAllCent_pp%s.pdf", sPtAll.Data()));
+
+  /////////////////////////////////////////////////////////////////
+  ////////////// Dzt central, pp and NLO pQCD /////////////////////
+  /////////////////////////////////////////////////////////////////
+
+  TCanvas *c010ZtNLOpQCD_pPbpp = canvasStdIaa("c010ZtNLOpQCD_pPbpp", 1, 1);
+  TLegend *leg010ZtNLOpQCD_pPbpp = LegStd(leg010ZtNLOpQCD_pPbpp, 0.14, 0.20, 0.5025, 0.33);
+  leg010ZtNLOpQCD_pPbpp->SetNColumns(2);
+  TLegend *leg010ZtNLOpQCD_pPbppNLO = LegStd(leg010ZtNLOpQCD_pPbppNLO, 0.55, 0.20, 0.85, 0.30);
   // cAllZtNLOpQCD->cd();
   gPad->SetLogy();
   hGeneralDztpPbpp->GetYaxis()->SetTitleSize(0.055);
@@ -1165,24 +1253,24 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hGeneralDztpPbpp->SetTitle("");
   hGeneralDztpPbpp->Draw("same");
   grDztNLOmedianpp->Draw("HISTSAMEC ");
-  legdiffcenZtpPbpp->AddEntry(hDztpPb, "p#font[122]{-}Pb stat.", "ep");
-  legdiffcenZtpPbpp->AddEntry(hDztpPb_syst, "syst. unc.", "f");
-  legdiffcenZtpPbpp->Draw("SAME");
-  hDztpPb_syst->SetFillStyle(0); 
-  hDztpPb_syst->SetLineColor(kBlack);
-  hDztpPb_syst->SetLineWidth(1);
-  hDztpPb_syst->Draw("samee2");
-  hDztpPb->Draw("EP X0 same");
   hSystZt[0]->Draw("samee2");
   hZtCent[0]->Draw("EP X0 same");
-  hSystZt[2]->Draw("samee2");
-  hZtCent[2]->Draw("EP X0 same");
-  hSystZt[1]->Draw("samee2");
-  hZtCent[1]->Draw("EP X0 same");
-  legdiffcenZt->Draw("SAME");
-  TLatex *latAliceZtOnlyNLOpQCD_pPbpp = LatexStdISORatioNoPbPb(latAliceZtOnlyNLOpQCD_pPbpp, 0.420, 0.92, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
-  cAllZtNLOpQCD_pPbpp->Print(dirPlot + Form("/ZtAllCent_pPbpp%s.pdf", sPtAll.Data()));
-  
+  leg010ZtNLOpQCD_pPbpp->AddEntry(hDztpp, "pp stat.    ", "ep");
+  leg010ZtNLOpQCD_pPbpp->AddEntry(hDztpp_syst, "syst. unc.", "f");
+  leg010ZtNLOpQCD_pPbpp->AddEntry(hZtCent[0], Form("%d#font[122]{-}%d%% stat. ", cenBins[0], cenBins[1]), "ep");
+  leg010ZtNLOpQCD_pPbpp->AddEntry(hSystZt[0], Form("syst. unc"), "f");
+  leg010ZtNLOpQCD_pPbpp->Draw("SAME");
+  leg010ZtNLOpQCD_pPbppNLO->AddEntry(grDztNLOmedianpp, "NLO pQCD, pp", "l");
+  leg010ZtNLOpQCD_pPbppNLO->Draw("SAME");
+  hDztpp_syst->SetFillStyle(0);
+  hDztpp_syst->SetLineColor(kBlack);
+  hDztpp_syst->SetLineWidth(1);
+  hDztpp_syst->Draw("samee2");
+  hDztpp->Draw("EP X0 same");
+  TLatex *lat010ZtNLOpQCD_pPbpp = LatexStdISORatioNoPbPb(lat010ZtNLOpQCD_pPbpp, 0.420, 0.92, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
+  c010ZtNLOpQCD_pPbpp->Print(dirPlot + Form("/Zt0_10CentpQCD_pp%s.pdf", sPtAll.Data()));
+
+
   // TCanvas *cRatioSuppres = new TCanvas("cRatioSuppres", "cRatioSuppres", 800, 600);
   TCanvas *cRatioSuppres = canvasStd("cRatioSuppres", 1, 1);
   TLegend *legdiffcenRatio = LegStd(legdiffcenRatio, 0.61, 0.52, 0.96, 0.72);
@@ -1218,10 +1306,10 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     legdiffcenRatio->AddEntry(h3[iCen], Form("%d#font[122]{-}%d%% stat.", cenBins[iCen], cenBins[iCen + 1]), "ep");
     legdiffcenRatio->AddEntry(hsyst[iCen], "syst. unc.", "f");
   }
-  
+
   TGraph *line = DrawLine(line, 0, 0.5, 1.2, 0.5);
   line->Draw("l");
-  
+
   TGraph *line1 = DrawLine(line1, 0, 1, 1.2, 1);
   line1->Draw("l");
   // cRatioSuppres->cd();
@@ -1229,16 +1317,16 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   legdiffcenRatio->Draw("SAME");
   TLatex *latdiffCentRatio = LatexStdISORatio(latdiffCentRatio, 0.50, 0.94, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
   cRatioSuppres->Print(dirPlot + Form("/RatioAllCent030%s.pdf", sPtAll.Data()));
-  
+
   //////////////////////////////////////////////////////////
   //////// Comparison with other experiments //////////////
   ///////////// CMS, STAR and PHENIX /////////////////////
   ///////////////////////////////////////////////////////
-  
+
   TFile *fSTAR = new TFile("OtherExpResults/HEPData-ins1442357-v1-Table_3,_au.root");
   TDirectory *dir = (TDirectory *)fSTAR->Get("Table 3, au");
   TGraphErrors *grpp = (TGraphErrors *)dir->Get("Graph1D_y1");
-  
+
   double zTSTAR[7] = {0.126, 0.23, 0.334, 0.447, 0.54, 0.65, 0.75};
   double DzTSTAR[7] = {7.34329, 1.36828, 0.600217, 0.184328, 0.0643105, 0.0321283, 0.0278139};
   double DzTSTARBox[7] = {0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02};
@@ -1251,7 +1339,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   double DzTSTAR_Stat[7] = {0.59479, 0.557656, 0.109973, 0.0291929, 0.0345208, 0.0297178, 0.0467018};
   double DzTSTAR_SysUP[7] = {0.713706, 0.388336, 0.0975644, 0.0193355, 0.00836037, 0.00417668, 0.00361581};
   double DzTSTAR_SysDOWN[7] = {2.00138, 0.159477, 0.194714, 0.0547921, 0.0192932, 0.00963849, 0.00834417};
-  
+
   TGraphAsymmErrors *grSTARSys = new TGraphAsymmErrors(7, zTSTAR, DzTSTAR, DzTSTARBox, DzTSTARBox, DzTSTAR_SysDOWN, DzTSTAR_SysUP);
   TGraphErrors *grSTAR = new TGraphErrors(7, zTSTAR, DzTSTAR, 0, DzTSTAR_Stat);
   grSTARSys->SetMarkerStyle(20);
@@ -1262,26 +1350,26 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   grSTAR->SetLineWidth(2);
   grSTAR->SetMarkerStyle(20);
   grSTAR->SetMarkerSize(1.2);
-  
+
   grSTAR->SetMarkerColor(kTeal + 4);
-  
+
   TFile *fPHENIX = new TFile("OtherExpResults/HEPData-ins1442357-v1-Table_3,_au.root");
-  
+
   double xiTPHENIX[7] = {0.0, 0.4, 0.8, 1.2, 1.6, 2.0, 2.4};
   double zTPHENIX[7] = {0};
   double DzTPHENIX[6] = {0.00282, 0.0239, 0.149, 0.287, 0.593, 0.757};
   double DzTPHENIXBox[6] = {0.02, 0.02, 0.02, 0.02, 0.02, 0.02};
   double DzTPHENIX_Stat[6] = {0.00411, 0.00735, 0.0209, 0.0452, 0.0736, 0.18};
   double DzTPHENIX_Sys[6] = {0.00437, 0.00994, 0.0334, 0.0781, 0.0799, 0.194};
-  
+
   for (int ibin = 0; ibin < 7; ibin++)
   {
     zTPHENIX[6 - ibin] = 1. / (TMath::Exp(xiTPHENIX[ibin]));
   }
-  
+
   TH1F *hzTPHENIX = new TH1F("hzTPHENIX", "hzTPHENIX", 6, zTPHENIX);
   TH1F *hzTPHENIXSys = new TH1F("hzTPHENIXSys", "hzTPHENIXSys", 6, zTPHENIX);
-  
+
   for (int ibin = 0; ibin < 6; ibin++)
   {
     hzTPHENIX->SetBinContent(ibin + 1, DzTPHENIX[5 - ibin]);
@@ -1292,12 +1380,12 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   PlotStyle(hzTPHENIX, 20, 1.2, kAzure + 2, kWhite, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
   TH1F *hGeneralCMS = new TH1F("hGeneral", "hGeneral", 10, -0.05, 1.1);
   PlotStyle(hGeneralCMS, 71, 1, kWhite, kWhite, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
-  
+
   // Iaa STAR and PHENIX
-  
+
   TH1F *hGeneralIaa = new TH1F("hGeneralIaa", "hGeneralIaa", 10, -0.05, 1.05);
-  //PlotStyle(hGeneralIaa, 20, 0, kWhite, kWhite, "#it{z}_{T}", "#it{I}_{NLO pQCD}, #it{I}_{AA}", false);
-  // PlotStyle(hGeneralIaa, 20, 0, kWhite, kWhite, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", false);
+  // PlotStyle(hGeneralIaa, 20, 0, kWhite, kWhite, "#it{z}_{T}", "#it{I}_{NLO pQCD}, #it{I}_{AA}", false);
+  //  PlotStyle(hGeneralIaa, 20, 0, kWhite, kWhite, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", false);
   hGeneralIaa->SetDirectory(0);
   double IaaSTAR[7] = {0.734072, 0.435526, 0.415985, 0.273841, 0.429596, 0.13371, 0.281805};
   double IaaSTARBox[7] = {};
@@ -1310,12 +1398,12 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   double IaaSTAR_Stat[7] = {0.068754, 0.179768, 0.0828287, 0.0555868, 0.346568, 0.128112, 0.483996};
   double IaaSTAR_SysUP[7] = {0.114323, 0.132715, 0.0687309, 0.03971, 0.0621083, 0.0173306, 0.105935};
   double IaaSTAR_SysDOWN[7] = {0.208097, 0.056488, 0.13582, 0.0868022, 0.130846, 0.0429338, 0.120614};
-  
+
   TGraphAsymmErrors *grIaaSTARSys = new TGraphAsymmErrors(7, zTSTAR, IaaSTAR, DzTSTARBox, DzTSTARBox, IaaSTAR_SysDOWN, IaaSTAR_SysUP);
   TGraphErrors *grIaaSTAR = new TGraphErrors(7, zTSTAR, IaaSTAR, 0, IaaSTAR_Stat);
   grIaaSTAR->SetMarkerStyle(24);
-  grIaaSTAR->SetMarkerColor(kPink + 8 );
-  grIaaSTAR->SetLineColor(kPink + 8 );
+  grIaaSTAR->SetMarkerColor(kPink + 8);
+  grIaaSTAR->SetLineColor(kPink + 8);
   grIaaSTAR->SetLineWidth(2);
   grIaaSTARSys->SetMarkerStyle(24);
   grIaaSTARSys->SetMarkerColor(kPink + 8);
@@ -1327,15 +1415,15 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   // grIaaSTARSys->SetFillStyle(1001);
   // grIaaSTARSys->SetFillStyle(0);
   grIaaSTARSys->SetTitle(" ");
-  
+
   TH1F *hIaaPHENIX = new TH1F("hIaaPHENIX", "hIaaPHENIX", 6, zTPHENIX);
   TH1F *hIaaPHENIXSys = new TH1F("hIaaPHENIXSys", "hIaaPHENIXSys", 6, zTPHENIX);
-  
+
   double IaaPHENIX[7] = {0.173, 0.336, 1.04, 1.61, 1.79, 1.17};
   double IaaPHENIXBox[7] = {0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02};
   double IaaPHENIX_Stat[7] = {0.253, 0.135, 0.185, 0.236, 0.209, 0.288};
   double IaaPHENIX_Sys[7] = {0.267, 0.141, 0.215, 0.381, 0.167, 0.275};
-  
+
   for (int ibin = 0; ibin < 6; ibin++)
   {
     hIaaPHENIX->SetBinContent(ibin + 1, IaaPHENIX[5 - ibin]);
@@ -1343,10 +1431,10 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hIaaPHENIXSys->SetBinContent(ibin + 1, IaaPHENIX[5 - ibin]);
     hIaaPHENIXSys->SetBinError(ibin + 1, IaaPHENIX_Sys[5 - ibin]);
   }
-  PlotStyle(hIaaPHENIX, 20, 1, kOrange+2, kOrange+2, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", false);
-  PlotStyle(hIaaPHENIXSys, 20, 1, kOrange-8, kOrange-8, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", true);
-  //PlotStyle(hPbPb_NLOSyst[0], 21, 1, kRed+1, kRed+1, "#it{z}_{T}", "Ratio", true);
-  
+  PlotStyle(hIaaPHENIX, 20, 1, kOrange + 2, kOrange + 2, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", false);
+  PlotStyle(hIaaPHENIXSys, 20, 1, kOrange - 8, kOrange - 8, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", true);
+  // PlotStyle(hPbPb_NLOSyst[0], 21, 1, kRed+1, kRed+1, "#it{z}_{T}", "Ratio", true);
+
   TCanvas *cPHENIX = new TCanvas("cPHENIX", "cPHENIX", 1 * 800, 1 * 600);
   cPHENIX->Divide(1, 1);
   cPHENIX->cd(1);
@@ -1367,11 +1455,12 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hGeneralIaa->GetYaxis()->SetRangeUser(-0.3, 3.8);
   hGeneralIaa->SetLineWidth(0);
   hGeneralIaa->Draw("histsame");
-  for (int ibin = 0; ibin < hPbPb_NLOSyst[0]->GetNbinsX() + 1; ++ibin) {
-    cout<<"bin cent:"<< hPbPb_NLOSyst[0]->GetBinCenter(ibin)<<endl;
-    cout<<"bin content:"<< hPbPb_NLOSyst[0]->GetBinContent(ibin)<<endl;
-    cout<<"bin error:"<< hPbPb_NLOSyst[0]->GetBinError(ibin)<<endl;
-}
+  for (int ibin = 0; ibin < hPbPb_NLOSyst[0]->GetNbinsX() + 1; ++ibin)
+  {
+    cout << "bin cent:" << hPbPb_NLOSyst[0]->GetBinCenter(ibin) << endl;
+    cout << "bin content:" << hPbPb_NLOSyst[0]->GetBinContent(ibin) << endl;
+    cout << "bin error:" << hPbPb_NLOSyst[0]->GetBinError(ibin) << endl;
+  }
 
   hIaaPHENIXSys->Draw("samee2");
   hIaaPHENIX->Draw("EP X0 same");
@@ -1379,12 +1468,11 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   grIaaSTAR->Draw("ep same");
   hPbPb_NLOSyst[0]->Draw("E2Psame");
   hPbPb_NLO[0]->Draw("EP X0 same");
-  
+
   TGraph *linePHENIX = DrawLine(linePHENIX, -0.05, 0.5, 1.05, 0.5);
   linePHENIX->Draw("l");
   TGraph *linePHENIX1 = DrawLine(linePHENIX1, -0.05, 1, 1.05, 1);
   linePHENIX1->Draw("l");
-  
 
   TLegend *legIaaALICE1_Head = LegStd(legIaaALICE1_Head, 0.150, 0.90, 0.160, 0.94);
   legIaaALICE1_Head->SetTextSize(0.038);
@@ -1393,7 +1481,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   TLegend *legIaaALICE1_gamhad = LegStd(legIaaALICE1_gamhad, 0.15, 0.77, 0.140, 0.87);
   legIaaALICE1_gamhad->SetTextSize(0.032);
   legIaaALICE1_gamhad->SetHeader("ALICE, #bf{0#font[122]{-}30%} #bf{#it{#gamma}^{iso}#font[122]{-}hadron}");
-  legIaaALICE1_gamhad->AddEntry((TObject *)0,"18 < #it{p}_{T}^{#it{#gamma}} < 40 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1 GeV/#it{c}", "");
+  legIaaALICE1_gamhad->AddEntry((TObject *)0, "18 < #it{p}_{T}^{#it{#gamma}} < 40 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1 GeV/#it{c}", "");
   legIaaALICE1_gamhad->Draw("same");
   TLegend *legIaaALICE1_gamhadMarker = LegStd(legIaaALICE1_gamhadMarker, 0.18, 0.70, 0.50, 0.76);
   legIaaALICE1_gamhadMarker->SetNColumns(2);
@@ -1430,29 +1518,20 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   legIaaALICE1_PHENIXMarker->AddEntry(hIaaPHENIXSys, "syst. unc.", "f");
   legIaaALICE1_PHENIXMarker->Draw("same");
 
+  // cPHENIX->cd(2);
+  //  TLegend *legGH = LegStd(legGH, 0, 0.95, 0.00, 1);
+  //  legGH->SetTextSize(0.045);
+  //  legGH->SetHeader("#bf{#it{#gamma}#font[122]{-}hadron}");
+  //  legGH->Draw("same");
 
+  // TLegend *legALICE = LegStd(legALICE, 0, 0.74, 0.20, 0.99);
+  // legALICE->SetTextSize(0.045);
+  // legALICE->SetHeader("ALICE");
+  // legALICE->AddEntry((TObject *)0, "#bf{#it{#gamma}#font[122]{-}hadron} Pb#font[122]{-}Pb #sqrt{#it{s}_{NN}} = 5.02 TeV", "");
+  // legALICE->AddEntry((TObject *)0, "|#Delta #it{#varphi}| < #frac{3}{5}#pi, |#it{#eta}^{#it{#gamma}}| < 0.67", "");
+  // legALICE->AddEntry((TObject *)0, "18 < #it{p}_{T}^{ #it{#gamma}} < 40 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1 GeV/#it{c}", "");
+  // legALICE->Draw("same");
 
-
-
-
-
-  
-  
-  //cPHENIX->cd(2);
-//  TLegend *legGH = LegStd(legGH, 0, 0.95, 0.00, 1);
-//  legGH->SetTextSize(0.045);
-//  legGH->SetHeader("#bf{#it{#gamma}#font[122]{-}hadron}");
-//  legGH->Draw("same");
-  
-  //TLegend *legALICE = LegStd(legALICE, 0, 0.74, 0.20, 0.99);
-  //legALICE->SetTextSize(0.045);
-  //legALICE->SetHeader("ALICE");
-  //legALICE->AddEntry((TObject *)0, "#bf{#it{#gamma}#font[122]{-}hadron} Pb#font[122]{-}Pb #sqrt{#it{s}_{NN}} = 5.02 TeV", "");
-  //legALICE->AddEntry((TObject *)0, "|#Delta #it{#varphi}| < #frac{3}{5}#pi, |#it{#eta}^{#it{#gamma}}| < 0.67", "");
-  //legALICE->AddEntry((TObject *)0, "18 < #it{p}_{T}^{ #it{#gamma}} < 40 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1 GeV/#it{c}", "");
-  //legALICE->Draw("same");
-  
-  
   //  //TLatex *latALICEIaa = LatexStdISORatio(latALICEIaa, 0.400, 0.920, 0.045, cenBins[0], cenBins[1], ptMin, ptMax, true);
   //  TLegend *legALICE3 = LegStd(legALICE3, 0.60, 0.50, 0.84, 0.70);
   //  legALICE3->SetTextSize(0.042);
@@ -1463,50 +1542,49 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   //  legALICE3->AddEntry(hPbPb_NLOSyst[0], " syst. unc.", "f");
   //  // legALICE3->AddEntry(hsyst[0], " syst. unc.", "f");
   //  legALICE3->Draw("same");
-  
 
-//
   //
-  //TLegend *legSTAR1 = LegStd(legSTAR1, 0, 0.44, 0.20, 0.69);
-  //legSTAR1->SetTextSize(0.045);
+  //
+  // TLegend *legSTAR1 = LegStd(legSTAR1, 0, 0.44, 0.20, 0.69);
+  // legSTAR1->SetTextSize(0.045);
   //
   ////legSTAR1->SetHeader("STAR, Phys.Lett.B 760 (2016) 689-696");
-  //legSTAR1->AddEntry((TObject *)0, "#bf{0#font[122]{-}12%} Au#font[122]{-}Au, #sqrt{#it{s}_{NN}} = 200 GeV ", "");
-  //legSTAR1->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h} #font[122]{-} #it{#pi}| #leq 1.4 ", "");
-  //legSTAR1->AddEntry((TObject *)0, "12 < #it{p}_{T}^{ #it{#gamma}} < 20 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1.2 GeV/#it{c} ", "");
-  //legSTAR1->Draw("same");
+  // legSTAR1->AddEntry((TObject *)0, "#bf{0#font[122]{-}12%} Au#font[122]{-}Au, #sqrt{#it{s}_{NN}} = 200 GeV ", "");
+  // legSTAR1->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h} #font[122]{-} #it{#pi}| #leq 1.4 ", "");
+  // legSTAR1->AddEntry((TObject *)0, "12 < #it{p}_{T}^{ #it{#gamma}} < 20 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1.2 GeV/#it{c} ", "");
+  // legSTAR1->Draw("same");
   //
-  //TLegend *legPHENIX = LegStd(legPHENIX, 0, 0.14, 0.20, 0.39);
-  //legPHENIX->SetTextSize(0.045);
+  // TLegend *legPHENIX = LegStd(legPHENIX, 0, 0.14, 0.20, 0.39);
+  // legPHENIX->SetTextSize(0.045);
   ////legPHENIX->SetHeader("PHENIX, PRL 111, 032301 (2013)");
-  //legPHENIX->AddEntry((TObject *)0, "#bf{0#font[122]{-}40%} Au#font[122]{-}Au, #sqrt{#it{s}_{NN}} = 200 GeV ", "");
-  //legPHENIX->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h} #font[122]{-} #it{#pi}| < #it{#pi}/2, |#it{y}| < 0.35 ", "");
-  //legPHENIX->AddEntry((TObject *)0, "5 < #it{p}_{T}^{#it{#gamma}} < 9 GeV/#it{c} #otimes 0.5 < #it{p}_{T}^{h} < 7 GeV/#it{c} ", "");
-  //legPHENIX->Draw("same");
+  // legPHENIX->AddEntry((TObject *)0, "#bf{0#font[122]{-}40%} Au#font[122]{-}Au, #sqrt{#it{s}_{NN}} = 200 GeV ", "");
+  // legPHENIX->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h} #font[122]{-} #it{#pi}| < #it{#pi}/2, |#it{y}| < 0.35 ", "");
+  // legPHENIX->AddEntry((TObject *)0, "5 < #it{p}_{T}^{#it{#gamma}} < 9 GeV/#it{c} #otimes 0.5 < #it{p}_{T}^{h} < 7 GeV/#it{c} ", "");
+  // legPHENIX->Draw("same");
   //
-  //cPHENIX->Print(dirPlot + Form("/ppNLOpQCD_DztIaa_ALICESTARPHENIX%s.pdf", sPtAll.Data()));
+  // cPHENIX->Print(dirPlot + Form("/ppNLOpQCD_DztIaa_ALICESTARPHENIX%s.pdf", sPtAll.Data()));
   cPHENIX->Print(dirPlot + Form("/ppNLOpQCD_Iaa_ALICESTARPHENIX%s.pdf", sPtAll.Data()));
 
   double xiTCMS[9] = {0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5};
   double zTCMS[9] = {0};
-  
+
   double DzTCMS0_10[8] = {0.125, 0.379, 0.717, 1.3, 1.68, 2.5, 3.08, 2.21};
   double DzTCMSBox0_10[8] = {0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02};
   double DzTCMS_Stat0_10[8] = {0.026, 0.041, 0.057, 0.073, 0.097, 0.171, 0.295, 0.312};
   double DzTCMS_Sys0_10[8] = {0.02, 0.054, 0.11, 0.141, 0.206, 0.306, 0.395, 0.32};
-  
+
   double IaaCMS0_10[8] = {0.581, 0.637, 0.797, 0.786, 0.813, 1.15, 1.66, 2.0};
   double IaaCMSBox0_10[8] = {0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02};
   double IaaCMS_Stat0_10[8] = {0.12, 0.07, 0.052, 0.045, 0.048, 0.08, 0.16, 0.284};
   double IaaCMS_Sys0_10[8] = {0.093, 0.09, 0.099, 0.087, 0.1, 0.136, 0.196, 0.716};
-  
+
   for (int ibin = 0; ibin < 9; ibin++)
   {
     zTCMS[8 - ibin] = 1. / (TMath::Exp(xiTCMS[ibin]));
   }
   TH1F *hzTCMS = new TH1F("hzTCMS", "hzTCMS", 8, zTCMS);
   TH1F *hzTCMSSys = new TH1F("hzTCMSSys", "hzTCMSSys", 8, zTCMS);
-  
+
   for (int ibin = 0; ibin < 8; ibin++)
   {
     hzTCMS->SetBinContent(ibin + 1, DzTCMS0_10[7 - ibin]);
@@ -1514,9 +1592,9 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hzTCMSSys->SetBinContent(ibin + 1, DzTCMS0_10[7 - ibin]);
     hzTCMSSys->SetBinError(ibin + 1, DzTCMS_Sys0_10[7 - ibin]);
   }
-  PlotStyle(hzTCMS, 21, 1.2, kPink-5, kPink-5, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
-  PlotStyle(hzTCMSSys, 21, 1.2, kPink+2, kPink+2, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", true);
-  
+  PlotStyle(hzTCMS, 21, 1.2, kPink - 5, kPink - 5, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
+  PlotStyle(hzTCMSSys, 21, 1.2, kPink + 2, kPink + 2, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", true);
+
   TH1F *hIaaCMS = new TH1F("hIaaCMS", "hIaaCMS", 8, zTCMS);
   TH1F *hIaaCMSSys = new TH1F("hIaaCMSSys", "hIaaCMSSys", 8, zTCMS);
   for (int ibin = 0; ibin < 8; ibin++)
@@ -1527,22 +1605,22 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hIaaCMSSys->SetBinContent(ibin + 1, IaaCMS0_10[7 - ibin]);
     hIaaCMSSys->SetBinError(ibin + 1, IaaCMS_Sys0_10[7 - ibin]);
   }
-  PlotStyle(hIaaCMS, 24, 1.1, kOrange+4, kOrange+2, "#it{z}_{T}", "#it{I}_{pQCD}, #it{I}_{AA}", false);
-  PlotStyle(hIaaCMSSys, 24, 1.1, kOrange+4, kOrange-3, "#it{z}_{T}", "#it{I}_{pQCD}, #it{I}_{AA}", true);
-  
+  PlotStyle(hIaaCMS, 24, 1.1, kOrange + 4, kOrange + 2, "#it{z}_{T}", "#it{I}_{pQCD}, #it{I}_{AA}", false);
+  PlotStyle(hIaaCMSSys, 24, 1.1, kOrange + 4, kOrange - 3, "#it{z}_{T}", "#it{I}_{pQCD}, #it{I}_{AA}", true);
+
   double xiTCMS_Zhad[11] = {0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0};
   double zTCMS_Zhad[11] = {0};
-  
+
   double DzTCMS0_10_Zhad[10] = {0.0196, 0.0598, 0.157, 0.4, 0.875, 1.673, 3.81, 2.78, 1.13, 0.484};
   double DzTCMSBox0_10_Zhad[10] = {};
   double DzTCMS_Stat0_10_Zhad[10] = {0.0043, 0.0083, 0.015, 0.029, 0.08, 0.711, 0.47, 0.42, 0.25, 0.136};
   double DzTCMS_Sys0_10_Zhad[10] = {0.0028, 0.0057, 0.012, 0.026, 0.053, 0.097, 0.25, 0.71, 0.12, 0.064};
-  
+
   double IaaCMS0_10_Zhad[10] = {0.612, 0.397, 0.399, 0.507, 0.682, 0.864, 1.441, 1.419, 1.519, 2.32};
   double IaaCMSBox0_10_Zhad[10] = {};
   double IaaCMS_Stat0_10_Zhad[10] = {0.139, 0.056, 0.04, 0.037, 0.063, 0.125, 0.179, 0.214, 0.347, 0.66};
   double IaaCMS_Sys0_10_Zhad[10] = {0.054, 0.026, 0.071, 0.029, 0.04, 0.05, 0.082, 0.088, 0.099, 0.2};
-  
+
   for (int ibin = 0; ibin < 11; ibin++)
   {
     zTCMS_Zhad[10 - ibin] = 1. / (TMath::Exp(xiTCMS_Zhad[ibin]));
@@ -1550,7 +1628,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   }
   TH1F *hzTCMS_Zhad = new TH1F("hzTCMS_Zhad", "hzTCMS_Zhad", 10, zTCMS_Zhad);
   TH1F *hzTCMSSys_Zhad = new TH1F("hzTCMSSys_Zhad", "hzTCMSSys_Zhad", 10, zTCMS_Zhad);
-  
+
   for (int ibin = 0; ibin < 10; ibin++)
   {
     hzTCMS_Zhad->SetBinContent(ibin + 1, DzTCMS0_10_Zhad[9 - ibin]);
@@ -1558,9 +1636,9 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hzTCMSSys_Zhad->SetBinContent(ibin + 1, DzTCMS0_10_Zhad[9 - ibin]);
     hzTCMSSys_Zhad->SetBinError(ibin + 1, DzTCMS_Sys0_10_Zhad[9 - ibin]);
   }
-  PlotStyle(hzTCMS_Zhad, 28, 1.5, kTeal+3, kTeal+3, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
-  PlotStyle(hzTCMSSys_Zhad, 28, 1.5, kTeal+3, kTeal+3, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", true);
-  
+  PlotStyle(hzTCMS_Zhad, 28, 1.5, kTeal + 3, kTeal + 3, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
+  PlotStyle(hzTCMSSys_Zhad, 28, 1.5, kTeal + 3, kTeal + 3, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", true);
+
   TH1F *hIaaCMS_Zhad = new TH1F("hIaaCMS_Zhad", "hIaaCMS_Zhad", 10, zTCMS_Zhad);
   TH1F *hIaaCMSSys_Zhad = new TH1F("hIaaCMSSys_Zhad", "hIaaCMSSys_Zhad", 10, zTCMS_Zhad);
   for (int ibin = 0; ibin < 10; ibin++)
@@ -1570,90 +1648,90 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hIaaCMSSys_Zhad->SetBinContent(ibin + 1, IaaCMS0_10_Zhad[9 - ibin]);
     hIaaCMSSys_Zhad->SetBinError(ibin + 1, IaaCMS_Sys0_10_Zhad[9 - ibin]);
   }
-  PlotStyle(hIaaCMS_Zhad, kFullCross, 1.5, kTeal-6, kTeal-6, "#it{z}_{T}", "#it{I}_{pQCD}, #it{I}_{AA}", false);
+  PlotStyle(hIaaCMS_Zhad, kFullCross, 1.5, kTeal - 6, kTeal - 6, "#it{z}_{T}", "#it{I}_{pQCD}, #it{I}_{AA}", false);
   // PlotStyle(hGeneralCMSIaa, 71, 1, kBlack, "#it{z}_{T}", "#it{I}_{PYTHIA}, #it{I}_{AA}", false);
-  PlotStyle(hIaaCMSSys_Zhad, kFullCross, 1.5, kTeal-5, kTeal-5, "#it{z}_{T}", "#it{I}_{pQCD}, #it{I}_{AA}", true);
-  
+  PlotStyle(hIaaCMSSys_Zhad, kFullCross, 1.5, kTeal - 5, kTeal - 5, "#it{z}_{T}", "#it{I}_{pQCD}, #it{I}_{AA}", true);
+
   TCanvas *cCMS_Zhad = new TCanvas("cCMS_Zhad", "cCMS_Zhad", 1 * 800, 1 * 600);
   cCMS_Zhad->Divide(1, 1);
-//  cCMS_Zhad->cd(1);
-//  cCMS_Zhad->cd(1)->SetTopMargin(0.015);
-//  cCMS_Zhad->cd(1)->SetRightMargin(0.02);
-//  cCMS_Zhad->cd(1)->SetLeftMargin(0.12);
-//  cCMS_Zhad->cd(1)->SetBottomMargin(0.11);
-//  gPad->SetLogy();
-//  hGeneralCMS->SetTitle(" ");
-//  hGeneralCMS->GetYaxis()->SetTitleSize(0.045);
-//  hGeneralCMS->GetXaxis()->SetTitleSize(0.05);
-//  hGeneralCMS->GetYaxis()->SetLabelSize(0.04);
-//  hGeneralCMS->GetXaxis()->SetLabelSize(0.045);
-//  hGeneralCMS->GetYaxis()->SetLabelOffset(0.02);
-//  hGeneralCMS->GetXaxis()->SetLabelOffset(0.02);
-//
-//  hGeneralCMS->GetYaxis()->SetRangeUser(3e-3, 10);
-//  hGeneralCMS->GetXaxis()->SetRangeUser(-0.02, 1.08);
-//  // hGeneral->Draw("hist");
-//  hGeneralCMS->SetLineWidth(0);
-//  hGeneralCMS->Draw("hist");
-//  hzTCMSSys_Zhad->SetFillStyle(0);
-//  hzTCMSSys_Zhad->SetLineWidth(2);
-//  hzTCMSSys_Zhad->Draw("samee2");
-//  hzTCMS_Zhad->Draw("EP X0 same");
-//  hzTCMSSys->SetFillStyle(0);
-//  hzTCMSSys->SetLineWidth(2);
-//  hzTCMSSys->Draw("samee2");
-//  hzTCMS->Draw("EP X0 same");
-//  hSystZt[0]->SetMarkerColor(kRed + 1);
-//  hSystZt[0]->SetFillColor(kRed + 1);
-//  hSystZt[0]->SetLineColor(kRed + 1);
-//  hSystZt[0]->SetLineWidth(2);
-//  hZtCent[0]->SetMarkerColor(kRed + 1);
-//  hZtCent[0]->SetLineColor(kRed + 1);
-//  hZtCent[0]->SetMarkerSize(1.2);
-//  hSystZt[0]->SetFillStyle(0);
-//  hSystZt[0]->Draw("samee2");
-//  hZtCent[0]->Draw("EP X0 same");
-//  //TLatex *latALICEcms_Zhad = LatexStdISORatio(latALICEcms_Zhad, 0.380, 0.92, 0.045, cenBins[0], cenBins[1], ptMin, ptMax, true);
-//  //TLegend *legALICE2_Zhad = LegStd(legALICE2_Zhad, 0.140, 0.16, 0.40, 0.40);
-//  TLegend *legALICE2_Zhad = LegStd(legALICE2_Zhad, 0.45, 0.7, 0.9, 0.95);
-//  legALICE2_Zhad->SetTextSize(0.045);
-//  legALICE2_Zhad->AddEntry(hZtCent[0], "ALICE, #bf{#it{#gamma}#font[122]{-}hadron} stat. unc. ", "ep");
-//  legALICE2_Zhad->AddEntry(hzTCMS, "CMS, #bf{#it{#gamma}#font[122]{-}jet}, stat. unc. ", "ep");
-//  legALICE2_Zhad->AddEntry(hzTCMS_Zhad, "CMS, #bf{#it{Z}#font[122]{-}hadron}, stat. unc. ", "ep");
-//  legALICE2_Zhad->AddEntry(hSystZt[0], " syst. unc. ", "f");
-//  legALICE2_Zhad->Draw("same");
-  
+  //  cCMS_Zhad->cd(1);
+  //  cCMS_Zhad->cd(1)->SetTopMargin(0.015);
+  //  cCMS_Zhad->cd(1)->SetRightMargin(0.02);
+  //  cCMS_Zhad->cd(1)->SetLeftMargin(0.12);
+  //  cCMS_Zhad->cd(1)->SetBottomMargin(0.11);
+  //  gPad->SetLogy();
+  //  hGeneralCMS->SetTitle(" ");
+  //  hGeneralCMS->GetYaxis()->SetTitleSize(0.045);
+  //  hGeneralCMS->GetXaxis()->SetTitleSize(0.05);
+  //  hGeneralCMS->GetYaxis()->SetLabelSize(0.04);
+  //  hGeneralCMS->GetXaxis()->SetLabelSize(0.045);
+  //  hGeneralCMS->GetYaxis()->SetLabelOffset(0.02);
+  //  hGeneralCMS->GetXaxis()->SetLabelOffset(0.02);
+  //
+  //  hGeneralCMS->GetYaxis()->SetRangeUser(3e-3, 10);
+  //  hGeneralCMS->GetXaxis()->SetRangeUser(-0.02, 1.08);
+  //  // hGeneral->Draw("hist");
+  //  hGeneralCMS->SetLineWidth(0);
+  //  hGeneralCMS->Draw("hist");
+  //  hzTCMSSys_Zhad->SetFillStyle(0);
+  //  hzTCMSSys_Zhad->SetLineWidth(2);
+  //  hzTCMSSys_Zhad->Draw("samee2");
+  //  hzTCMS_Zhad->Draw("EP X0 same");
+  //  hzTCMSSys->SetFillStyle(0);
+  //  hzTCMSSys->SetLineWidth(2);
+  //  hzTCMSSys->Draw("samee2");
+  //  hzTCMS->Draw("EP X0 same");
+  //  hSystZt[0]->SetMarkerColor(kRed + 1);
+  //  hSystZt[0]->SetFillColor(kRed + 1);
+  //  hSystZt[0]->SetLineColor(kRed + 1);
+  //  hSystZt[0]->SetLineWidth(2);
+  //  hZtCent[0]->SetMarkerColor(kRed + 1);
+  //  hZtCent[0]->SetLineColor(kRed + 1);
+  //  hZtCent[0]->SetMarkerSize(1.2);
+  //  hSystZt[0]->SetFillStyle(0);
+  //  hSystZt[0]->Draw("samee2");
+  //  hZtCent[0]->Draw("EP X0 same");
+  //  //TLatex *latALICEcms_Zhad = LatexStdISORatio(latALICEcms_Zhad, 0.380, 0.92, 0.045, cenBins[0], cenBins[1], ptMin, ptMax, true);
+  //  //TLegend *legALICE2_Zhad = LegStd(legALICE2_Zhad, 0.140, 0.16, 0.40, 0.40);
+  //  TLegend *legALICE2_Zhad = LegStd(legALICE2_Zhad, 0.45, 0.7, 0.9, 0.95);
+  //  legALICE2_Zhad->SetTextSize(0.045);
+  //  legALICE2_Zhad->AddEntry(hZtCent[0], "ALICE, #bf{#it{#gamma}#font[122]{-}hadron} stat. unc. ", "ep");
+  //  legALICE2_Zhad->AddEntry(hzTCMS, "CMS, #bf{#it{#gamma}#font[122]{-}jet}, stat. unc. ", "ep");
+  //  legALICE2_Zhad->AddEntry(hzTCMS_Zhad, "CMS, #bf{#it{Z}#font[122]{-}hadron}, stat. unc. ", "ep");
+  //  legALICE2_Zhad->AddEntry(hSystZt[0], " syst. unc. ", "f");
+  //  legALICE2_Zhad->Draw("same");
+
   cCMS_Zhad->cd(1);
   cCMS_Zhad->cd(1)->SetTopMargin(0.015);
   cCMS_Zhad->cd(1)->SetRightMargin(0.02);
   cCMS_Zhad->cd(1)->SetLeftMargin(0.12);
   cCMS_Zhad->cd(1)->SetBottomMargin(0.11);
-  //hIaaCMSSys_Zhad->SetFillStyle(0);
-  //hIaaCMSSys_Zhad->SetLineWidth(2);
-  //hGeneralIaa->SetTitle(" ");
+  // hIaaCMSSys_Zhad->SetFillStyle(0);
+  // hIaaCMSSys_Zhad->SetLineWidth(2);
+  // hGeneralIaa->SetTitle(" ");
   hGeneralIaa->GetYaxis()->SetRangeUser(0, 3.8);
   ////hGeneralIaa->GetXaxis()->SetRangeUser(0.0, 1.1);
-  //hGeneralIaa->GetYaxis()->SetTitleSize(0.052);
-  //hGeneralIaa->GetYaxis()->SetTitleOffset(1.25);
-  //hGeneralIaa->GetXaxis()->SetTitleSize(0.045);
-  //hGeneralIaa->GetYaxis()->SetLabelSize(0.04);
-  //hGeneralIaa->GetXaxis()->SetLabelSize(0.04);
-  //hGeneralIaa->SetLineWidth(0);
+  // hGeneralIaa->GetYaxis()->SetTitleSize(0.052);
+  // hGeneralIaa->GetYaxis()->SetTitleOffset(1.25);
+  // hGeneralIaa->GetXaxis()->SetTitleSize(0.045);
+  // hGeneralIaa->GetYaxis()->SetLabelSize(0.04);
+  // hGeneralIaa->GetXaxis()->SetLabelSize(0.04);
+  // hGeneralIaa->SetLineWidth(0);
   hGeneralIaa->Draw("hist");
-  //hIaaCMSSys->SetLineWidth(2);
-  //hIaaCMSSys->SetFillStyle(0);
+  // hIaaCMSSys->SetLineWidth(2);
+  // hIaaCMSSys->SetFillStyle(0);
   hIaaCMSSys->Draw("samee2");
   hIaaCMS->Draw("EP X0 same");
   hIaaCMSSys_Zhad->Draw("samee2");
   hIaaCMS_Zhad->Draw("EP X0 same");
-  //hPbPb_NLO[0]->SetLineColor(kRed + 1);
-  //hPbPb_NLO[0]->SetMarkerColor(kRed + 1);
-  //hPbPb_NLO[0]->SetMarkerSize(1.3);
-  //hPbPb_NLO[0]->SetLineWidth(2);
-  //hPbPb_NLOSyst[0]->SetLineWidth(2);
-  //hPbPb_NLOSyst[0]->SetFillColor(kRed + 1);
-  //hPbPb_NLOSyst[0]->SetLineColor(kRed + 1);
-  //hPbPb_NLOSyst[0]->SetMarkerSize(1.3);
+  // hPbPb_NLO[0]->SetLineColor(kRed + 1);
+  // hPbPb_NLO[0]->SetMarkerColor(kRed + 1);
+  // hPbPb_NLO[0]->SetMarkerSize(1.3);
+  // hPbPb_NLO[0]->SetLineWidth(2);
+  // hPbPb_NLOSyst[0]->SetLineWidth(2);
+  // hPbPb_NLOSyst[0]->SetFillColor(kRed + 1);
+  // hPbPb_NLOSyst[0]->SetLineColor(kRed + 1);
+  // hPbPb_NLOSyst[0]->SetMarkerSize(1.3);
   hPbPb_NLOSyst[0]->Draw("E2Psame ");
   hPbPb_NLO[0]->Draw("EPX0same");
   // h3[0]->SetLineColor(kRed + 1);
@@ -1666,14 +1744,14 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   // hsyst[0]->SetMarkerSize(1.3);
   // hsyst[0]->Draw("samee2");
   // h3[0]->Draw("EP X0 same");
-  //TLegend *legALICE2_Head = LegStd(legALICE2_Head, 0.50, 0.88, 0.80, 0.92);
-  //legALICE2_Head->SetTextSize(0.040);
-  //legALICE2_Head->SetHeader("Pb#font[122]{-}Pb #sqrt{#it{s}_{NN}} = 5.02 TeV");
-  //legALICE2_Head->Draw("same");
+  // TLegend *legALICE2_Head = LegStd(legALICE2_Head, 0.50, 0.88, 0.80, 0.92);
+  // legALICE2_Head->SetTextSize(0.040);
+  // legALICE2_Head->SetHeader("Pb#font[122]{-}Pb #sqrt{#it{s}_{NN}} = 5.02 TeV");
+  // legALICE2_Head->Draw("same");
   TLegend *legALICE2_Zhad = LegStd(legALICE2_Zhad, 0.18, 0.80, 0.18, 0.92);
   legALICE2_Zhad->SetTextSize(0.032);
   legALICE2_Zhad->SetHeader("ALICE, #bf{0#font[122]{-}30%} #bf{#it{#gamma}#font[122]{-}hadron}");
-  legALICE2_Zhad->AddEntry((TObject *)0, "18 < #it{p}_{T}^{#it{#gamma}} < 40 GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c}","");
+  legALICE2_Zhad->AddEntry((TObject *)0, "18 < #it{p}_{T}^{#it{#gamma}} < 40 GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c}", "");
   legALICE2_Zhad->Draw("same");
   TLegend *legALICE2_ZhadMarker = LegStd(legALICE2_ZhadMarker, 0.18, 0.72, 0.60, 0.78);
   legALICE2_ZhadMarker->SetNColumns(2);
@@ -1705,114 +1783,109 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   legALICE2_CMSZhadMarker->AddEntry(hIaaCMSSys_Zhad, "syst. unc.", "f");
   legALICE2_CMSZhadMarker->Draw("same");
 
-  
   TGraph *lineCMS = DrawLine(lineCMS, -0.05, 0.5, 1.1, 0.5);
   lineCMS->Draw("l");
   TGraph *lineCMS1 = DrawLine(lineCMS1, -0.05, 1, 1.1, 1);
   lineCMS1->Draw("l");
-  
-  //cCMS_Zhad->cd(2);
+
+  // cCMS_Zhad->cd(2);
   //
-  //TLegend *legALICE = LegStd(legALICE, 0, 0.74, 0.20, 0.99);
-  //legALICE->SetTextSize(0.045);
-  //legALICE->SetHeader("ALICE");
+  // TLegend *legALICE = LegStd(legALICE, 0, 0.74, 0.20, 0.99);
+  // legALICE->SetTextSize(0.045);
+  // legALICE->SetHeader("ALICE");
   ////legALICE->AddEntry((TObject *)0, "#bf{0#font[122]{-}30%} #bf{#it{#gamma}#font[122]{-}hadron}", "");
-  //legALICE->AddEntry((TObject *)0, "|#Delta #it{#varphi}| < #frac{3}{5}#pi, |#it{#eta}^{#it{#gamma}}| < 0.67", "");
-  //legALICE->AddEntry((TObject *)0, "18 < #it{p}_{T}^{ #it{#gamma}} < 40 GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c}", "");
-  //legALICE->Draw("same");
+  // legALICE->AddEntry((TObject *)0, "|#Delta #it{#varphi}| < #frac{3}{5}#pi, |#it{#eta}^{#it{#gamma}}| < 0.67", "");
+  // legALICE->AddEntry((TObject *)0, "18 < #it{p}_{T}^{ #it{#gamma}} < 40 GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c}", "");
+  // legALICE->Draw("same");
   //
   //
-  //TLegend *legCMS1 = LegStd(legCMS1, 0, 0.45, 0.20, 0.7);
-  //legCMS1->SetTextSize(0.045);
-  //legCMS1->SetHeader("CMS, Phys.Rev.Lett. 121 (2018) 24, 242301");
+  // TLegend *legCMS1 = LegStd(legCMS1, 0, 0.45, 0.20, 0.7);
+  // legCMS1->SetTextSize(0.045);
+  // legCMS1->SetHeader("CMS, Phys.Rev.Lett. 121 (2018) 24, 242301");
   ////legCMS1->AddEntry((TObject *)0, "#bf{#it{#gamma}#font[122]{-}jet}, #bf{0#font[122]{-}10%} ", "");
-  //legCMS1->AddEntry((TObject *)0, "anti-k_{T} jet #it{R} = 0.3, #it{p}_{T}^{jet} > 30 GeV/#it{c}, |#it{#eta}^{jet}| < 1.6 ", "");
-  //legCMS1->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}jet}| > #frac{7}{8} #it{#pi}, |#it{#eta}^{ #it{#gamma}}| < 1.44 #it{p}_{T}^{ #it{#gamma}} > 60 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1 GeV/#it{c} ", "");
-  //legCMS1->Draw("same");
-  //TLegend *legCMS1_Zhad = LegStd(legCMS1_Zhad, 0, 0.16, 0.20, 0.36);
-  //legCMS1_Zhad->SetTextSize(0.045);
-  //legCMS1_Zhad->SetHeader("CMS, Phys.Rev.Lett. 128 (2022) 12, 122301");
+  // legCMS1->AddEntry((TObject *)0, "anti-k_{T} jet #it{R} = 0.3, #it{p}_{T}^{jet} > 30 GeV/#it{c}, |#it{#eta}^{jet}| < 1.6 ", "");
+  // legCMS1->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}jet}| > #frac{7}{8} #it{#pi}, |#it{#eta}^{ #it{#gamma}}| < 1.44 #it{p}_{T}^{ #it{#gamma}} > 60 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1 GeV/#it{c} ", "");
+  // legCMS1->Draw("same");
+  // TLegend *legCMS1_Zhad = LegStd(legCMS1_Zhad, 0, 0.16, 0.20, 0.36);
+  // legCMS1_Zhad->SetTextSize(0.045);
+  // legCMS1_Zhad->SetHeader("CMS, Phys.Rev.Lett. 128 (2022) 12, 122301");
   ////legCMS1_Zhad->AddEntry((TObject *)0, "#bf{#it{Z}#font[122]{-}hadron}, #bf{0#font[122]{-}30%} ", "");
-  //legCMS1_Zhad->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{Z#font[122]{-}h}| > #frac{7}{8} #it{#pi}, #it{p}_{T}^{Z} > 30 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1 GeV/#it{c}", "");
-  //legCMS1_Zhad->Draw("same");
-  //cCMS_Zhad->Print(dirPlot + Form("/ppNLOpQCD_DztIaa_ZhadALICECMS%s.pdf", sPtAll.Data()));
+  // legCMS1_Zhad->AddEntry((TObject *)0, "|#Delta#it{#varphi}_{Z#font[122]{-}h}| > #frac{7}{8} #it{#pi}, #it{p}_{T}^{Z} > 30 GeV/#it{c} #otimes #it{p}_{T}^{h} > 1 GeV/#it{c}", "");
+  // legCMS1_Zhad->Draw("same");
+  // cCMS_Zhad->Print(dirPlot + Form("/ppNLOpQCD_DztIaa_ZhadALICECMS%s.pdf", sPtAll.Data()));
   cCMS_Zhad->Print(dirPlot + Form("/ppNLOpQCD_Iaa_ZhadALICECMS%s.pdf", sPtAll.Data()));
 
-  
-  
-  
-  
   ////////////////
-  ///ICP///////
+  /// ICP///////
   ///////////////
   ///
-  
+
   // Recover data Icp calculated in Systematic calculation stage
   //
-  TFile * fIcp = TFile::Open("Systematics_checkCode0_30/fIcpWithSystMixed0.40-1.00Mirror_Pt18_40.root");
-  TH1F* hIcpSta[nCen-1];
-  TH1F* hIcpSys[nCen-1];
-  
-  for(Int_t iCen = 0; iCen < nCen-1; iCen++)
+  TFile *fIcp = TFile::Open("Systematics_checkCode0_30/fIcpWithSystMixed0.40-1.00Mirror_Pt18_40.root");
+  TH1F *hIcpSta[nCen - 1];
+  TH1F *hIcpSys[nCen - 1];
+
+  for (Int_t iCen = 0; iCen < nCen - 1; iCen++)
   {
-    hIcpSta[iCen] = (TH1F*) fIcp->Get(Form("hIcp_Cen%d_%d"    , cenBins[iCen], cenBins[iCen+1]));
-    hIcpSys[iCen] = (TH1F*) fIcp->Get(Form("hIcpSyst_Cen%d_%d", cenBins[iCen], cenBins[iCen+1]));
-    //printf("Icp: icen %d, sta %p sys %p\n", iCen, hIcpSta[iCen], hIcpSys[iCen]);
+    hIcpSta[iCen] = (TH1F *)fIcp->Get(Form("hIcp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
+    hIcpSys[iCen] = (TH1F *)fIcp->Get(Form("hIcpSyst_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
+    // printf("Icp: icen %d, sta %p sys %p\n", iCen, hIcpSta[iCen], hIcpSys[iCen]);
   }
-  
+
   // Calculate Icp in theory for NLO pQCD
   //
-  for(Int_t iCen = 0; iCen < nCen-1; iCen++)
+  for (Int_t iCen = 0; iCen < nCen - 1; iCen++)
   {
     Int_t nPoints = grIcpNLOmedian[iCen]->GetN();
-    for(Int_t ibin = 0; ibin < nPoints; ibin++)
+    for (Int_t ibin = 0; ibin < nPoints; ibin++)
     {
-      Float_t zT =  grIcpNLOmedian[iCen]->GetPointX(ibin);
-      Float_t dzTCen =  grIcpNLOmedian[iCen]  ->GetPointY(ibin);
-      Float_t dzTPer =  grIcpNLOmedian[nCen-1]->GetPointY(ibin);
-      Float_t iCP    = 0;
-      if ( dzTPer > 0 ) iCP = dzTCen / dzTPer;
-      
+      Float_t zT = grIcpNLOmedian[iCen]->GetPointX(ibin);
+      Float_t dzTCen = grIcpNLOmedian[iCen]->GetPointY(ibin);
+      Float_t dzTPer = grIcpNLOmedian[nCen - 1]->GetPointY(ibin);
+      Float_t iCP = 0;
+      if (dzTPer > 0)
+        iCP = dzTCen / dzTPer;
+
       Float_t errCenHigh = grIcpNLOmedian[iCen]->GetErrorYhigh(ibin);
-      Float_t errCenLow  = grIcpNLOmedian[iCen]->GetErrorYlow(ibin);
-      Float_t errPerHigh = grIcpNLOmedian[nCen-1]->GetErrorYhigh(ibin);
-      Float_t errPerLow  = grIcpNLOmedian[nCen-1]->GetErrorYlow(ibin);
-      Float_t errIcpHigh = errCenHigh*errCenHigh/(dzTPer*dzTPer) + errPerHigh*errPerHigh*dzTCen*dzTCen/(dzTPer*dzTPer*dzTPer*dzTPer);
-      Float_t errIcpLow  = errCenHigh*errCenLow /(dzTPer*dzTPer) + errPerLow *errPerLow *dzTCen*dzTCen/(dzTPer*dzTPer*dzTPer*dzTPer);
+      Float_t errCenLow = grIcpNLOmedian[iCen]->GetErrorYlow(ibin);
+      Float_t errPerHigh = grIcpNLOmedian[nCen - 1]->GetErrorYhigh(ibin);
+      Float_t errPerLow = grIcpNLOmedian[nCen - 1]->GetErrorYlow(ibin);
+      Float_t errIcpHigh = errCenHigh * errCenHigh / (dzTPer * dzTPer) + errPerHigh * errPerHigh * dzTCen * dzTCen / (dzTPer * dzTPer * dzTPer * dzTPer);
+      Float_t errIcpLow = errCenHigh * errCenLow / (dzTPer * dzTPer) + errPerLow * errPerLow * dzTCen * dzTCen / (dzTPer * dzTPer * dzTPer * dzTPer);
       errIcpHigh = TMath::Sqrt(errIcpHigh);
-      errIcpLow  = TMath::Sqrt(errIcpLow );
-      
+      errIcpLow = TMath::Sqrt(errIcpLow);
+
       printf("iCen %d Point %d, zT %1.3f, Dzt Cen %1.2e, Per %1.2e, Icp %1.2f --- Err Cen high %1.2e low %1.2e Per high %1.2e low %1.2e Icp high %1.2e low %1.2e\n",
              iCen, ibin,
-             zT , dzTCen, dzTPer, iCP,
+             zT, dzTCen, dzTPer, iCP,
              errCenHigh, errCenLow,
              errPerHigh, errPerLow,
              errIcpHigh, errIcpLow);
       printf("\t X Err Cen high %1.2e low %1.2e \n",
              grIcpNLOmedian[iCen]->GetErrorXhigh(ibin), grIcpNLOmedian[iCen]->GetErrorXlow(ibin));
-             
-      grIcpNLOmedian[iCen]->SetPoint(ibin,zT,iCP);
-      grIcpNLOmedian[iCen]->SetPointError(ibin,0,0,errIcpHigh,errIcpLow);
-      
+
+      grIcpNLOmedian[iCen]->SetPoint(ibin, zT, iCP);
+      grIcpNLOmedian[iCen]->SetPointError(ibin, 0, 0, errIcpHigh, errIcpLow);
     }
     grIcpNLOmedian[iCen]->SetLineStyle(0);
-    grIcpNLOmedian[iCen]->SetLineColorAlpha(0,0);
+    grIcpNLOmedian[iCen]->SetLineColorAlpha(0, 0);
   }
-  
+
   gStyle->SetPadTopMargin(0.015);
   gStyle->SetPadRightMargin(0.015);
   gStyle->SetPadLeftMargin(0.1);
   gStyle->SetPadBottomMargin(0.15);
-  
+
   TCanvas *cICP = new TCanvas(Form("cICP"), Form("cICP"), 1 * 800, 1 * 600);
   cICP->Divide(1, 1);
-  
+
   gPad->SetTickx();
   gPad->SetTicky();
-  
+
   double rangeIcpMin[2] = {0.1, 0.1};
   double rangeIcpMax[2] = {0.6, 0.6};
-  
+
   TH1F *hGeneralIcp = new TH1F("hGeneralIcp", "hGeneral Icp", 100, 0, 2);
   PlotStyle(hGeneralIcp, 20, 1, kWhite, kWhite, "#it{z}_{T}", "#it{I}_{CP}", false);
   hGeneralIcp->SetTitle(" ");
@@ -1824,54 +1897,84 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hGeneralIcp->GetXaxis()->SetLabelSize(0.05);
   hGeneralIcp->GetXaxis()->SetTitleOffset(1.0);
   hGeneralIcp->GetYaxis()->SetTitleOffset(1.);
-  
+
   hGeneralIcp->Draw("");
-  
+
   TGraph *lineIcp1 = DrawLine(line, 0, 1, 1.2, 1);
   lineIcp1->Draw("same");
   TGraph *lineIcp05 = DrawLine(line1, 0, 0.5, 1.2, 0.5);
   lineIcp05->Draw("same");
-  
-  hIcpSys[0]->SetFillColorAlpha(kAzure  + 5, 0.30);
+
+  hIcpSys[0]->SetFillColorAlpha(kAzure + 5, 0.30);
   hIcpSys[1]->SetFillColorAlpha(kOrange + 8, 0.30);
-  
+
   TLegend *legIcp[2];
   legIcp[0] = LegStd(legIcp[0], 0.12, 0.75, 0.34, 0.98);
   legIcp[1] = LegStd(legIcp[1], 0.38, 0.75, 0.60, 0.98);
 
-  grIcpNLOmedian[0]->SetFillColorAlpha(kGray,0.25);
-  
-  for (int iCen = 0; iCen < nCen-1; iCen++)
+  grIcpNLOmedian[0]->SetFillColorAlpha(kGray, 0.25);
+
+  for (int iCen = 0; iCen < nCen - 1; iCen++)
   {
     hIcpSys[iCen]->GetXaxis()->SetRangeUser(rangeIcpMin[iCen], rangeIcpMax[iCen]);
     hIcpSta[iCen]->GetXaxis()->SetRangeUser(rangeIcpMin[iCen], rangeIcpMax[iCen]);
-    
+
     grIcpNLOmedian[iCen]->Draw("same E3");
-    
+
     hIcpSys[iCen]->Draw("same E2");
     hIcpSta[iCen]->Draw("same EX0");
-    
-    
+
     legIcp[iCen]->SetHeader(Form("%d#font[122]{-}%d%%  / %d#font[122]{-}%d%%:",
-                                      cenBins[iCen],cenBins[iCen+1],cenBins[nCen-1],cenBins[nCen]));
+                                 cenBins[iCen], cenBins[iCen + 1], cenBins[nCen - 1], cenBins[nCen]));
     legIcp[iCen]->AddEntry(hIcpSta[iCen], "Data stat. unc.", "ep");
     legIcp[iCen]->AddEntry(hIcpSys[iCen], Form("Data syst. unc."), "f");
     legIcp[iCen]->AddEntry(grIcpNLOmedian[iCen], Form("NLO pQCD#color[0]{.}+#color[0]{.}#DeltaE_{loss}"), "f");
     legIcp[iCen]->Draw("same");
-
   }
-  
+
   TLatex *ALICEtexIcp2 = new TLatex();
   ALICEtexIcp2->SetTextFont(42);
   ALICEtexIcp2->SetTextSize(0.04);
   ALICEtexIcp2->SetNDC();
-  //ALICEtexIcp2->DrawLatex(0.56, 0.86, Form("#it{This Thesis}"));
+  // ALICEtexIcp2->DrawLatex(0.56, 0.86, Form("#it{This Thesis}"));
   ALICEtexIcp2->DrawLatex(0.65, 0.94, Form("ALICE"));
   ALICEtexIcp2->DrawLatex(0.65, 0.94 - 0.055, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
   ALICEtexIcp2->DrawLatex(0.65, 0.94 - 2 * 0.06, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
   ALICEtexIcp2->DrawLatex(0.65, 0.94 - 3 * 0.06, Form("%2.0f < #it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c} ", ptMin, ptMax));
   ALICEtexIcp2->DrawLatex(0.65, 0.94 - 4 * 0.06, Form("#it{p}_{T}^{h} > 0.5 GeV/#it{c} "));
-  
- 
+
   cICP->Print(dirPlot + Form("/Icp_Data_NLOpQCD%s.pdf", sPtAll.Data()));
+}
+
+TH1F *shiftBinXinHisto(TH1F *h1, TH1F *h1Shifted, int iCen)
+{
+  // Assuming you already have:
+  // TH1F* hRed;   // e.g. central collisions
+  // TH1F* hBlue;  // e.g. peripheral collisions
+
+  // Create a clone of hRed to shift its bin content
+  // h1Shifted = (TH1F *)h1->Clone("h1Shifted");
+  // h1Shifted->Reset(); // Clear contents before refilling
+  int a = 0;
+  const int nBins = h1->GetNbinsX();
+  for (int i = 1; i <= nBins; ++i)
+  {
+    double x = h1->GetBinCenter(i);
+    double y = h1->GetBinContent(i);
+    double err = h1->GetBinError(i);
+
+    // Shift bin center by +0.01 units and set the new value
+    if (iCen == 0)
+      a = -1;
+    else if (iCen == 1)
+      a = 1;
+    else if (iCen == 2)
+      a = 0;
+    cout << "a value_______" << a << endl;
+    int newBin = h1Shifted->FindBin(x + (a * 0.01));
+    cout << (a * 0.01) << endl;
+    h1Shifted->SetBinContent(newBin, y);
+    h1Shifted->SetBinError(newBin, err);
+  }
+  return h1Shifted;
 }
