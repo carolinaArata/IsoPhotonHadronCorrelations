@@ -281,8 +281,8 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     for (int ibin = 0; ibin < nZtBin; ibin++)
     {
       // Modification required by ARC: syst estimated from expo not constant
-      // hPurUncertFromFit[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hPurUncertFromFit[iCen]->GetBinCenter(ibin + 1)));
-      hPurUncertFromFit[iCen]->SetBinContent(ibin + 1, fExpo[iCen]->Eval(hPurUncertFromFit[iCen]->GetBinCenter(ibin + 1)));
+       hPurUncertFromFit[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hPurUncertFromFit[iCen]->GetBinCenter(ibin + 1)));
+      //hPurUncertFromFit[iCen]->SetBinContent(ibin + 1, fExpo[iCen]->Eval(hPurUncertFromFit[iCen]->GetBinCenter(ibin + 1)));
     }
     PlotStyle(hPurUncertFromFit[iCen], kStyleCen[iCen], 2, kColorCen[iCen], "#font[12]{z}_{T}", "Uncertainty %");
 
@@ -369,8 +369,8 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     for (int ibin = 0; ibin < nZtBin; ibin++)
     {
       // Modification required by ARC: syst estimated from expo not constant 
-      // hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fConstIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
-      hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fExpoIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
+       hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fConstIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
+      //hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fExpoIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
 //      if (iCen == 0)
 //      {
 //        hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fConstIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));

@@ -328,8 +328,8 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 		for (int ibin = 0; ibin < nZtBin; ibin++)
 		{
 			// Modification from ARC to polish uncertainty using expo instead of const
-			// hShShUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval((hShShUncert[iCen]->GetBinCenter(ibin + 1))));
-			hShShUncert[iCen]->SetBinContent(ibin + 1, fEx[iCen]->Eval((hShShUncert[iCen]->GetBinCenter(ibin + 1))));
+			 hShShUncert[iCen]->SetBinContent(ibin + 1, fa0[iCen]->Eval((hShShUncert[iCen]->GetBinCenter(ibin + 1))));
+			//hShShUncert[iCen]->SetBinContent(ibin + 1, fEx[iCen]->Eval((hShShUncert[iCen]->GetBinCenter(ibin + 1))));
 		}
 		fShSyst->cd();
     fa0[iCen]->Write();
@@ -424,8 +424,8 @@ void ShShSyst(Float_t ptMin = 18, Float_t ptMax = 40, TString Mixed = "Mixed", b
 		for (int ibin = 0; ibin < nZtBin; ibin++)
 		{	
 			// Modification request from ARC : syst uncertainty from expo instead of const
-			// hSystUncertIcp_ShSh[iCen]->SetBinContent(ibin + 1, fa0Icp[iCen]->Eval((hSystMeanIcp[iCen]->GetBinCenter(ibin + 1))));
-			hSystUncertIcp_ShSh[iCen]->SetBinContent(ibin + 1, fExIcp[iCen]->Eval((hSystMeanIcp[iCen]->GetBinCenter(ibin + 1))));
+			 hSystUncertIcp_ShSh[iCen]->SetBinContent(ibin + 1, fa0Icp[iCen]->Eval((hSystMeanIcp[iCen]->GetBinCenter(ibin + 1))));
+			//hSystUncertIcp_ShSh[iCen]->SetBinContent(ibin + 1, fExIcp[iCen]->Eval((hSystMeanIcp[iCen]->GetBinCenter(ibin + 1))));
 		}
 		fShSyst->cd();
 		hSystMeanIcp[iCen]->Write();

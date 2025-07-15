@@ -376,8 +376,9 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   /////////////////////////////////////////
   ////// Plot zT with systematics ////////
   ///////////////////////////////////////
-
-  TCanvas *cPlotZtStatOnly = canvasStd("cPlotZtStatOnly", 1, 1);
+Int_t kMarkCen[] = {21, 20, 71, 25};
+Int_t kColorMark[] = {kAzure + 2, kOrange + 8, kViolet + 7, kCyan - 2};
+Int_t kColorMarkFill[] = {kAzure + 6, kOrange + 7, kViolet + 6, kCyan - 2};
   TCanvas *cOverlap[nCen];
   TH1F *hfZtSyst[nCen];
   for (int iCen = 0; iCen < nCen; iCen++)
@@ -397,15 +398,25 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     hfZtSyst[iCen]->SetFillColor(kBlue - 10);
     hfZtSyst[iCen]->Draw("samee2");
     fZt[iCen]->Draw("same");
-    cPlotZtStatOnly->cd();
-    fZt[iCen]->Draw("same");
     TLatex *ALICEtex1 = LatexStdISO(ALICEtex1, 0.50, 0.84, 0.04, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
     cOverlap[iCen]->Print(Form("%s/SystSh%s/zTwithSystCent%d_%d%s.pdf", dirPlot.Data(), shshBkg.Data(), cenBins[iCen], cenBins[iCen + 1], sPtAll.Data()));
     fSystFile->cd();
     fZt[iCen]->Write();
     hfZtSyst[iCen]->Write();
+    PlotStyle(fZt[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
   }
-    //TLatex *ALICEtex1ZtStatOnly = LatexStdISO(ALICEtex1ZtStatOnly, 0.50, 0.84, 0.04, cenBins[0], cenBins[1], ptMin, ptMax, false);
+    TCanvas *cPlotZtStatOnly = new TCanvas("cPlotZtStatOnly","cPlotZtStatOnly", 800, 600);
+    TLegend* legZtStatOnly = LegStd(legZtStatOnly, 0.15, 0.15, 0.45, 0.35);
+    cPlotZtStatOnly->cd()->SetLogy();
+    fZt[0]->SetTitle("");
+    fZt[0]->Draw("same");
+    fZt[1]->Draw("same");
+    fZt[2]->Draw("same");
+    legZtStatOnly->AddEntry(fZt[0], "0-30 %", "lep");
+    legZtStatOnly->AddEntry(fZt[1], "30-50 %", "lep");
+    legZtStatOnly->AddEntry(fZt[2], "50-90 %", "lep");
+    legZtStatOnly->Draw("same");
+    TLatex *ALICEtex1ZtStatOnly = LatexStdISO(ALICEtex1ZtStatOnly, 0.40, 0.84, 0.04, cenBins[0], cenBins[1], ptMin, ptMax, false);
     cPlotZtStatOnly->Print(Form("%s/SystSh%s/cZtStatOnlyAllCent%s.pdf", dirPlot.Data(), shshBkg.Data(), sPtAll.Data()));
 
   /////////////////////////////////////////////////////////////////////////
