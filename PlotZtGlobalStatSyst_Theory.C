@@ -513,7 +513,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   TLegend *legPbPb_NLOratioAll_IpPbpp = LegStd(legPbPb_NLOratioAll_IpPbpp, 0.52, 0.48, 0.96, 0.78);
   double assocZtThinnerPbpp[] = {0., 0.06, 0.08, 0.10, 0.107, 0.142, 0.15, 0.19, 0.20, 0.253, 0.30, 0.337, 0.40, 0.45, 0.60, 0.80, 1.00, 1.05};
   TH1F *hGeneralRatiopPbpp = new TH1F("hGeneralRatiopPbpp", "hGeneralRatiopPbpp", 17, assocZtThinnerPbpp);
-  PlotStyle(hGeneralRatiopPbpp, 20, 1, kWhite, kWhite, " #it{z}_{T} ", " #it{I}_{pQCD} = Pb#font[122]{-}Pb (data) / pp (pQCD), #it{I}_{pA}", false);
+  PlotStyle(hGeneralRatiopPbpp, 20, 1, kWhite, kWhite, " #it{z}_{T} ", " #it{I}_{pQCD}, #it{I}_{pA}", false);
   legPbPb_NLOratioAll_IpPbpp->SetNColumns(2);
   legPbPb_NLOratioAll_IpPbpp->SetTextSize(0.034);
   for (int iCen = 0; iCen < nCen; iCen++)
@@ -1269,6 +1269,44 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hDztpp->Draw("EP X0 same");
   TLatex *lat010ZtNLOpQCD_pPbpp = LatexStdISORatioNoPbPb(lat010ZtNLOpQCD_pPbpp, 0.420, 0.92, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
   c010ZtNLOpQCD_pPbpp->Print(dirPlot + Form("/Zt0_10CentpQCD_pp%s.pdf", sPtAll.Data()));
+
+    /////////////////////////////////////////////////////////////////
+  ////////////// Dzt periph, pp and NLO pQCD /////////////////////
+  /////////////////////////////////////////////////////////////////
+
+  TCanvas *c5090ZtNLOpQCD_pPbpp = canvasStdIaa("c5090ZtNLOpQCD_pPbpp", 1, 1);
+  TLegend *leg5090ZtNLOpQCD_pPbpp = LegStd(leg5090ZtNLOpQCD_pPbpp, 0.14, 0.20, 0.5025, 0.33);
+  leg5090ZtNLOpQCD_pPbpp->SetNColumns(2);
+  TLegend *leg5090ZtNLOpQCD_pPbppNLO = LegStd(leg5090ZtNLOpQCD_pPbppNLO, 0.55, 0.20, 0.85, 0.30);
+  // cAllZtNLOpQCD->cd();
+  gPad->SetLogy();
+  hGeneralDztpPbpp->GetYaxis()->SetTitleSize(0.055);
+  hGeneralDztpPbpp->GetXaxis()->SetRangeUser(0.05, 1.05);
+  hGeneralDztpPbpp->GetXaxis()->SetLabelSize(0.040);
+  hGeneralDztpPbpp->GetXaxis()->SetTitleSize(0.055);
+  hGeneralDztpPbpp->GetYaxis()->SetRangeUser(2 * 1e-4, 99);
+  hGeneralDztpPbpp->GetYaxis()->SetLabelSize(0.04);
+  hGeneralDztpPbpp->GetYaxis()->SetTitleSize(0.045);
+  hGeneralDztpPbpp->GetYaxis()->SetTitleOffset(1.0);
+  hGeneralDztpPbpp->SetTitle("");
+  hGeneralDztpPbpp->Draw("same");
+  grDztNLOmedianpp->Draw("HISTSAMEC ");
+  hSystZt[2]->Draw("samee2");
+  hZtCent[2]->Draw("EP X0 same");
+  leg5090ZtNLOpQCD_pPbpp->AddEntry(hDztpp, "pp stat.    ", "ep");
+  leg5090ZtNLOpQCD_pPbpp->AddEntry(hDztpp_syst, "syst. unc.", "f");
+  leg5090ZtNLOpQCD_pPbpp->AddEntry(hZtCent[2], Form("%d#font[122]{-}%d%% stat. ", cenBins[2], cenBins[3]), "ep");
+  leg5090ZtNLOpQCD_pPbpp->AddEntry(hSystZt[2], Form("syst. unc"), "f");
+  leg5090ZtNLOpQCD_pPbpp->Draw("SAME");
+  leg5090ZtNLOpQCD_pPbppNLO->AddEntry(grDztNLOmedianpp, "NLO pQCD, pp", "l");
+  leg5090ZtNLOpQCD_pPbppNLO->Draw("SAME");
+  hDztpp_syst->SetFillStyle(0);
+  hDztpp_syst->SetLineColor(kBlack);
+  hDztpp_syst->SetLineWidth(1);
+  hDztpp_syst->Draw("samee2");
+  hDztpp->Draw("EP X0 same");
+  TLatex *lat5090ZtNLOpQCD_pPbpp = LatexStdISORatioNoPbPb(lat5090ZtNLOpQCD_pPbpp, 0.420, 0.92, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
+  c5090ZtNLOpQCD_pPbpp->Print(dirPlot + Form("/Zt50_90CentpQCD_pp%s.pdf", sPtAll.Data()));
 
 
   // TCanvas *cRatioSuppres = new TCanvas("cRatioSuppres", "cRatioSuppres", 800, 600);
