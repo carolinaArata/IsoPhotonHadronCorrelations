@@ -258,18 +258,18 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     gPad->SetTickx();
     gPad->SetTicky();
 
-    //cAllSyst->cd(iCen + 1)->SetTopMargin(0.015);
-    //cAllSyst->cd(iCen + 1)->SetRightMargin(0.022);
-    //cAllSyst->cd(iCen + 1)->SetLeftMargin(0.1);
-    //cAllSyst->cd(iCen + 1)->SetBottomMargin(0.11);
+    // cAllSyst->cd(iCen + 1)->SetTopMargin(0.015);
+    // cAllSyst->cd(iCen + 1)->SetRightMargin(0.022);
+    // cAllSyst->cd(iCen + 1)->SetLeftMargin(0.1);
+    // cAllSyst->cd(iCen + 1)->SetBottomMargin(0.11);
 
     cAllSyst->cd(iCen + 1)->SetTopMargin(0.022);
     cAllSyst->cd(iCen + 1)->SetRightMargin(0.022);
     cAllSyst->cd(iCen + 1)->SetLeftMargin(0.12);
     cAllSyst->cd(iCen + 1)->SetBottomMargin(0.15);
-    //gStyle->SetPadRightMargin(0.05);
-    //gStyle->SetPadLeftMargin(0.20);
-    //gStyle->SetPadBottomMargin(0.15);
+    // gStyle->SetPadRightMargin(0.05);
+    // gStyle->SetPadLeftMargin(0.20);
+    // gStyle->SetPadBottomMargin(0.15);
     hZtStatUncert[iCen]->Scale(100);
 
     hZtStatUncert[iCen]->GetYaxis()->SetNdivisions(511);
@@ -286,7 +286,6 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     hTrackIneffUncer[iCen]->GetXaxis()->SetRangeUser(rangeMin[iCen], rangeMax[iCen]);
     hUEresidUncert[iCen]->GetXaxis()->SetRangeUser(rangeMin[iCen], rangeMax[iCen]);
     hShShUncert[iCen]->GetXaxis()->SetRangeUser(rangeMin[iCen], rangeMax[iCen]);
-    // hUEUncert[iCen]->GetXaxis()->SetRangeUser(rangeMin[iCen], rangeMax[iCen]);
     hNMixCentUncert[iCen]->GetXaxis()->SetRangeUser(rangeMin[iCen], rangeMax[iCen]);
     hZtSystSumQuadr[iCen]->Draw("histsame pl ");
     hPurUncert[iCen]->Draw("histsame pl ");
@@ -295,7 +294,6 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     hShShUncert[iCen]->Draw("histsame pl ");
     // hUEUncert[iCen]->Draw("histsame pl ");
     hNMixCentUncert[iCen]->Draw(" histsame pl ");
-    // lat = LatexStdISO(lat, 0.180, 0.180, 0.045, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
     lat = new TLatex();
     lat->SetTextFont(42);
     lat->SetTextSize(0.05);
@@ -354,6 +352,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   //////////////////////////////////////
   ///////// Debugging printing ////////
   /////////////////////////////////////
+  cout << "PRINT TOTAL SYSTEMATIC UNCERTAINTY Dzt" << endl;
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     cout << "Centrality: " << cenBins[iCen] << " - " << cenBins[iCen + 1] << endl;
@@ -376,9 +375,9 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   /////////////////////////////////////////
   ////// Plot zT with systematics ////////
   ///////////////////////////////////////
-Int_t kMarkCen[] = {21, 20, 71, 25};
-Int_t kColorMark[] = {kAzure + 2, kOrange + 8, kViolet + 7, kCyan - 2};
-Int_t kColorMarkFill[] = {kAzure + 6, kOrange + 7, kViolet + 6, kCyan - 2};
+  Int_t kMarkCen[] = {21, 20, 71, 25};
+  Int_t kColorMark[] = {kAzure + 2, kOrange + 8, kViolet + 7, kCyan - 2};
+  Int_t kColorMarkFill[] = {kAzure + 6, kOrange + 7, kViolet + 6, kCyan - 2};
   TCanvas *cOverlap[nCen];
   TH1F *hfZtSyst[nCen];
   for (int iCen = 0; iCen < nCen; iCen++)
@@ -405,19 +404,19 @@ Int_t kColorMarkFill[] = {kAzure + 6, kOrange + 7, kViolet + 6, kCyan - 2};
     hfZtSyst[iCen]->Write();
     PlotStyle(fZt[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d #it{z}_{T}", false);
   }
-    TCanvas *cPlotZtStatOnly = new TCanvas("cPlotZtStatOnly","cPlotZtStatOnly", 800, 600);
-    TLegend* legZtStatOnly = LegStd(legZtStatOnly, 0.15, 0.15, 0.45, 0.35);
-    cPlotZtStatOnly->cd()->SetLogy();
-    fZt[0]->SetTitle("");
-    fZt[0]->Draw("same");
-    fZt[1]->Draw("same");
-    fZt[2]->Draw("same");
-    legZtStatOnly->AddEntry(fZt[0], "0-30 %", "lep");
-    legZtStatOnly->AddEntry(fZt[1], "30-50 %", "lep");
-    legZtStatOnly->AddEntry(fZt[2], "50-90 %", "lep");
-    legZtStatOnly->Draw("same");
-    TLatex *ALICEtex1ZtStatOnly = LatexStdISO(ALICEtex1ZtStatOnly, 0.40, 0.84, 0.04, cenBins[0], cenBins[1], ptMin, ptMax, false);
-    cPlotZtStatOnly->Print(Form("%s/SystSh%s/cZtStatOnlyAllCent%s.pdf", dirPlot.Data(), shshBkg.Data(), sPtAll.Data()));
+  TCanvas *cPlotZtStatOnly = new TCanvas("cPlotZtStatOnly", "cPlotZtStatOnly", 800, 600);
+  TLegend *legZtStatOnly = LegStd(legZtStatOnly, 0.15, 0.15, 0.45, 0.35);
+  cPlotZtStatOnly->cd()->SetLogy();
+  fZt[0]->SetTitle("");
+  fZt[0]->Draw("same");
+  fZt[1]->Draw("same");
+  fZt[2]->Draw("same");
+  legZtStatOnly->AddEntry(fZt[0], "0-30 %", "lep");
+  legZtStatOnly->AddEntry(fZt[1], "30-50 %", "lep");
+  legZtStatOnly->AddEntry(fZt[2], "50-90 %", "lep");
+  legZtStatOnly->Draw("same");
+  TLatex *ALICEtex1ZtStatOnly = LatexStdISO(ALICEtex1ZtStatOnly, 0.40, 0.84, 0.04, cenBins[0], cenBins[1], ptMin, ptMax, false);
+  cPlotZtStatOnly->Print(Form("%s/SystSh%s/cZtStatOnlyAllCent%s.pdf", dirPlot.Data(), shshBkg.Data(), sPtAll.Data()));
 
   /////////////////////////////////////////////////////////////////////////
   //////////////         Compute Icp systematics       ///////////////////
@@ -426,16 +425,6 @@ Int_t kColorMarkFill[] = {kAzure + 6, kOrange + 7, kViolet + 6, kCyan - 2};
   /////////////////////////////////////////////////////////////////////
 
   TH1F *IcpResidUESyst[nCen];
-  //  TFile *fzTFinal[nCen];
-  //  TH1F *hzTFinal[nCen];
-  //  for (int iCen = 0; iCen < nCen; iCen++)
-  //  {
-  //    fzTFinal[iCen] = TFile::Open(Form("Output_checkCode/fPlot0.40-1.00_Cen%d_%d_Pt18_40.root",cenBins[iCen],cenBins[iCen+1]));
-  //    printf("icen %d file %p\n",iCen, fzTFinal[iCen]);
-  //    hzTFinal[iCen] = (TH1F*) fzTFinal[iCen]
-  //    ->Get(Form("hZtEffCorrIso1Photon_Cen%d_%d_Pt18_40",cenBins[iCen],cenBins[iCen+1]));
-  //    printf("icen %d histo %p\n",iCen,hzTFinal[iCen]);
-  //  }
   for (int iCen = 0; iCen < nCen - 1; iCen++)
   {
     IcpResidUESyst[iCen] = (TH1F *)hUEresidUncert[iCen]->Clone(Form("IcpResidUESyst_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
@@ -507,7 +496,7 @@ Int_t kColorMarkFill[] = {kAzure + 6, kOrange + 7, kViolet + 6, kCyan - 2};
       double binContUEIcp = 0;
       double binContNMixCenIcp = hNMixCentUncertIcp[iCen]->GetBinContent(ibin + 1);
       double binResidUE = IcpResidUESyst[iCen]->GetBinContent(ibin + 1);
-      double systQuadIcp = sqrt(binContShShIcp * binContShShIcp + binContPurIcp * binContPurIcp + binContUEIcp * binContUEIcp + binContNMixCenIcp * binContNMixCenIcp + binResidUE * binResidUE);
+      double systQuadIcp = sqrt(binContShShIcp * binContShShIcp + binContPurIcp * binContPurIcp + binContUEIcp * binContUEIcp + /*binContNMixCenIcp * binContNMixCenIcp +*/ binResidUE * binResidUE);
       hZtSystSumQuadrIcp[iCen]->SetBinContent(ibin + 1, systQuadIcp);
       hIcpSyst[iCen]->SetBinContent(ibin + 1, fIcp[iCen]->GetBinContent(ibin + 1));
       hIcpSyst[iCen]->SetBinError(ibin + 1, abs((systQuadIcp / 100.) * fIcp[iCen]->GetBinContent(ibin + 1)));
@@ -532,7 +521,7 @@ Int_t kColorMarkFill[] = {kAzure + 6, kOrange + 7, kViolet + 6, kCyan - 2};
   ///////// Debugging printing ////////
   /////////////////////////////////////
 
-  cout << "Icp systematics: " << endl;
+  cout << "PRINT TOTAL SYSTEMATIC UNCERTAINTY Icp: " << endl;
   for (int iCen = 0; iCen < nCen - 1; iCen++)
   {
     cout << "Centrality: " << cenBins[iCen] << " - " << cenBins[iCen + 1] << endl;
@@ -540,8 +529,6 @@ Int_t kColorMarkFill[] = {kAzure + 6, kOrange + 7, kViolet + 6, kCyan - 2};
     PrintSyst(hZtSystSumQuadrIcp[iCen]);
     cout << "ICP hPurity " << endl;
     PrintSyst(hPurUncertIcp[iCen]);
-    cout << "ICP UE statistical " << endl;
-    // PrintSyst(hUEUncertIcp[iCen]);
     cout << "ICP UE MIXED " << endl;
     PrintSyst(IcpResidUESyst[iCen]);
     cout << "ICP ShSh " << endl;
@@ -594,7 +581,7 @@ Int_t kColorMarkFill[] = {kAzure + 6, kOrange + 7, kViolet + 6, kCyan - 2};
     // hUEUncertIcp[iCen]->Draw("same hist pl ");
     hPurUncertIcp[iCen]->Draw("same hist pl ");
     IcpResidUESyst[iCen]->Draw("same hist pl ");
-    hNMixCentUncertIcp[iCen]->Draw("same hist pl ");
+    //hNMixCentUncertIcp[iCen]->Draw("same hist pl ");
     TLatex *latIcp = new TLatex();
     latIcp->SetTextFont(42);
     latIcp->SetTextSize(0.05);
@@ -724,10 +711,6 @@ Int_t kColorMarkFill[] = {kAzure + 6, kOrange + 7, kViolet + 6, kCyan - 2};
   ALICEtexIcp2_StatOnly->DrawLatex(0.6, 0.92 - 3 * 0.06, Form("%2.0f < #it{p}_{T}^{ #it{#gamma}} < %2.0f GeV/#it{c} ", ptMin, ptMax));
   ALICEtexIcp2_StatOnly->DrawLatex(0.6, 0.92 - 4 * 0.06, Form("#it{p}_{T}^{ h} > 0.5 GeV/#it{c} "));
   cIcp_StatOnly->Print(Form("%s/SystSh%s/%s_c_StatOnlyIcp%s.pdf", dirPlot.Data(), shshBkg.Data(), Mixed.Data(), sPtAll.Data()));
-
-
-
-
 
   fSystFile->Close();
 
