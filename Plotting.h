@@ -120,11 +120,11 @@ TLatex *LatexStdISO(TLatex *lat, double xpos, double ypos, double texSize, int c
   lat->DrawLatex(xpos, ypos, Form("#font[42]{ALICE}"));
     //lat->DrawLatex(xpos, ypos, Form("ALICE #it{Work in progress}"));
   if (bCen)
-    lat->DrawLatex(xpos, ypos - 0.045, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV ", cenMin, cenMax));
+    lat->DrawLatex(xpos, ypos - 0.045, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb,#color[0]{.}#sqrt{#it{s}_{NN}} = 5.02 TeV ", cenMin, cenMax));
   else if (!bCen)
     lat->DrawLatex(xpos, ypos - 0.045, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
-  lat->DrawLatex(xpos, ypos - 2 * 0.050, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
-  lat->DrawLatex(xpos, ypos - 3 * 0.050, Form("%2.0f < #it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
+  lat->DrawLatex(xpos, ypos - 2 * 0.050, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| >#color[0]{.}#frac{3}{5}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
+  lat->DrawLatex(xpos, ypos - 3 * 0.050, Form("%2.0f <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c}#color[0]{.}#otimes#color[0]{.}#it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
   return lat;
 }
 
