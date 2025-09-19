@@ -257,6 +257,7 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
       fPol2[iCen] = new TF1(Form("fitpol2Purity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol2", 0.1, 0.6); // 0-30%, 30-50%, 50-90%
     }
     // gStyle->SetOptFit(1111);
+    fExpo[iCen]->SetMinimum(hZtUncertSyst[iCen]->GetBinContent(1));
     hZtUncertSyst[iCen]->GetYaxis()->SetRangeUser(0, 50);
     hZtUncertSyst[iCen]->Fit(Form("fitpol0Purity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
     hZtUncertSyst[iCen]->Fit(Form("fitexpoPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
