@@ -216,7 +216,7 @@ void PlotNCentMix(Float_t ptMin = 18, Float_t ptMax = 40, bool Mirror = true, TS
     {
       //fExpo[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.1, 0.8);
       fExpo[iCen] = new TF1(Form("NMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.15, 0.59);
-      fConst[iCen] = new TF1(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.2, 0.8);
+      fConst[iCen] = new TF1(Form("ConstNMixfit0%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.3, 0.8);
     }
     if (iCen == 1)
     {

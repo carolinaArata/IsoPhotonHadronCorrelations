@@ -467,6 +467,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   TH1F *hShShUncertIcp[nCen];
   TH1F *hNMixCentUncertIcp[nCen];
   TH1F *hZtSystSumQuadrIcp[nCen];
+  TH1F *hZtStatUncertIcp[nCen];
   TH1F *hIcpSyst[nCen];
   for (int iCen = 0; iCen < nCen - 1; iCen++)
   {
@@ -482,7 +483,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     // hNMixCentUncertIcp[iCen] = (TH1F *)fNMixSyst->Get(Form("hUncertIcpNcentMix_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1])); //
     hNMixCentUncertIcp[iCen] = (TH1F *)fNMixSyst->Get(Form("hFromFitUncert_Icp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1])); //
     cout << hNMixCentUncertIcp[iCen] << endl;
-    //  hZtStatUncert[iCen] = new TH1F(Form("hZTStatistCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hZTStatistCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBin, assocZt);
+    hZtStatUncertIcp[iCen] = new TH1F(Form("hZtStatUncertIcpCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hZtStatUncertIcpCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBin, assocZt);
     hZtSystSumQuadrIcp[iCen] = new TH1F(Form("hZtSystSumQuadrIcp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hhZtSystSumQuadrIcp_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBin, assocZt);
     hIcpSyst[iCen] = new TH1F(Form("hIcpSyst_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("hhIcpSyst_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]), nZtBin, assocZt);
     /////////////////////////////////////////////////////////////////////////
@@ -492,15 +493,15 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     {
       double binContShShIcp = hShShUncertIcp[iCen]->GetBinContent(ibin + 1);
       double binContPurIcp = hPurUncertIcp[iCen]->GetBinContent(ibin + 1);
-      // double binContUEIcp = hUEUncertIcp[iCen]->GetBinContent(ibin + 1);
-      double binContUEIcp = 0;
       double binContNMixCenIcp = hNMixCentUncertIcp[iCen]->GetBinContent(ibin + 1);
       double binResidUE = IcpResidUESyst[iCen]->GetBinContent(ibin + 1);
-      double systQuadIcp = sqrt(binContShShIcp * binContShShIcp + binContPurIcp * binContPurIcp + binContUEIcp * binContUEIcp + /*binContNMixCenIcp * binContNMixCenIcp +*/ binResidUE * binResidUE);
+      double systQuadIcp = sqrt(binContShShIcp * binContShShIcp + binContPurIcp * binContPurIcp + /*binContNMixCenIcp * binContNMixCenIcp +*/ binResidUE * binResidUE);
       hZtSystSumQuadrIcp[iCen]->SetBinContent(ibin + 1, systQuadIcp);
       hIcpSyst[iCen]->SetBinContent(ibin + 1, fIcp[iCen]->GetBinContent(ibin + 1));
       hIcpSyst[iCen]->SetBinError(ibin + 1, abs((systQuadIcp / 100.) * fIcp[iCen]->GetBinContent(ibin + 1)));
       cout << "ErrSyst: " << systQuadIcp << " Icp: " << fIcp[iCen]->GetBinContent(ibin + 1) << endl;
+      hZtStatUncertIcp[iCen]->SetBinContent(ibin + 1, fIcp[iCen]->GetBinContent(ibin + 1));
+      hZtStatUncertIcp[iCen]->SetBinError(ibin + 1, fIcp[iCen]->GetBinError(ibin + 1));
     }
 
     PlotStyle(hShShUncertIcp[iCen], markers[1], 1.1, colors[1], colors[1], "#it{z}_{T}", "Uncertainty %", false);
@@ -509,7 +510,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     PlotStyle(IcpResidUESyst[iCen], markers[5], 1.5, colors[5], colors[5], "#it{z}_{T}", "Uncertainty %", false);
     PlotStyle(hNMixCentUncertIcp[iCen], markers[6], 1.5, colors[6], colors[6], "#it{z}_{T}", "Uncertainty %", false);
     PlotStyle(hZtSystSumQuadrIcp[iCen], markers[0], 1.1, colors[0], colors[0], "#it{z}_{T}", "Uncertainty %", false);
-    // PlotStyle(hZtStatUncertIcp[iCen], 20, 2, 1, "#it{z}_{T}", "Uncertainty %", false);
+    PlotStyle(hZtStatUncertIcp[iCen], 20, 2, 1, 1, "#it{z}_{T}", "Uncertainty %", false);
     hShShUncertIcp[iCen]->SetDirectory(0);
     // hUEUncertIcp[iCen]->SetDirectory(0);
     hPurUncertIcp[iCen]->SetDirectory(0);
@@ -525,8 +526,15 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   for (int iCen = 0; iCen < nCen - 1; iCen++)
   {
     cout << "Centrality: " << cenBins[iCen] << " - " << cenBins[iCen + 1] << endl;
+    cout << "Stastical error: "<< endl;
+    for (int ibin = 0; ibin < nZtBin; ibin++)
+    {
+    cout << "- bin"<<ibin<<":" << hZtStatUncertIcp[iCen]->GetBinError(ibin + 1) * 100<< "%" << endl;
+    }
+    cout<<"___________________________________"<<endl;
     cout << "ICP Tot syst: " << endl;
     PrintSyst(hZtSystSumQuadrIcp[iCen]);
+    cout << "Different contribution: " << endl;
     cout << "ICP hPurity " << endl;
     PrintSyst(hPurUncertIcp[iCen]);
     cout << "ICP UE MIXED " << endl;
@@ -564,7 +572,6 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     hPurUncertIcp[iCen]->GetXaxis()->SetRangeUser(0.05, 0.6);
     IcpResidUESyst[iCen]->GetXaxis()->SetRangeUser(0.05, 0.6);
     hShShUncertIcp[iCen]->GetXaxis()->SetRangeUser(0.05, 0.6);
-    // hUEUncertIcp[iCen]->GetXaxis()->SetRangeUser(0.05, 0.6);
     hNMixCentUncertIcp[iCen]->GetXaxis()->SetRangeUser(0.05, 0.6);
     hGeneral->GetXaxis()->SetRangeUser(0.05, 0.65);
     hGeneral->GetYaxis()->SetRangeUser(0, 20);
@@ -581,7 +588,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     // hUEUncertIcp[iCen]->Draw("same hist pl ");
     hPurUncertIcp[iCen]->Draw("same hist pl ");
     IcpResidUESyst[iCen]->Draw("same hist pl ");
-    //hNMixCentUncertIcp[iCen]->Draw("same hist pl ");
+    // hNMixCentUncertIcp[iCen]->Draw("same hist pl ");
     TLatex *latIcp = new TLatex();
     latIcp->SetTextFont(42);
     latIcp->SetTextSize(0.05);

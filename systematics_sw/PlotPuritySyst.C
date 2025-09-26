@@ -218,7 +218,7 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
   }
   ////////////////////////////////////////////////////////////////////////////////////
   ////////////////// Compute the fit for polishing the trend for zT:   ///////////////
-  ////////////////// pol0 for 0-10% and expo for 0-30%, 30-50%, 50-90%  //////////////
+  ////////////////// const+expo for 0-10% and expo for 0-30%, 30-50%, 50-90%  //////////////
   ////////////////////////////////////////////////////////////////////////////////////
   TCanvas *cPurSyst[nCen];
   TH1F *hPurUncertFromFit[nCen];
@@ -251,13 +251,12 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     else
     {
       fExpo [iCen] = new TF1(Form("fitexpoPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.1, 0.6); // 0-30%, 30-50%, 50-90%
-      fConst_Expo [iCen] = new TF1(Form("fitconst_expoPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "[0] + exp([1] + [2]*x)", 0.1, 0.6); // 0-30%, 30-50%, 50-90%
-      fConst[iCen] = new TF1(Form("fitpol0Purity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.1, 0.6); // 0-30%, 30-50%, 50-90%
+      fConst_Expo [iCen] = new TF1(Form("fitconst_expoPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "[0] + exp([1] + [2]*x)", 0.15, 0.6); // 0-30%, 30-50%, 50-90%
+      fConst[iCen] = new TF1(Form("fitpol0Purity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.1, 0.39);//0.6); // 0-30%, 30-50%, 50-90%
       fPol1[iCen] = new TF1(Form("fitpol1Purity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol1", 0.1, 0.6); // 0-30%, 30-50%, 50-90%
       fPol2[iCen] = new TF1(Form("fitpol2Purity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol2", 0.1, 0.6); // 0-30%, 30-50%, 50-90%
     }
     // gStyle->SetOptFit(1111);
-    fExpo[iCen]->SetMinimum(hZtUncertSyst[iCen]->GetBinContent(1));
     hZtUncertSyst[iCen]->GetYaxis()->SetRangeUser(0, 50);
     hZtUncertSyst[iCen]->Fit(Form("fitpol0Purity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
     hZtUncertSyst[iCen]->Fit(Form("fitexpoPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "R");
@@ -273,16 +272,28 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     fExpo[iCen]->SetLineWidth(5);
     fExpo[iCen]->Draw("same");
 
-    fConst_Expo[iCen]->SetLineColor(kBlack);
-    fConst_Expo[iCen]->SetLineStyle(8);
-    fConst_Expo[iCen]->SetLineWidth(5);
-    fConst_Expo[iCen]->Draw("same");
-    
-    
     fConst[iCen]->SetLineColor(kGreen+3);
     fConst[iCen]->SetLineStyle(1);
     fConst[iCen]->SetLineWidth(5);
     fConst[iCen]->Draw("same");
+    
+        // Get the constant from the constant fit
+//    if (iCen == 0)// && !b0_30) // 0-10%
+//    {
+//      fConst_Expo [iCen] = new TF1(Form("fitconst_expoPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("%1.3f + exp([1] + [2]*x)",fConst[iCen]->GetParameter(0)/2), 0.15, 0.8);
+//    }
+//    else
+//    {
+//      fConst_Expo [iCen] = new TF1(Form("fitconst_expoPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("%1.3f + exp([1] + [2]*x)",fConst[iCen]->GetParameter(0)/2), 0.1, 0.6); // 0-30%, 30-50%, 50-90%
+//    }
+    
+    fConst_Expo[iCen]->SetParameter(0,fConst[iCen]->GetParameter(0));
+    if(iCen == 0) fConst_Expo[iCen]->SetParameter(0,fConst[iCen]->GetParameter(0)/4);
+    fConst_Expo[iCen]->SetLineColor(kBlack);
+    fConst_Expo[iCen]->SetLineStyle(8);
+    fConst_Expo[iCen]->SetLineWidth(5);
+    fConst_Expo[iCen]->Draw("same");
+    fConst_Expo[iCen]->SetRange(0.1,0.8);
 
     fPol1[iCen]->SetLineColor(kViolet + 1);
     fPol1[iCen]->SetLineStyle(1);
@@ -306,7 +317,7 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
                                        ),"");
     legFit->AddEntry(fPol1[iCen],"Pol1","L");
     legFit->AddEntry(fExpo[iCen],"Expo","L");
-    legFit->AddEntry(fExpo[iCen],"Const+Expo","L");
+    legFit->AddEntry(fConst_Expo[iCen],"Const+Expo","L");
     legFit->Draw("same");
     TLatex *ALICEtex3 = LatexStd(ALICEtex3, 0.120, 0.84, cenBins[iCen], cenBins[iCen + 1], ptMin, ptMax, true);
     cPurSyst[iCen]->Print(Form("%s/hUncertPuritySyst.pdf", PathPlot.Data()));
@@ -314,7 +325,7 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     {
       // Modification required by ARC: syst estimated from expo not constant
       //hPurUncertFromFit[iCen]->SetBinContent(ibin + 1, fConst[iCen]->Eval(hPurUncertFromFit[iCen]->GetBinCenter(ibin + 1)));
-      hPurUncertFromFit[iCen]->SetBinContent(ibin + 1, fExpo[iCen]->Eval(hPurUncertFromFit[iCen]->GetBinCenter(ibin + 1)));
+      hPurUncertFromFit[iCen]->SetBinContent(ibin + 1, fConst_Expo[iCen]->Eval(hPurUncertFromFit[iCen]->GetBinCenter(ibin + 1)));
     }
     PlotStyle(hPurUncertFromFit[iCen], kStyleCen[iCen], 2, kColorCen[iCen], "#font[12]{z}_{T}", "Uncertainty %");
 
@@ -366,8 +377,9 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     else
     {
       fExpoIcp[iCen] = new TF1(Form("fitExpoIcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "expo", 0.10, 0.6);
-      fConst_ExpoIcp[iCen] = new TF1(Form("fitConst_ExpoIcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "[0] + exp([1] + [2]*x)", 0.10, 0.6);
-      fConstIcp[iCen] = new TF1(Form("fitpol0IcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.10, 0.6);
+      fConst_ExpoIcp[iCen] = new TF1(Form("fitConst_ExpoIcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "[0] + exp([1] + [2]*x)", 0.15, 0.6);
+      fConstIcp[iCen] = new TF1(Form("fitpol0IcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.1, 0.39);
+      if(iCen==1)fConstIcp[iCen] = new TF1(Form("fitpol0IcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol0", 0.1, 0.2);
       fPol1Icp[iCen] = new TF1(Form("fitpol1IcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol1", 0.10, 0.6);
       fPol2Icp[iCen] = new TF1(Form("fitpol2IcpPurity%d_%d", cenBins[iCen], cenBins[iCen + 1]), "pol2", 0.10, 0.6);
      
@@ -388,16 +400,24 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     fExpoIcp[iCen]->SetLineWidth(5);
     fExpoIcp[iCen]->Draw("same");
 
-    fConst_ExpoIcp[iCen]->SetLineColor(kBlack);
-    fConst_ExpoIcp[iCen]->SetLineStyle(1);
-    fConst_ExpoIcp[iCen]->SetLineWidth(10);
-    fConst_ExpoIcp[iCen]->Draw("same");
-
+    
     fConstIcp[iCen]->SetLineColor(kGreen+3);
     fConstIcp[iCen]->SetLineStyle(1);
     fConstIcp[iCen]->SetLineWidth(5);
     fConstIcp[iCen]->Draw("same");
     
+//    fConst_ExpoIcp[iCen]->SetLineColor(kBlack);
+//    fConst_ExpoIcp[iCen]->SetLineStyle(1);
+//    fConst_ExpoIcp[iCen]->SetLineWidth(10);
+//    fConst_ExpoIcp[iCen]->Draw("same");
+
+    fConst_ExpoIcp[iCen]->SetParameter(0,fConst[iCen]->GetParameter(0));
+    //if(iCen == 1) fConst_ExpoIcp[iCen]->SetParameter(0,fConstIcp[iCen]->GetParameter(0)/10);
+    fConst_ExpoIcp[iCen]->SetLineColor(kBlack);
+    fConst_ExpoIcp[iCen]->SetLineStyle(8);
+    fConst_ExpoIcp[iCen]->SetLineWidth(5);
+    fConst_ExpoIcp[iCen]->Draw("same");
+    fConst_ExpoIcp[iCen]->SetRange(0.1,0.8);
 
     fPol1Icp[iCen]->SetLineColor(kViolet+1);
     fPol1Icp[iCen]->SetLineStyle(1);
@@ -433,8 +453,15 @@ void PlotPuritySyst(Float_t ptMin = 18, Float_t ptMax = 40, TString sMixed = "Mi
     {
       // Modification required by ARC: syst estimated from expo not constant 
       //hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fConstIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
-      hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fExpoIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
-//      if (iCen == 0)
+      if (iCen == 0)
+      {
+        hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fConst_ExpoIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
+      }
+      else
+      {
+        hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fExpoIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
+      }
+//if (iCen == 0)
 //      {
 //        hPurUncertFromFitIcp[iCen]->SetBinContent(ibin + 1, fConstIcp[iCen]->Eval(hPurUncertFromFitIcp[iCen]->GetBinCenter(ibin + 1)));
 //      }
