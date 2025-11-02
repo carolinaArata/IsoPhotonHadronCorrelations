@@ -298,7 +298,7 @@ void Combine0_30(float ptMin = 18, float ptMax = 40, int iCen = 0, bool bMirror 
         hdPhiSamPi0Pur0_30[iso][izt][iptTr]->Scale(1 / numbTrig0_30[iso][1][iptTr]); // scale for the total number of triggers in 0-30%
         cout << "pippo" << endl;
         cout << hdPhiIsoGamma[0][iso][izt][iptTr] << endl;
-        hdPhiIsoGamma0_30[iso][izt][iptTr] = (TH1F *)hdPhiIsoGamma[0][iso][izt][iptTr]->Clone("hdPhi1" + sIso + "Photon" + sZtBin + sPtTrig);
+        hdPhiIsoGamma0_30[iso][izt][iptTr] = (TH1F *)hdPhiIsoGamma[0][iso][izt][iptTr]->Clone("hdPhi" + sIso + "Photon" + sZtBin + sPtTrig);
         cout << "pippo" << endl;
         hdPhiIsoGamma0_30[iso][izt][iptTr]->Scale(numbTrig[0][iso][0][iptTr]); // multiply 0-10% by # trig in 0-10%
         hdPhiIsoGamma[1][iso][izt][iptTr]->Scale(numbTrig[1][iso][0][iptTr]); // multiply 10-30% by # trig in 10-30%
