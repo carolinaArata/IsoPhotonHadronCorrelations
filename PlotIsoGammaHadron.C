@@ -348,6 +348,17 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         cSame_Mix_NoUEIsoClust[iCen][iptTr]->cd(izt + 1);
         // hdPhiSamNoUE[iCen][1][0][izt][iptTr]->SetMinimum(-5e-3);
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.2 * hdPhiSam[iCen][1][0][izt][iptTr]->GetMaximum(), 1.2 * hdPhiSam[iCen][1][0][izt][iptTr]->GetMaximum());
+        TAxis* aNoUE = hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetXaxis();
+        aNoUE->SetNdivisions(-505);
+        // Replace first and last labels
+        aNoUE->ChangeLabel(1, -1, -1, -1, -1, -1, "0");
+        aNoUE->ChangeLabel(-1, -1, -1, -1, -1, -1, "#pi");
+        
+        // Replace the intermediate ones (2,3,4,5)
+        aNoUE->ChangeLabel(2, -1, -1, -1, -1, -1, "#pi/5");
+        aNoUE->ChangeLabel(3, -1, -1, -1, -1, -1, "2#pi/5");
+        aNoUE->ChangeLabel(4, -1, -1, -1, -1, -1, "3#pi/5");
+        aNoUE->ChangeLabel(5, -1, -1, -1, -1, -1, "4#pi/5");
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->Draw("same");
         hdPhiSam[iCen][1][0][izt][iptTr]->Draw("sameE0");
         hdPhiMix[iCen][1][0][izt][iptTr]->Draw("same");
@@ -380,7 +391,20 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         {
           hdPhiPhoton[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-60 * 1e-3, 65 * 1e-3);
         }
+        TAxis* aPhoton = hdPhiPhoton[iCen][1][izt][iptTr]->GetXaxis();
+        aPhoton->SetNdivisions(-505);
+        // Replace first and last labels
+        aPhoton->ChangeLabel(1, -1, -1, -1, -1, -1, "0");
+        aPhoton->ChangeLabel(-1, -1, -1, -1, -1, -1, "#pi");
+        
+        // Replace the intermediate ones (2,3,4,5)
+        aPhoton->ChangeLabel(2, -1, -1, -1, -1, -1, "#pi/5");
+        aPhoton->ChangeLabel(3, -1, -1, -1, -1, -1, "2#pi/5");
+        aPhoton->ChangeLabel(4, -1, -1, -1, -1, -1, "3#pi/5");
+        aPhoton->ChangeLabel(5, -1, -1, -1, -1, -1, "4#pi/5");
+
         hdPhiPhoton[iCen][1][izt][iptTr]->Draw("same");
+
         hdPhiSamPi0Pur[iCen][1][izt][iptTr]->Draw("same");
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->Draw("same");
         hdPhiPhoton[iCen][1][izt][iptTr]->Draw("same");
@@ -464,12 +488,24 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
 
       //=========================================================================
 
-      Int_t selZt = 1;
+      Int_t selZt = 2;
       cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr]->cd(1);
       // hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->SetMinimum(-5e-3);
       gStyle->SetPadRightMargin(0.01);
       gStyle->SetPadLeftMargin(0.150);
       hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetYaxis()->SetRangeUser(-0.04 * hdPhiSam[iCen][1][0][selZt][iptTr]->GetMaximum(), 1.0 * hdPhiSam[iCen][1][0][selZt][iptTr]->GetMaximum());
+      TAxis* a = hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetXaxis();
+      a->SetNdivisions(-505);
+      // Replace first and last labels
+      a->ChangeLabel(1, -1, -1, -1, -1, -1, "0");
+      a->ChangeLabel(-1, -1, -1, -1, -1, -1, "#pi");
+
+      // Replace the intermediate ones (2,3,4,5)
+      a->ChangeLabel(2, -1, -1, -1, -1, -1, "#pi/5");
+      a->ChangeLabel(3, -1, -1, -1, -1, -1, "2#pi/5");
+      a->ChangeLabel(4, -1, -1, -1, -1, -1, "3#pi/5");
+      a->ChangeLabel(5, -1, -1, -1, -1, -1, "4#pi/5");
+      
       hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->Draw("same");
       TGaxis::SetMaxDigits(3);
 
@@ -478,7 +514,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetYaxis()->SetLabelSize(0.06);
       hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetYaxis()->SetTitleSize(0.06);
       hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetYaxis()->SetLabelOffset(0.01);
-      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetYaxis()->SetTitleOffset(1.25);
+      hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetYaxis()->SetTitleOffset(1.2);
       hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetXaxis()->SetTitleOffset(1.1);
 
       hdPhiSam[iCen][1][0][selZt][iptTr]->SetMarkerSize(1.5);
@@ -494,7 +530,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       hdPhiSam[iCen][1][0][selZt][iptTr]->Draw("sameE0");
       hdPhiMix[iCen][1][0][selZt][iptTr]->Draw("same");
       hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->SetTitle("");
-      // hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->SetTitle("Narrow: #bf{0.1 < #it{#sigma}^{2}_{long, 5x5} < 0.3}");
+      
       lineX0->Draw("same");
 
       //      cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr]->cd(2);
@@ -576,7 +612,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       hdPhiPhoton[iCen][1][selZt][iptTr]->GetYaxis()->SetLabelSize(0.06);
       hdPhiPhoton[iCen][1][selZt][iptTr]->GetYaxis()->SetTitleSize(0.06);
       hdPhiPhoton[iCen][1][selZt][iptTr]->GetYaxis()->SetLabelOffset(0.01);
-      hdPhiPhoton[iCen][1][selZt][iptTr]->GetYaxis()->SetTitleOffset(1.25);
+      hdPhiPhoton[iCen][1][selZt][iptTr]->GetYaxis()->SetTitleOffset(1.2);
       hdPhiPhoton[iCen][1][selZt][iptTr]->GetXaxis()->SetTitleOffset(1.1);
       // TGaxis::SetMaxDigits(2);
 
@@ -715,7 +751,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetLabelSize(0.06);
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetTitleSize(0.06);
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetLabelOffset(0.01);
-        hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetTitleOffset(1.25);
+        hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetTitleOffset(1.2);
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetXaxis()->SetTitleOffset(1.1);
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.2 * hdPhiSam[iCen][1][0][izt][iptTr]->GetMaximum(), 1.2 * hdPhiSam[iCen][1][0][izt][iptTr]->GetMaximum());
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->Draw("same");
@@ -763,7 +799,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         legZtTitleXpap[izt] = LegStd(legZtTitleXpap[izt], 0.4, 0.85, 0.65, 0.90);
         legZtTitleXpap[izt]->SetTextSize(0.07);
         legZtTitleXpap[izt]->SetHeader(Form("%2.2f <#color[0]{..}#it{z}_{T}#color[0]{.}< %2.2f", assocZt[izt], assocZt[izt + 1]), "");
-        hdPhiSamPi0Pur[iCen][0][izt][iptTr]->SetLineWidth(3);
+        hdPhiSamPi0Pur[iCen][1][izt][iptTr]->SetLineWidth(3);
         hdPhiPhoton[iCen][1][izt][iptTr]->SetLineWidth(3);
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->SetLineWidth(3);
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetXaxis()->SetLabelSize(0.06);
@@ -771,7 +807,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetLabelSize(0.06);
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetTitleSize(0.06);
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetLabelOffset(0.01);
-        hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetTitleOffset(1.25);
+        hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetTitleOffset(1.2);
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetXaxis()->SetTitleOffset(1.1);
         if(iCen==0 && izt==0 && iptTr==1)
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.6, 0.8);
@@ -799,16 +835,27 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         if(iCen==1 && izt==5 && iptTr==1)
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 50e-3);
 
+        if(iCen==2 && izt==0 && iptTr==0)
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.4);
+        if(iCen==2 && izt==1 && iptTr==0)
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.18);
+        if(iCen==2 && izt==2 && iptTr==0)
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.18);
+        if(iCen==2 && izt==3 && iptTr==0)
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-20e-3, 52e-3);
+        if(iCen==2 && izt==4 && iptTr==0)
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 36e-3);
+
         if(iCen==2 && izt==0 && iptTr==1)
-          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.2, 0.5);
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.4);
         if(iCen==2 && izt==1 && iptTr==1)
-          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.15);
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.1);
         if(iCen==2 && izt==2 && iptTr==1)
-          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.2);
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.085);
         if(iCen==2 && izt==3 && iptTr==1)
-          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 90e-3);
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 36e-3);
         if(iCen==2 && izt==4 && iptTr==1)
-          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 90e-3);
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 26e-3);
 
         if(iCen==3 && izt==0 && iptTr==1)
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.2, 0.4);
@@ -823,7 +870,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->Draw("same");
         TGaxis::SetMaxDigits(3);
-        hdPhiSamPi0Pur[iCen][0][izt][iptTr]->Draw("sameE0");
+        hdPhiSamPi0Pur[iCen][1][izt][iptTr]->Draw("sameE0");
         hdPhiPhoton[iCen][1][izt][iptTr]->Draw("same");
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->SetTitle("");
         lineX0->Draw("same");
