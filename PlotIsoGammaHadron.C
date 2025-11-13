@@ -156,8 +156,8 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
           PlotStyle(hdPhiSamNoUERatio[iCen][iso][izt][iptTr], kMarkStyle[1], 2, kBlue + 2, kBlue + 2, "|#Delta#it{#varphi}| (rad)", "Ratio", false);
           PlotStyle(hdPhiSamPi0Pur[iCen][iso][izt][iptTr], 24, 1.5, kViolet + 5, kBlue + 2, "|#Delta#it{#varphi}| (rad)", "1 /#color[0]{.}#it{N}^{#color[0]{..}trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
           PlotStyle(hdPhiPhoton[iCen][iso][izt][iptTr], 21, 1.5, kOrange + 8, kOrange + 8, "|#Delta#it{#varphi}| (rad)", "1 /#color[0]{.}#it{N}^{#color[0]{..}trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
-          
-          cout<<"Alternative plotting for Purity correction"<<endl;
+
+          cout << "Alternative plotting for Purity correction" << endl;
           hdPhiSameNoUEScaledbyPur[iCen][iso][izt][iptTr] = (TH1F *)fPlot[iCen]->Get(Form("hdPhiSameNoUEScaledbyPur%s%s_%s", sIso.Data(), sZtBin.Data(), sPtTrig.Data())); //(1-P)IsoPi0Deltaphi
           cout << hdPhiSameNoUEScaledbyPur[iCen][iso][izt][iptTr] << endl;
           hdPhiSamePi0ScaledbyPur[iCen][iso][izt][iptTr] = (TH1F *)fPlot[iCen]->Get(Form("hdPhiSamePi0ScaledbyPur%s%s_%s", sIso.Data(), sZtBin.Data(), sPtTrig.Data())); //(1-P)IsoPi0Deltaphi
@@ -168,7 +168,6 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
           PlotStyle(hdPhiSameNoUEScaledbyPur[iCen][iso][izt][iptTr], kMarkStyle[1], 2, kBlue + 2, kBlue + 2, "|#Delta#it{#varphi}| (rad)", "Ratio", false);
           PlotStyle(hdPhiSamePi0ScaledbyPur[iCen][iso][izt][iptTr], 24, 1.5, kViolet + 5, kBlue + 2, "|#Delta#it{#varphi}| (rad)", "1 /#color[0]{.}#it{N}^{#color[0]{..}trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
           PlotStyle(hdPhiPhotonScaledbyPur[iCen][iso][izt][iptTr], 21, 1.5, kOrange + 8, kOrange + 8, "|#Delta#it{#varphi}| (rad)", "1 /#color[0]{.}#it{N}^{#color[0]{..}trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|", false);
-          
         }
         cout << "Get Zt distributions for different Pt bins" << endl;
         hZtPhotonPtBin[iCen][iso][iptTr] = (TH1F *)fPlot[iCen]->Get(Form("hZt%sPhotonPtBin_%s", sIso.Data(), sPtTrig.Data()));
@@ -282,7 +281,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
   TLatex *latDphi[nCen];
 
   TGraph *lineX0 = DrawLine(lineX0, 0, 0, TMath::Pi(), 0);
-
+  TGraph *lineY;
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
@@ -369,12 +368,12 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         cSame_Mix_NoUEIsoClust[iCen][iptTr]->cd(izt + 1);
         // hdPhiSamNoUE[iCen][1][0][izt][iptTr]->SetMinimum(-5e-3);
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.2 * hdPhiSam[iCen][1][0][izt][iptTr]->GetMaximum(), 1.2 * hdPhiSam[iCen][1][0][izt][iptTr]->GetMaximum());
-        TAxis* aNoUE = hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetXaxis();
+        TAxis *aNoUE = hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetXaxis();
         aNoUE->SetNdivisions(-505);
         // Replace first and last labels
         aNoUE->ChangeLabel(1, -1, -1, -1, -1, -1, "0");
         aNoUE->ChangeLabel(-1, -1, -1, -1, -1, -1, "#pi");
-        
+
         // Replace the intermediate ones (2,3,4,5)
         aNoUE->ChangeLabel(2, -1, -1, -1, -1, -1, "#pi/5");
         aNoUE->ChangeLabel(3, -1, -1, -1, -1, -1, "2#pi/5");
@@ -412,12 +411,12 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         {
           hdPhiPhoton[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-60 * 1e-3, 65 * 1e-3);
         }
-        TAxis* aPhoton = hdPhiPhoton[iCen][1][izt][iptTr]->GetXaxis();
+        TAxis *aPhoton = hdPhiPhoton[iCen][1][izt][iptTr]->GetXaxis();
         aPhoton->SetNdivisions(-505);
         // Replace first and last labels
         aPhoton->ChangeLabel(1, -1, -1, -1, -1, -1, "0");
         aPhoton->ChangeLabel(-1, -1, -1, -1, -1, -1, "#pi");
-        
+
         // Replace the intermediate ones (2,3,4,5)
         aPhoton->ChangeLabel(2, -1, -1, -1, -1, -1, "#pi/5");
         aPhoton->ChangeLabel(3, -1, -1, -1, -1, -1, "2#pi/5");
@@ -515,7 +514,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       gStyle->SetPadRightMargin(0.01);
       gStyle->SetPadLeftMargin(0.150);
       hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetYaxis()->SetRangeUser(-0.04 * hdPhiSam[iCen][1][0][selZt][iptTr]->GetMaximum(), 1.0 * hdPhiSam[iCen][1][0][selZt][iptTr]->GetMaximum());
-      TAxis* a = hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetXaxis();
+      TAxis *a = hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->GetXaxis();
       a->SetNdivisions(-505);
       // Replace first and last labels
       a->ChangeLabel(1, -1, -1, -1, -1, -1, "0");
@@ -526,7 +525,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       a->ChangeLabel(3, -1, -1, -1, -1, -1, "2#pi/5");
       a->ChangeLabel(4, -1, -1, -1, -1, -1, "3#pi/5");
       a->ChangeLabel(5, -1, -1, -1, -1, -1, "4#pi/5");
-      
+
       hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->Draw("same");
       TGaxis::SetMaxDigits(3);
 
@@ -551,7 +550,8 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       hdPhiSam[iCen][1][0][selZt][iptTr]->Draw("sameE0");
       hdPhiMix[iCen][1][0][selZt][iptTr]->Draw("same");
       hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->SetTitle("");
-      
+
+
       lineX0->Draw("same");
 
       //      cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr]->cd(2);
@@ -651,6 +651,8 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->SetMarkerSize(1.5);
       hdPhiSamNoUE[iCen][1][0][selZt][iptTr]->Draw("same");
       lineX0->Draw("same");
+      lineY = DrawLine(lineY, 0.6*TMath::Pi(), -1, 0.6*TMath::Pi(), 1);
+      lineY->Draw("same");
       cIsoClust_Pi0Pur_SingleZt[iCen][iptTr]->cd(2);
 
       TLegend *legZt2 = new TLegend(0.05, 0.5, 0.05, 0.95);
@@ -811,7 +813,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->SetFillColorAlpha(0, 0);
       legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->SetHeader(Form("ALICE, #bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{s_{NN}} = 5.02 TeV", cenBins[iCen], cenBins[iCen + 1]));
       legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->AddEntry("", Form("Trigger: %1.0f#color[0]{.}<#color[0]{.}#it{p}_{T}^{trig} < %1.0f GeV/#it{c}, |#it{#eta}^{trig}| < 0.67, |#Delta#it{#varphi}| >#color[0]{..}#frac{3}{5}#color[0]{.}#it{#pi}", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]), "");
-      //legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->AddEntry("", "", "");
+      // legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->AddEntry("", "", "");
       legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->AddEntry("", "#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #it{R} = 0.2", "");
       legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->AddEntry("", "Associated: #it{p}_{T}^{h} > 0.5 GeV/#it{c}, |#it{#eta}^{h}| < 0.9", "");
 
@@ -820,6 +822,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         cIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->cd(izt + 1);
         // TString sTitle = Form("%2.0f < #it{p}_{T}^{tr} < %2.0f GeV/#it{c}, %2.2f < #it{z}_{T}^{as} < %2.2f ", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], assocZt[izt], assocZt[izt + 1]);
         legZtTitleXpap[izt] = LegStd(legZtTitleXpap[izt], 0.4, 0.85, 0.65, 0.90);
+        legZtTitleXpap[izt]->SetFillColor(0);
         legZtTitleXpap[izt]->SetTextSize(0.07);
         legZtTitleXpap[izt]->SetHeader(Form("%2.2f <#color[0]{..}#it{z}_{T}#color[0]{.}< %2.2f", assocZt[izt], assocZt[izt + 1]), "");
         hdPhiSamPi0Pur[iCen][1][izt][iptTr]->SetLineWidth(3);
@@ -832,71 +835,152 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetLabelOffset(0.01);
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetTitleOffset(1.2);
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetXaxis()->SetTitleOffset(1.1);
-        if(iCen==0 && izt==0 && iptTr==1)
+        if (iCen == 0 && izt == 0 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.4, 0.8);
-        if(iCen==0 && izt==1 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 0 && izt == 1 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.1, 0.2);
-        if(iCen==0 && izt==2 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.1, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 0 && izt == 2 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.1);
-        if(iCen==0 && izt==3 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.05, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 0 && izt == 3 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 20e-3);
-        if(iCen==0 && izt==4 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -15e-3, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 0 && izt == 4 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 22e-3);
-        if(iCen==0 && izt==5 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -10e-3, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 0 && izt == 5 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 20e-3);
-        
-        if(iCen==1 && izt==0 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -10e-3, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 1 && izt == 0 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.4, 0.6);
-        if(iCen==1 && izt==1 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 1 && izt == 1 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.1, 0.2);
-        if(iCen==1 && izt==2 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 1 && izt == 2 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.1);
-        if(iCen==1 && izt==3 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 1 && izt == 3 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 35e-3);
-        if(iCen==1 && izt==4 && iptTr==1)
-          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 30e-3);
-        if(iCen==1 && izt==5 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 1 && izt == 4 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 20e-3);
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 1 && izt == 5 && iptTr == 1)
+        {
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 12e-3);
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
 
-        if(iCen==2 && izt==0 && iptTr==0)
+        if (iCen == 2 && izt == 0 && iptTr == 0)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.4);
-        if(iCen==2 && izt==1 && iptTr==0)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 2 && izt == 1 && iptTr == 0)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.18);
-        if(iCen==2 && izt==2 && iptTr==0)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 2 && izt == 2 && iptTr == 0)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.18);
-        if(iCen==2 && izt==3 && iptTr==0)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 2 && izt == 3 && iptTr == 0)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-20e-3, 52e-3);
-        if(iCen==2 && izt==4 && iptTr==0)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 2 && izt == 4 && iptTr == 0)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 36e-3);
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
 
-        if(iCen==2 && izt==0 && iptTr==1)
+        if (iCen == 2 && izt == 0 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.4);
-        if(iCen==2 && izt==1 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 2 && izt == 1 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.1);
-        if(iCen==2 && izt==2 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 2 && izt == 2 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.085);
-        if(iCen==2 && izt==3 && iptTr==1)
-          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 36e-3);
-        if(iCen==2 && izt==4 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 2 && izt == 3 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 26e-3);
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 2 && izt == 4 && iptTr == 1)
+        {
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 18e-3);
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
 
-        if(iCen==3 && izt==0 && iptTr==1)
+        if (iCen == 3 && izt == 0 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.2, 0.4);
-        if(iCen==3 && izt==1 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 3 && izt == 1 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.15, 0.2);
-        if(iCen==3 && izt==2 && iptTr==1)
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 3 && izt == 2 && iptTr == 1)
+        {
           hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-0.06, 0.250);
-        if(iCen==3 && izt==3 && iptTr==1)
-          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-35e-3, 120e-3);
-        if(iCen==3 && izt==4 && iptTr==1)
-          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-35e-3, 100e-3);
-        
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 3 && izt == 3 && iptTr == 1)
+        {
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-35e-3, 80e-3);
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+        if (iCen == 3 && izt == 4 && iptTr == 1)
+        {
+          hdPhiSamNoUE[iCen][1][0][izt][iptTr]->GetYaxis()->SetRangeUser(-35e-3, 60e-3);
+          lineY = DrawLine(lineY, 0.6*TMath::Pi(), -0.4, 0.6*TMath::Pi(), 1);
+        }
+
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->Draw("same");
         TGaxis::SetMaxDigits(3);
         hdPhiSamPi0Pur[iCen][1][izt][iptTr]->Draw("sameE0");
         hdPhiPhoton[iCen][1][izt][iptTr]->Draw("same");
         hdPhiSamNoUE[iCen][1][0][izt][iptTr]->SetTitle("");
         lineX0->Draw("same");
+        lineY->Draw("same");
         legZtTitleXpap[izt]->Draw("same");
       }
       cIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->cd(legPad);
@@ -904,10 +988,9 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       legIsoNarrWidePurityIsoPhotXpapVariab->Draw("same");
       cIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/cIsoNarrWidePurityIsoPhotXpap" + sCent + sPtTrig + ".pdf");
     }
-  
 
-    cout<<"ALTERNATIVE WAY OF PLOTTING DeltaPhi Photon"<<endl;
-    
+    cout << "ALTERNATIVE WAY OF PLOTTING DeltaPhi Photon" << endl;
+
     TLegend *legIsoNarrWidePurityIsoPhotXpapVariabAlternative = new TLegend(0.05, 0.10, 0.5, 0.45);
     legIsoNarrWidePurityIsoPhotXpapVariabAlternative->SetTextSize(0.06);
     legIsoNarrWidePurityIsoPhotXpapVariabAlternative->SetLineColorAlpha(0, 0);
@@ -916,112 +999,111 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
     legIsoNarrWidePurityIsoPhotXpapVariabAlternative->AddEntry(hdPhiPhoton[iCen][1][1][0], "#it{C}_{#it{#gamma}^{iso}} = 1/#it{P}#color[0]{.}#times#color[0]{.}#it{C}_{Narrow}#color[0]{.}#font[122]{-}#color[0]{.}(1#color[0]{..}#font[122]{-}#color[0]{.}#it{P})/#it{P}#color[0]{.}#times#color[0]{.}#it{C}_{Wide}", "lp");
 
     for (Int_t iptTr = 0; iptTr < nPtTrig; iptTr++)
+    {
+      TString sPtTrig = Form("PtTr%2.0f_%2.0f", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]);
+      cIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr] = new TCanvas("cIsoNarrWidePurityIsoPhotXpapAlternative" + sCent + sPtTrig, "cIsoNarrWidePurityIsoPhotXpapAlternative" + sCent + sPtTrig, xNumPad * 800, yNumPad * 600);
+      cIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->Divide(xNumPad, yNumPad);
+      legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr] = new TLegend(0.05, 0.45, 0.05, 0.95);
+      legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->SetTextSize(0.06);
+      legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->SetLineColorAlpha(0, 0);
+      legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->SetFillColorAlpha(0, 0);
+      legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->SetHeader(Form("ALICE, #bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{s_{NN}} = 5.02 TeV", cenBins[iCen], cenBins[iCen + 1]));
+      legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->AddEntry("", Form("Trigger: %1.0f#color[0]{.}<#color[0]{.}#it{p}_{T}^{trig} < %1.0f GeV/#it{c}, |#it{#eta}^{trig}| < 0.67, |#Delta#it{#varphi}| >#color[0]{..}#frac{3}{5}#color[0]{.}#it{#pi}", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]), "");
+      // legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->AddEntry("", "", "");
+      legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->AddEntry("", "#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #it{R} = 0.2", "");
+      legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->AddEntry("", "Associated: #it{p}_{T}^{h} > 0.5 GeV/#it{c}, |#it{#eta}^{h}| < 0.9", "");
+
+      for (Int_t izt = 0; izt < nZtBin; izt++)
       {
-        TString sPtTrig = Form("PtTr%2.0f_%2.0f", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]);
-        cIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr] = new TCanvas("cIsoNarrWidePurityIsoPhotXpapAlternative" + sCent + sPtTrig, "cIsoNarrWidePurityIsoPhotXpapAlternative" + sCent + sPtTrig, xNumPad * 800, yNumPad * 600);
-        cIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->Divide(xNumPad, yNumPad);
-        legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr] = new TLegend(0.05, 0.45, 0.05, 0.95);
-        legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->SetTextSize(0.06);
-        legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->SetLineColorAlpha(0, 0);
-        legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->SetFillColorAlpha(0, 0);
-        legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->SetHeader(Form("ALICE, #bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{s_{NN}} = 5.02 TeV", cenBins[iCen], cenBins[iCen + 1]));
-        legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->AddEntry("", Form("Trigger: %1.0f#color[0]{.}<#color[0]{.}#it{p}_{T}^{trig} < %1.0f GeV/#it{c}, |#it{#eta}^{trig}| < 0.67, |#Delta#it{#varphi}| >#color[0]{..}#frac{3}{5}#color[0]{.}#it{#pi}", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]), "");
-        //legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->AddEntry("", "", "");
-        legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->AddEntry("", "#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #it{R} = 0.2", "");
-        legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->AddEntry("", "Associated: #it{p}_{T}^{h} > 0.5 GeV/#it{c}, |#it{#eta}^{h}| < 0.9", "");
+        cIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->cd(izt + 1);
+        // TString sTitle = Form("%2.0f < #it{p}_{T}^{tr} < %2.0f GeV/#it{c}, %2.2f < #it{z}_{T}^{as} < %2.2f ", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], assocZt[izt], assocZt[izt + 1]);
+        legZtTitleXpap[izt] = LegStd(legZtTitleXpap[izt], 0.4, 0.85, 0.65, 0.90);
+        legZtTitleXpap[izt]->SetTextSize(0.07);
+        legZtTitleXpap[izt]->SetHeader(Form("%2.2f <#color[0]{..}#it{z}_{T}#color[0]{.}< %2.2f", assocZt[izt], assocZt[izt + 1]), "");
+        hdPhiSamePi0ScaledbyPur[iCen][1][izt][iptTr]->SetLineWidth(3);
+        hdPhiPhotonScaledbyPur[iCen][1][izt][iptTr]->SetLineWidth(3);
+        hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->SetLineWidth(3);
+        hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetXaxis()->SetLabelSize(0.06);
+        hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetXaxis()->SetTitleSize(0.06);
+        hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetLabelSize(0.06);
+        hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetTitleSize(0.06);
+        hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetLabelOffset(0.01);
+        hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetTitleOffset(1.2);
+        hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetXaxis()->SetTitleOffset(1.1);
+        if (iCen == 0 && izt == 0 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.4, 0.8);
+        if (iCen == 0 && izt == 1 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.1, 0.2);
+        if (iCen == 0 && izt == 2 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.1);
+        if (iCen == 0 && izt == 3 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 20e-3);
+        if (iCen == 0 && izt == 4 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 22e-3);
+        if (iCen == 0 && izt == 5 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 20e-3);
 
-        for (Int_t izt = 0; izt < nZtBin; izt++)
-        {
-          cIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->cd(izt + 1);
-          // TString sTitle = Form("%2.0f < #it{p}_{T}^{tr} < %2.0f GeV/#it{c}, %2.2f < #it{z}_{T}^{as} < %2.2f ", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], assocZt[izt], assocZt[izt + 1]);
-          legZtTitleXpap[izt] = LegStd(legZtTitleXpap[izt], 0.4, 0.85, 0.65, 0.90);
-          legZtTitleXpap[izt]->SetTextSize(0.07);
-          legZtTitleXpap[izt]->SetHeader(Form("%2.2f <#color[0]{..}#it{z}_{T}#color[0]{.}< %2.2f", assocZt[izt], assocZt[izt + 1]), "");
-          hdPhiSamePi0ScaledbyPur[iCen][1][izt][iptTr]->SetLineWidth(3);
-          hdPhiPhotonScaledbyPur[iCen][1][izt][iptTr]->SetLineWidth(3);
-          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->SetLineWidth(3);
-          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetXaxis()->SetLabelSize(0.06);
-          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetXaxis()->SetTitleSize(0.06);
-          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetLabelSize(0.06);
-          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetTitleSize(0.06);
-          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetLabelOffset(0.01);
-          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetTitleOffset(1.2);
-          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetXaxis()->SetTitleOffset(1.1);
-          if(iCen==0 && izt==0 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.4, 0.8);
-          if(iCen==0 && izt==1 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.1, 0.2);
-          if(iCen==0 && izt==2 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.1);
-          if(iCen==0 && izt==3 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 20e-3);
-          if(iCen==0 && izt==4 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 22e-3);
-          if(iCen==0 && izt==5 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 20e-3);
-          
-          if(iCen==1 && izt==0 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.4, 0.6);
-          if(iCen==1 && izt==1 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.1, 0.2);
-          if(iCen==1 && izt==2 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.1);
-          if(iCen==1 && izt==3 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 35e-3);
-          if(iCen==1 && izt==4 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 30e-3);
-          if(iCen==1 && izt==5 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 20e-3);
+        if (iCen == 1 && izt == 0 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.4, 0.6);
+        if (iCen == 1 && izt == 1 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.1, 0.2);
+        if (iCen == 1 && izt == 2 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.1);
+        if (iCen == 1 && izt == 3 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 35e-3);
+        if (iCen == 1 && izt == 4 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 30e-3);
+        if (iCen == 1 && izt == 5 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-15e-3, 20e-3);
 
-          if(iCen==2 && izt==0 && iptTr==0)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.4);
-          if(iCen==2 && izt==1 && iptTr==0)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.18);
-          if(iCen==2 && izt==2 && iptTr==0)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.18);
-          if(iCen==2 && izt==3 && iptTr==0)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-20e-3, 52e-3);
-          if(iCen==2 && izt==4 && iptTr==0)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 36e-3);
+        if (iCen == 2 && izt == 0 && iptTr == 0)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.4);
+        if (iCen == 2 && izt == 1 && iptTr == 0)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.18);
+        if (iCen == 2 && izt == 2 && iptTr == 0)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.18);
+        if (iCen == 2 && izt == 3 && iptTr == 0)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-20e-3, 52e-3);
+        if (iCen == 2 && izt == 4 && iptTr == 0)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 36e-3);
 
-          if(iCen==2 && izt==0 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.4);
-          if(iCen==2 && izt==1 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.1);
-          if(iCen==2 && izt==2 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.085);
-          if(iCen==2 && izt==3 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 36e-3);
-          if(iCen==2 && izt==4 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 26e-3);
+        if (iCen == 2 && izt == 0 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.4);
+        if (iCen == 2 && izt == 1 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.05, 0.1);
+        if (iCen == 2 && izt == 2 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.04, 0.085);
+        if (iCen == 2 && izt == 3 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 36e-3);
+        if (iCen == 2 && izt == 4 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-10e-3, 26e-3);
 
-          if(iCen==3 && izt==0 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.2, 0.4);
-          if(iCen==3 && izt==1 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.15, 0.2);
-          if(iCen==3 && izt==2 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.06, 0.250);
-          if(iCen==3 && izt==3 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-35e-3, 120e-3);
-          if(iCen==3 && izt==4 && iptTr==1)
-            hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-35e-3, 100e-3);
-          
-          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->Draw("same");
-          TGaxis::SetMaxDigits(3);
-          hdPhiSamePi0ScaledbyPur[iCen][1][izt][iptTr]->Draw("sameE0");
-          hdPhiPhotonScaledbyPur[iCen][1][izt][iptTr]->Draw("same");
-          lineX0->Draw("same");
-          legZtTitleXpap[izt]->Draw("same");
-        }
-        cIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->cd(legPad);
-        legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->Draw("same");
-        legIsoNarrWidePurityIsoPhotXpapVariabAlternative->Draw("same");
-        cIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/cIsoNarrWidePurityIsoPhotXpapAlternative" + sCent + sPtTrig + ".pdf");
+        if (iCen == 3 && izt == 0 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.2, 0.4);
+        if (iCen == 3 && izt == 1 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.15, 0.2);
+        if (iCen == 3 && izt == 2 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-0.06, 0.250);
+        if (iCen == 3 && izt == 3 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-35e-3, 120e-3);
+        if (iCen == 3 && izt == 4 && iptTr == 1)
+          hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->GetYaxis()->SetRangeUser(-35e-3, 100e-3);
+
+        hdPhiSameNoUEScaledbyPur[iCen][1][izt][iptTr]->Draw("same");
+        TGaxis::SetMaxDigits(3);
+        hdPhiSamePi0ScaledbyPur[iCen][1][izt][iptTr]->Draw("sameE0");
+        hdPhiPhotonScaledbyPur[iCen][1][izt][iptTr]->Draw("same");
+        lineX0->Draw("same");
+        legZtTitleXpap[izt]->Draw("same");
       }
+      cIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->cd(legPad);
+      legIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->Draw("same");
+      legIsoNarrWidePurityIsoPhotXpapVariabAlternative->Draw("same");
+      cIsoNarrWidePurityIsoPhotXpapAlternative[iCen][iptTr]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/cIsoNarrWidePurityIsoPhotXpapAlternative" + sCent + sPtTrig + ".pdf");
+    }
   }
-  
-  
-  cout<<"---------------------------------------------"<<endl;
+
+  cout << "---------------------------------------------" << endl;
 
   cout << "Zt distributions Data" << endl;
   TCanvas *cZtPtBin[nCen][nIso][nPtTrig];
@@ -1348,7 +1430,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
     }
   }
 
-// Check over the near side
+  // Check over the near side
 
   cout << "Zt distributions Data Near side" << endl;
   TCanvas *cZtPtBinNearSide[nCen][nIso];
@@ -1360,12 +1442,12 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
     for (int iso = 0; iso < nIso; iso++)
     {
       TString sIso = Form("Iso%d", iso);
-      cZtPtBinNearSide[iCen][iso] = new TCanvas("cZtGammaNearSide" + sIso + sCent, "cZtGammaNearSide" + sIso + sCent, 2*800, 3*600);
-      cZtPtBinNearSide[iCen][iso]->Divide(2,3);
+      cZtPtBinNearSide[iCen][iso] = new TCanvas("cZtGammaNearSide" + sIso + sCent, "cZtGammaNearSide" + sIso + sCent, 2 * 800, 3 * 600);
+      cZtPtBinNearSide[iCen][iso]->Divide(2, 3);
       for (Int_t iptTr = 0; iptTr < nPtTrig; iptTr++)
       {
         TString sPtTrig = Form("PtTr%2.0f_%2.0f", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]);
-        cZtPtBinNearSide[iCen][iso]->cd(iptTr+1);
+        cZtPtBinNearSide[iCen][iso]->cd(iptTr + 1);
         hZtPhotonPtBinNearSide[iCen][iso][iptTr]->SetTitle("");
         hZtPhotonPtBinNearSide[iCen][iso][iptTr]->GetXaxis()->SetTitleSize(0.040);
         hZtPhotonPtBinNearSide[iCen][iso][iptTr]->GetYaxis()->SetTitleSize(0.040);
