@@ -39,7 +39,7 @@ double assocZtThinner[] = {0.125, 0.175, 0.25, 0.35, 0.5, 0.8, 0.9};
 static void ScaleBinBySize(TH1F *h);
 void NLOcalc()
 {
-  TFile *fileNLO = new TFile("fileNLO.root", "RECREATE");
+  TFile *fileNLO = new TFile("RootFiles/fileNLOtest.root", "RECREATE");
   TGraphAsymmErrors *grIaaNLOmedian[nCen];
   TGraphAsymmErrors *grDztNLOmedian[nCen];
 
@@ -131,7 +131,7 @@ void NLOcalc()
   for (int ibin = 0; ibin < nAssoc; ibin++)
   {
     grDztNLOmedianpp->SetBinContent(ibin + 1, Dzt_medianpp[ibin]);
-    grDztNLOmedianpp->SetBinError(ibin + 1, 0);
+    grDztNLOmedianpp->SetBinError(ibin + 1, 0.000001);
   }
   // ScaleBinBySize(grDztNLOmedianpp);
 
