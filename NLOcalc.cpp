@@ -125,13 +125,16 @@ void NLOcalc()
   grDztNLOmedian[2] = new TGraphAsymmErrors(nZtBin, assocZtThinner, Dzt_median50_90, 0, 0, Dzt_erryMin50_90, Dzt_erryMax50_90);
 
   TH1F *grDztNLOmedianpp = new TH1F("hppNLO", "hppNLO", nAssoc, assocZt);
+  TH1F *grDztNLOmedianppSyst = new TH1F("hppNLOSyst", "hppNLOSyst", nAssoc, assocZt);
   //double Dzt_medianpp[] = {5.425E+00, 2.837E+00, 1.299E+00, 5.989E-01, 1.921E-01, 5.161E-02, 1.785E-02};
   double Dzt_medianpp[] = {5.425E+00, 2.837E+00, 1.299E+00, 5.989E-01, 1.921E-01, 3.473E-02};
 
   for (int ibin = 0; ibin < nAssoc; ibin++)
   {
     grDztNLOmedianpp->SetBinContent(ibin + 1, Dzt_medianpp[ibin]);
-    grDztNLOmedianpp->SetBinError(ibin + 1, 0.000001);
+    grDztNLOmedianpp->SetBinError(ibin + 1, 0);
+    grDztNLOmedianppSyst->SetBinContent(ibin + 1, Dzt_medianpp[ibin]);
+    grDztNLOmedianppSyst->SetBinError(ibin + 1, (Dzt_medianpp[ibin]*5)/100);
   }
   // ScaleBinBySize(grDztNLOmedianpp);
 
@@ -307,6 +310,7 @@ void NLOcalc()
   grIaaNLOmedian[2]->SetName(Form("grIaaNLOmedian_Cen%d_%d", cenBins[2], cenBins[3]));
 
   grDztNLOmedianpp->SetName(Form("grDztNLOmedian_pp"));
+  grDztNLOmedianppSyst->SetName(Form("grDztNLOmedian_ppSyst"));
   grDztNLOmedian[0]->SetName(Form("grDztNLOmedian_Cen%d_%d", cenBins[0], cenBins[1]));
   grDztNLOmedian[1]->SetName(Form("grDztNLOmedian_Cen%d_%d", cenBins[1], cenBins[2]));
   grDztNLOmedian[2]->SetName(Form("grDztNLOmedian_Cen%d_%d", cenBins[2], cenBins[3]));
@@ -317,6 +321,7 @@ void NLOcalc()
   grIaaNLOmedian[2]->Write();
 
   grDztNLOmedianpp->Write();
+  grDztNLOmedianppSyst->Write();
   grDztNLOmedian[0]->Write();
   grDztNLOmedian[1]->Write();
   grDztNLOmedian[2]->Write();
