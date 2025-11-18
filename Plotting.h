@@ -73,7 +73,7 @@ TLatex *LatexStdphi(TLatex *lat, double xpos, double ypos, int cenMin, int cenMa
     lat->DrawLatex(xpos, ypos - 0.08, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{trig}| < 0.67", cenMin, cenMax));
   else if (!bCen)
     lat->DrawLatex(xpos, ypos - 0.08, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{trig}| < 0.67"));
-  lat->DrawLatex(xpos, ypos - 2 * 0.08, Form("%2.0f < #it{p}_{T}^{trig} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c}", ptMin, ptMax));
+  lat->DrawLatex(xpos, ypos - 2 * 0.08, Form("%2.0f < #it{p}_{T}^{trig} < %2.0f GeV/#it{c}#color[0]{.};#color[0]{..} #it{p}_{T}^{h} > 0.5 GeV/#it{c}", ptMin, ptMax));
   return lat;
 }
 
@@ -89,7 +89,7 @@ TLatex *LatexStd(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax, 
     lat->DrawLatex(xpos, ypos - 0.06, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ trig}| < 0.67", cenMin, cenMax));
   else if (!bCen)
     lat->DrawLatex(xpos, ypos - 0.06, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{trig}| < 0.67"));
-  lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("%2.0f < #it{p}_{T}^{trig} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c}", ptMin, ptMax));
+  lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("%2.0f < #it{p}_{T}^{trig} < %2.0f GeV/#it{c}#color[0]{.};#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c}", ptMin, ptMax));
   return lat;
 }
 
@@ -120,11 +120,11 @@ TLatex *LatexStdISO(TLatex *lat, double xpos, double ypos, double texSize, int c
   lat->DrawLatex(xpos, ypos, Form("#font[42]{ALICE}"));
     //lat->DrawLatex(xpos, ypos, Form("ALICE #it{Work in progress}"));
   if (bCen)
-    lat->DrawLatex(xpos, ypos - 0.045, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb,#color[0]{.}#sqrt{#it{s}_{NN}} = 5.02 TeV ", cenMin, cenMax));
+    lat->DrawLatex(xpos, ypos - 0.055, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb,#color[0]{.}#sqrt{#it{s}_{NN}} = 5.02 TeV ", cenMin, cenMax));
   else if (!bCen)
     lat->DrawLatex(xpos, ypos - 0.045, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
-  lat->DrawLatex(xpos, ypos - 2 * 0.050, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| >#color[0]{.}#frac{3}{5}#color[0]{.}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
-  lat->DrawLatex(xpos, ypos - 3 * 0.050, Form("%2.0f <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c}#color[0]{..}#otimes#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
+  lat->DrawLatex(xpos, ypos - 2 * 0.0550, Form("|#Delta#it{#varphi}| >#color[0]{.}#frac{3}{5}#color[0]{.}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
+  lat->DrawLatex(xpos, ypos - 3 * 0.060, Form("%2.0f <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c}#color[0]{.};#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
   return lat;
 }
 
@@ -140,8 +140,8 @@ TLatex *LatexStdISORatio(TLatex *lat, double xpos, double ypos, double texSize, 
     lat->DrawLatex(xpos, ypos - 0.045, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb,#color[0]{.}#sqrt{#it{s}_{NN}} = 5.02 TeV ", cenMin, cenMax));
   else if (!bCen)
     lat->DrawLatex(xpos, ypos - 0.045, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
-  lat->DrawLatex(xpos, ypos - 2 * 0.053, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5}#color[0]{.}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
-  lat->DrawLatex(xpos, ypos - 3 * 0.055, Form("%2.0f <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c}#color[0]{..}#otimes#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
+  lat->DrawLatex(xpos, ypos - 2 * 0.053, Form("|#Delta#it{#varphi}| > #frac{3}{5}#color[0]{.}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67"));
+  lat->DrawLatex(xpos, ypos - 3 * 0.055, Form("%2.0f <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c}#color[0]{.};#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c}", ptMin, ptMax));
   return lat;
 }
 
@@ -152,8 +152,8 @@ TLatex *LatexStdISORatioNoPbPb(TLatex *lat, double xpos, double ypos, double tex
   lat->SetTextSize(texSize);
   lat->SetNDC();
   lat->DrawLatex(xpos, ypos, Form("#font[42]{ALICE}, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
-  lat->DrawLatex(xpos, ypos - 1 * 0.06, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5}#color[0]{.}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
-  lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("%2.0f <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c}#color[0]{..}#otimes#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
+  lat->DrawLatex(xpos, ypos - 1 * 0.06, Form("|#Delta#it{#varphi}| > #frac{3}{5}#color[0]{.}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
+  lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("%2.0f <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c}#color[0]{.};#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
   return lat;
 }
 
@@ -179,7 +179,7 @@ TLatex *LatexDPhi(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax,
     lat->DrawLatex(xpos, ypos - 0.10, Form("#bf{%d#font[122]{-}%d%%} Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ trig}| < 0.67", cenMin, cenMax));
   if(!bCent)
     lat->DrawLatex(xpos, ypos - 0.10, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV, |#it{#eta}^{ trig}| < 0.67"));
-  lat->DrawLatex(xpos, ypos - 2 * 0.10, Form("%2.0f < #it{p}_{T}^{trig} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c}", ptMin, ptMax));
+  lat->DrawLatex(xpos, ypos - 2 * 0.10, Form("%2.0f < #it{p}_{T}^{trig} < %2.0f GeV/#it{c}#color[0]{.};#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c}", ptMin, ptMax));
   return lat;
 }
 TLatex *LatexDPhiNopt(TLatex *lat, double xpos, double ypos, int cenMin, int cenMax, float ptMin, float ptMax, bool bCent)
@@ -220,8 +220,8 @@ TLatex *LatexStdIcp(TLatex *lat, double xpos, double ypos, int cenMin, int cenMa
   lat->DrawLatex(xpos, ypos, Form("#font[42]{ALICE}"));
   //lat->DrawLatex(xpos, ypos, Form("ALICE #it{Work in progress}"));
   lat->DrawLatex(xpos, ypos - 0.055, Form("Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV "));
-  lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("|#Delta#it{#varphi}_{#it{#gamma}#font[122]{-}h}| > #frac{3}{5} #it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
-  lat->DrawLatex(xpos, ypos - 3 * 0.06, Form("%2.0f < #it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c} #otimes #it{p}_{T}^{h} > 0.5 GeV/#it{c}", ptMin, ptMax));
+  lat->DrawLatex(xpos, ypos - 2 * 0.06, Form("|#Delta#it{#varphi}| > #frac{3}{5} #it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
+  lat->DrawLatex(xpos, ypos - 3 * 0.06, Form("%2.0f < #it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c}#color[0]{.};#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c}", ptMin, ptMax));
   return lat;
 }
 
@@ -319,3 +319,105 @@ static TGraphAsymmErrors * DivideGraphs(TGraphAsymmErrors* gNum, TGraphAsymmErro
   return new TGraphAsymmErrors(nBins,x,ratio,xErr,ratioErr);
 }
 
+void CanvasPartition(TCanvas *C, const Int_t Nx, const Int_t Ny, Float_t lMargin, Float_t rMargin, Float_t bMargin,
+                     Float_t tMargin)
+{
+   if (!C)
+      return;
+ 
+   // Setup Pad layout:
+   Float_t vSpacing = 0.0;
+   Float_t vStep = (1. - bMargin - tMargin - (Ny - 1) * vSpacing) / Ny;
+ 
+   Float_t hSpacing = 0.0;
+   Float_t hStep = (1. - lMargin - rMargin - (Nx - 1) * hSpacing) / Nx;
+ 
+   Float_t vposd, vposu, vmard, vmaru, vfactor;
+   Float_t hposl, hposr, hmarl, hmarr, hfactor;
+ 
+   for (Int_t i = 0; i < Nx; i++) {
+ 
+      if (i == 0) {
+         hposl = 0.0;
+         hposr = lMargin + hStep;
+         hfactor = hposr - hposl;
+         hmarl = lMargin / hfactor;
+         hmarr = 0.0;
+      } else if (i == Nx - 1) {
+         hposl = hposr + hSpacing;
+         hposr = hposl + hStep + rMargin;
+         hfactor = hposr - hposl;
+         hmarl = 0.0;
+         hmarr = rMargin / (hposr - hposl);
+      } else {
+         hposl = hposr + hSpacing;
+         hposr = hposl + hStep;
+         hfactor = hposr - hposl;
+         hmarl = 0.0;
+         hmarr = 0.0;
+      }
+ 
+      for (Int_t j = 0; j < Ny; j++) {
+ 
+         if (j == 0) {
+            vposd = 0.0;
+            vposu = bMargin + vStep;
+            vfactor = vposu - vposd;
+            vmard = bMargin / vfactor;
+            vmaru = 0.0;
+         } else if (j == Ny - 1) {
+            vposd = vposu + vSpacing;
+            vposu = vposd + vStep + tMargin;
+            vfactor = vposu - vposd;
+            vmard = 0.0;
+            vmaru = tMargin / (vposu - vposd);
+         } else {
+            vposd = vposu + vSpacing;
+            vposu = vposd + vStep;
+            vfactor = vposu - vposd;
+            vmard = 0.0;
+            vmaru = 0.0;
+         }
+ 
+         C->cd(0);
+ 
+         auto name = TString::Format("pad_%d_%d", i, j);
+         auto pad = (TPad *)C->FindObject(name.Data());
+         if (pad)
+            delete pad;
+         pad = new TPad(name.Data(), "", hposl, vposd, hposr, vposu);
+         pad->SetLeftMargin(hmarl);
+         pad->SetRightMargin(hmarr);
+         pad->SetBottomMargin(vmard);
+         pad->SetTopMargin(vmaru);
+ 
+         pad->SetFrameBorderMode(0);
+         pad->SetBorderMode(0);
+         pad->SetBorderSize(0);
+ 
+         pad->Draw();
+      }
+   }
+}
+ 
+double XtoPad(double x)
+{
+   double xl, yl, xu, yu;
+   gPad->GetPadPar(xl, yl, xu, yu);
+   double pw = xu - xl;
+   double lm = gPad->GetLeftMargin();
+   double rm = gPad->GetRightMargin();
+   double fw = pw - pw * lm - pw * rm;
+   return (x * fw + pw * lm) / pw;
+}
+ 
+double YtoPad(double y)
+{
+   double xl, yl, xu, yu;
+   gPad->GetPadPar(xl, yl, xu, yu);
+   double ph = yu - yl;
+   double tm = gPad->GetTopMargin();
+   double bm = gPad->GetBottomMargin();
+   double fh = ph - ph * bm - ph * tm;
+   return (y * fh + bm * ph) / ph;
+}
