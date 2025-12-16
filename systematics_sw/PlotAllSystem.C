@@ -177,6 +177,7 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     for (int ibin = 0; ibin < nZtBin; ibin++)
     {
       hZtStatUncert[iCen]->SetBinContent(ibin + 1, fZt[iCen]->GetBinError(ibin + 1) / fZt[iCen]->GetBinContent(ibin + 1));
+      
     }
 
     cout << "Define histograms style" << endl;
@@ -356,6 +357,8 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     cout << "Centrality: " << cenBins[iCen] << " - " << cenBins[iCen + 1] << endl;
+    cout<< "TOT STATISTICAL" << endl;
+    PrintSyst(hZtStatUncert[iCen]);
     cout << "Tot syst: " << endl;
     PrintSyst(hZtSystSumQuadr[iCen]);
     cout << "Tracking Efficiecy " << endl;
@@ -387,8 +390,8 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
     for (int ibin = 0; ibin < nZtBin; ibin++)
     {
       hfZtSyst[iCen]->SetBinError(ibin + 1, ((hZtSystSumQuadr[iCen]->GetBinContent(ibin + 1) / 100.) * fZt[iCen]->GetBinContent(ibin + 1)));
-      cout << "error" << endl;
-      cout << hfZtSyst[iCen]->GetBinContent(ibin + 1) << " " << fZt[iCen]->GetBinContent(ibin + 1) << endl;
+      //cout << "error" << endl;
+      //cout << hfZtSyst[iCen]->GetBinContent(ibin + 1) << " " << fZt[iCen]->GetBinContent(ibin + 1) << endl;
     }
     fZt[iCen]->SetDirectory(0);
     hfZtSyst[iCen]->SetDirectory(0);
@@ -522,17 +525,17 @@ void PlotAllSystem(Float_t ptMin = 18, Float_t ptMax = 40, bool bMirror = true, 
   ///////// Debugging printing ////////
   /////////////////////////////////////
 
-  cout << "PRINT TOTAL SYSTEMATIC UNCERTAINTY Icp: " << endl;
+  cout << "PRINT TOTAL Stat and syste UNCERTAINTY Icp: " << endl;
   for (int iCen = 0; iCen < nCen - 1; iCen++)
   {
     cout << "Centrality: " << cenBins[iCen] << " - " << cenBins[iCen + 1] << endl;
-    cout << "Stastical error: "<< endl;
+    cout << "1)Stastical error: "<< endl;
     for (int ibin = 0; ibin < nZtBin; ibin++)
     {
     cout << "- bin"<<ibin<<":" << hZtStatUncertIcp[iCen]->GetBinError(ibin + 1) * 100<< "%" << endl;
     }
     cout<<"___________________________________"<<endl;
-    cout << "ICP Tot syst: " << endl;
+    cout << "2)ICP Tot syst: " << endl;
     PrintSyst(hZtSystSumQuadrIcp[iCen]);
     cout << "Different contribution: " << endl;
     cout << "ICP hPurity " << endl;
