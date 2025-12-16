@@ -43,7 +43,7 @@ TF1 *funcPur[nCen];
 void Mirroring(TH1F *hMir, TH1F *hMirXtrue);                                                // function for mirroring
 void PlotStyle(TH1F *hPlot, int kMarker, int kColor, TString titleX, TString titleY);       // plot aesthetic
 void ZtFunction(TH1F *hDeltaPhi, TH1F *hZT, int bin, double phiMin, double phiMax);         // calculation of zT function
-void ZtFunctionNearSide(TH1F *hDeltaPhi, TH1F *hZT, int bin, double phiMin, double phiMax); // calculation of zT function for near Side
+void ZtFunctionMiddleSide(TH1F *hDeltaPhi, TH1F *hZT, int bin, double phiMin, double phiMax); // calculation of zT function for Middle Side
 static void ScaleBinBySize(TH1F *h);
 TH1F *SumPtBinXzt(TH1F *hTrigSame, Float_t PtTrigger[npt], int index1, int index2, TH1F *hzTbin[npt], TH1F *hzTbinAll, TH1F *hPur, TF1 *fPur, double systPur, Bool_t bData);
 void fZYAM(TH1F *hSame, double rangeMin = 3 * (TMath::Pi()) / 10, double rangeMax = TMath::Pi() / 2);
@@ -108,8 +108,10 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
   // Zt Distribution
   TH1F *hZtPhotonPtBin[nIso][nPtTrig];         // Zt distribution iso/not iso Gamma X every PtBin (only purity correction)
   TH1F *hZtPhotonPtBinNearSide[nIso][nPtTrig]; // Zt distribution Near Side iso/not iso Gamma X every PtBin (only purity correction)
+  TH1F *hZtPhotonPtBinMiddleSide[nIso][nPtTrig]; // Zt distribution Near Side iso/not iso Gamma X every PtBin (only purity correction)
   TH1F *hZtPhoton[nIso];                       // Zt distribution iso/not iso Gamma full range (only purity correction)
   TH1F *hZtPhotonNearSide[nIso];               // Zt distribution Near Side iso/not iso Gamma full range (only purity correction)
+  TH1F *hZtPhotonMiddleSide[nIso];               // Zt distribution Near Side iso/not iso Gamma full range (only purity correction)
   TH1F *hZtPi0PtBin[nIso][nPtTrig];            // Zt distribution iso/not iso Pi0 X every PtBin (only purity correction)
   TH1F *hZtPi0[nIso];                          // Zt distribution iso/not iso Pi0 full range (only purity correction)
 
@@ -377,6 +379,7 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
       hZtPi0PtBin[iso][iptTr] = new TH1F(Form("hZt%sPi0PtBin_%s", sIso.Data(), sPtTrig.Data()), Form("hZt%sPi0PtBin_%s", sIso.Data(), sPtTrig.Data()), nZtBin, assocZt);
 
       hZtPhotonPtBinNearSide[iso][iptTr] = new TH1F(Form("hZt%sPhotonPtBin_%sNearSide", sIso.Data(), sPtTrig.Data()), Form("hZt%sPhotonPtBin_%sNearSide", sIso.Data(), sPtTrig.Data()), nZtBin, assocZt);
+      hZtPhotonPtBinMiddleSide[iso][iptTr] = new TH1F(Form("hZt%sPhotonPtBin_%sMiddleSide", sIso.Data(), sPtTrig.Data()), Form("hZt%sPhotonPtBin_%sMiddleSide", sIso.Data(), sPtTrig.Data()), nZtBin, assocZt);
       for (Int_t izt = 0; izt < nZtBin; izt++)
       {
         double systValPur = histPur[iCen]->GetBinError(histPur[iCen]->FindBin(ptTrig[index1 + iptTr + 1] - 0.0001)) / (histPur[iCen]->GetBinContent(histPur[iCen]->FindBin(ptTrig[index1 + iptTr + 1] - 0.0001)));
@@ -488,16 +491,19 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
         ZtFunction(hdPhiPi0[iso][izt][iptTr], hZtPi0PtBin[iso][iptTr], izt, phiMin, phiMax);
 
         ZtFunction(hdPhiPhoton[iso][izt][iptTr], hZtPhotonPtBinNearSide[iso][iptTr], izt, 0, TMath::Pi() * 2 / 5);
+        ZtFunctionMiddleSide(hdPhiPhoton[iso][izt][iptTr], hZtPhotonPtBinMiddleSide[iso][iptTr], izt, 3 * (TMath::Pi()) / 10, TMath::Pi() / 2);
       }
       cout << "Scale Zt distributions for the bin size" << endl;
       ScaleBinBySize(hZtPhotonPtBin[iso][iptTr]);
       ScaleBinBySize(hZtPi0PtBin[iso][iptTr]);
       ScaleBinBySize(hZtPhotonPtBinNearSide[iso][iptTr]);
+      ScaleBinBySize(hZtPhotonPtBinMiddleSide[iso][iptTr]);
 
       fOutPut->cd();
       hZtPhotonPtBin[iso][iptTr]->Write();
       hZtPi0PtBin[iso][iptTr]->Write();
       hZtPhotonPtBinNearSide[iso][iptTr]->Write();
+      hZtPhotonPtBinMiddleSide[iso][iptTr]->Write();
     }
     cout << "Azimuthal distribution on the large Pt Range " << endl;
     for (Int_t izt = 0; izt < nZtBin; izt++)
@@ -526,14 +532,18 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
     }
 
     // Definition zT distribution for Photons and Pi0 on the large Pt
-    cout << "Produce Zt function on the full Pt range" << endl;
+    cout << "Produce Zt function on the full Pt range: AWAY SIDE" << endl;
     hZtPhoton[iso] = new TH1F(Form("hZt%sPhoton%s%s", sIso.Data(), sCent.Data(), sPtAll.Data()), Form("hZt%sPhoton%s%s", sIso.Data(), sCent.Data(), sPtAll.Data()), nZtBin, assocZt);
     hZtPhoton[iso] = SumPtBinXzt(hTriggerSam[iso][0], ptTrig, index1, index2, hZtPhotonPtBin[iso], hZtPhoton[iso], histPur[iCen], funcPur[iCen], systPur, true);
 
     // Definition zT distribution for near side on the large Pt
-    cout << "Produce Zt function on the full Pt range" << endl;
+    cout << "Produce Zt function on the full Pt range: NEAR SIDE" << endl;
     hZtPhotonNearSide[iso] = new TH1F(Form("hZt%sPhoton%s%sNearSide", sIso.Data(), sCent.Data(), sPtAll.Data()), Form("hZt%sPhoton%s%sNearSide", sIso.Data(), sCent.Data(), sPtAll.Data()), nZtBin, assocZt);
     hZtPhotonNearSide[iso] = SumPtBinXzt(hTriggerSam[iso][0], ptTrig, index1, index2, hZtPhotonPtBinNearSide[iso], hZtPhotonNearSide[iso], histPur[iCen], funcPur[iCen], systPur, true);
+
+    cout << "Produce Zt function on the full Pt range: MIDDLE SIDE" << endl;
+    hZtPhotonMiddleSide[iso] = new TH1F(Form("hZt%sPhoton%s%sMiddleSide", sIso.Data(), sCent.Data(), sPtAll.Data()), Form("hZt%sPhoton%s%sMiddleSide", sIso.Data(), sCent.Data(), sPtAll.Data()), nZtBin, assocZt);
+    hZtPhotonMiddleSide[iso] = SumPtBinXzt(hTriggerSam[iso][0], ptTrig, index1, index2, hZtPhotonPtBinMiddleSide[iso], hZtPhotonMiddleSide[iso], histPur[iCen], funcPur[iCen], systPur, true);
 
     // Definition zT distribution for Iso and Not Iso pi0
     hZtPi0[iso] = new TH1F(Form("hZt%sPi0%s%s", sIso.Data(), sCent.Data(), sPtAll.Data()), Form("hZt%sPi0%s%s", sIso.Data(), sCent.Data(), sPtAll.Data()), nZtBin, assocZt);
@@ -542,6 +552,7 @@ void Exec(float ptMin = 18, float ptMax = 20, int iCen = 0, bool bMirror = true,
     hZtPhoton[iso]->Write();
     hZtPi0[iso]->Write();
     hZtPhotonNearSide[iso]->Write();
+    hZtPhotonMiddleSide[iso]->Write();
   }
   // new TCanvas();
   // hZtPhoton->Draw();
@@ -1090,7 +1101,7 @@ void ZtFunction(TH1F *hDeltaPhi, TH1F *hZT, int bin, double phiMin, double phiMa
     cout << "_____Bin: " << assocZt[bin] << "-" << assocZt[bin + 1] << "Integral: " << intPhi << endl;
 }
 
-void ZtFunctionNearSide(TH1F *hDeltaPhi, TH1F *hZT, int bin, double phiMin, double phiMax)
+void ZtFunctionMiddleSide(TH1F *hDeltaPhi, TH1F *hZT, int bin, double phiMin, double phiMax)
 {
 
   cout << "Angle: " << phiMin << " " << phiMax << endl;
@@ -1102,11 +1113,13 @@ void ZtFunctionNearSide(TH1F *hDeltaPhi, TH1F *hZT, int bin, double phiMin, doub
   // cout << "Valori"<<hDeltaPhi->GetBinCenter(binPhiMin) << "   " << hDeltaPhi->GetBinCenter(binPhiMax) << endl;
   double intPhiErr;
   double intPhi = hDeltaPhi->IntegralAndError(binPhiMin, binPhiMax, intPhiErr);
-  hZT->SetBinContent(bin + 1, intPhi);
+  double intPhiScale = (intPhi * 4)/2;
+  intPhiErr = intPhiErr*2;
+  hZT->SetBinContent(bin + 1, intPhiScale);
   hZT->SetBinError(bin + 1, intPhiErr);
-  cout << "_____Bin: " << assocZt[bin] << "-" << assocZt[bin + 1] << "Integral: " << intPhi << endl;
-  if (intPhi < 0)
-    cout << "_____Bin: " << assocZt[bin] << "-" << assocZt[bin + 1] << "Integral: " << intPhi << endl;
+  cout << "_____Bin: " << assocZt[bin] << "-" << assocZt[bin + 1] << "Integral: " << intPhiScale << endl;
+  if (intPhiScale < 0)
+    cout << "_____Bin: " << assocZt[bin] << "-" << assocZt[bin + 1] << "Integral: " << intPhiScale << endl;
 }
 
 static void ScaleBinBySize(TH1F *h)

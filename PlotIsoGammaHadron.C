@@ -95,7 +95,10 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
 
   TH1F *hZtPhotonPtBin[nCen][nIso][nPtTrig];
   TH1F *hZtPhotonPtBinNearSide[nCen][nIso][nPtTrig];
+  TH1F *hZtPhotonPtBinMiddleSide[nCen][nIso][nPtTrig];
   TH1F *hZtPhoton[nCen][nIso];
+  TH1F *hZtPhotonNearSide[nCen][nIso];
+  TH1F *hZtPhotonMiddleSide[nCen][nIso];
   TH1F *hZtPi0PtBin[nCen][nIso][nPtTrig];
   TH1F *hZtPi0[nCen][nIso];
 
@@ -178,6 +181,10 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
 
         hZtPhotonPtBinNearSide[iCen][iso][iptTr] = (TH1F *)fPlot[iCen]->Get(Form("hZt%sPhotonPtBin_%sNearSide", sIso.Data(), sPtTrig.Data()));
         PlotStyle(hZtPhotonPtBinNearSide[iCen][iso][iptTr], kMarkStyle[0], 1, kAzure + 7, kBlue + 2, "#it{z}_{T}", "1/N^{trig}dN^{charg}/d#it{z}_{T}", false);
+      
+        hZtPhotonPtBinMiddleSide[iCen][iso][iptTr] = (TH1F *)fPlot[iCen]->Get(Form("hZt%sPhotonPtBin_%sMiddleSide", sIso.Data(), sPtTrig.Data()));
+        PlotStyle(hZtPhotonPtBinMiddleSide[iCen][iso][iptTr], 25, 1, kOrange+7, kOrange+7, "#it{z}_{T}", "1/N^{trig}dN^{charg}/d#it{z}_{T}", false);
+      
       }
     }
 
@@ -201,8 +208,12 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       TString sIso = Form("Iso%d", iso);
       hZtPhoton[iCen][iso] = (TH1F *)fPlot[iCen]->Get(Form("hZt%sPhoton%s%s", sIso.Data(), sCent.Data(), sPtAll.Data()));
       hZtPi0[iCen][iso] = (TH1F *)fPlot[iCen]->Get(Form("hZt%sPi0%s%s", sIso.Data(), sCent.Data(), sPtAll.Data()));
-
+      hZtPhotonNearSide[iCen][iso] = (TH1F *)fPlot[iCen]->Get(Form("hZt%sPhoton%s%sNearSide", sIso.Data(), sCent.Data(), sPtAll.Data()));
+      hZtPhotonMiddleSide[iCen][iso] = (TH1F *)fPlot[iCen]->Get(Form("hZt%sPhoton%s%sMiddleSide", sIso.Data(), sCent.Data(), sPtAll.Data()));
+      
       PlotStyle(hZtPhoton[iCen][iso], kMarkStyle[0], 1, kAzure + 7, kBlue + 2, "#it{z}_{T}", "1/N^{trig}dN^{charg}/d#it{z}_{T}", false);
+      PlotStyle(hZtPhotonNearSide[iCen][iso], kMarkStyle[0], 1, kBlack, kBlack, "#it{z}_{T}", "1/N^{trig}dN^{charg}/d#it{z}_{T}", false);
+      PlotStyle(hZtPhotonMiddleSide[iCen][iso], 25, 1, kOrange+7, kOrange+7, "#it{z}_{T}", "1/N^{trig}dN^{charg}/d#it{z}_{T}", false);
       PlotStyle(hZtPi0[iCen][iso], kMarkStyle[1], 1, kAzure + 7, kBlue + 2, "#it{z}_{T}", "1/N^{trig}dN^{charg}/d#it{z}_{T}", false);
     }
 
@@ -1439,18 +1450,50 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
   }
 
   // Check over the near side
+  double SystErrorUE[] = {6./100, 6./100, 4.7/100, 3.8/100};
+  //double SystErrorUE[] = {100/100, 100/100, 100/100, 100/100};
 
   cout << "Zt distributions Data Near side" << endl;
   TCanvas *cZtPtBinNearSide[nCen][nIso];
   TLatex *latexZtPtBinNearSide[nCen][nIso][nPtTrig];
-
+  TCanvas *cZtNearSide[nCen];
+  TLatex *latexZtNearSide[nCen];
+  TLegend *legZtNearSide[nCen];
+  TH1F* hZtPhotonIso1NearSide_SystUE[nCen];
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
+    cZtNearSide[iCen] = new TCanvas("cZtGammaNearSide" +  sCent, "cZtGammaNearSide" + sCent, 800, 600);
+    //cZtNearSide[iCen]->SetLogy();
+    hZtPhotonIso1NearSide_SystUE[iCen] = (TH1F*)hZtPhotonNearSide[iCen][1]->Clone("hZtPhotonIso1NearSide_SystUE"+ sCent);
+    PlotStyle(hZtPhotonIso1NearSide_SystUE[iCen], kMarkStyle[0], 0.1, kRed, kRed, "#it{z}_{T}", "1/N^{trig}dN^{charg}/d#it{z}_{T}", false);
+    //hZtPhotonIso1NearSide_SystUE[iCen]->SetLineWidth(8);
+    //hZtPhotonIso1NearSide_SystUE[iCen]->SetLineStyle(5);
+    for(int ibin=0; ibin<hZtPhotonIso1NearSide_SystUE[iCen]->GetNbinsX(); ibin++)
+    {
+      //cout<<"Errore statistico: "<<endl;
+      //double errStatTo2 = (hZtPhotonNearSide[iCen][1]->GetBinError(ibin+1))*(hZtPhotonNearSide[iCen][1]->GetBinError(ibin+1));
+      //cout<<"Cen: "<< sCent <<"val err stat: " << (hZtPhotonNearSide[iCen][1]->GetBinError(ibin+1)) <<"; val err stat AL QUADRATO : "<< errStatTo2<< endl;
+      double errSystUE = (hZtPhotonIso1NearSide_SystUE[iCen]->GetBinContent(ibin+1) * SystErrorUE[iCen]);
+      cout<<"Errore sistematico: "<<endl;
+      cout<<"Cen: "<< sCent <<"val err syst: " << SystErrorUE[iCen] <<"---"<<"; val syst: "<< errSystUE<< endl;
+      hZtPhotonIso1NearSide_SystUE[iCen]->SetBinError(ibin+1, errSystUE);
+    }
+    hZtPhoton[iCen][1]->Draw("same pf");
+    //hZtPhotonIso1NearSide_SystUE[iCen]->Draw("same pf");
+    hZtPhotonNearSide[iCen][1]->Draw("same pf");
+    hZtPhotonMiddleSide[iCen][1]->Draw("same pf");
+    legZtNearSide[iCen] = LegStd(legZtNearSide[iCen], 0.50, 0.25, 0.75, 0.46);
+    LatexStd(latexZtNearSide[iCen], 0.40, 0.8, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1], ptTrig[index2], true);
+    legZtNearSide[iCen]->AddEntry(hZtPhotonNearSide[iCen][1], "Near Side", "lep");
+    legZtNearSide[iCen]->AddEntry(hZtPhotonMiddleSide[iCen][1], "Middle Side", "lep");
+    legZtNearSide[iCen]->AddEntry(hZtPhoton[iCen][1], "Away Side", "lep");
+    legZtNearSide[iCen]->Draw("same");
+    cZtNearSide[iCen]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/ZtDistribution_NEARSIDE" + sCent + ".pdf");
     for (int iso = 0; iso < nIso; iso++)
     {
       TString sIso = Form("Iso%d", iso);
-      cZtPtBinNearSide[iCen][iso] = new TCanvas("cZtGammaNearSide" + sIso + sCent, "cZtGammaNearSide" + sIso + sCent, 2 * 800, 3 * 600);
+      cZtPtBinNearSide[iCen][iso] = new TCanvas("cZtGammaPtBinNearSide" + sIso + sCent, "cZtGammaPtBinNearSide" + sIso + sCent, 2 * 800, 3 * 600);
       cZtPtBinNearSide[iCen][iso]->Divide(2, 3);
       for (Int_t iptTr = 0; iptTr < nPtTrig; iptTr++)
       {
@@ -1462,9 +1505,10 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
         hZtPhotonPtBinNearSide[iCen][iso][iptTr]->GetXaxis()->SetLabelSize(0.030);
         hZtPhotonPtBinNearSide[iCen][iso][iptTr]->GetYaxis()->SetLabelSize(0.030);
         hZtPhotonPtBinNearSide[iCen][iso][iptTr]->Draw();
+        hZtPhotonPtBinMiddleSide[iCen][iso][iptTr]->Draw("same");
         LatexStd(latexZtPtBinNearSide[iCen][iso][iptTr], 0.40, 0.8, cenBins[iCen], cenBins[iCen + 1], ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1], true);
       }
-      cZtPtBinNearSide[iCen][iso]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/ZtDistribution_NEARSIDE" + sIso + sCent + ".pdf");
+      cZtPtBinNearSide[iCen][iso]->Print(outDirPlot + Form("/Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]) + "/ZtDistributionXpt_NEARSIDE_MIDDLESIDE" + sIso + sCent + ".pdf");
     }
   }
 }
