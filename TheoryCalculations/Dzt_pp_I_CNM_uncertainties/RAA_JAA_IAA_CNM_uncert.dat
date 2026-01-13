@@ -1,0 +1,27 @@
+#PbPb-->gam+had, \sqrt{s_{\rm NN}}=5.02 TeV, only CNM effect, 18<pt^{\rm trig}<40 GeV/c
+#mu=1.2pT^{\trigger}, RAA/JAA/IAA uncertainty from EPPS21 nPDFs.
+#RAA=dN_{AA}/dsigma_{pp}/TAA
+#pt_low	pt	pt_high	RAA_min	RAA_central	RAA_max
+18	29 	40 	0.7888 	0.8806 	0.9647
+
+#JAA=dY_{AA}^{\gamma h}/dY_{pp}^{\gamma h}/TAA				
+#zt_low	zt	zt_high	JAA_min	JAA_central	JAA_max
+0.1	0.125	0.15	0.7538 	0.9236 	1.0909 
+0.15	0.175	0.2	0.6554 	0.9249 	1.0453 
+0.2	0.25	0.3	0.7128 	0.9466 	1.0625 
+0.3	0.35	0.4	0.5809 	0.9107 	1.0440 
+0.4	0.5	0.6	0.7429 	0.9392 	1.0715 
+0.6	0.7	0.8	0.7702 	0.9329 	1.1054 
+0.8	0.9	1	0.6655 	0.9314 	1.0429 
+
+#IAA=JAA/RAA=DAA/Dpp				
+#zt_low	  zt	zt_high	    IAA_min	    IAA_central	    IAA_max
+0.1	    0.125	0.15	    0.8591 	    1.0488 	        1.2468 
+0.15	0.175	0.2	        0.7442 	    1.0503 	        1.1869 
+0.2	    0.25	0.3	        0.7927 	    1.0750 	        1.2117 
+0.3	    0.35	0.4	        0.6438 	    1.0342 	        1.2072 
+0.4	    0.5	    0.6	        0.8318 	    1.0665 	        1.2211 
+0.6	    0.7	    0.8	        0.8474 	    1.0594 	        1.2623 
+0.8	    0.9	    1	        0.7487 	    1.0577 	        1.2125 
+Average value added by Carolina
+0.6     0.8     1           0.7981      1.0586          1.2374

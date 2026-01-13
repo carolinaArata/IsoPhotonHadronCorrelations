@@ -1,0 +1,12 @@
+#PbPb-->gam+had, \sqrt{s_{\rm NN}}=5.02 TeV, only CNM effect, 18<pt^{\rm trig}<40 GeV/c
+#mu=1.2pT^{\trigger}, DAA uncertainty from EPPS21 nPDFs.
+#zt_low	zt	    zt_high	    DAA_min	        DAA_central	DAA_max
+0.1	    0.125	    0.15	    4.661E+00	    5.690E+00	6.764E+00
+0.15    0.175	    0.2	        2.111E+00	    2.980E+00	3.367E+00
+0.2	    0.25	    0.3	        1.030E+00	    1.396E+00	1.574E+00
+0.3	    0.35	    0.4	        3.855E-01	    6.194E-01	7.230E-01
+0.4	    0.5	        0.6	        1.598E-01	    2.049E-01	2.346E-01
+0.6	    0.7	        0.8	        4.374E-02	    5.468E-02	6.515E-02
+0.8	    0.9	        1	        1.336E-02	    1.888E-02	2.164E-02
+Average value added by Carolina
+0.6     0.8         1           2.855E-02       3.678E-02   4.340E-02
