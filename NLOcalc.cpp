@@ -125,18 +125,64 @@ void NLOcalc()
   grDztNLOmedian[2] = new TGraphAsymmErrors(nZtBin, assocZtThinner, Dzt_median50_90, 0, 0, Dzt_erryMin50_90, Dzt_erryMax50_90);
 
   TH1F *grDztNLOmedianpp = new TH1F("hppNLO", "hppNLO", nAssoc, assocZt);
-  TH1F *grDztNLOmedianppSyst = new TH1F("hppNLOSyst", "hppNLOSyst", nAssoc, assocZt);
   //double Dzt_medianpp[] = {5.425E+00, 2.837E+00, 1.299E+00, 5.989E-01, 1.921E-01, 5.161E-02, 1.785E-02};
   double Dzt_medianpp[] = {5.425E+00, 2.837E+00, 1.299E+00, 5.989E-01, 1.921E-01, 3.473E-02};
+  double Dzt_medianpp_07pT[] = {5.942E+00, 3.048E+00, 1.621E+00, 6.578E-01, 2.293E-01, 4.206E-02};
+  double Dzt_medianpp_2pT[] = {5.193E+00, 2.525E+00, 1.214E+00, 4.780E-01, 1.652E-01, 2.7565E-02};
 
+  double Dzt_medianpp_2pT_ErrMin[nAssoc];
+  double Dzt_medianpp_07pT_ErrMax[nAssoc];
+  
   for (int ibin = 0; ibin < nAssoc; ibin++)
   {
     grDztNLOmedianpp->SetBinContent(ibin + 1, Dzt_medianpp[ibin]);
     grDztNLOmedianpp->SetBinError(ibin + 1, 0);
-    grDztNLOmedianppSyst->SetBinContent(ibin + 1, Dzt_medianpp[ibin]);
-    grDztNLOmedianppSyst->SetBinError(ibin + 1, (Dzt_medianpp[ibin]*5)/100);
+
+    Dzt_medianpp_2pT_ErrMin[ibin] = (Dzt_medianpp[ibin] - Dzt_medianpp_2pT[ibin]);
+    Dzt_medianpp_07pT_ErrMax[ibin] = (Dzt_medianpp_07pT[ibin] - Dzt_medianpp[ibin]);
+
+    //grDztNLOmedianppSyst->SetBinContent(ibin + 1, Dzt_medianpp[ibin]);
+    //grDztNLOmedianppSyst->SetBinError(ibin + 1, (Dzt_medianpp[ibin]*5)/100);
   }
-  // ScaleBinBySize(grDztNLOmedianpp);
+
+  //TH1F *grDztNLOmedianppSyst = new TH1F("hppNLOSyst", "hppNLOSyst", nAssoc, assocZt);
+  TGraphAsymmErrors *grDztNLOmedianppSyst = new TGraphAsymmErrors(nZtBin, assocZtThinner, Dzt_medianpp, 0, 0, Dzt_medianpp_2pT_ErrMin, Dzt_medianpp_07pT_ErrMax);
+
+
+
+  double zT_nPDF[] = {0.1, 0.15, 0.2, 0.3, 0.4, 0.6, 1.0};
+  //double Iaa_nPDFval[] = {1.0491, 1.0511, 1.0338, 1.0165, 1.0207, 1.0197, 1.0162};
+  double Iaa_nPDFval[] = {1.0488, 1.0503, 1.0750, 1.0342, 1.0665, 1.0586};
+  double Iaa_nPDFvalMin[] = {0.8591, 0.7442, 0.7927, 0.6438, 0.8318, 0.7981};
+  double Iaa_nPDFvalMax[] = {1.2468, 1.1869, 1.2117, 1.2072, 1.2211, 1.2374};
+
+
+  double Iaa_nPDF_ErrMin[6];
+  double Iaa_nPDF_ErrMax[6];
+  
+
+  //TH1F *grDztNLOmedianppSyst = new TH1F("hppNLOSyst", "hppNLOSyst", nAssoc, assocZt);
+  
+
+  TH1F *hIaa_nPDF = new TH1F("hIaa_nPDF", "hIaa_nPDF", 6, zT_nPDF);
+  //TH1F *hIaa_nPDFSyst = new TH1F("hIaa_nPDFSyst", "hIaa_nPDFSyst", 6, zT_nPDF);
+
+  for (int ibin = 0; ibin < 6; ibin++)
+  {
+    hIaa_nPDF->SetBinContent(ibin + 1, Iaa_nPDFval[ibin]);
+
+    
+    //double Iaa_error = (5 * Iaa_nPDFval[ibin]) / 100;
+    //hIaa_nPDFSyst->SetBinContent(ibin + 1, Iaa_nPDFval[ibin]);
+    //hIaa_nPDFSyst->SetBinError(ibin + 1, Iaa_error);
+  }
+  for (int ibin = 0; ibin < 6; ibin++)
+  {
+    Iaa_nPDF_ErrMin[ibin] = (Iaa_nPDFval[ibin] - Iaa_nPDFvalMin[ibin]);
+    Iaa_nPDF_ErrMax[ibin] = (Iaa_nPDFvalMax[ibin] - Iaa_nPDFval[ibin]);
+  }
+  TGraphAsymmErrors *hIaa_nPDFSyst = new TGraphAsymmErrors(6, assocZtThinner, Iaa_nPDFval, 0, 0, Iaa_nPDF_ErrMin, Iaa_nPDF_ErrMax);
+  hIaa_nPDFSyst->SetName("hIaa_nPDFSyst");
 
   TH1F *grIaaCOLBTmedian[nCen];
   TH1F *grDztPbPbCOLBTmedian[nCen];
@@ -322,6 +368,8 @@ void NLOcalc()
 
   grDztNLOmedianpp->Write();
   grDztNLOmedianppSyst->Write();
+  hIaa_nPDF->Write();
+  hIaa_nPDFSyst->Write();
   grDztNLOmedian[0]->Write();
   grDztNLOmedian[1]->Write();
   grDztNLOmedian[2]->Write();
@@ -333,12 +381,6 @@ void NLOcalc()
 
   TH1F *hsystCOLBT030 = (TH1F *)histDztPbPbCOLBTmedian[0]->Clone("hsystCOLBT030");
 
-  new TCanvas();
-  // histDztPbPbCOLBTmedian[0]->SetLineWidth(3);
-  // histDztPbPbCOLBTmedian[0]->SetLineColor(kBlack);
-  // hsystCOLBT030->SetFillColorAlpha(kGreen + 1, 0.40);
-  // hsystCOLBT030->Draw("X0 samee3 ");
-  // histDztPbPbCOLBTmedian[0]->Draw(" hist X0 same L ");
 }
 static void ScaleBinBySize(TH1F *h)
 {
