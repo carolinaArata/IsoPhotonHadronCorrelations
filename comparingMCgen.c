@@ -191,7 +191,7 @@ void comparingMCgen(TString shshBkg = "0.40-1.00", bool bppMC = true)
     legZtGenRatio_RTitle->SetHeader("ALICE simulation");
     legZtGenRatio_RTitle->AddEntry("", "pp,#color[0]{.}#sqrt{s} = 5.02 TeV", "");
     legZtGenRatio_RTitle->AddEntry("", "PYTHIA 8,#color[0]{.}#gamma#font[122]{-}jet", "");
-    legZtGenRatio_RTitle->AddEntry("", "#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #it{R} = 0.2" , "");
+    legZtGenRatio_RTitle->AddEntry("", "#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}" , "");
     legZtGenRatioPbPb_pp->AddEntry(hRatioPbPb_pp, "#frac{D(#it{z}_{T},#color[0]{.}12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c})}{D(#it{z}_{T},#color[0]{.}18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c})}", "lp");
                                             
     // hZtMCGen18_40_Ratio18_40[iCen][iFile]->Draw("histpesame");
@@ -243,13 +243,14 @@ void comparingMCgen(TString shshBkg = "0.40-1.00", bool bppMC = true)
 
 
     TCanvas *cZtGenRatio_R = canvasStdIaa("cZtGenRatio_R", 1, 1);
-    TLegend *legZtGenRatio_R = LegStd(legZtGenRatio_R, 0.54, 0.18, 0.90, 0.45);
+    TLegend *legZtGenRatio_R = LegStd(legZtGenRatio_R, 0.50, 0.20, 0.90, 0.55);
+    legZtGenRatio_R->SetTextSize(0.036);
     TH1F* hRatio_R = (TH1F*)hZtMCGen18_40[0][1]->Clone("hRatio_R");
     hRatio_R->Divide(hZtMCGen18_40[0][0]);
     hRatio_R->GetYaxis()->SetRangeUser(0.7, 1.15);
     // hRatio_R
     hRatio_R->SetTitle("");
-    hGeneralRatio->GetYaxis()->SetRangeUser(0.95, 1.06);
+    hGeneralRatio->GetYaxis()->SetRangeUser(0.85, 1.1);
     hGeneralRatio->GetYaxis()->SetTitleSize(0.046);
     hGeneralRatio->GetYaxis()->SetTitleOffset(1.1);
     hGeneralRatio->GetYaxis()->SetLabelSize(0.04);
@@ -259,8 +260,13 @@ void comparingMCgen(TString shshBkg = "0.40-1.00", bool bppMC = true)
     hGeneralRatio->GetXaxis()->SetTitleSize(0.05);
     hGeneralRatio->Draw("same");
     hRatio_R->Draw("histpesame");
+    hRatioPbPb_ppDiffR->Draw("histpesame");
+    hRatioPbPb_pp->SetMarkerStyle(25);
+    hRatioPbPb_pp->Draw("histpesame");
     //legZtGenRatio_R->AddEntry(hRatio_R, "#frac{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}#color[0]{.}}{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}#color[0]{.}}, #it{R}=0.4/0.2", "lp");
-    legZtGenRatio_R->AddEntry(hRatio_R,"#frac{ D(#it{z}_{T},#it{R} = 0.4) }{ D(#it{z}_{T},#it{R} = 0.2) }", "lp");
+    legZtGenRatio_R->AddEntry(hRatio_R,"#frac{D(#it{z}_{T},#color[0]{.}18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c},#color[0]{.}#bf{#it{R} = 0.4})}{D(#it{z}_{T},#color[0]{.}18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c},#color[0]{.}#bf{#it{R} = 0.2})}", "lp");
+    legZtGenRatio_R->AddEntry(hRatioPbPb_pp, "#frac{D(#it{z}_{T},#color[0]{.}#bf{12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40} GeV/#it{c},#color[0]{.}#it{R} = 0.2)}{D(#it{z}_{T},#color[0]{.}#bf{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40} GeV/#it{c},#color[0]{.}#it{R} = 0.2)}", "lp");
+    legZtGenRatio_R->AddEntry(hRatioPbPb_ppDiffR, "#frac{D(#it{z}_{T},#color[0]{.}#bf{12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40} GeV/#it{c},#color[0]{.}#bf{#it{R} = 0.4})}{D(#it{z}_{T},#color[0]{.}#bf{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40} GeV/#it{c},#color[0]{.}#bf{#it{R} = 0.2})}", "lp");
                                             
     // hZtMCGen18_40_Ratio18_40[iCen][iFile]->Draw("histpesame");
     //legZtGenRatioto18_40[iCen][iFile] = LegStd(legZtGenRatioto18_40[iCen][iFile], 0.62, 0.18, 0.95, 0.45);
@@ -270,7 +276,7 @@ void comparingMCgen(TString shshBkg = "0.40-1.00", bool bppMC = true)
     lineX0->Draw("same");
     legZtGenRatio_R->Draw("same");
     legZtGenRatio_RTitle->Draw("same");
-    cZtGenRatio_R->Print(outDirPlot[0] + "/cZtGenRatioto_R.pdf");
+    cZtGenRatio_R->Print(outDirPlot[0] + "/Ratio_DiffpTtrig_DiffR.pdf");
 
     /*
     TFile *fileNLO = new TFile("RootFiles/fileNLO.root ");

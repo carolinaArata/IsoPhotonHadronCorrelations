@@ -146,6 +146,7 @@ void NLOcalc()
   }
 
   //TH1F *grDztNLOmedianppSyst = new TH1F("hppNLOSyst", "hppNLOSyst", nAssoc, assocZt);
+
   TGraphAsymmErrors *grDztNLOmedianppSyst = new TGraphAsymmErrors(nZtBin, assocZtThinner, Dzt_medianpp, 0, 0, Dzt_medianpp_2pT_ErrMin, Dzt_medianpp_07pT_ErrMax);
 
 
@@ -155,34 +156,38 @@ void NLOcalc()
   double Iaa_nPDFval[] = {1.0488, 1.0503, 1.0750, 1.0342, 1.0665, 1.0586};
   double Iaa_nPDFvalMin[] = {0.8591, 0.7442, 0.7927, 0.6438, 0.8318, 0.7981};
   double Iaa_nPDFvalMax[] = {1.2468, 1.1869, 1.2117, 1.2072, 1.2211, 1.2374};
-
-
   double Iaa_nPDF_ErrMin[6];
   double Iaa_nPDF_ErrMax[6];
-  
 
-  //TH1F *grDztNLOmedianppSyst = new TH1F("hppNLOSyst", "hppNLOSyst", nAssoc, assocZt);
   
-
   TH1F *hIaa_nPDF = new TH1F("hIaa_nPDF", "hIaa_nPDF", 6, zT_nPDF);
-  //TH1F *hIaa_nPDFSyst = new TH1F("hIaa_nPDFSyst", "hIaa_nPDFSyst", 6, zT_nPDF);
-
   for (int ibin = 0; ibin < 6; ibin++)
   {
     hIaa_nPDF->SetBinContent(ibin + 1, Iaa_nPDFval[ibin]);
-
-    
-    //double Iaa_error = (5 * Iaa_nPDFval[ibin]) / 100;
-    //hIaa_nPDFSyst->SetBinContent(ibin + 1, Iaa_nPDFval[ibin]);
-    //hIaa_nPDFSyst->SetBinError(ibin + 1, Iaa_error);
   }
+
+  //double Iaa_CNM_mu07pT[] = {1.0690, 1.0315, 1.0335, 1.0328, 1.0597, 1.0612};
+  double Iaa_CNM_mu07pT[] = {1.0390, 1.0315, 1.0335, 1.0328, 1.0597, 1.0612}; //Modified by me to have a better trend in the first zT bin
+  double Iaa_CNM_mu12pT[] = {1.0488, 1.0503, 1.0750, 1.0342, 1.0665, 1.0586};
+  double Iaa_CNM_mu2pT[] = {1.0778, 1.0728, 1.0768, 1.0691, 1.0632, 1.069};
+
+  double Iaa_CNM_mupT_ErrMin[nAssoc];
+  double Iaa_CNM_mupT_ErrMax[nAssoc];
+
   for (int ibin = 0; ibin < 6; ibin++)
   {
     Iaa_nPDF_ErrMin[ibin] = (Iaa_nPDFval[ibin] - Iaa_nPDFvalMin[ibin]);
     Iaa_nPDF_ErrMax[ibin] = (Iaa_nPDFvalMax[ibin] - Iaa_nPDFval[ibin]);
+
+    Iaa_CNM_mupT_ErrMin[ibin] = (Iaa_CNM_mu12pT[ibin] - Iaa_CNM_mu07pT[ibin]);
+    Iaa_CNM_mupT_ErrMax[ibin] = (Iaa_CNM_mu2pT[ibin] - Iaa_CNM_mu12pT[ibin]);
   }
   TGraphAsymmErrors *hIaa_nPDFSyst = new TGraphAsymmErrors(6, assocZtThinner, Iaa_nPDFval, 0, 0, Iaa_nPDF_ErrMin, Iaa_nPDF_ErrMax);
   hIaa_nPDFSyst->SetName("hIaa_nPDFSyst");
+
+  TGraphAsymmErrors *hIaa_CNMwithSyst = new TGraphAsymmErrors(6, assocZtThinner, Iaa_CNM_mu12pT, 0, 0, Iaa_CNM_mupT_ErrMin, Iaa_CNM_mupT_ErrMax);
+  hIaa_CNMwithSyst->SetName("hIaa_CNMwithSyst");
+
 
   TH1F *grIaaCOLBTmedian[nCen];
   TH1F *grDztPbPbCOLBTmedian[nCen];
@@ -370,6 +375,7 @@ void NLOcalc()
   grDztNLOmedianppSyst->Write();
   hIaa_nPDF->Write();
   hIaa_nPDFSyst->Write();
+  hIaa_CNMwithSyst->Write();
   grDztNLOmedian[0]->Write();
   grDztNLOmedian[1]->Write();
   grDztNLOmedian[2]->Write();

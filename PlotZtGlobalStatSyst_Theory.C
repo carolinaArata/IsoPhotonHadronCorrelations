@@ -99,7 +99,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   // Getter NLO pQCD calculations
   TGraphAsymmErrors *grIaaNLOmedian[nCen];
   TH1F *grDztNLOmedianpp;
-  TH1F *grDztNLOmedianppSyst;
+  //TH1F *grDztNLOmedianppSyst;
+  TGraphAsymmErrors *grDztNLOmedianppSyst;
   TGraphAsymmErrors *grDztNLOmedian[nCen];
   TGraphAsymmErrors *grIcpNLOmedian[nCen];
   // Getter COLBT calculations
@@ -216,6 +217,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     grIcpNLOmedian[iCen]->SetLineColor(kPink + 4);
     grIcpNLOmedian[iCen]->SetFillColorAlpha(kMagenta - 9, 0.40);
   }
+  
   // Set x error, in case it helps in plotting, it does not seem
   Float_t widthPqcd[] = {0.025, 0.025, 0.05, 0.05, 0.10, 0.10};
   for (Int_t iCen = 0; iCen < nCen; iCen++)
@@ -232,14 +234,13 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       grIcpNLOmedian[iCen]->SetPointEXlow(ibin, widthPqcd[ibin]);
     }
   }
-
   ////////////////////////////////////
   /////////// theory: COLBt /////////
   //////////////////////////////////
   for (int iCen = 0; iCen < 2; iCen++)
   {
     histIaaCOLBTmedian[iCen] = (TH1F *)fileNLO->Get(Form("histIaaCOLBTmedian_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
-    histIaaCOLBTmedian[iCen]->SetLineWidth(8);
+    histIaaCOLBTmedian[iCen]->SetLineWidth(4);
     histIaaCOLBTmedian[iCen]->SetFillStyle(1001);
     histIaaCOLBTmedian[iCen]->SetLineColor(kCyan + 3);
     histIaaCOLBTmedian[iCen]->SetFillColorAlpha(kCyan + 2, 0.20);
@@ -247,7 +248,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     histIaaCOLBTmedianSyst[iCen] = (TH1F *)histIaaCOLBTmedian[iCen]->Clone(Form("histIaaCOLBTmedianSyst_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
 
     histDztPbPbCOLBTmedian[iCen] = (TH1F *)fileNLO->Get(Form("histDztPbPbCOLBTmedian_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]));
-    histDztPbPbCOLBTmedian[iCen]->SetLineWidth(8);
+    histDztPbPbCOLBTmedian[iCen]->SetLineWidth(3);
     histDztPbPbCOLBTmedian[iCen]->SetFillStyle(1001);
     histDztPbPbCOLBTmedian[iCen]->SetLineColor(kCyan + 3);
     histDztPbPbCOLBTmedian[iCen]->SetFillColorAlpha(kCyan + 2, 0.20);
@@ -273,27 +274,23 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   /////////// theory: nPDF only //////////////
   ///////////////////////////////////////////
 
-  double zT_nPDF[] = {0.1, 0.15, 0.2, 0.3, 0.4, 0.6, 0.8, 1.0};
-  double Iaa_nPDFval[] = {1.0491, 1.0511, 1.0338, 1.0165, 1.0207, 1.0197, 1.0162};
-
-  TH1F *hIaa_nPDF = new TH1F("hIaa_nPDF", "hIaa_nPDF", 6, zT_nPDF);
-  TH1F *hIaa_nPDFSyst = new TH1F("hIaa_nPDFSyst", "hIaa_nPDFSyst", 6, zT_nPDF);
-
-  for (int ibin = 0; ibin < 7; ibin++)
-  {
-    double Iaa_error = (5 * Iaa_nPDFval[ibin]) / 100;
-    hIaa_nPDF->SetBinContent(ibin + 1, Iaa_nPDFval[ibin]);
-    hIaa_nPDFSyst->SetBinContent(ibin + 1, Iaa_nPDFval[ibin]);
-    hIaa_nPDFSyst->SetBinError(ibin + 1, Iaa_error);
-  }
-
-  hIaa_nPDF->SetLineColor(kOrange - 3);
-  hIaa_nPDF->SetLineWidth(9);
-  hIaa_nPDF->SetLineStyle(7);
-  hIaa_nPDFSyst->SetLineWidth(9);
-  hIaa_nPDFSyst->SetLineStyle(7);
+  TH1F *hIaa_nPDF  = (TH1F *)fileNLO->Get(Form("hIaa_nPDF"));
+  TGraphAsymmErrors *hIaa_nPDFSyst  = (TGraphAsymmErrors *)fileNLO->Get(Form("hIaa_nPDFSyst"));
+  hIaa_nPDF->SetLineColor(kOrange-3);
+  hIaa_nPDF->SetLineWidth(4);
+  hIaa_nPDF->SetLineStyle(1);
+  hIaa_nPDFSyst->SetLineWidth(0);
+  hIaa_nPDFSyst->SetLineStyle(0);
   hIaa_nPDFSyst->SetLineColor(kOrange - 3);
-  hIaa_nPDFSyst->SetFillColorAlpha(kOrange, 0.3);
+  hIaa_nPDFSyst->SetFillColorAlpha(kOrange-2, 0.25);
+  
+  TGraphAsymmErrors *hIaa_CNMwithSyst  = (TGraphAsymmErrors *)fileNLO->Get(Form("hIaa_CNMwithSyst"));
+  hIaa_CNMwithSyst->SetLineWidth(0);
+  hIaa_CNMwithSyst->SetLineStyle(7);
+  hIaa_CNMwithSyst->SetLineColor(kOrange-3);
+  hIaa_CNMwithSyst->SetFillStyle(1001);
+  hIaa_CNMwithSyst->SetFillColorAlpha(kGray+3, 0.45);
+  
 
   /////////////////////////////////////
   /////////// theory: NLO pp /////////
@@ -301,25 +298,26 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
 
   grDztNLOmedianpp = (TH1F *)fileNLO->Get(Form("grDztNLOmedian_pp"));
   grDztNLOmedianpp->SetLineWidth(8);
-  grDztNLOmedianpp->SetLineColor(kOrange-7);
-  grDztNLOmedianpp->SetMarkerColor(kOrange-7);
+  grDztNLOmedianpp->SetLineColor(kSpring-6);
+  grDztNLOmedianpp->SetMarkerColor(kSpring-6);
   grDztNLOmedianpp->SetMarkerStyle(1);
   grDztNLOmedianpp->SetLineStyle(1);
 
-  grDztNLOmedianppSyst = (TH1F *)fileNLO->Get(Form("grDztNLOmedian_ppSyst"));
-  grDztNLOmedianppSyst->SetLineWidth(0);
-  grDztNLOmedianppSyst->SetLineColor(kOrange-7);
-  grDztNLOmedianppSyst->SetMarkerColor(kOrange-7);
+  grDztNLOmedianppSyst = (TGraphAsymmErrors *)fileNLO->Get(Form("grDztNLOmedian_ppSyst"));
+  grDztNLOmedianppSyst->SetLineWidth(4);
+  grDztNLOmedianppSyst->SetLineColor(kSpring-7);
+  grDztNLOmedianppSyst->SetMarkerColor(kSpring-7);
   grDztNLOmedianppSyst->SetMarkerStyle(1);
   grDztNLOmedianppSyst->SetLineStyle(1);
-  grDztNLOmedianppSyst->SetFillStyle(3001);
-  grDztNLOmedianppSyst->SetFillColorAlpha(kOrange-7, 0.9);
+  grDztNLOmedianppSyst->SetFillStyle(1001);
+  grDztNLOmedianppSyst->SetFillColorAlpha(kSpring-7, 0.3);
 
   TCanvas *cPP_NLO = new TCanvas("cPP_NLO", "cPP_NLO", 800, 600);
   gPad->SetLogy();
   // grDztNLOmedianpp->SetFillStyle(5000);
   // grDztNLOmedianpp->SetFillColorAlpha(16, 0.4);
   grDztNLOmedianpp->Draw("histp");
+  grDztNLOmedianppSyst->Draw("histp");
   hZt_MC_Gen[0]->Draw("hist same");
   cPP_NLO->Print(dirPlot + Form("/Checkpp_NLO.pdf"));
 
@@ -423,9 +421,6 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   TLegend *legTitleRatio[nCen];
   TLegend *legTitleRatioSelection[nCen];
 
-  // legRatioNLO->SetHeader("#it{I}_{NLO pQCD} = #frac{Pb#font[122]{-}Pb}{NLO pQCD pp} ");
-  // legRatioNLO->SetTextSize(0.03);
-  // legRatioNLO->SetHeader("#it{I}_{pQCD} = #frac{Pb#font[122]{-}Pb}{pQCD pp}");
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     cPbPb_NLORatio[iCen] = canvasStdIaa(Form("cPbPb_NLORatioCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), 1, 1);
@@ -444,8 +439,10 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hPbPb_NLOSyst[iCen]->Draw("E2Psame ");
     hPbPb_NLO[iCen]->Draw("EPX0same");
     grIaaNLOmedian[iCen]->Draw("pl3 same");
-    hIaa_nPDFSyst->Draw("hist same c e3l");
-    hIaa_nPDF->Draw("hist same c ");
+    //hIaa_nPDFSyst->Draw("hist same c e3l");
+    hIaa_nPDFSyst->Draw("pl3 same");
+    hIaa_CNMwithSyst->Draw("pl3 same");
+    hIaa_nPDF->Draw("l same ");
     legTitleRatio[iCen] = LegStd(legTitleRatio[iCen], 0.12, 0.91, 0.12, 0.94);
     legTitleRatio[iCen]->SetHeader("ALICE, Pb#font[122]{-}Pb, #sqrt{#it{s}_{NN}} = 5.02 TeV");
     legTitleRatioSelection[iCen] = LegStd(legTitleRatioSelection[iCen], 0.56, 0.84, 0.56, 0.96);
@@ -454,13 +451,15 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     legTitleRatioSelection[iCen]->AddEntry("", "18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#it{#gamma}}#color[0]{.}<#color[0]{.}40#color[0]{.}GeV/#it{c}#color[0]{.};#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c}", "");
     if (iCen == 0)
     {
-      legRatioPbPb[iCen] = LegStd(legRatioPbPb[iCen], 0.550, 0.70, 0.840, 0.82);
+      legRatioPbPb[iCen] = LegStd(legRatioPbPb[iCen], 0.550, 0.66, 0.840, 0.82);
       legRatioPbPb[iCen]->SetTextSize(0.036);
-      legRatioPbPb[iCen]->AddEntry(hPbPb_NLOSyst[iCen], Form("#it{I}_{pQCD} %d#font[122]{-}%d%%", cenBins[iCen], cenBins[iCen + 1]), "efp");
-      legRatioPbPb[iCen]->AddEntry(hIaa_nPDFSyst, "#it{I}_{AA}, NLO pQCD + CNM", "lf");
+      legRatioPbPb[iCen]->AddEntry(hIaa_nPDF, "#it{I}_{AA}, NLO pQCD#color[0]{.}+#color[0]{.}CNM", "l");
+      legRatioPbPb[iCen]->AddEntry(hIaa_CNMwithSyst, "0.7#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}#it{#mu}#color[0]{.}<#color[0]{..}2#color[0]{.}#it{p}_{T}^{#gamma}", "f");
+      legRatioPbPb[iCen]->AddEntry(hIaa_nPDFSyst, "nPDF uncert. EPPS21", "f");
       // legRatioPbPb[iCen]->AddEntry((TObject *)0, "M. Xie et al.", "");
-      legPbPb_NLOratio[iCen] = LegStd(legPbPb_NLOratio[iCen], 0.550, 0.58, 0.840, 0.70);
+      legPbPb_NLOratio[iCen] = LegStd(legPbPb_NLOratio[iCen], 0.20, 0.66, 0.50, 0.82);
       legPbPb_NLOratio[iCen]->SetTextSize(0.036);
+      legPbPb_NLOratio[iCen]->AddEntry(hPbPb_NLOSyst[iCen], Form("#it{I}_{pQCD} %d#font[122]{-}%d%%", cenBins[iCen], cenBins[iCen + 1]), "efp");
       legPbPb_NLOratio[iCen]->AddEntry(grDztNLOmedian[0], "#it{I}_{AA}, NLO pQCD#color[0]{.}+#color[0]{.}#Delta#it{E}_{loss}", "lf");
       // legPbPb_NLOratio[iCen]->AddEntry((TObject *)0, "CT18A + EPPS21 nPDFs, KKP FFs,", "");
       //  legPbPb_NLOratio[iCen]->AddEntry((TObject *)0, "X. N. Wang and M. Xie", "");
@@ -474,14 +473,16 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     }
     else if (iCen == 1)
     {
-      legRatioPbPb[iCen] = LegStd(legRatioPbPb[iCen], 0.550, 0.70, 0.840, 0.82);
+      legRatioPbPb[iCen] = LegStd(legRatioPbPb[iCen], 0.550, 0.66, 0.840, 0.82);
       legRatioPbPb[iCen]->SetTextSize(0.036);
-      legRatioPbPb[iCen]->AddEntry(hPbPb_NLOSyst[iCen], Form("#it{I}_{pQCD} %d#font[122]{-}%d%%", cenBins[iCen], cenBins[iCen + 1]), "efp");
-      legRatioPbPb[iCen]->AddEntry(hIaa_nPDFSyst, "#it{I}_{AA}, NLO pQCD + CNM", "lf");
+      legRatioPbPb[iCen]->AddEntry(hIaa_nPDF, "#it{I}_{AA}, NLO pQCD#color[0]{.}+#color[0]{.}CNM", "l");
+      legRatioPbPb[iCen]->AddEntry(hIaa_CNMwithSyst, "0.7#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}#it{#mu}#color[0]{.}<#color[0]{..}2#color[0]{.}#it{p}_{T}^{#gamma}", "f");
+      legRatioPbPb[iCen]->AddEntry(hIaa_nPDFSyst, "nPDF uncert. EPPS21", "f");
       // legRatioPbPb[iCen]->AddEntry((TObject *)0, "M. Xie et al.", "");
-      legPbPb_NLOratio[iCen] = LegStd(legPbPb_NLOratio[iCen], 0.550, 0.58, 0.840, 0.70);
+      legPbPb_NLOratio[iCen] = LegStd(legPbPb_NLOratio[iCen], 0.20, 0.66, 0.50, 0.82);
       legPbPb_NLOratio[iCen]->SetTextSize(0.036);
-      legPbPb_NLOratio[iCen]->AddEntry(grDztNLOmedian[1], "#it{I}_{AA}, NLO pQCD#color[0]{.}+#color[0]{.}#Delta#it{E}_{loss}", "lf");
+      legPbPb_NLOratio[iCen]->AddEntry(hPbPb_NLOSyst[iCen], Form("#it{I}_{pQCD} %d#font[122]{-}%d%%", cenBins[iCen], cenBins[iCen + 1]), "efp");
+      legPbPb_NLOratio[iCen]->AddEntry(grDztNLOmedian[0], "#it{I}_{AA}, NLO pQCD#color[0]{.}+#color[0]{.}#Delta#it{E}_{loss}", "lf");
       // legPbPb_NLOratio[iCen]->AddEntry((TObject *)0, "CT18A + EPPS21 nPDFs, KKP FFs,", "");
       //  legPbPb_NLOratio[iCen]->AddEntry((TObject *)0, "X. N. Wang and M. Xie", "");
       histIaaCOLBTmedianSyst[1]->SetLineStyle(4);
@@ -494,14 +495,16 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     }
     else if (iCen == 2)
     {
-      legRatioPbPb[iCen] = LegStd(legRatioPbPb[iCen], 0.550, 0.70, 0.840, 0.82);
+      legRatioPbPb[iCen] = LegStd(legRatioPbPb[iCen], 0.550, 0.66, 0.840, 0.82);
       legRatioPbPb[iCen]->SetTextSize(0.036);
-      legRatioPbPb[iCen]->AddEntry(hPbPb_NLOSyst[iCen], Form("#it{I}_{pQCD} %d#font[122]{-}%d%%", cenBins[iCen], cenBins[iCen + 1]), "efp");
-      legRatioPbPb[iCen]->AddEntry(hIaa_nPDFSyst, "#it{I}_{AA}, NLO pQCD + CNM", "lf");
+      legRatioPbPb[iCen]->AddEntry(hIaa_nPDF, "#it{I}_{AA}, NLO pQCD#color[0]{.}+#color[0]{.}CNM", "l");
+      legRatioPbPb[iCen]->AddEntry(hIaa_CNMwithSyst, "0.7#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}#it{#mu}#color[0]{.}<#color[0]{..}2#color[0]{.}#it{p}_{T}^{#gamma}", "f");
+      legRatioPbPb[iCen]->AddEntry(hIaa_nPDFSyst, "nPDF uncert. EPPS21", "f");
       // legRatioPbPb[iCen]->AddEntry((TObject *)0, "M. Xie et al.", "");
-      legPbPb_NLOratio[iCen] = LegStd(legPbPb_NLOratio[iCen], 0.550, 0.64, 0.840, 0.70);
+      legPbPb_NLOratio[iCen] = LegStd(legPbPb_NLOratio[iCen], 0.20, 0.715, 0.50, 0.82);
       legPbPb_NLOratio[iCen]->SetTextSize(0.036);
-      legPbPb_NLOratio[iCen]->AddEntry(grDztNLOmedian[2], "#it{I}_{AA}, NLO pQCD#color[0]{.}+#color[0]{.}#Delta#it{E}_{loss},", "lf");
+      legPbPb_NLOratio[iCen]->AddEntry(hPbPb_NLOSyst[iCen], Form("#it{I}_{pQCD} %d#font[122]{-}%d%%", cenBins[iCen], cenBins[iCen + 1]), "efp");
+      legPbPb_NLOratio[iCen]->AddEntry(grDztNLOmedian[0], "#it{I}_{AA}, NLO pQCD#color[0]{.}+#color[0]{.}#Delta#it{E}_{loss}", "lf");
       // legPbPb_NLOratio[iCen]->AddEntry((TObject *)0, "CT18A + EPPS21 nPDFs, KKP FFs,", "");
       //  legPbPb_NLOratio[iCen]->AddEntry((TObject *)0, "X. N. Wang and M. Xie", "");
     }
@@ -513,7 +516,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     legRatioNLO->Draw("same");
     legTitleRatio[iCen]->Draw("same");
     legTitleRatioSelection[iCen]->Draw("same");
-    cPbPb_NLORatio[iCen]->Print(dirPlot + Form("/I_NLOCen%d_%d.pdf", cenBins[iCen], cenBins[iCen + 1]));
+    cPbPb_NLORatio[iCen]->Print(dirPlot + Form("/Ipqcd_Cen%d_%d.pdf", cenBins[iCen], cenBins[iCen + 1]));
     cPbPbPYTHIA_NLORatio[iCen] = canvasStd(Form("cPbPbPYTHIA_NLORatioCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), 1, 1);
     hPbPbPYTHIA_NLO[iCen]->Draw("HIST");
     cPbPbPYTHIA_NLORatio[iCen]->Print(dirPlot + Form("/RatioPYTHIANLOCen%d_%d.pdf", cenBins[iCen], cenBins[iCen + 1]));
@@ -523,98 +526,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   // -------- Ratio 1 canvas 3 pad --------- //
   /////////////////////////////////////////////
 
-  TCanvas *cPbPb_NLORatioTogether = new TCanvas("cPbPb_NLORatioTogether", "cPbPb_NLORatioTogether", 3 * 600, 800);
-  cPbPb_NLORatioTogether->Divide(3, 1, 0, 0);
-  cPbPb_NLORatioTogether->cd(1);
-  gPad->SetLeftMargin(0.15);
-
-  for (int iCen = 0; iCen < nCen; iCen++)
-  {
-
-    // new TCanvas(Form("cPbPb_NLORatioCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), Form("cPbPb_NLORatioCen%d_%d", cenBins[iCen], cenBins[iCen + 1]), 800, 600);
-    cPbPb_NLORatioTogether->cd(iCen + 1);
-    gPad->SetBottomMargin(0.15);
-
-    hGeneralRatio->GetYaxis()->SetRangeUser(-0.50, 2.05);
-    hGeneralRatio->SetTitle(" ");
-    hGeneralRatio->GetYaxis()->SetTitleSize(0.046);
-    hGeneralRatio->GetYaxis()->SetTitleOffset(1.35);
-    hGeneralRatio->GetYaxis()->SetLabelSize(0.045);
-    hGeneralRatio->GetXaxis()->SetRangeUser(0.05, 1.05);
-    hGeneralRatio->GetXaxis()->SetLabelSize(0.045);
-    hGeneralRatio->GetXaxis()->SetTitleSize(0.055);
-    hGeneralRatio->Draw("histsame");
-    hPbPb_NLOSyst[iCen]->Draw("E2Psame ");
-    hPbPb_NLO[iCen]->Draw("EPX0same");
-    // grIaaNLOmedian[iCen]->SetLineStyle(1);
-    grIaaNLOmedian[iCen]->SetLineWidth(6);
-    grIaaNLOmedian[iCen]->Draw("pl3 same");
-    hIaa_nPDFSyst->Draw("E3PL same");
-    hIaa_nPDF->Draw("hist same c ");
-    if (iCen == 0)
-    {
-      TLatex *latTitle = new TLatex();
-      latTitle->SetTextFont(42);
-      latTitle->SetTextSize(0.046);
-      latTitle->SetNDC();
-      latTitle->DrawLatex(0.18, 0.94, Form("#font[42]{ALICE} Pb#font[122]{-}Pb,#color[0]{.}#sqrt{#it{s}_{NN}} = 5.02 TeV"));
-      latTitle->DrawLatex(0.820, 0.94, Form("#bf{0#font[122]{-}30%%}"));
-      // latTitle->DrawLatex(0.20, 0.94 - 2*0.055, Form("%2.0f <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c}#color[0]{..};#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
-      histIaaCOLBTmedianSyst[0]->Draw("X0sameE3 ");
-      histIaaCOLBTmedian[0]->SetLineWidth(3);
-      histIaaCOLBTmedian[0]->Draw("histsameL ");
-    }
-    else if (iCen == 1)
-    {
-      TLatex *latTitle = new TLatex();
-      latTitle->SetTextFont(42);
-      latTitle->SetTextSize(0.050);
-      latTitle->SetNDC();
-      latTitle->DrawLatex(0.80, 0.94, Form("#bf{30#font[122]{-}50%%}"));
-    }
-    else if (iCen == 2)
-    {
-      TLatex *latTitle = new TLatex();
-      latTitle->SetTextFont(42);
-      latTitle->SetTextSize(0.05);
-      latTitle->SetNDC();
-      latTitle->DrawLatex(0.8, 0.94, Form("#bf{50#font[122]{-}90%%}"));
-      // latTitle->DrawLatex(0.14, 0.26, Form("#font[42]{ALICE} Pb#font[122]{-}Pb,#color[0]{..}#sqrt{#it{s}_{NN}} = 5.02 TeV"));
-      latTitle->DrawLatex(0.04, 0.26 - 0 * 0.055, Form("|#Delta#it{#varphi}| > #frac{3}{5}#color[0]{.}#it{#pi}, |#it{#eta}^{#it{#gamma}}| < 0.67 "));
-      latTitle->DrawLatex(0.04, 0.26 - 1 * 0.055, Form("%2.0f <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c}#color[0]{.};#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
-    }
-    if (iCen == 1)
-    {
-      legRatioPbPb[iCen] = LegStd(legRatioPbPb[iCen], 0.01, 0.225, 0.40, 0.27);
-      legRatioPbPb[iCen]->SetTextSize(0.045);
-      legRatioPbPb[iCen]->AddEntry(hPbPb_NLOSyst[iCen], " Data ", "lfpe");
-      // legRatioPbPb[iCen]->AddEntry(hIaa_nPDF, "#it{I}_{AA}, NLO pQCD + CNM", "lf");
-      // legRatioPbPb[iCen]->AddEntry((TObject *)0, "M. Xie et al.", "");
-      legPbPb_NLOratio[iCen] = LegStd(legPbPb_NLOratio[iCen], 0.01, 0.18, 0.75, 0.36);
-      legPbPb_NLOratio[iCen]->SetTextSize(0.045);
-      legPbPb_NLOratio[iCen]->AddEntry(hPbPb_NLOSyst[iCen], "Data ", "lfpe");
-      legPbPb_NLOratio[iCen]->AddEntry(hIaa_nPDFSyst, "#it{I}_{AA}, NLO pQCD + CNM", "lfpe");
-      legPbPb_NLOratio[iCen]->AddEntry(grIaaNLOmedian[iCen], "#it{I}_{AA}, NLO pQCD + CNM#color[0]{.}+#color[0]{.}#Delta#it{E}_{loss}", "lf");
-
-      histIaaCOLBTmedianSyst[iCen]->SetLineWidth(4);
-      histIaaCOLBTmedianSyst[iCen]->Draw("X0sameE3 ");
-      histIaaCOLBTmedian[iCen]->SetFillStyle(0);
-      histIaaCOLBTmedian[iCen]->SetLineWidth(7);
-      histIaaCOLBTmedian[iCen]->Draw("histsameL ");
-      legPbPb_NLOratio[iCen]->AddEntry(histIaaCOLBTmedianSyst[iCen], "#it{I}_{AA}, CoLBT-hydro", "lf");
-      // legPbPb_NLOratio[iCen]->AddEntry((TObject *)0, "X. N. Wang et al.", "");
-      // legRatioPbPb[iCen]->Draw("same");
-      legPbPb_NLOratio[iCen]->Draw("same");
-    }
-
-    lineNLO->Draw("l");
-    lineNLO1->Draw("l");
-    legRatioNLO->Draw("same");
-  }
-  cPbPb_NLORatioTogether->Print(dirPlot + Form("/I_NLOAllCen.pdf"));
-
   TCanvas *cPbPb_NLORatioTogetherTest = new TCanvas("cPbPb_NLORatioTogetherTest", "", 2000, 800);
-
+  TLegend *legPbPb_NLOratioIaaCNMonly[nCen];
   // Number of PADS
   const Int_t Nx = 3;
   const Int_t Ny = 1;
@@ -670,11 +583,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       hFrame->GetXaxis()->SetTitleFont(43);
       hFrame->GetXaxis()->SetTitleSize(34);
       hFrame->GetXaxis()->SetTitleOffset(1.5);
-      // hFrame->GetXaxis()->CenterTitle();
       hFrame->GetXaxis()->SetNdivisions(505);
-
-      // TICKS X Axis
-      // hFrame->GetXaxis()->SetTickLength(yFactor * 0.04 / xFactor);
 
       // Draw cloned histogram with individual settings
       hFrame->Draw();
@@ -690,15 +599,14 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       hIaaXplot[iCen]->Draw("EPX0same");
       grIaaNLOmedian[iCen]->SetLineStyle(1);
       grIaaNLOmedian[iCen]->SetLineWidth(3);
-      grIaaNLOmedian[iCen]->Draw("pl3 same");
-      hIaa_nPDF->SetLineStyle(7);
+      grIaaNLOmedian[iCen]->Draw("l3 same");
+      hIaa_nPDF->SetLineStyle(1);
       hIaa_nPDF->SetLineColor(kOrange - 3);
-      hIaa_nPDF->SetLineWidth(6);
-      hIaa_nPDFSyst->SetLineStyle(7);
-      hIaa_nPDFSyst->SetLineColor(kOrange - 3);
-      hIaa_nPDFSyst->SetLineWidth(6);
-      hIaa_nPDFSyst->Draw("E3PL same");
-      hIaa_nPDF->Draw("hist same c ");
+      hIaa_nPDF->SetLineWidth(4);
+      hIaa_nPDFSyst->Draw("E3L same");
+      hIaa_CNMwithSyst->SetLineWidth(0);
+      hIaa_CNMwithSyst->Draw("pl3 same");
+      hIaa_nPDF->Draw("HIST L same ");
       lineNLO->Draw("l");
       lineNLO1->Draw("l");
       legRatioNLO->Draw("same");
@@ -711,15 +619,18 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
         latTitle->SetNDC();
         latTitle->DrawLatex(0.24, 0.94, Form("#font[42]{ALICE} Pb#font[122]{-}Pb,#color[0]{.}#sqrt{#it{s}_{NN}} = 5.02 TeV"));
         latTitle->DrawLatex(0.840, 0.94, Form("#bf{0#font[122]{-}30%%}"));
-        // latTitle->DrawLatex(0.20, 0.94 - 2*0.055, Form("%2.0f <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < %2.0f GeV/#it{c}#color[0]{..};#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c} ", ptMin, ptMax));
-        // histIaaCOLBTmedianSyst[0]->SetFillColorAlpha(kAzure-3, 0.20);
         histIaaCOLBTmedianSyst[0]->SetLineStyle(4);
-        // histIaaCOLBTmedianSyst[0]->SetLineColor(kAzure-1);
         histIaaCOLBTmedianSyst[0]->Draw("X0sameE3 ");
         histIaaCOLBTmedian[0]->SetLineStyle(4);
-        // histIaaCOLBTmedian[0]->SetLineColor(kAzure-1);
         histIaaCOLBTmedian[0]->SetLineWidth(4);
-        histIaaCOLBTmedian[0]->Draw("histsameL ");
+        histIaaCOLBTmedian[0]->Draw("hist sameL ");
+
+        legPbPb_NLOratioIaaCNMonly[iCen] = LegStd(legPbPb_NLOratioIaaCNMonly[iCen], 0.215, 0.17, 0.77, 0.34);
+        legPbPb_NLOratioIaaCNMonly[iCen]->SetTextSize(0.04);
+        legPbPb_NLOratioIaaCNMonly[iCen]->AddEntry(hIaa_nPDF, "#it{I}_{AA}, NLO pQCD#color[0]{.}+#color[0]{.}CNM", "l");
+        legPbPb_NLOratioIaaCNMonly[iCen]->AddEntry(hIaa_CNMwithSyst, "0.7#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}#it{#mu}#color[0]{.}<#color[0]{..}2#color[0]{.}#it{p}_{T}^{#gamma}", "f");
+        legPbPb_NLOratioIaaCNMonly[iCen]->AddEntry(hIaa_nPDFSyst, "nPDF uncert. EPPS21", "f");
+        legPbPb_NLOratioIaaCNMonly[iCen]->Draw("same");
       }
       else if (iCen == 1)
       {
@@ -742,15 +653,16 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       }
       if (iCen == 1)
       {
-        legRatioPbPb[iCen] = LegStd(legRatioPbPb[iCen], 0.01, 0.225, 0.50, 0.27);
-        legRatioPbPb[iCen]->SetTextSize(0.05);
-        legRatioPbPb[iCen]->AddEntry(hIaaXplotSyst[iCen], " Data ", "lfpe");
+        //legRatioPbPb[iCen] = LegStd(legRatioPbPb[iCen], 0.01, 0.225, 0.50, 0.27);
+        //legRatioPbPb[iCen]->SetTextSize(0.05);
+        //legRatioPbPb[iCen]->AddEntry(hIaaXplotSyst[iCen], " Data ", "lfpe");
         // legRatioPbPb[iCen]->AddEntry(hIaa_nPDF, "#it{I}_{AA}, NLO pQCD + CNM", "lf");
         // legRatioPbPb[iCen]->AddEntry((TObject *)0, "M. Xie et al.", "");
-        legPbPb_NLOratio[iCen] = LegStd(legPbPb_NLOratio[iCen], 0.01, 0.18, 0.85, 0.36);
+        legPbPb_NLOratio[iCen] = LegStd(legPbPb_NLOratio[iCen], 0.01, 0.17, 0.56, 0.34);
         legPbPb_NLOratio[iCen]->SetTextSize(0.05);
         legPbPb_NLOratio[iCen]->AddEntry(hIaaXplotSyst[iCen], "Data ", "lfpe");
-        legPbPb_NLOratio[iCen]->AddEntry(hIaa_nPDFSyst, "#it{I}_{AA}, NLO pQCD + CNM", "lf");
+        //legPbPb_NLOratio[iCen]->AddEntry(hIaa_CNMwithSyst, "NLO pQCD#color[0]{.}+#color[0]{.}CNM, 0.7#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}#it{#mu}#color[0]{.}<#color[0]{..}2#color[0]{.}#it{p}_{T}^{#gamma}", "lf");
+        //legPbPb_NLOratio[iCen]->AddEntry(hIaa_nPDFSyst, "#it{I}_{AA}, NLO pQCD#color[0]{.}+#color[0]{.}CNM", "lf");
         legPbPb_NLOratio[iCen]->AddEntry(grIaaNLOmedian[iCen], "#it{I}_{AA}, NLO pQCD +#color[0]{.}#Delta#it{E}_{loss}", "lf");
 
         // histIaaCOLBTmedianSyst[1]->SetFillColorAlpha(kAzure-3, 0.20);
@@ -759,7 +671,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
         histIaaCOLBTmedianSyst[1]->Draw("X0sameE3 ");
         // histIaaCOLBTmedian[1]->SetLineColor(kAzure-1);
         histIaaCOLBTmedian[1]->SetLineStyle(4);
-        histIaaCOLBTmedian[1]->SetLineWidth(4);
+        histIaaCOLBTmedian[1]->SetLineWidth(3);
         histIaaCOLBTmedian[1]->Draw("histsameL ");
         legPbPb_NLOratio[iCen]->AddEntry(histIaaCOLBTmedianSyst[iCen], "#it{I}_{AA}, CoLBT-hydro", "lf");
         // legPbPb_NLOratio[iCen]->AddEntry((TObject *)0, "X. N. Wang et al.", "");
@@ -769,7 +681,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     }
   }
   cPbPb_NLORatioTogetherTest->cd();
-  cPbPb_NLORatioTogetherTest->Print(dirPlot + Form("/I_NLOAllCenTEST.pdf"));
+  cPbPb_NLORatioTogetherTest->Print(dirPlot + Form("/Ipqcd_AllCen.pdf"));
 
   TCanvas *cPbPb_NLORatioAll = canvasStdIaa(Form("cPbPb_NLORatioAll"), 1, 1);
   TLatex *latPbPb_NLOAll;
@@ -947,11 +859,14 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hPbPb_NLO[0]->Draw("EPX0same");
   hIpPbpp_syst->SetFillStyle(0);
   hIpPbpp_syst->SetLineColor(kBlack);
-  hIpPbpp_syst->SetLineWidth(1);
+  hIpPbpp_syst->SetLineWidth(2);
   hIpPbpp_syst->Draw("E2same");
   hIpPbpp->Draw("EPX0same");
-  hIaa_nPDFSyst->Draw("hist same c e3l");
-  hIaa_nPDF->Draw("hist same c ");
+  hIaa_nPDFSyst->Draw("pl3 same");
+  hIaa_CNMwithSyst->Draw("pl3 same");
+  hIaa_nPDF->SetLineWidth(4);
+  hIaa_nPDF->Draw("hist l same");
+  //hIaa_nPDF->Draw("hist same c ");
   // grIaaNLOmedian[iCen]->Draw("pl3 same");
   // hPbPb_NLOSyst[iCen]->SetLineColor(kWhite);
   // legPbPb_NLORatio0_10_Iaa_CNM_pA->SetTextSize(0.038);
@@ -959,49 +874,55 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   // legPbPb_NLORatio0_10_Iaa_CNM_pA->AddEntry(hPbPb_NLOSyst[0], "syst. unc.", "f");
   legPbPb_NLORatio0_10_Iaa_CNM_pA->AddEntry(hIpPbpp, "#it{I}_{pA}, p#font[122]{-}Pb/pp stat.", "ep");
   legPbPb_NLORatio0_10_Iaa_CNM_pA->AddEntry(hIpPbpp_syst, "syst. unc.", "f");
-  legPbPb_NLORatio0_10_Iaa_CNM_pA->AddEntry(hIaa_nPDFSyst, "#it{I}_{AA}, NLO pQCD + CNM", "lf");
+
   // legPbPb_NLORatio0_10_Iaa_CNM_pA->Draw("same");
   legRatioNLO->Draw("same");
   lineNLO->Draw("l");
   lineNLO1->Draw("l");
 
   TLegend *legIaaALICE030_gamhad = LegStd(legIaaALICE030_gamhad, 0.12, 0.92, 0.34, 0.96);
-  legIaaALICE030_gamhad->SetTextSize(0.038);
+  legIaaALICE030_gamhad->SetTextSize(0.036);
   legIaaALICE030_gamhad->SetHeader("ALICE#color[0]{..}#sqrt{#it{s}_{NN}} = 5.02 TeV");
   // legIaaALICE030_gamhad->AddEntry((TObject *)0, "18 <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < 40 GeV/#it{c}#color[0]{.};#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c}", "");
   legIaaALICE030_gamhad->Draw("same");
 
-  TLegend *legIaaALICE030pp = LegStd(legIaaALICE030pp, 0.44, 0.85, 0.45, 0.98);
-  legIaaALICE030pp->SetTextSize(0.038);
-  legIaaALICE030pp->SetHeader("#color[0]{..}#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #bf{#it{R} = 0.2}");
+  TLegend *legIaaALICE030pp = LegStd(legIaaALICE030pp, 0.45, 0.86, 0.55, 0.97);
+  legIaaALICE030pp->SetTextSize(0.036);
+  legIaaALICE030pp->SetHeader(" #color[0]{.}#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #bf{#it{R} = 0.2}");
   legIaaALICE030pp->AddEntry((TObject *)0, "#bf{18 <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < 40 GeV/#it{c}}#color[0]{.};#color[0]{..}#it{p}_{T}^{h} > 0.5 GeV/#it{c}", "");
   legIaaALICE030pp->Draw("same");
-  TLegend *legIaaALICE030Marker = LegStd(legIaaALICE030Marker, 0.43, 0.78, 0.94, 0.84);
-  legIaaALICE030Marker->SetNColumns(2);
-  legIaaALICE030Marker->SetTextSize(0.036);
-  legIaaALICE030Marker->AddEntry(hPbPb_NLOSyst[0], "0#font[122]{-}30% Pb#font[122]{-}Pb", "epf");
-  legIaaALICE030Marker->AddEntry(hIaa_nPDFSyst, "NLO pQCD + CNM", "lf");
-  legIaaALICE030Marker->Draw("same");
 
-  TLegend *legIaaALICEppPb = LegStd(legIaaALICEppPb, 0.44, 0.59, 0.44, 0.72);
-  legIaaALICEppPb->SetTextSize(0.038);
+  TLegend *legIaaALICE030Marker = LegStd(legIaaALICE030Marker, 0.45, 0.75, 0.70, 0.805);
+  legIaaALICE030Marker->SetTextSize(0.032);
+  legIaaALICE030Marker->AddEntry(hPbPb_NLOSyst[0], "0#font[122]{-}30% Pb#font[122]{-}Pb", "epf");
+  legIaaALICE030Marker->Draw("same");
+  TLegend *legIaaALICE030MarkerIaa_nPDF = LegStd(legIaaALICE030MarkerIaa_nPDF, 0.66, 0.70, 0.92, 0.86);
+  legIaaALICE030MarkerIaa_nPDF->SetTextSize(0.032);
+  //legIaaALICE030Marker->AddEntry(hIaa_nPDFSyst, "NLO pQCD + CNM", "lf");
+  legIaaALICE030MarkerIaa_nPDF->AddEntry(hIaa_nPDF, "#it{I}_{AA}, NLO pQCD + CNM", "l");
+  legIaaALICE030MarkerIaa_nPDF->AddEntry(hIaa_CNMwithSyst, "0.7#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}#it{#mu}#color[0]{.}<#color[0]{..}2#it{p}_{T}^{#gamma} ", "f");
+  legIaaALICE030MarkerIaa_nPDF->AddEntry(hIaa_nPDFSyst, "nPDF uncert. EPPS21", "f");
+  legIaaALICE030MarkerIaa_nPDF->Draw("same");
+
+  TLegend *legIaaALICEppPb = LegStd(legIaaALICEppPb, 0.45, 0.59, 0.55, 0.70);
+  legIaaALICEppPb->SetTextSize(0.036);
   // legIaaALICEppPb->SetHeader("Phys Rev C 102 (2020) 044908");
   //  legIaaALICEppPb->AddEntry((TObject *)0, "pp & p#font[122]{-}Pb", "");
-  legIaaALICEppPb->AddEntry((TObject *)0, "#color[0]{..}#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #bf{#it{R} = 0.4}", "");
+  legIaaALICEppPb->AddEntry((TObject *)0, "#color[0]{.}#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #bf{#it{R} = 0.4}", "");
   legIaaALICEppPb->AddEntry((TObject *)0, "#bf{12 <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < 40 GeV/#it{c}}#color[0]{.}; 0.5 <#color[0]{..}#it{p}_{T}^{h} < 10 GeV/#it{c}", "");
   legIaaALICEppPb->Draw("same");
-  TLegend *legIaaALICEppPbMarker = LegStd(legIaaALICEppPbMarker, 0.43, 0.51, 0.70, 0.57);
+  TLegend *legIaaALICEppPbMarker = LegStd(legIaaALICEppPbMarker, 0.45, 0.51, 0.70, 0.565);
   // legIaaALICEppPbMarker->SetNColumns(2);
-  legIaaALICEppPbMarker->SetTextSize(0.036);
+  legIaaALICEppPbMarker->SetTextSize(0.032);
   // legIaaALICEppPbMarker->AddEntry(hIpPbpp, "#it{I}_{pA}, p#font[122]{-}Pb/pp stat.", "ep");
   legIaaALICEppPbMarker->AddEntry(hIpPbpp_syst, "p#font[122]{-}Pb/pp", "epf");
   legIaaALICEppPbMarker->Draw("same");
-  TLegend *legIaaALICEppPbPaper = LegStd(legIaaALICEppPbPaper, 0.44, 0.45, 0.44, 0.51);
-  legIaaALICEppPbPaper->SetTextSize(0.038);
-  legIaaALICEppPbPaper->AddEntry("", "Phys Rev C 102 (2020) 044908", "");
+  TLegend *legIaaALICEppPbPaper = LegStd(legIaaALICEppPbPaper, 0.45, 0.45, 0.55, 0.51);
+  legIaaALICEppPbPaper->SetTextSize(0.032);
+  legIaaALICEppPbPaper->AddEntry("", "Phys. Rev. C 102 (2020) 044908", "");
   legIaaALICEppPbPaper->Draw("same");
 
-  cPbPb_NLORatio0_10_Iaa_CNM_pA->Print(dirPlot + Form("/I_NLORatio0_10_Iaa_CNM_pA.pdf"));
+  cPbPb_NLORatio0_10_Iaa_CNM_pA->Print(dirPlot + Form("/Ipqcd_Cen0_30_Iaa_CNM_pA.pdf"));
 
   TH1F *hGeneral = new TH1F("hGeneral", "hGeneral", nZtBinThin, assocZtThinner);
   PlotStyle(hGeneral, 20, 1, kWhite, kWhite, "#it{z}_{T}", "1 / #it{N}^{#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
@@ -1155,14 +1076,11 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     // legdiffcen_Theory[iCen]->Draw("same");
     grDztNLOmedian[iCen]->Draw("pl3 same");
     grDztNLOmedianpp->SetLineStyle(1);
-    grDztNLOmedianpp->SetLineWidth(6);
+    grDztNLOmedianpp->SetLineWidth(3);
     grDztNLOmedianppSyst->SetLineStyle(1);
-    grDztNLOmedianppSyst->SetLineWidth(6);
-    // grDztNLOmedianpp->Draw("histlsame");
-    grDztNLOmedianppSyst->Draw("X0sameE3");
-    grDztNLOmedianpp->Draw("hist same c ");
-    //grDztNLOmedianppSyst->Draw("samee2");
-    //grDztNLOmedianpp->Draw("EP X0 same");
+    grDztNLOmedianppSyst->SetLineWidth(3);
+    grDztNLOmedianppSyst->Draw("pl3 same");
+    grDztNLOmedianpp->Draw("pl same ");
 
     if (iCen == 0)
     {
@@ -1286,14 +1204,12 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       grDztNLOmedian[iCen]->SetLineWidth(3);
       grDztNLOmedian[iCen]->Draw("pl3 same");
       grDztNLOmedianpp->SetLineStyle(1);
-      grDztNLOmedianpp->SetLineWidth(6);
+      grDztNLOmedianpp->SetLineWidth(3);
       grDztNLOmedianppSyst->SetLineStyle(1);
-      grDztNLOmedianppSyst->SetLineWidth(6);
-      // grDztNLOmedianpp->Draw("histlsame");
-      grDztNLOmedianppSyst->Draw("X0sameE3");
-      grDztNLOmedianpp->Draw("hist same c ");
-      //grDztNLOmedianppSyst->Draw("samee2");
-      //grDztNLOmedianpp->Draw("EP X0 same");
+
+      //grDztNLOmedianppSyst->Draw("X0sameE3");
+      grDztNLOmedianppSyst->Draw("pl3 same");
+      grDztNLOmedianpp->Draw("hist l same ");
       if (iCen == 0 || iCen == 1)
       {
         // histDztPbPbCOLBTmedianSyst[iCen]->SetFillColorAlpha(kAzure-3, 0.20);
@@ -1309,7 +1225,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       }
       if (iCen == 1)
       {
-        legZTPbPbppSingleMod_Theory[iCen] = LegStd(legZTPbPbppSingleMod_Theory[iCen], 0.01, 0.16, 0.90, 0.40);
+        legZTPbPbppSingleMod_Theory[iCen] = LegStd(legZTPbPbppSingleMod_Theory[iCen], 0.01, 0.16, 0.66, 0.40);
         legZTPbPbppSingleMod_Theory[iCen]->SetTextSize(0.048);
         legZTPbPbppSingleMod_Theory[iCen]->AddEntry(hDztXplotSyst[iCen], Form(" Data "), "epf");
         legZTPbPbppSingleMod_Theory[iCen]->AddEntry(grDztNLOmedianppSyst, "NLO pQCD, pp", "lf");
@@ -1725,8 +1641,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   /////////////////////////////////////////////////////////
 
   TCanvas *cAllZt = canvasStd("cAllZt", 1, 1);
-  TLegend *legdiffcenZtPYTHIA = LegStd(legdiffcenZtPYTHIA, 0.14, 0.30, 0.4, 0.35);
-  TLegend *legdiffcenZt = LegStd(legdiffcenZt, 0.12, 0.20, 0.5, 0.35);
+  TLegend *legdiffcenZtPYTHIA = LegStd(legdiffcenZtPYTHIA, 0.12, 0.30, 0.44, 0.35);
+  TLegend *legdiffcenZt = LegStd(legdiffcenZt, 0.12, 0.16, 0.35, 0.35); //0.12, 0.16, 0.350, 0.41
   gPad->SetLogy();
   hGeneral->GetYaxis()->SetTitleSize(0.055);
   hGeneral->GetXaxis()->SetRangeUser(0.05, 1.05);
@@ -1766,7 +1682,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   cAllZtNLOpQCD->SetRightMargin(0.02);
   cAllZtNLOpQCD->SetLeftMargin(0.15);
   cAllZtNLOpQCD->SetBottomMargin(0.11);
-  TLegend *legdiffcenZtNLOpQCD = LegStd(legdiffcenZtNLOpQCD, 0.12, 0.35, 0.5, 0.4);
+  TLegend *legdiffcenZtNLOpQCD = LegStd(legdiffcenZtNLOpQCD, 0.12, 0.35, 0.35, 0.41);
   gPad->SetLogy();
   hGeneral->GetYaxis()->SetTitleSize(0.055);
   // hGeneral->GetXaxis()->SetRangeUser(-0.05, 1.1);
@@ -1778,13 +1694,9 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hGeneral->GetYaxis()->SetTitleSize(0.045);
   hGeneral->GetYaxis()->SetTitleOffset(1.0);
   hGeneral->Draw("same");
-  //grDztNLOmedianpp->SetLineColor(kAzure);
-  //grDztNLOmedianpp->SetLineWidth(7);
-  //grDztNLOmedianppSyst->Draw("samee2");
-  //grDztNLOmedianpp->Draw("EP X0 same");
-  grDztNLOmedianppSyst->Draw("X0sameE3");
-  grDztNLOmedianpp->Draw("hist same c ");
-
+  //grDztNLOmedianppSyst->Draw("X0sameE3");
+  grDztNLOmedianppSyst->Draw("pl3 same");
+  grDztNLOmedianpp->Draw("pl same ");
   legdiffcenZtNLOpQCD->AddEntry(grDztNLOmedianppSyst, "NLO pQCD, pp", "lf");
   legdiffcenZtNLOpQCD->Draw("SAME");
   hSystZt[0]->Draw("samee2");
@@ -1856,11 +1768,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hGeneralDztpPbpp->SetTitle("");
   hGeneralDztpPbpp->Draw("same");
   grDztNLOmedianpp->SetMarkerStyle(20);
-  grDztNLOmedianpp->SetMarkerSize(0);
-  grDztNLOmedianpp->SetMarkerColor(kAzure);
-  grDztNLOmedianpp->SetLineColor(kAzure);
-  grDztNLOmedianpp->SetLineWidth(9);
-  grDztNLOmedianpp->SetLineStyle(1);
+  grDztNLOmedianpp->SetMarkerSize(1.1);
+  grDztNLOmedianpp->SetLineWidth(2);
   hSystZt[0]->Draw("samee2");
   hZtCent[0]->Draw("EP X0 same");
   TLegend *legDztALICE030_gamhad = LegStd(legDztALICE030_gamhad, 0.12, 0.90, 0.30, 0.95);
@@ -1904,7 +1813,10 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hDztpPb_syst->SetLineWidth(1);
   hDztpPb_syst->Draw("samee2");
   hDztpPb->Draw("EP X0 same");
-  grDztNLOmedianppSyst->Draw("X0sameE3");
+  grDztNLOmedianppSyst->SetMarkerStyle(20);
+  grDztNLOmedianppSyst->SetMarkerColor(kSpring-6);
+  grDztNLOmedianppSyst->SetLineWidth(0);
+  grDztNLOmedianppSyst->Draw("samepe3");
   grDztNLOmedianpp->Draw("EP X0 same");
   // TLatex *lat010ZtNLOpQCD_pPbpp = LatexStdISORatioNoPbPb(lat010ZtNLOpQCD_pPbpp, 0.420, 0.92, 0.040, cenBins[0], cenBins[1], ptMin, ptMax, false);
   c010ZtNLOpQCD_pPbpp->Print(dirPlot + Form("/Dzt_Cent0_30_pQCD_pp%s.pdf", sPtAll.Data()));
