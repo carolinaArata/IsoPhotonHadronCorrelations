@@ -134,8 +134,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   cout << "Address DztpPb " << endl;
   cout << hDztpPb_stat << endl;
   cout << hDztpPb_syst << endl;
-  PlotStyle(hDztpPb, 24, 1, kBlack, kBlack, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
-  PlotStyle(hDztpPb_syst, 24, 1, kBlack, kGray + 1, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", true);
+  PlotStyle(hDztpPb, 24, 1, kBlack, kBlack, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
+  PlotStyle(hDztpPb_syst, 24, 1, kBlack, kGray + 1, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", true);
 
   hDztpp = (TH1F *)dirPaper_DztpPb->Get("Hist1D_y2");
   hDztpp_stat = (TH1F *)dirPaper_DztpPb->Get("Hist1D_y2_e1");
@@ -149,8 +149,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   cout << "Address Dztpp " << endl;
   cout << hDztpp_stat << endl;
   cout << hDztpp_syst << endl;
-  PlotStyle(hDztpp, 20, 1, kBlack, kBlack, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
-  PlotStyle(hDztpp_syst, 20, 1, kBlack, kBlack, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
+  PlotStyle(hDztpp, 20, 1, kBlack, kBlack, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
+  PlotStyle(hDztpp_syst, 20, 1, kBlack, kBlack, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
 
   ////////////////////////////////////////////
   /////////// data: IpA, pPb and pp /////////
@@ -185,9 +185,9 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hZt_MC_Rec[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtMCRecIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
     hZtCent[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtEffCorrIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
 
-    PlotStyle(hZt_MC_Gen[iCen], 72, 1, kBlack, kBlack, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
-    PlotStyle(hZt_MC_Rec[iCen], 21, 1, kOrange + 7, kOrange + 7, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
-    PlotStyle(hZtCent[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
+    PlotStyle(hZt_MC_Gen[iCen], 72, 1, kBlack, kBlack, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
+    PlotStyle(hZt_MC_Rec[iCen], 21, 1, kOrange + 7, kOrange + 7, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
+    PlotStyle(hZtCent[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
     h3[iCen] = (TH1F *)hZtCent[iCen]->Clone(Form("h3%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     h3[iCen]->Divide(hZt_MC_Gen[iCen]);
 
@@ -333,7 +333,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   for (int iCen = 0; iCen < nCen; iCen++)
   {
     hSystZt[iCen] = (TH1F *)fSystFile->Get(Form("hsystCen%d%d", cenBins[iCen], cenBins[iCen + 1]));
-    PlotStyle(hSystZt[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", true);
+    PlotStyle(hSystZt[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", true);
     hsyst[iCen] = (TH1F *)hSystZt[iCen]->Clone(Form("hsyst%d_%d", cenBins[iCen], cenBins[iCen + 1]));
     hsyst[iCen]->Divide(hZt_MC_Gen[iCen]);
     for (int ibin = 0; ibin < nAssoc; ibin++)
@@ -591,8 +591,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       hIaaXplot[iCen] = (TH1F *)hPbPb_NLO[iCen]->Clone(Form("hIaaXplot%d_%d", iCen, iCen + 1));
       hIaaXplotSyst[iCen] = (TH1F *)hPbPb_NLOSyst[iCen]->Clone(Form("hIaaXplotSyst%d_%d", iCen, iCen + 1));
 
-      PlotStyle(hIaaXplot[iCen], 20, 1, kGray + 3, kColorMarkFill[iCen], "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
-      PlotStyle(hIaaXplotSyst[iCen], 20, 1, kGray + 3, 16, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", true);
+      PlotStyle(hIaaXplot[iCen], 20, 1, kGray + 3, kColorMarkFill[iCen], "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
+      PlotStyle(hIaaXplotSyst[iCen], 20, 1, kGray + 3, 16, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", true);
 
       hIaaXplotSyst[iCen]->SetFillColorAlpha(kGray + 3, 0.38);
       hIaaXplotSyst[iCen]->Draw("E2Psame ");
@@ -925,7 +925,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   cPbPb_NLORatio0_10_Iaa_CNM_pA->Print(dirPlot + Form("/Ipqcd_Cen0_30_Iaa_CNM_pA.pdf"));
 
   TH1F *hGeneral = new TH1F("hGeneral", "hGeneral", nZtBinThin, assocZtThinner);
-  PlotStyle(hGeneral, 20, 1, kWhite, kWhite, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
+  PlotStyle(hGeneral, 20, 1, kWhite, kWhite, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
   hSystZt[0]->GetXaxis()->SetRangeUser(0.10, 1.0);
   hZtCent[0]->GetXaxis()->SetRangeUser(0.10, 1.0);
   hSystZt[1]->GetXaxis()->SetRangeUser(0.10, 0.6);
@@ -951,7 +951,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hZtDiffCent[iCen] = (TH1F *)hZtCent[iCen]->Clone(Form("hZt%d_%d %%", cenBins[iCen], cenBins[iCen + 1]));
     hZtDiffCentSys[iCen] = (TH1F *)hSystZt[iCen]->Clone(Form("hZtSystm%d_%d %%", cenBins[iCen], cenBins[iCen + 1]));
     gPad->SetLogy();
-    PlotStyle(hZtDiffCent[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
+    PlotStyle(hZtDiffCent[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
     hZtDiffCent[iCen]->SetTitle(" ");
     hZtDiffCentSys[iCen]->SetTitle(" ");
     hZtDiffCent[iCen]->GetYaxis()->SetRangeUser(1e-3, 90);
@@ -1196,8 +1196,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
       hDztXplot[iCen] = (TH1F *)hZtCent[iCen]->Clone(Form("hDztXplot%d_%d", iCen, iCen + 1));
       hDztXplotSyst[iCen] = (TH1F *)hSystZt[iCen]->Clone(Form("hDztXplotSyst%d_%d", iCen, iCen + 1));
 
-      PlotStyle(hDztXplot[iCen], 20, 1, kGray + 3, kColorMarkFill[iCen], "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
-      PlotStyle(hDztXplotSyst[iCen], 20, 1, kGray + 3, 16, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", true);
+      PlotStyle(hDztXplot[iCen], 20, 1, kGray + 3, kColorMarkFill[iCen], "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
+      PlotStyle(hDztXplotSyst[iCen], 20, 1, kGray + 3, 16, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", true);
       hDztXplotSyst[iCen]->SetFillColorAlpha(kGray + 3, 0.38);
       hDztXplotSyst[iCen]->Draw("E2P same ");
       hDztXplot[iCen]->Draw("EPX0same");
@@ -1715,7 +1715,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   legdiffcenZtpPbpp->SetNColumns(2);
   TLegend *legdiffcenZtpPbppNLO = LegStd(legdiffcenZtpPbppNLO, 0.55, 0.20, 0.85, 0.30);
   TH1F *hGeneralDztpPbpp = new TH1F("hGeneralDztpPbpp", "hGeneralDztpPbpp", 17, assocZtThinnerPbpp);
-  PlotStyle(hGeneralDztpPbpp, 20, 1, kWhite, kWhite, " #it{z}_{T} ", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
+  PlotStyle(hGeneralDztpPbpp, 20, 1, kWhite, kWhite, " #it{z}_{T} ", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
   gPad->SetLogy();
   hGeneralDztpPbpp->GetYaxis()->SetTitleSize(0.055);
   hGeneralDztpPbpp->GetXaxis()->SetRangeUser(0.05, 1.05);
@@ -1966,9 +1966,9 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hzTPHENIXSys->SetBinContent(ibin + 1, DzTPHENIX[5 - ibin]);
     hzTPHENIXSys->SetBinError(ibin + 1, DzTPHENIX_Sys[5 - ibin]);
   }
-  PlotStyle(hzTPHENIX, 20, 1.2, kAzure + 2, kWhite, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
+  PlotStyle(hzTPHENIX, 20, 1.2, kAzure + 2, kWhite, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
   TH1F *hGeneralCMS = new TH1F("hGeneral", "hGeneral", 10, -0.05, 1.1);
-  PlotStyle(hGeneralCMS, 71, 1, kWhite, kWhite, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}|d#it{z}_{T}", false);
+  PlotStyle(hGeneralCMS, 71, 1, kWhite, kWhite, "#it{z}_{T}", "1 / 1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
 
   // Iaa STAR and PHENIX
 
@@ -2196,8 +2196,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hzTCMSSys->SetBinContent(ibin + 1, DzTCMS0_10[7 - ibin]);
     hzTCMSSys->SetBinError(ibin + 1, DzTCMS_Sys0_10[7 - ibin]);
   }
-  PlotStyle(hzTCMS, 21, 1.2, kPink - 5, kPink - 5, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
-  PlotStyle(hzTCMSSys, 21, 1.2, kPink + 2, kPink + 2, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", true);
+  PlotStyle(hzTCMS, 21, 1.2, kPink - 5, kPink - 5, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
+  PlotStyle(hzTCMSSys, 21, 1.2, kPink + 2, kPink + 2, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", true);
 
   TH1F *hIaaCMS = new TH1F("hIaaCMS", "hIaaCMS", 8, zTCMS);
   TH1F *hIaaCMSSys = new TH1F("hIaaCMSSys", "hIaaCMSSys", 8, zTCMS);
@@ -2240,8 +2240,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     hzTCMSSys_Zhad->SetBinContent(ibin + 1, DzTCMS0_10_Zhad[9 - ibin]);
     hzTCMSSys_Zhad->SetBinError(ibin + 1, DzTCMS_Sys0_10_Zhad[9 - ibin]);
   }
-  PlotStyle(hzTCMS_Zhad, 28, 1.5, kTeal + 3, kTeal + 3, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", false);
-  PlotStyle(hzTCMSSys_Zhad, 28, 1.5, kTeal + 3, kTeal + 3, "#it{z}_{T}", "1 / #it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}} d^{3}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| d#it{z}_{T}", true);
+  PlotStyle(hzTCMS_Zhad, 28, 1.5, kTeal + 3, kTeal + 3, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", false);
+  PlotStyle(hzTCMSSys_Zhad, 28, 1.5, kTeal + 3, kTeal + 3, "#it{z}_{T}", "1/#it{N}^{#color[0]{.}iso#color[0]{.}#it{#gamma}}d^{3}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}|d#it{z}_{T}#color[0]{.}(rad^{-1}#color[0]{.})", true);
 
   TH1F *hIaaCMS_Zhad = new TH1F("hIaaCMS_Zhad", "hIaaCMS_Zhad", 10, zTCMS_Zhad);
   TH1F *hIaaCMSSys_Zhad = new TH1F("hIaaCMSSys_Zhad", "hIaaCMSSys_Zhad", 10, zTCMS_Zhad);

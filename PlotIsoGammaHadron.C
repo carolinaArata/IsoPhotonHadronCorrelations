@@ -144,9 +144,9 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
             // cout << hdPhiMix[iCen][iso][iSh][izt][iptTr] << endl;
             hdPhiSamNoUE[iCen][iso][iSh][izt][iptTr] = (TH1F *)fPlot[iCen]->Get("hdPhiSameNoUE" + sIso + sShSh + sZtBin + sPtTrig);
             // cout << hdPhiSamNoUE[iCen][iso][iSh][izt][iptTr] << endl;
-            PlotStyle(hdPhiSam[iCen][iso][iSh][izt][iptTr], kMarkStyle[iSh], 1.3, kBlack, kBlue + 2, "|#Delta#it{#varphi}| (rad)", "1 /#color[0]{.}#it{N}^{#color[0]{..}trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| (rad^{-1}#color[0]{.})", false);
-            PlotStyle(hdPhiMix[iCen][iso][iSh][izt][iptTr], 21, 0, kRed - 4, kBlue + 2, "|#Delta#it{#varphi}| (rad)", "1 /#color[0]{.}#it{N}^{#color[0]{..}trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| (rad^{-1}#color[0]{.})", false);
-            PlotStyle(hdPhiSamNoUE[iCen][iso][iSh][izt][iptTr], kMarkStyleNoUE[iSh], 1.5, kColorShSh[iSh], kBlue + 2, "|#Delta#it{#varphi}| (rad)", "1 /#color[0]{.}#it{N}^{#color[0]{..}trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| (rad^{-1}#color[0]{.})", false);
+            PlotStyle(hdPhiSam[iCen][iso][iSh][izt][iptTr], kMarkStyle[iSh], 1.3, kBlack, kBlue + 2, "|#Delta#it{#varphi}| (rad)", "1 /#it{N}^{trig}d^{2}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}| (rad^{-1}#color[0]{.})", false);
+            PlotStyle(hdPhiMix[iCen][iso][iSh][izt][iptTr], 21, 0, kRed - 4, kBlue + 2, "|#Delta#it{#varphi}| (rad)", "1 /#it{N}^{trig}d^{2}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}| (rad^{-1}#color[0]{.})", false);
+            PlotStyle(hdPhiSamNoUE[iCen][iso][iSh][izt][iptTr], kMarkStyleNoUE[iSh], 1.5, kColorShSh[iSh], kBlue + 2, "|#Delta#it{#varphi}| (rad)", "1 /#it{N}^{trig}d^{2}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}| (rad^{-1}#color[0]{.})", false);
           }
           hdPhiSamNoUERatio[iCen][iso][izt][iptTr] = (TH1F *)fPlot[iCen]->Get(Form("hdPhiSameNoUERatio%s%s_%s", sIso.Data(), sZtBin.Data(), sPtTrig.Data())); // ratio between photon and pi0
           cout << "Get azimuthal distributions after purity correction" << endl;
@@ -157,8 +157,8 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
           cout << hdPhiPhoton[iCen][iso][izt][iptTr] << endl;
           cout << "Set plots style" << endl;
           PlotStyle(hdPhiSamNoUERatio[iCen][iso][izt][iptTr], kMarkStyle[1], 2, kBlue + 2, kBlue + 2, "|#Delta#it{#varphi}| (rad)", "Ratio", false);
-          PlotStyle(hdPhiSamPi0Pur[iCen][iso][izt][iptTr], 24, 1.5, kViolet + 5, kBlue + 2, "|#Delta#it{#varphi}| (rad)", "1 /#color[0]{.}#it{N}^{#color[0]{..}trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| (rad^{-1}#color[0]{.})", false);
-          PlotStyle(hdPhiPhoton[iCen][iso][izt][iptTr], 21, 1.5, kOrange + 8, kOrange + 8, "|#Delta#it{#varphi}| (rad)", "1 /#color[0]{.}#it{N}^{#color[0]{..}trig} d^{2}#it{N} / d#Delta#it{#eta} d|#Delta#it{#varphi}| (rad^{-1}#color[0]{.})", false);
+          PlotStyle(hdPhiSamPi0Pur[iCen][iso][izt][iptTr], 24, 1.5, kViolet + 5, kBlue + 2, "|#Delta#it{#varphi}| (rad)", "1 /#it{N}^{trig}d^{2}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}| (rad^{-1}#color[0]{.})", false);
+          PlotStyle(hdPhiPhoton[iCen][iso][izt][iptTr], 21, 1.5, kOrange + 8, kOrange + 8, "|#Delta#it{#varphi}| (rad)", "1 /#it{N}^{trig}d^{2}#it{N}/d#Delta#it{#eta}d|#Delta#it{#varphi}| (rad^{-1}#color[0]{.})", false);
 
           cout << "Alternative plotting for Purity correction" << endl;
           hdPhiSameNoUEScaledbyPur[iCen][iso][izt][iptTr] = (TH1F *)fPlot[iCen]->Get(Form("hdPhiSameNoUEScaledbyPur%s%s_%s", sIso.Data(), sZtBin.Data(), sPtTrig.Data())); //(1-P)IsoPi0Deltaphi
