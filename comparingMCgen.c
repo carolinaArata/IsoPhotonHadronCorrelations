@@ -28,6 +28,9 @@ int nZtBin = 6; // larger zT intervals defined for QM
 double assocZt[] = {0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 1.00};
 int npt = 12; // pT trigger intervals
 float ptTrig[] = {10, 12, 14, 16, 18, 20, 25, 30, 35, 40, 50, 60, 80};
+Int_t kMarkCen[] = {21, 20, 71, 25};
+Int_t kColorMark[] = {kRed - 4, kOrange - 3, kViolet + 7, kAzure - 3,};
+Int_t kColorMarkFill[] = {kOrange + 8, kViolet + 6, kAzure + 2, kAzure + 6, kCyan - 2};
 
 TString sShShNCentMix;
 bool systNMix = false;
@@ -193,12 +196,7 @@ void comparingMCgen(TString shshBkg = "0.40-1.00", bool bppMC = true)
     legZtGenRatio_RTitle->AddEntry("", "PYTHIA 8,#color[0]{.}#gamma#font[122]{-}jet", "");
     legZtGenRatio_RTitle->AddEntry("", "#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}" , "");
     legZtGenRatioPbPb_pp->AddEntry(hRatioPbPb_pp, "#frac{D(#it{z}_{T},#color[0]{.}12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c})}{D(#it{z}_{T},#color[0]{.}18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c})}", "lp");
-                                            
-    // hZtMCGen18_40_Ratio18_40[iCen][iFile]->Draw("histpesame");
-    //legZtGenRatioto18_40[iCen][iFile] = LegStd(legZtGenRatioto18_40[iCen][iFile], 0.62, 0.18, 0.95, 0.45);
-    //legZtGenRatioto18_40[iCen][iFile]->AddEntry(hRatioPbPb_pp, "#frac{12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}18 GeV/#it{c}}{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}", "lp");
-    //legZtGenRatioto18_40[iCen][iFile]->AddEntry(hZtMCGen12_40_Ratio18_40[iCen][iFile], "#frac{12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}", "lp");
-    // legZtGenRatioto18_40[iCen][iFile]->AddEntry(hZtMCGen18_40_Ratio18_40[iCen][iFile], "#gamma#font[122]{-}jet, #frac{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}", "lp");
+
     lineX0->Draw("same");
     legZtGenRatioPbPb_pp->Draw("same");
     legZtGenRatio_RTitle->Draw("same");
@@ -229,11 +227,6 @@ void comparingMCgen(TString shshBkg = "0.40-1.00", bool bppMC = true)
     legZtGenRatio_RTitleDiffR->AddEntry("", "#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}" , "");
     legZtGenRatioPbPb_ppDiffR->AddEntry(hRatioPbPb_pp, "#frac{D(#it{z}_{T},#color[0]{.}12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c},#color[0]{.}#it{R} = 0.4)}{D(#it{z}_{T},#color[0]{.}18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c},#color[0]{.}#it{R} = 0.2)}", "lp");
                                             
-    // hZtMCGen18_40_Ratio18_40[iCen][iFile]->Draw("histpesame");
-    //legZtGenRatioto18_40[iCen][iFile] = LegStd(legZtGenRatioto18_40[iCen][iFile], 0.62, 0.18, 0.95, 0.45);
-    //legZtGenRatioto18_40[iCen][iFile]->AddEntry(hRatioPbPb_pp, "#frac{12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}18 GeV/#it{c}}{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}", "lp");
-    //legZtGenRatioto18_40[iCen][iFile]->AddEntry(hZtMCGen12_40_Ratio18_40[iCen][iFile], "#frac{12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}", "lp");
-    // legZtGenRatioto18_40[iCen][iFile]->AddEntry(hZtMCGen18_40_Ratio18_40[iCen][iFile], "#gamma#font[122]{-}jet, #frac{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}", "lp");
     lineX0->Draw("same");
     legZtGenRatioPbPb_ppDiffR->Draw("same");
     legZtGenRatio_RTitleDiffR->Draw("same");
@@ -268,48 +261,62 @@ void comparingMCgen(TString shshBkg = "0.40-1.00", bool bppMC = true)
     legZtGenRatio_R->AddEntry(hRatioPbPb_pp, "#frac{D(#it{z}_{T},#color[0]{.}#bf{12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40} GeV/#it{c},#color[0]{.}#it{R} = 0.2)}{D(#it{z}_{T},#color[0]{.}#bf{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40} GeV/#it{c},#color[0]{.}#it{R} = 0.2)}", "lp");
     legZtGenRatio_R->AddEntry(hRatioPbPb_ppDiffR, "#frac{D(#it{z}_{T},#color[0]{.}#bf{12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40} GeV/#it{c},#color[0]{.}#bf{#it{R} = 0.4})}{D(#it{z}_{T},#color[0]{.}#bf{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40} GeV/#it{c},#color[0]{.}#bf{#it{R} = 0.2})}", "lp");
                                             
-    // hZtMCGen18_40_Ratio18_40[iCen][iFile]->Draw("histpesame");
-    //legZtGenRatioto18_40[iCen][iFile] = LegStd(legZtGenRatioto18_40[iCen][iFile], 0.62, 0.18, 0.95, 0.45);
-    //legZtGenRatioto18_40[iCen][iFile]->AddEntry(hRatio_R, "#frac{12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}18 GeV/#it{c}}{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}", "lp");
-    //legZtGenRatioto18_40[iCen][iFile]->AddEntry(hZtMCGen12_40_Ratio18_40[iCen][iFile], "#frac{12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}", "lp");
-    // legZtGenRatioto18_40[iCen][iFile]->AddEntry(hZtMCGen18_40_Ratio18_40[iCen][iFile], "#gamma#font[122]{-}jet, #frac{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}", "lp");
     lineX0->Draw("same");
     legZtGenRatio_R->Draw("same");
     legZtGenRatio_RTitle->Draw("same");
     cZtGenRatio_R->Print(outDirPlot[0] + "/Ratio_DiffpTtrig_DiffR.pdf");
 
-    /*
-    TFile *fileNLO = new TFile("RootFiles/fileNLO.root ");
-    TH1F *grDztNLOmedianpp = (TH1F *)fileNLO->Get(Form("grDztNLOmedian_pp"));
-    grDztNLOmedianpp->SetLineWidth(8);
-    grDztNLOmedianpp->SetLineColor(kRed - 4);
-    grDztNLOmedianpp->SetLineStyle(1);
-
-    TFile *finputpp_pPbPaper_DztpPb = new TFile("TheoryCalculations/HEPData-ins1798523-v1-root.root");
-    TDirectory *dirPaper_DztpPb = (TDirectory *)finputpp_pPbPaper_DztpPb->Get("Figure 5 Top Panel");
-
-    TH1F *hPYTHIApaper = (TH1F *)dirPaper_DztpPb->Get("Hist1D_y3");
-    TH1F *hPYTHIApaper_stat = (TH1F *)dirPaper_DztpPb->Get("Hist1D_y3_e1");
-    for (int ibin = 0; ibin < hPYTHIApaper->GetNbinsX(); ibin++)
+    // Comparing alpha correction on data MC gen/MC rec
+    int const nCenXdata = 4;
+    int cenBinsXdata[] = {0, 10, 30, 50, 90};
+    TString sPtAll = Form("_Pt18_40");
+    TFile *fInData[nCenXdata];
+    TH1F *histEffCorr[nCenXdata];
+    TGraph *lineX0_effCorr = DrawLine(lineX0_effCorr, 0, 1.2, 1.1, 1.2);
+    for (int iCen = 0; iCen < nCenXdata; iCen++)
     {
-        hPYTHIApaper->SetBinError(ibin + 1, hPYTHIApaper_stat->GetBinContent(ibin + 1));
+        TString sCent = Form("_Cen%d_%d", cenBinsXdata[iCen], cenBinsXdata[iCen + 1]);
+        cout<<sCent<<endl;
+        fInData[iCen] = new TFile("Output_checkCode/fPlot" + shshBkg + sCent + sPtAll + ".root");
+        cout<<fInData[iCen]<<endl;
+        histEffCorr[iCen] = (TH1F*)fInData[iCen]->Get("hRatioEffCorrIso1Photon");
+        cout<<histEffCorr[iCen]<<endl;
+        PlotStyle(histEffCorr[iCen], kMarkCen[iCen], 1, kColorMark[iCen], kColorMarkFill[iCen], "#it{z}_{T}", "#alpha_{corr}", false);
     }
-    TCanvas *cZtGenDist_PYTHIA = new TCanvas("cZtGenDist_PYTHIA", "cZtGenDist_PYTHIA", 800, 600);
-    gPad->SetLogy();
-    TH1F *hGeneral = new TH1F("hGeneral", "hGeneral", 100, 0, 1);
-    // hPYTHIApaper->GetXaxis()->SetRangeUser(0.,1.05);
-    // hZtMCGen12_40[2]->GetXaxis()->SetRangeUser(0.,1.05);
-    hGeneral->Draw("histpe");
-    grDztNLOmedianpp->Draw("histl same");
-    hZtMCGen12_40[2]->Draw("histpesame");
-    hPYTHIApaper->Draw("histpesame");
-    hZtMCGen18_40[2]->Draw("histpesame");
-    TLegend *legZtGenDistPYTHIApaper = LegStd(legZtGenDistPYTHIApaper, 0.5, 0.65, 0.85, 0.85);
-    legZtGenDistPYTHIApaper->AddEntry(hPYTHIApaper, "PYTHIA pp paper", "lep");
-    legZtGenDistPYTHIApaper->AddEntry(hZtMCGen12_40[2], "MC Gen 12_40", "lep");
-    legZtGenDistPYTHIApaper->AddEntry(hZtMCGen18_40[2], "MC Gen18_40", "lep");
-    legZtGenDistPYTHIApaper->AddEntry(grDztNLOmedianpp, "NLO pQCD", "lep");
-    legZtGenDistPYTHIApaper->Draw("same");
-    cZtGenDist_PYTHIA->Print(outDirPlot[0] + "/cZtGenDist_PYTHIA.pdf");
-    */
+
+    TCanvas *cEffCorr = canvasStdIaa("cEffCorr", 1, 1);
+    TLegend *legEffCorr = LegStd(legEffCorr, 0.53, 0.70, 0.53, 0.96);
+    TH1F *hGeneralEffCorr = new TH1F("hGeneralEffCorr", "", 105, 0., 1.05);
+    PlotStyle(hGeneralEffCorr, 20, 1, kWhite, kWhite, " #it{z}_{T} ", "#alpha_{corr}", false);
+    legEffCorr->SetHeader("ALICE simulation");
+    legEffCorr->AddEntry("", "Pb#font[122]{-}Pb,#color[0]{.}#sqrt{s_{NN}} = 5.02 TeV", "");
+    legEffCorr->AddEntry("", "PYTHIA 8,#color[0]{.}#gamma#font[122]{-}jet", "");
+    legEffCorr->AddEntry("", "#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #it{R} = 0.2" , "");
+    legEffCorr->AddEntry("", "18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}, #it{p}_{T}^{h} > 0.5 GeV/#it{c}" , "");
+    //gPad->SetLogy();
+    hGeneralEffCorr->GetYaxis()->SetTitleSize(0.046);
+    hGeneralEffCorr->GetYaxis()->SetTitleOffset(1.1);
+    hGeneralEffCorr->GetYaxis()->SetLabelSize(0.04);
+    hGeneralEffCorr->GetXaxis()->SetRangeUser(0.05, 1.05);
+    hGeneralEffCorr->GetXaxis()->SetNdivisions(505);
+    hGeneralEffCorr->GetXaxis()->SetLabelSize(0.04);
+    hGeneralEffCorr->GetXaxis()->SetTitleSize(0.05);
+    //hGeneralEffCorr->GetYaxis()->SetMoreLogLabels(kTRUE);
+    hGeneralEffCorr->Draw("hist pe same");
+    hGeneralEffCorr->GetYaxis()->SetRangeUser(0.85, 3.2);
+    cout<<histEffCorr[1]<<endl;
+    TLegend *legZtEffCorr = LegStd(legZtEffCorr, 0.53, 0.400, 0.80, 0.68);
+    for (int iCen = 0; iCen<nCenXdata; iCen++)
+    {
+        histEffCorr[iCen]->Draw("hist pe same");
+    }
+    legZtEffCorr->AddEntry( histEffCorr[0],"0#font[122]{-}10%","lp");
+    legZtEffCorr->AddEntry( histEffCorr[1],"10#font[122]{-}30%","lp");
+    legZtEffCorr->AddEntry( histEffCorr[2],"30#font[122]{-}50%","lp");
+    legZtEffCorr->AddEntry( histEffCorr[3],"50#font[122]{-}90%","lp");
+    legZtEffCorr->AddEntry( lineX0_effCorr,"#alpha_{corr} = 1.2","lp");
+    legZtEffCorr->Draw("same");
+    legEffCorr->Draw("same");
+    lineX0_effCorr->Draw("same");
+    cEffCorr->Print(outDirPlot[0] + "/EfficiencyCorrection.pdf");
 }
