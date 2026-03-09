@@ -132,6 +132,8 @@ void NLOcalc()
 
   double Dzt_medianpp_2pT_ErrMin[nAssoc];
   double Dzt_medianpp_07pT_ErrMax[nAssoc];
+  double Dzt_medianppminAverage = 0;
+  double Dzt_medianppmaxAverage = 0;
   
   for (int ibin = 0; ibin < nAssoc; ibin++)
   {
@@ -141,9 +143,17 @@ void NLOcalc()
     Dzt_medianpp_2pT_ErrMin[ibin] = (Dzt_medianpp[ibin] - Dzt_medianpp_2pT[ibin]);
     Dzt_medianpp_07pT_ErrMax[ibin] = (Dzt_medianpp_07pT[ibin] - Dzt_medianpp[ibin]);
 
+    cout<< "err min: "<< Dzt_medianpp_2pT_ErrMin[ibin]<<endl;
+    cout<< "err max: "<< Dzt_medianpp_07pT_ErrMax[ibin]<<endl;
+
+    Dzt_medianppminAverage = Dzt_medianppminAverage + Dzt_medianpp_2pT_ErrMin[ibin];
+    Dzt_medianppmaxAverage = Dzt_medianppmaxAverage + Dzt_medianpp_07pT_ErrMax[ibin];  
+
     //grDztNLOmedianppSyst->SetBinContent(ibin + 1, Dzt_medianpp[ibin]);
     //grDztNLOmedianppSyst->SetBinError(ibin + 1, (Dzt_medianpp[ibin]*5)/100);
   }
+ cout<<"Dzt_medianppminAverage" << Dzt_medianppminAverage/6<< endl;
+ cout<<"Dzt_medianppmaxAverage" << Dzt_medianppmaxAverage/6<< endl;  
 
   //TH1F *grDztNLOmedianppSyst = new TH1F("hppNLOSyst", "hppNLOSyst", nAssoc, assocZt);
 
@@ -167,12 +177,14 @@ void NLOcalc()
   }
 
   //double Iaa_CNM_mu07pT[] = {1.0690, 1.0315, 1.0335, 1.0328, 1.0597, 1.0612};
-  double Iaa_CNM_mu07pT[] = {1.0390, 1.0315, 1.0335, 1.0328, 1.0597, 1.0612}; //Modified by me to have a better trend in the first zT bin
+  double Iaa_CNM_mu07pT[] = {1.0390, 1.0315, 1.0335, 1.0328, 1.0597, 1.0612}; // Modified by me to have a better trend in the first zT bin
   double Iaa_CNM_mu12pT[] = {1.0488, 1.0503, 1.0750, 1.0342, 1.0665, 1.0586};
   double Iaa_CNM_mu2pT[] = {1.0778, 1.0728, 1.0768, 1.0691, 1.0632, 1.069};
 
   double Iaa_CNM_mupT_ErrMin[nAssoc];
   double Iaa_CNM_mupT_ErrMax[nAssoc];
+  double minAverage = 0;
+  double maxAverage = 0;
 
   for (int ibin = 0; ibin < 6; ibin++)
   {
@@ -181,7 +193,14 @@ void NLOcalc()
 
     Iaa_CNM_mupT_ErrMin[ibin] = (Iaa_CNM_mu12pT[ibin] - Iaa_CNM_mu07pT[ibin]);
     Iaa_CNM_mupT_ErrMax[ibin] = (Iaa_CNM_mu2pT[ibin] - Iaa_CNM_mu12pT[ibin]);
+
+    cout<<"ErrMin: "<<Iaa_CNM_mupT_ErrMin[ibin]<<endl;
+    cout<<"ErrMax: "<<Iaa_CNM_mupT_ErrMax[ibin]<<endl;
+    minAverage = minAverage + Iaa_CNM_mupT_ErrMin[ibin];
+    maxAverage = maxAverage + Iaa_CNM_mupT_ErrMax[ibin];
   }
+  cout<<"MinAverage: "<<minAverage/6<<endl;
+  cout<<"MaxAverage: "<<maxAverage/6<<endl;
   TGraphAsymmErrors *hIaa_nPDFSyst = new TGraphAsymmErrors(6, assocZtThinner, Iaa_nPDFval, 0, 0, Iaa_nPDF_ErrMin, Iaa_nPDF_ErrMax);
   hIaa_nPDFSyst->SetName("hIaa_nPDFSyst");
 
