@@ -27,8 +27,21 @@ EOF
 #----------------------------------------------------------------------------------------------
 
 root -b -l <<EOF
+.L IsoGammaHadron.C
+IsoGammaHadron(12, 40, "RootFiles/DataSh100_AssocPt500", true, "0.40-1.00", "Output_checkCodeXppMC", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, false, false, false)
+.q
+EOF
+
+root -b -l <<EOF
 .L PlotIsoGammaHadron.C
 PlotIsoGammaHadron(12, 40,  "Output_FigcheckCodeXppMC", "0.40-1.00", "Output_checkCodeXppMC")
+.q
+EOF
+
+
+root -b -l <<EOF
+.L IsoGammaHadron.C
+IsoGammaHadron(12, 18, "RootFiles/DataSh100_AssocPt500", true, "0.40-1.00", "Output_checkCodeXppMC", 1, false, true, TMath::Pi() * 3 / 5, TMath::Pi(), false, false, false, false)
 .q
 EOF
 

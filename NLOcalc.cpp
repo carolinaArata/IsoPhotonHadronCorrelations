@@ -130,8 +130,8 @@ void NLOcalc()
   double Dzt_medianpp_07pT[] = {5.942E+00, 3.048E+00, 1.621E+00, 6.578E-01, 2.293E-01, 4.206E-02};
   double Dzt_medianpp_2pT[] = {5.193E+00, 2.525E+00, 1.214E+00, 4.780E-01, 1.652E-01, 2.7565E-02};
 
-  double Dzt_medianpp_2pT_ErrMin[nAssoc];
-  double Dzt_medianpp_07pT_ErrMax[nAssoc];
+  double Dzt_medianpp_07pT_ErrMin[nAssoc];
+  double Dzt_medianpp_2pT_ErrMax[nAssoc];
   double Dzt_medianppminAverage = 0;
   double Dzt_medianppmaxAverage = 0;
   
@@ -140,14 +140,14 @@ void NLOcalc()
     grDztNLOmedianpp->SetBinContent(ibin + 1, Dzt_medianpp[ibin]);
     grDztNLOmedianpp->SetBinError(ibin + 1, 0);
 
-    Dzt_medianpp_2pT_ErrMin[ibin] = (Dzt_medianpp[ibin] - Dzt_medianpp_2pT[ibin]);
-    Dzt_medianpp_07pT_ErrMax[ibin] = (Dzt_medianpp_07pT[ibin] - Dzt_medianpp[ibin]);
+    Dzt_medianpp_07pT_ErrMin[ibin] = TMath::Abs(Dzt_medianpp_07pT[ibin] - Dzt_medianpp[ibin]);
+    Dzt_medianpp_2pT_ErrMax[ibin] = TMath::Abs(Dzt_medianpp_2pT[ibin] - Dzt_medianpp[ibin]);
 
-    cout<< "err min: "<< Dzt_medianpp_2pT_ErrMin[ibin]<<endl;
-    cout<< "err max: "<< Dzt_medianpp_07pT_ErrMax[ibin]<<endl;
+    cout<< "err min: "<< Dzt_medianpp_07pT_ErrMin[ibin]<<endl;
+    cout<< "err max: "<< Dzt_medianpp_2pT_ErrMax[ibin]<<endl;
 
-    Dzt_medianppminAverage = Dzt_medianppminAverage + Dzt_medianpp_2pT_ErrMin[ibin];
-    Dzt_medianppmaxAverage = Dzt_medianppmaxAverage + Dzt_medianpp_07pT_ErrMax[ibin];  
+    Dzt_medianppminAverage = Dzt_medianppminAverage + Dzt_medianpp_07pT_ErrMin[ibin];
+    Dzt_medianppmaxAverage = Dzt_medianppmaxAverage + Dzt_medianpp_2pT_ErrMax[ibin];  
 
     //grDztNLOmedianppSyst->SetBinContent(ibin + 1, Dzt_medianpp[ibin]);
     //grDztNLOmedianppSyst->SetBinError(ibin + 1, (Dzt_medianpp[ibin]*5)/100);
@@ -157,7 +157,7 @@ void NLOcalc()
 
   //TH1F *grDztNLOmedianppSyst = new TH1F("hppNLOSyst", "hppNLOSyst", nAssoc, assocZt);
 
-  TGraphAsymmErrors *grDztNLOmedianppSyst = new TGraphAsymmErrors(nZtBin, assocZtThinner, Dzt_medianpp, 0, 0, Dzt_medianpp_2pT_ErrMin, Dzt_medianpp_07pT_ErrMax);
+  TGraphAsymmErrors *grDztNLOmedianppSyst = new TGraphAsymmErrors(nZtBin, assocZtThinner, Dzt_medianpp, 0, 0, Dzt_medianpp_07pT_ErrMin, Dzt_medianpp_2pT_ErrMax);
 
 
 

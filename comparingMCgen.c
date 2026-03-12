@@ -292,7 +292,7 @@ void comparingMCgen(TString shshBkg = "0.40-1.00", bool bppMC = true)
     legEffCorr->AddEntry("", "Pb#font[122]{-}Pb,#color[0]{.}#sqrt{s_{NN}} = 5.02 TeV", "");
     legEffCorr->AddEntry("", "PYTHIA 8,#color[0]{.}#gamma#font[122]{-}jet", "");
     legEffCorr->AddEntry("", "#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #it{R} = 0.2" , "");
-    legEffCorr->AddEntry("", "18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}, #it{p}_{T}^{h} > 0.5 GeV/#it{c}" , "");
+    legEffCorr->AddEntry("", "18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}40 GeV/#it{c}, #it{p}_{T}^{h} > 1.8 GeV/#it{c}" , "");
     //gPad->SetLogy();
     hGeneralEffCorr->GetYaxis()->SetTitleSize(0.046);
     hGeneralEffCorr->GetYaxis()->SetTitleOffset(1.1);
