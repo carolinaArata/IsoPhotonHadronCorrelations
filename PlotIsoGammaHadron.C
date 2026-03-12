@@ -595,7 +595,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
 
       cSame_Mix_NoUEIsoClustSingleZt[iCen][iptTr]->cd(2);
 
-      TLegend *legZt = new TLegend(0.05, 0.4, 0.05, 0.95);
+      TLegend *legZt = new TLegend(0.05, 0.50, 0.05, 0.95);
       legZt->SetTextSize(0.06);
       legZt->SetLineColorAlpha(0, 0);
       legZt->SetFillColorAlpha(0, 0);
@@ -671,7 +671,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       lineY->Draw("same");
       cIsoClust_Pi0Pur_SingleZt[iCen][iptTr]->cd(2);
 
-      TLegend *legZt2 = new TLegend(0.05, 0.5, 0.05, 0.95);
+      TLegend *legZt2 = new TLegend(0.05, 0.55, 0.05, 0.95);
       legZt2->SetTextSize(0.06);
       legZt2->SetLineColorAlpha(0, 0);
       legZt2->SetFillColorAlpha(0, 0);
@@ -769,7 +769,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       legNarrSameMix_SameNoUEXpap[iCen][iptTr]->SetTextSize(0.06);
       legNarrSameMix_SameNoUEXpap[iCen][iptTr]->SetLineColorAlpha(0, 0);
       legNarrSameMix_SameNoUEXpap[iCen][iptTr]->SetFillColorAlpha(0, 0);
-      legNarrSameMix_SameNoUEXpap[iCen][iptTr]->SetHeader(Form("ALICE Pb#font[122]{-}Pb, #sqrt{s_{NN}} = 5.02 TeV, %d#font[122]{-}%d%%", cenBins[iCen], cenBins[iCen + 1]));
+      legNarrSameMix_SameNoUEXpap[iCen][iptTr]->SetHeader(Form("ALICE Pb#font[122]{-}Pb, #sqrt{s_{NN}} = 5.02 TeV, #bf{%d#font[122]{-}%d%%}", cenBins[iCen], cenBins[iCen + 1]));
       legNarrSameMix_SameNoUEXpap[iCen][iptTr]->AddEntry("", Form("Trigger: %1.0f < #it{p}_{T}^{trig} < %1.0f GeV/#it{c}, |#it{#eta}^{trig}| < 0.67", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]), "");
       legNarrSameMix_SameNoUEXpap[iCen][iptTr]->AddEntry("", "0.1 <#color[0]{..}#it{#sigma}^{2}_{long, 5x5}#color[0]{..}< 0.3 ; #it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #it{R} = 0.2", "");
       // legNarrSameMix_SameNoUEXpap[iCen][iptTr]->AddEntry("", "           Isolated: #it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #it{R} = 0.2", "");
@@ -827,7 +827,7 @@ void PlotIsoGammaHadron(float ptMin = 18, float ptMax = 40, TString outDirPlot =
       legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->SetTextSize(0.06);
       legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->SetLineColorAlpha(0, 0);
       legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->SetFillColorAlpha(0, 0);
-      legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->SetHeader(Form("ALICE Pb#font[122]{-}Pb, #sqrt{s_{NN}} = 5.02 TeV, %d#font[122]{-}%d%%", cenBins[iCen], cenBins[iCen + 1]));
+      legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->SetHeader(Form("ALICE Pb#font[122]{-}Pb, #sqrt{s_{NN}} = 5.02 TeV, #bf{%d#font[122]{-}%d%%}", cenBins[iCen], cenBins[iCen + 1]));
       legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->AddEntry("", Form("Trigger: %1.0f#color[0]{.}<#color[0]{.}#it{p}_{T}^{trig} < %1.0f GeV/#it{c}, |#it{#eta}^{trig}| < 0.67", ptTrig[index1 + iptTr], ptTrig[index1 + iptTr + 1]), "");
       // legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->AddEntry("", "", "");
       legIsoNarrWidePurityIsoPhotXpap[iCen][iptTr]->AddEntry("", "#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #it{R} = 0.2", "");
