@@ -129,9 +129,12 @@ void NLOcalc()
   double Dzt_medianpp[] = {5.425E+00, 2.837E+00, 1.299E+00, 5.989E-01, 1.921E-01, 3.473E-02};
   double Dzt_medianpp_07pT[] = {5.942E+00, 3.048E+00, 1.621E+00, 6.578E-01, 2.293E-01, 4.206E-02};
   double Dzt_medianpp_2pT[] = {5.193E+00, 2.525E+00, 1.214E+00, 4.780E-01, 1.652E-01, 2.7565E-02};
-
+  //std error
   double Dzt_medianpp_07pT_ErrMin[nAssoc];
   double Dzt_medianpp_2pT_ErrMax[nAssoc];
+  //relative error
+  double Dzt_medianpp_07pT_ErrRelat[nAssoc];
+  double Dzt_medianpp_2pT_ErrRelat[nAssoc];
   double Dzt_medianppminAverage = 0;
   double Dzt_medianppmaxAverage = 0;
   
@@ -143,23 +146,22 @@ void NLOcalc()
     Dzt_medianpp_07pT_ErrMin[ibin] = TMath::Abs(Dzt_medianpp_07pT[ibin] - Dzt_medianpp[ibin]);
     Dzt_medianpp_2pT_ErrMax[ibin] = TMath::Abs(Dzt_medianpp_2pT[ibin] - Dzt_medianpp[ibin]);
 
-    cout<< "err min: "<< Dzt_medianpp_07pT_ErrMin[ibin]<<endl;
-    cout<< "err max: "<< Dzt_medianpp_2pT_ErrMax[ibin]<<endl;
+    Dzt_medianpp_07pT_ErrRelat[ibin] = Dzt_medianpp_07pT_ErrMin[ibin]/Dzt_medianpp[ibin];
+    Dzt_medianpp_2pT_ErrRelat[ibin] = Dzt_medianpp_2pT_ErrMax[ibin]/Dzt_medianpp[ibin];
 
-    Dzt_medianppminAverage = Dzt_medianppminAverage + Dzt_medianpp_07pT_ErrMin[ibin];
-    Dzt_medianppmaxAverage = Dzt_medianppmaxAverage + Dzt_medianpp_2pT_ErrMax[ibin];  
+    cout<< "err 0.7pT Abs(07pT[ibin] - pp[ibin]): "<< Dzt_medianpp_07pT_ErrMin[ibin]<<endl;
+    cout<< "err 2pT Abs(2pT[ibin] - pp[ibin]): "<< Dzt_medianpp_2pT_ErrMax[ibin]<<endl;
+
+    cout<< "err 0.7pT RELATIVO:      "<< Dzt_medianpp_07pT_ErrRelat[ibin] <<endl;
+    cout<< "err 2pT RELATIVO:        "<< Dzt_medianpp_2pT_ErrRelat[ibin] <<endl;
+
 
     //grDztNLOmedianppSyst->SetBinContent(ibin + 1, Dzt_medianpp[ibin]);
     //grDztNLOmedianppSyst->SetBinError(ibin + 1, (Dzt_medianpp[ibin]*5)/100);
   }
- cout<<"Dzt_medianppminAverage" << Dzt_medianppminAverage/6<< endl;
- cout<<"Dzt_medianppmaxAverage" << Dzt_medianppmaxAverage/6<< endl;  
 
-  //TH1F *grDztNLOmedianppSyst = new TH1F("hppNLOSyst", "hppNLOSyst", nAssoc, assocZt);
 
   TGraphAsymmErrors *grDztNLOmedianppSyst = new TGraphAsymmErrors(nZtBin, assocZtThinner, Dzt_medianpp, 0, 0, Dzt_medianpp_07pT_ErrMin, Dzt_medianpp_2pT_ErrMax);
-
-
 
   double zT_nPDF[] = {0.1, 0.15, 0.2, 0.3, 0.4, 0.6, 1.0};
   //double Iaa_nPDFval[] = {1.0491, 1.0511, 1.0338, 1.0165, 1.0207, 1.0197, 1.0162};
@@ -271,13 +273,76 @@ void NLOcalc()
   {
     TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
     cout << "Getter zt distributions: " << sCent << endl;
-    //fPlot[iCen] = new TFile(Form("~/work/histogram/FromScratch/ResultsNewMixMC_ZtMergedMoreQM/fPlot%s%s%s.root", shshString[1].Data(), sCent.Data(), sPtAll.Data()));
     fPlot[iCen] = new TFile(Form("Output_checkCode/fPlot%s%s%s.root", shshString[1].Data(), sCent.Data(), sPtAll.Data()));
 
     hZt_MC_Gen[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtMCGenIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
     hZt_MC_Rec[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtMCRecIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
     hZtCent[iCen] = (TH1F *)fPlot[iCen]->Get(Form("hZtEffCorrIso1Photon%s%s", sCent.Data(), sPtAll.Data()));
   }
+
+  //////////////////////////////////////////////////////////
+  //////// Compute Iaa with pp from theory ////////////////
+  /////// Different binning between data and theory //////
+  ///////////////////////////////////////////////////////
+
+  Int_t nAssocNLO = 6;
+  double assocZtNLO[] = {0.1, 0.15, 0.2, 0.3, 0.4, 0.6, 1.0};
+  TH1F *hPbPb_NLO[nCen];
+  TH1F *hPbPb_NLOSyst[nCen];
+
+  for (int iCen = 0; iCen < nCen; iCen++)
+  {
+    hPbPb_NLO[iCen] = new TH1F(Form("hPbPb%d_%d_NLO", cenBins[iCen], cenBins[iCen + 1]), Form("hPbPb%d_%d_NLO", cenBins[iCen], cenBins[iCen + 1]), nAssocNLO, assocZtNLO);
+    for (int ibin = 0; ibin < nAssocNLO; ibin++)
+    {
+      cout << "Cent: " << iCen << endl;
+      cout << hPbPb_NLO[iCen]->GetBinCenter(ibin + 1) << ")" << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) << "____" << grDztNLOmedianpp->GetBinContent(ibin + 1) << " Ratio: " << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) / grDztNLOmedianpp->GetBinContent(ibin + 1) << endl;
+      hPbPb_NLO[iCen]->SetBinContent(ibin + 1, hZtCent[iCen]->GetBinContent(ibin + 1));
+      hPbPb_NLO[iCen]->SetBinError(ibin + 1, hZtCent[iCen]->GetBinError(ibin + 1));
+      cout << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) << "____" << grDztNLOmedianpp->GetBinContent(ibin + 1) << " Ratio: " << hPbPb_NLO[iCen]->GetBinContent(ibin + 1) / grDztNLOmedianpp->GetBinContent(ibin + 1) << endl;
+      cout << "ERRORE pp: " << grDztNLOmedianpp->GetBinError(ibin + 1) << endl;
+      cout << "Cent: " << iCen << endl;
+    }
+    cout << "Centrality" << iCen << endl;
+    hPbPb_NLO[iCen]->Divide(grDztNLOmedianpp);
+  }
+
+  TGraphAsymmErrors *IpQCD_ppSyst[nCen];
+  for (Int_t iCen = 0; iCen < nCen; iCen++)
+  {
+    cout<<"Cen"<<iCen<<endl;
+    TString sCent = Form("_Cen%d_%d", cenBins[iCen], cenBins[iCen + 1]);
+    Int_t nPoints = grDztNLOmedianppSyst->GetN();
+    if(iCen==1 || iCen==2) nPoints = nPoints-1;
+    IpQCD_ppSyst[iCen] = new TGraphAsymmErrors();
+    for (Int_t ibin = 0; ibin < nPoints; ibin++)
+    {
+      Float_t zT = grDztNLOmedianppSyst->GetPointX(ibin);
+      cout<<"zt: "<< zT<<endl;
+      Float_t IpqcdCen = hPbPb_NLO[iCen]->GetBinContent(ibin+1);
+      cout<<"Ipqcd: "<< IpqcdCen << endl;
+      Float_t errCenHigh = Dzt_medianpp_07pT_ErrRelat[ibin]*IpqcdCen;
+      Float_t errCenLow = Dzt_medianpp_2pT_ErrRelat[ibin]*IpqcdCen;
+      cout<<"errCenHigh: "<< errCenHigh << endl;
+      cout<<"errCenLow: "<< errCenLow << endl;
+
+      IpQCD_ppSyst[iCen]->SetPoint(ibin, zT, IpqcdCen);
+      double low  = assocZt[ibin];
+      double high = assocZt[ibin+1];
+      double exlow  = zT - low;
+      double exhigh = high - zT;
+      IpQCD_ppSyst[iCen]->SetPointError(ibin, exlow, exhigh, errCenHigh, errCenLow);
+    }
+    IpQCD_ppSyst[iCen]->SetName(Form("IpQCD_ppSyst%s", sCent.Data()));
+    IpQCD_ppSyst[iCen]->SetMarkerStyle(20);
+    IpQCD_ppSyst[iCen]->SetMarkerColor(kBlue);
+    IpQCD_ppSyst[iCen]->SetLineColor(kBlue);
+    IpQCD_ppSyst[iCen]->SetLineWidth(2);
+  }
+
+
+
+
 
   histRatioPYTHIA_NLOPbPb[0] = new TH1F(Form("histRatioPYTHIA_NLOPbPb_Cen%d_%d", cenBins[0], cenBins[1]), Form("histRatioPYTHIA_NLOPbPb_Cen%d_%d", cenBins[0], cenBins[1]), nAssocCLBT, assocZtCLBT);
   histRatioPYTHIA_NLOPbPb[1] = new TH1F(Form("histRatioPYTHIA_NLOPbPb_Cen%d_%d", cenBins[1], cenBins[2]), Form("histRatioPYTHIA_NLOPbPb_Cen%d_%d", cenBins[1], cenBins[2]), nZtBin, assocZt - 1);
@@ -392,6 +457,12 @@ void NLOcalc()
 
   grDztNLOmedianpp->Write();
   grDztNLOmedianppSyst->Write();
+  IpQCD_ppSyst[0]->Write();
+  IpQCD_ppSyst[1]->Write();
+  IpQCD_ppSyst[2]->Write();
+  hPbPb_NLO[0]->Write();
+  hPbPb_NLO[1]->Write();
+  hPbPb_NLO[2]->Write();
   hIaa_nPDF->Write();
   hIaa_nPDFSyst->Write();
   hIaa_CNMwithSyst->Write();
