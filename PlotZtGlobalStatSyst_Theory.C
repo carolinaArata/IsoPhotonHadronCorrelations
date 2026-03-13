@@ -413,8 +413,8 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
     IpQCD_ppSyst[iCen] = (TGraphAsymmErrors *)fileNLO->Get(Form("IpQCD_ppSyst%s", sCent.Data()));
     IpQCD_ppSyst[iCen]->SetMarkerStyle(20);
     IpQCD_ppSyst[iCen]->SetMarkerColor(kGray+3);
-    IpQCD_ppSyst[iCen]->SetLineColor(kAzure-3);
-    IpQCD_ppSyst[iCen]->SetLineWidth(2);
+    IpQCD_ppSyst[iCen]->SetLineColor(kSpring-6);
+    IpQCD_ppSyst[iCen]->SetLineWidth(3);
     IpQCD_ppSyst[iCen]->SetFillStyle(0);
   }
 
@@ -675,9 +675,9 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
         //legRatioPbPb[iCen]->AddEntry(hIaaXplotSyst[iCen], " Data ", "lfpe");
         // legRatioPbPb[iCen]->AddEntry(hIaa_nPDF, "#it{I}_{AA}, NLO pQCD + CNM", "lf");
         // legRatioPbPb[iCen]->AddEntry((TObject *)0, "M. Xie et al.", "");
-        legPbPb_NLOratio_muScalepp[iCen] = LegStd(legPbPb_NLOratio_muScalepp[iCen], 0.350, 0.29, 0.780, 0.34);
+        legPbPb_NLOratio_muScalepp[iCen] = LegStd(legPbPb_NLOratio_muScalepp[iCen], 0.30, 0.29, 0.750, 0.34);
         legPbPb_NLOratio_muScalepp[iCen]->SetTextSize(0.05);
-        legPbPb_NLOratio_muScalepp[iCen]->AddEntry(IpQCD_ppSyst[iCen], "#it{D}(z_{T})#color[0]{.}pQCD#color[0]{.}#it{#mu}#color[0]{.}scale unc.", "f");
+        legPbPb_NLOratio_muScalepp[iCen]->AddEntry(IpQCD_ppSyst[iCen], "NLO pQCD,#color[0]{.}pp#color[0]{.}#it{#mu}#color[0]{.}scale unc.", "f");
         legPbPb_NLOratio_muScalepp[iCen]->Draw("same");
         legPbPb_NLOratio[iCen] = LegStd(legPbPb_NLOratio[iCen], 0.01, 0.17, 0.56, 0.34);
         legPbPb_NLOratio[iCen]->SetTextSize(0.05);
@@ -879,6 +879,7 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
   hIaa_CNMwithSyst->Draw("pl3 same");
   hIaa_nPDF->SetLineWidth(4);
   hIaa_nPDF->Draw("hist l same");
+  IpQCD_ppSyst[0]->Draw("p2 same");
   //hIaa_nPDF->Draw("hist same c ");
   // grIaaNLOmedian[iCen]->Draw("pl3 same");
   // hPbPb_NLOSyst[iCen]->SetLineColor(kWhite);
@@ -901,38 +902,40 @@ void PlotZtGlobalStatSyst_Theory(float ptMin = 18, float ptMax = 40, bool Mirror
 
   TLegend *legIaaALICE030pp = LegStd(legIaaALICE030pp, 0.45, 0.86, 0.55, 0.97);
   legIaaALICE030pp->SetTextSize(0.036);
-  legIaaALICE030pp->SetHeader(" #color[0]{.}#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #bf{#it{R} = 0.2}");
-  legIaaALICE030pp->AddEntry((TObject *)0, "#bf{18 <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < 40 GeV/#it{c}}#color[0]{.};#color[0]{..}#it{p}_{T}^{h} > 1.8 GeV/#it{c}", "");
+  legIaaALICE030pp->SetHeader(" #color[0]{.}#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c},#color[0]{..}#bf{#it{R} = 0.2},#color[0]{..}#bf{0#font[122]{-}30%}#color[0]{..}#bf{Pb#font[122]{-}Pb}");
+  legIaaALICE030pp->AddEntry((TObject *)0, "#bf{18#color[0]{.}<#color[0]{.}#it{p}_{T}^{#it{#gamma}}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}#color[0]{.};#color[0]{..}#it{p}_{T}^{h} > 1.8 GeV/#it{c}", "");
   legIaaALICE030pp->Draw("same");
 
-  TLegend *legIaaALICE030Marker = LegStd(legIaaALICE030Marker, 0.45, 0.75, 0.70, 0.805);
+  TLegend *legIaaALICE030Marker = LegStd(legIaaALICE030Marker, 0.46, 0.70, 0.70, 0.85);
   legIaaALICE030Marker->SetTextSize(0.032);
-  legIaaALICE030Marker->AddEntry(hPbPb_NLOSyst[0], "0#font[122]{-}30% Pb#font[122]{-}Pb", "epf");
+  legIaaALICE030Marker->AddEntry(hPbPb_NLOSyst[0], "#it{I}_{pQCD}", "epf");
+  legIaaALICE030Marker->AddEntry(IpQCD_ppSyst[0], "NLO pQCD,#color[0]{.}pp", "f");
+  legIaaALICE030Marker->AddEntry("", "#it{#mu} scale unc.", "");
   legIaaALICE030Marker->Draw("same");
-  TLegend *legIaaALICE030MarkerIaa_nPDF = LegStd(legIaaALICE030MarkerIaa_nPDF, 0.66, 0.70, 0.92, 0.86);
+  TLegend *legIaaALICE030MarkerIaa_nPDF = LegStd(legIaaALICE030MarkerIaa_nPDF, 0.68, 0.70, 0.90, 0.85);
   legIaaALICE030MarkerIaa_nPDF->SetTextSize(0.032);
   //legIaaALICE030Marker->AddEntry(hIaa_nPDFSyst, "NLO pQCD + CNM", "lf");
   legIaaALICE030MarkerIaa_nPDF->AddEntry(hIaa_nPDF, "#it{I}_{AA}, NLO pQCD + CNM", "l");
   legIaaALICE030MarkerIaa_nPDF->AddEntry(hIaa_CNMwithSyst, "0.7#it{p}_{T}^{#gamma}#color[0]{.}<#color[0]{.}#it{#mu}#color[0]{.}<#color[0]{..}2#it{p}_{T}^{#gamma} ", "f");
-  legIaaALICE030MarkerIaa_nPDF->AddEntry(hIaa_nPDFSyst, "nPDF uncert. EPPS21", "f");
+  legIaaALICE030MarkerIaa_nPDF->AddEntry(hIaa_nPDFSyst, "nPDF unc. EPPS21", "f");
   legIaaALICE030MarkerIaa_nPDF->Draw("same");
 
-  TLegend *legIaaALICEppPb = LegStd(legIaaALICEppPb, 0.45, 0.59, 0.55, 0.70);
+  TLegend *legIaaALICEppPb = LegStd(legIaaALICEppPb, 0.44, 0.57, 0.55, 0.67);
   legIaaALICEppPb->SetTextSize(0.036);
   // legIaaALICEppPb->SetHeader("Phys Rev C 102 (2020) 044908");
   //  legIaaALICEppPb->AddEntry((TObject *)0, "pp & p#font[122]{-}Pb", "");
-  legIaaALICEppPb->AddEntry((TObject *)0, "#color[0]{.}#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c}, #bf{#it{R} = 0.4}", "");
-  legIaaALICEppPb->AddEntry((TObject *)0, "#bf{12 <#color[0]{..}#it{p}_{T}^{#it{#gamma}} < 40 GeV/#it{c}}#color[0]{.}; 0.5 <#color[0]{..}#it{p}_{T}^{h} < 10 GeV/#it{c}", "");
+  legIaaALICEppPb->AddEntry((TObject *)0, "#color[0]{.}#it{p}_{T}^{iso, ch} < 1.5 GeV/#it{c},#color[0]{..}#bf{#it{R} = 0.4},#color[0]{..}#bf{p#font[122]{-}Pb}", "");
+  legIaaALICEppPb->AddEntry((TObject *)0, "#bf{12#color[0]{.}<#color[0]{.}#it{p}_{T}^{#it{#gamma}}#color[0]{.}<#color[0]{.}40 GeV/#it{c}}#color[0]{.}; 0.5 <#color[0]{..}#it{p}_{T}^{h} < 10 GeV/#it{c}", "");
   legIaaALICEppPb->Draw("same");
-  TLegend *legIaaALICEppPbMarker = LegStd(legIaaALICEppPbMarker, 0.45, 0.51, 0.70, 0.565);
+  TLegend *legIaaALICEppPbMarker = LegStd(legIaaALICEppPbMarker, 0.46, 0.51, 0.71, 0.565);
   // legIaaALICEppPbMarker->SetNColumns(2);
   legIaaALICEppPbMarker->SetTextSize(0.032);
   // legIaaALICEppPbMarker->AddEntry(hIpPbpp, "#it{I}_{pA}, p#font[122]{-}Pb/pp stat.", "ep");
-  legIaaALICEppPbMarker->AddEntry(hIpPbpp_syst, "p#font[122]{-}Pb/pp", "epf");
+  legIaaALICEppPbMarker->AddEntry(hIpPbpp_syst, "#it{I}_{pA}, Phys. Rev. C 102 (2020) 044908", "epf");
   legIaaALICEppPbMarker->Draw("same");
   TLegend *legIaaALICEppPbPaper = LegStd(legIaaALICEppPbPaper, 0.45, 0.45, 0.55, 0.51);
   legIaaALICEppPbPaper->SetTextSize(0.032);
-  legIaaALICEppPbPaper->AddEntry("", "Phys. Rev. C 102 (2020) 044908", "");
+  legIaaALICEppPbPaper->AddEntry("", "", "");
   legIaaALICEppPbPaper->Draw("same");
 
   cPbPb_NLORatio0_10_Iaa_CNM_pA->Print(dirPlot + Form("/Ipqcd_Cen0_30_Iaa_CNM_pA.pdf"));
